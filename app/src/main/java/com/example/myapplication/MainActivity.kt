@@ -8,7 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.example.myapplication.ui.screen.CleaningScreen
+import com.example.myapplication.ui.screen.CustumersScreen
 import com.example.myapplication.ui.screen.HomeScreen
+import com.example.myapplication.ui.screen.Screen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +22,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(Modifier.padding(bottom = innerPadding.calculateBottomPadding()))
+                    val modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
+                    //HomeScreen(modifier)
+                    CustumersScreen(modifier)
+                    //CleaningScreen(modifier)
+                    //Screen(modifier)
                 }
             }
         }
