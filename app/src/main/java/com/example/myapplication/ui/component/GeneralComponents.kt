@@ -163,27 +163,13 @@ fun DeleteButton(id: String){
 @Composable
 fun ListItemAvatar(itemID : String){
     ListItem(
-        headlineContent = { Text (text = "CIao", fontSize = MaterialTheme.typography.headlineSmall.fontSize) } ,
+        headlineContent = { Text (text = itemID, fontSize = MaterialTheme.typography.headlineSmall.fontSize) } ,
         modifier =  Modifier
-            .height(80.dp)
+            .height(60.dp)
             .clip(shape = RoundedCornerShape(20))
-            .background(shape = RoundedCornerShape(50), color = MaterialTheme.colorScheme.primaryContainer)
+            .background(color = MaterialTheme.colorScheme.primaryContainer)
             .fillMaxSize(),
-        leadingContent = {
-            Box(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary),
-            ) {
-                Text(
-                    modifier = Modifier
-                        .align(Alignment.Center),
-                    text = "" + itemID.get(1),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = MaterialTheme.typography.headlineMedium.fontSize
-                )
-            } },
+        leadingContent = { Avatar(itemID.get(0)) },
         trailingContent = { Checkbox(checked = true, onCheckedChange = {}) },
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -196,7 +182,7 @@ fun ListItemAvatar(itemID : String){
 fun CardItemAvatar(itemID : String){
     Card (
         modifier = Modifier
-            .height(80.dp)
+            .height(60.dp)
             .padding(horizontal = 4.dp)
             .fillMaxSize(),
         colors = CardColors(
@@ -211,20 +197,8 @@ fun CardItemAvatar(itemID : String){
             modifier = Modifier.padding(vertical = 15.dp, horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ){
-            Box(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary),
-            ) {
-                Text(
-                    modifier = Modifier
-                        .align(Alignment.Center),
-                    text = "" + itemID.get(1),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = MaterialTheme.typography.headlineMedium.fontSize
-                )
-            }
+            Avatar(itemID.get(0))
+
             Text(
                 modifier = Modifier.padding(start = 8.dp),
                 text = itemID,
@@ -235,3 +209,17 @@ fun CardItemAvatar(itemID : String){
     }
 }
 
+@Composable
+fun Avatar(char: Char){
+    Box(
+        modifier = Modifier.size(35.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary),
+    ) {
+        Text(
+            modifier = Modifier
+                .align(Alignment.Center),
+            text = "" + char,
+            color = MaterialTheme.colorScheme.onPrimary,
+            fontSize = MaterialTheme.typography.headlineSmall.fontSize
+        )
+    }
+}
