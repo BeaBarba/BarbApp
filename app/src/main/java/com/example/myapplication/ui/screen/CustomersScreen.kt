@@ -2,7 +2,6 @@ package com.example.myapplication.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,8 +24,8 @@ import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
-fun CustumersScreen(modifier : Modifier){
-    val custumers = listOf(
+fun CustomersScreen(modifier : Modifier){
+    val customers = listOf(
         "Alessandro", "Andrea", "Anna", "Alessia", "Amelia", "Antonio",
         "Barbara", "Bruno", "Beatrice", "Bianca", "Benedetto", "Bernardo",
         "Carlo", "Chiara", "Cristina", "Camilla", "Cesare", "Claudia",
@@ -55,10 +53,11 @@ fun CustumersScreen(modifier : Modifier){
         "Ylenia", "Yves", "Yolanda", "Yara", "Yves", "Yolanda",
         "Zeno", "Zoe", "Zoran", "Zaira", "Zeno", "Zita"
     )
+    val letters = customers.map { it.get(0) }.distinct()
     Scaffold (
         modifier = Modifier.fillMaxSize(),
-        topBar = {TopAppBar("Custumers")},
-        floatingActionButton = { AddButton("Custumers")}
+        topBar = {TopAppBar("Customers")},
+        floatingActionButton = { AddButton("Customers")}
     ){ contentPadding ->
 
         LazyColumn (
@@ -66,10 +65,27 @@ fun CustumersScreen(modifier : Modifier){
             contentPadding = PaddingValues(8.dp,8.dp,8.dp,135.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ){
-            item{ SearchAppBar("Custumers", contentPadding) }
-            items(custumers) { custumer ->
-                    CardItemAvatar(custumer)
+            item{ SearchAppBar("Customers", contentPadding) }
+
+            items(letters){letter ->
+                Column(){
+                    Avatar(letter,
+                        Modifier
+                            .padding(8.dp)
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primaryContainer),
+                        MaterialTheme.colorScheme.onPrimaryContainer)
+                    Column{
+                        Spacer(Modifier.size(4.dp))
+                        customers.filter{ it[0] == letter }.forEach{ contact ->
+                            CardItemAvatar(contact)
+                            Spacer(Modifier.size(4.dp))
+                        }
+                    }
+                }
             }
+
         }
     }
 }

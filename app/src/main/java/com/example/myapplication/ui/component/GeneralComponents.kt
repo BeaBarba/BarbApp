@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.component
 
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -37,6 +38,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -83,7 +85,7 @@ fun TopAppBar(id: String){
                             "Back",
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
-                    id.equals("Custumers")
+                    id.equals("Customers")
                             || id.equals("Wrench")
                             || id.equals("Cleaning")
                             || id.equals("Receipt") ->
@@ -169,7 +171,7 @@ fun ListItemAvatar(itemID : String){
             .clip(shape = RoundedCornerShape(20))
             .background(color = MaterialTheme.colorScheme.primaryContainer)
             .fillMaxSize(),
-        leadingContent = { Avatar(itemID.get(0)) },
+        leadingContent = { Avatar(itemID.get(0), Modifier.size(35.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary)) },
         trailingContent = { Checkbox(checked = true, onCheckedChange = {}) },
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -197,7 +199,7 @@ fun CardItemAvatar(itemID : String){
             modifier = Modifier.padding(vertical = 15.dp, horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ){
-            Avatar(itemID.get(0))
+            Avatar(itemID.get(0), Modifier.size(30.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary))
 
             Text(
                 modifier = Modifier.padding(start = 8.dp),
@@ -210,16 +212,16 @@ fun CardItemAvatar(itemID : String){
 }
 
 @Composable
-fun Avatar(char: Char){
+fun Avatar(char: Char, modifier: Modifier, colorText : Color =  MaterialTheme.colorScheme.onPrimary){
     Box(
-        modifier = Modifier.size(35.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary),
+        modifier = modifier,
     ) {
         Text(
             modifier = Modifier
                 .align(Alignment.Center),
             text = "" + char,
-            color = MaterialTheme.colorScheme.onPrimary,
-            fontSize = MaterialTheme.typography.headlineSmall.fontSize
+            color = colorText,
+            fontSize = MaterialTheme.typography.bodyLarge.fontSize
         )
     }
 }
