@@ -1,10 +1,12 @@
 package com.example.myapplication.ui.component
 
-
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,10 +37,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,7 +54,10 @@ fun TopAppBar(id: String){
     CenterAlignedTopAppBar(
         navigationIcon = {
             IconButton(
-                onClick = {}
+                onClick = {
+                    if(id.equals("Home")){}
+                    else {}
+                }
             ){
                 if(id.equals("Home")){
                         Icon(
@@ -121,12 +128,13 @@ fun TopAppBar(id: String){
 }
 
 @Composable
-fun AddButton(id : String){
+fun AddButton(id : String, onClick: () -> Unit){
     FloatingActionButton(
-        onClick = {},
+        onClick = onClick,
         modifier = Modifier.size(60.dp).fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        interactionSource = remember { MutableInteractionSource() } // Per le interazioni
     ) {
         Icon(
             Icons.Filled.Add,
@@ -136,9 +144,9 @@ fun AddButton(id : String){
 }
 
 @Composable
-fun DeleteButton(id: String){
+fun DeleteButton(id: String, onclick: () -> Unit){
     IconButton(
-        onClick = {},
+        onClick = onclick,
         modifier = Modifier
             .border( border = BorderStroke(4.dp, color = MaterialTheme.colorScheme.background),
                     shape = RoundedCornerShape(30.dp))
@@ -163,6 +171,47 @@ fun DeleteButton(id: String){
 }
 
 @Composable
+fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
+    Card(
+        onClick = onclick,
+        modifier = Modifier
+            .size(150.dp)
+            .fillMaxSize(),
+        border = BorderStroke(16.dp, MaterialTheme.colorScheme.background),
+        shape = RoundedCornerShape(40.dp),
+        colors = CardColors(
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+            disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer
+        ),
+        interactionSource = remember { MutableInteractionSource() } // Per le interazioni con l'utente
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = iconName,
+                contentDescription = item,
+                modifier = Modifier
+                    .size(60.dp)
+                    .padding(2.dp),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+            Spacer(Modifier.size(8.dp))
+            Text(
+                text = item,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }
+    }
+}
+
+@Composable
 fun ListItemAvatar(itemID : String){
     ListItem(
         headlineContent = { Text (text = itemID, fontSize = MaterialTheme.typography.headlineSmall.fontSize) } ,
@@ -172,7 +221,7 @@ fun ListItemAvatar(itemID : String){
             .background(color = MaterialTheme.colorScheme.primaryContainer)
             .fillMaxSize(),
         leadingContent = { Avatar(itemID.get(0), Modifier.size(35.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary)) },
-        trailingContent = { Checkbox(checked = true, onCheckedChange = {}) },
+        trailingContent = { Checkbox(checked = true, onCheckedChange = {}, interactionSource = remember { MutableInteractionSource() })},
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             headlineColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -181,7 +230,8 @@ fun ListItemAvatar(itemID : String){
 }
 
 @Composable
-fun CardItemAvatar(itemID : String){
+fun CardItemAvatar(itemID : String, onclick : () -> Unit){
+
     Card (
         modifier = Modifier
             .height(60.dp)
@@ -193,7 +243,8 @@ fun CardItemAvatar(itemID : String){
             disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             disabledContainerColor = MaterialTheme.colorScheme.primaryContainer
         ),
-        onClick = {}
+        onClick = onclick,
+        interactionSource = remember { MutableInteractionSource() }
     ){
         Row (
             modifier = Modifier.padding(vertical = 15.dp, horizontal = 8.dp),

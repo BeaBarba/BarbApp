@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.screen
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
@@ -25,6 +27,7 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun CustomersScreen(modifier : Modifier){
+    val ctx = LocalContext.current
     val customers = listOf(
         "Alessandro", "Andrea", "Anna", "Alessia", "Amelia", "Antonio",
         "Barbara", "Bruno", "Beatrice", "Bianca", "Benedetto", "Bernardo",
@@ -57,7 +60,7 @@ fun CustomersScreen(modifier : Modifier){
     Scaffold (
         modifier = Modifier.fillMaxSize(),
         topBar = {TopAppBar("Customers")},
-        floatingActionButton = { AddButton("Customers")}
+        floatingActionButton = { AddButton("Customers"){} }
     ){ contentPadding ->
 
         LazyColumn (
@@ -79,7 +82,10 @@ fun CustomersScreen(modifier : Modifier){
                     Column{
                         Spacer(Modifier.size(4.dp))
                         customers.filter{ it[0] == letter }.forEach{ contact ->
-                            CardItemAvatar(contact)
+                            CardItemAvatar(contact){
+                                val intent = Intent(ctx, HomeActivity::class.java)
+                                ctx.startActivity(intent)
+                            }
                             Spacer(Modifier.size(4.dp))
                         }
                     }
@@ -89,3 +95,4 @@ fun CustomersScreen(modifier : Modifier){
         }
     }
 }
+
