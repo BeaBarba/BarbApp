@@ -2,7 +2,10 @@ package com.example.myapplication.ui.component
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -23,11 +26,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchAppBar(id : String, contentPadding : PaddingValues){
+fun SearchAppBar(id : String, contextPadding : PaddingValues){
     var query by remember { mutableStateOf("Cerca") }
     var active by remember { mutableStateOf(false) }
     SearchBar(
@@ -35,7 +39,12 @@ fun SearchAppBar(id : String, contentPadding : PaddingValues){
         onQueryChange = {query = it},
         shape = RoundedCornerShape(40),
         modifier = Modifier
-            .padding(top = contentPadding.calculateTopPadding() - 24.dp, bottom = 8.dp)
+            .offset(y = -20.dp)
+            .padding(
+                top = 0.dp,
+                bottom = 0.dp,
+                start = contextPadding.calculateStartPadding(LayoutDirection.Ltr),
+                end = contextPadding.calculateEndPadding(LayoutDirection.Ltr))
             .padding(horizontal = 4.dp)
             .fillMaxWidth(),
         onSearch = {}, //Logica della ricerca
@@ -52,13 +61,13 @@ fun SearchAppBar(id : String, contentPadding : PaddingValues){
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         },
-        leadingIcon = {
+        /*leadingIcon = {
             Icon(
                 Icons.Filled.ArrowBack,
                 "Back",
                 tint = MaterialTheme.colorScheme.onPrimary
             )
-        },
+        },*/
         placeholder = { Text(query.toString())},
         content = { Text("Dentro content")},
         tonalElevation = 0.dp,

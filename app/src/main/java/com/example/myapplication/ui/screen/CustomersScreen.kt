@@ -1,27 +1,14 @@
 package com.example.myapplication.ui.screen
 
-import android.content.Intent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.component.AddButton
-import com.example.myapplication.ui.component.Avatar
-import com.example.myapplication.ui.component.CardItemAvatar
+import com.example.myapplication.ui.component.CustomersCardsList
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -62,37 +49,14 @@ fun CustomersScreen(modifier : Modifier){
         topBar = {TopAppBar("Customers")},
         floatingActionButton = { AddButton("Customers"){} }
     ){ contentPadding ->
-
-        LazyColumn (
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(8.dp,8.dp,8.dp,135.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+        Column (
+            modifier = Modifier.padding(contentPadding)
         ){
-            item{ SearchAppBar("Customers", contentPadding) }
-
-            items(letters){letter ->
-                Column(){
-                    Avatar(letter,
-                        Modifier
-                            .padding(8.dp)
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primaryContainer),
-                        MaterialTheme.colorScheme.onPrimaryContainer)
-                    Column{
-                        Spacer(Modifier.size(4.dp))
-                        customers.filter{ it[0] == letter }.forEach{ contact ->
-                            CardItemAvatar(contact){
-                                val intent = Intent(ctx, HomeActivity::class.java)
-                                ctx.startActivity(intent)
-                            }
-                            Spacer(Modifier.size(4.dp))
-                        }
-                    }
-                }
-            }
-
+            SearchAppBar("Customers", contentPadding)
+            CustomersCardsList(letters, customers, ctx, contentPadding)
         }
+
     }
 }
+
 

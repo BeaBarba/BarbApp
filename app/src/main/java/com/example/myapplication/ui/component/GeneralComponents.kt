@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.component
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,13 +9,18 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -42,11 +49,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
+import com.example.myapplication.ui.screen.HomeActivity
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -212,15 +224,19 @@ fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
 }
 
 @Composable
-fun ListItemAvatar(itemID : String){
+fun ListItemAvatar(itemID : String/*, contextPadding : PaddingValues*/){
     ListItem(
         headlineContent = { Text (text = itemID, fontSize = MaterialTheme.typography.headlineSmall.fontSize) } ,
         modifier =  Modifier
             .height(60.dp)
             .clip(shape = RoundedCornerShape(20))
             .background(color = MaterialTheme.colorScheme.primaryContainer)
+            /*.padding(
+                start = contextPadding.calculateStartPadding(LayoutDirection.Ltr),
+                end = contextPadding.calculateEndPadding(LayoutDirection.Ltr)
+            ),*/
             .fillMaxSize(),
-        leadingContent = { Avatar(itemID.get(0), Modifier.size(35.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary)) },
+        leadingContent = { Avatar(itemID.get(0)) },
         trailingContent = { Checkbox(checked = true, onCheckedChange = {}, interactionSource = remember { MutableInteractionSource() })},
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -250,7 +266,7 @@ fun CardItemAvatar(itemID : String, onclick : () -> Unit){
             modifier = Modifier.padding(vertical = 15.dp, horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ){
-            Avatar(itemID.get(0), Modifier.size(30.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary))
+            Avatar(itemID.get(0), size =30.dp, backgroundColor = MaterialTheme.colorScheme.primary)
 
             Text(
                 modifier = Modifier.padding(start = 8.dp),
@@ -263,16 +279,85 @@ fun CardItemAvatar(itemID : String, onclick : () -> Unit){
 }
 
 @Composable
-fun Avatar(char: Char, modifier: Modifier, colorText : Color =  MaterialTheme.colorScheme.onPrimary){
+fun Avatar(
+    char: Char,
+    modifierBox: Modifier = Modifier,
+    textColor : Color =  MaterialTheme.colorScheme.onPrimary,
+    size : Dp = 35.dp,
+    shape: Shape = CircleShape,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    ){
     Box(
-        modifier = modifier,
+        modifier = modifierBox
+            .size(size)
+            .clip(shape)
+            .background(backgroundColor),
+        contentAlignment = Alignment.Center
     ) {
         Text(
-            modifier = Modifier
-                .align(Alignment.Center),
-            text = "" + char,
-            color = colorText,
+            text = char.toString(),
+            color = textColor,
             fontSize = MaterialTheme.typography.bodyLarge.fontSize
         )
+    }
+}
+
+
+//----------------------------------- Composables --------------------
+@Composable
+fun CheckLazyList(items: List<String>, contextPadding : PaddingValues){
+    LazyColumn (
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(
+            start = contextPadding.calculateStartPadding(LayoutDirection.Ltr) + 4.dp,
+            top = 0.dp,
+            end = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 4.dp,
+            bottom = 8.dp
+        ),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ){
+        items(items) { item ->
+            ListItemAvatar(item)
+
+        }
+    }
+}
+
+@Composable
+fun CustomersCardsList(
+    letters : List<Char>,
+    customers : List<String>,
+    context : Context,
+    contextPadding : PaddingValues){
+    LazyColumn (
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(
+            start = contextPadding.calculateStartPadding(LayoutDirection.Ltr) + 4.dp,
+            top = 0.dp,
+            end = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 4.dp,
+            bottom = 8.dp
+        ),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ){
+        items(letters){letter ->
+            Column(){
+                Avatar(letter,
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifierBox = Modifier.padding(8.dp),
+                    size = 40.dp
+                )
+                Column{
+                    Spacer(Modifier.size(4.dp))
+                    customers.filter{ it[0] == letter }.forEach{ contact ->
+                        CardItemAvatar(contact){
+                            val intent = Intent(context, HomeActivity::class.java)
+                            context.startActivity(intent)
+                        }
+                        Spacer(Modifier.size(4.dp))
+                    }
+                }
+            }
+        }
     }
 }
