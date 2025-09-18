@@ -148,10 +148,7 @@ fun AddButton(id : String, onClick: () -> Unit){
         contentColor = MaterialTheme.colorScheme.onPrimary,
         interactionSource = remember { MutableInteractionSource() } // Per le interazioni
     ) {
-        Icon(
-            Icons.Filled.Add,
-            "Add item"
-        )
+        Icon(Icons.Filled.Add, "Add item")
     }
 }
 
@@ -231,10 +228,6 @@ fun ListItemAvatar(itemID : String/*, contextPadding : PaddingValues*/){
             .height(60.dp)
             .clip(shape = RoundedCornerShape(20))
             .background(color = MaterialTheme.colorScheme.primaryContainer)
-            /*.padding(
-                start = contextPadding.calculateStartPadding(LayoutDirection.Ltr),
-                end = contextPadding.calculateEndPadding(LayoutDirection.Ltr)
-            ),*/
             .fillMaxSize(),
         leadingContent = { Avatar(itemID.get(0)) },
         trailingContent = { Checkbox(checked = true, onCheckedChange = {}, interactionSource = remember { MutableInteractionSource() })},
@@ -309,10 +302,10 @@ fun CheckLazyList(items: List<String>, contextPadding : PaddingValues){
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
-            start = contextPadding.calculateStartPadding(LayoutDirection.Ltr) + 4.dp,
+            start = contextPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
             top = 0.dp,
-            end = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 4.dp,
-            bottom = 8.dp
+            end = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+            bottom = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 90.dp
         ),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ){
@@ -332,10 +325,10 @@ fun CustomersCardsList(
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
-            start = contextPadding.calculateStartPadding(LayoutDirection.Ltr) + 4.dp,
+            start = contextPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
             top = 0.dp,
-            end = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 4.dp,
-            bottom = 8.dp
+            end = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+            bottom = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 90.dp
         ),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ){

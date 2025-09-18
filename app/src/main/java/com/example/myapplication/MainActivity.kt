@@ -24,9 +24,9 @@ class MainActivity : ComponentActivity() {
             MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
-                    CustomersScreen(modifier)
+                    //CustomersScreen(modifier)
                     //CleaningScreen(modifier)
-                    //Screen(modifier)
+                    Screen(modifier)
                 }
             }
         }
