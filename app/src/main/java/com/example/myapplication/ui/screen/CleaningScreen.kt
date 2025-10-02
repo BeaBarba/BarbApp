@@ -9,12 +9,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.component.CheckLazyList
+import com.example.myapplication.ui.component.DropDownMenuHome
 import com.example.myapplication.ui.component.ListItemAvatar
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
@@ -25,7 +30,9 @@ fun CleaningScreen(modifier : Modifier){
 
     Scaffold (
         modifier = Modifier.fillMaxSize(),
-        topBar = {TopAppBar("Cleaning")},
+        topBar = {TopAppBar("Cleaning", { IconButton(
+            content = {Icon(Icons.Filled.ArrowBack, "Back")}, onClick = {},
+        )})}
     ){ contentPadding ->
 
         Column(

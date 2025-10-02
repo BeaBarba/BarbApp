@@ -3,6 +3,10 @@ package com.example.myapplication.ui.screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -46,7 +50,10 @@ fun CustomersScreen(modifier : Modifier){
     val letters = customers.map { it.get(0) }.distinct()
     Scaffold (
         modifier = Modifier.fillMaxSize(),
-        topBar = {TopAppBar("Customers")},
+        topBar = { TopAppBar("Customers", { IconButton(
+            content = { Icon(Icons.Filled.ArrowBack, "Back") }, onClick = {},
+        )
+        })},
         floatingActionButton = { AddButton("Customers"){} }
     ){ contentPadding ->
         Column (

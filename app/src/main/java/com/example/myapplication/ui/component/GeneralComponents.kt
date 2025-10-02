@@ -2,6 +2,7 @@ package com.example.myapplication.ui.component
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,14 +29,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -44,12 +50,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,32 +68,13 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
 import com.example.myapplication.ui.screen.HomeActivity
-
+import com.example.myapplication.ui.screen.itemsList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(id: String){
+fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit){
     CenterAlignedTopAppBar(
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    if(id.equals("Home")){}
-                    else {}
-                }
-            ){
-                if(id.equals("Home")){
-                        Icon(
-                            Icons.Filled.Settings, "Settings",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                }else {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack, "Back",
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            }
-        },
+        navigationIcon = navigationIcon,
         title = {
             Text(
                 text = id,
@@ -124,16 +115,6 @@ fun TopAppBar(id: String){
                             "Check",
                             tint = MaterialTheme.colorScheme.onPrimary)
                 }
-
-/*
-                Icon(
-                    painterResource(id= R.drawable.note_add_24dp),
-                    "Add Note",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-                */
-
-
             }
         }
     )
@@ -180,6 +161,30 @@ fun DeleteButton(id: String, onclick: () -> Unit){
 }
 
 @Composable
+fun Avatar(
+    char: Char,
+    modifierBox: Modifier = Modifier,
+    textColor : Color =  MaterialTheme.colorScheme.onPrimary,
+    size : Dp = 35.dp,
+    shape: Shape = CircleShape,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+){
+    Box(
+        modifier = modifierBox
+            .size(size)
+            .clip(shape)
+            .background(backgroundColor),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = char.toString(),
+            color = textColor,
+            fontSize = MaterialTheme.typography.bodyLarge.fontSize
+        )
+    }
+}
+
+@Composable
 fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
     Card(
         onClick = onclick,
@@ -221,7 +226,7 @@ fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
 }
 
 @Composable
-fun ListItemAvatar(itemID : String/*, contextPadding : PaddingValues*/){
+fun ListItemAvatar(itemID : String){
     ListItem(
         headlineContent = { Text (text = itemID, fontSize = MaterialTheme.typography.headlineSmall.fontSize) } ,
         modifier =  Modifier
@@ -230,7 +235,12 @@ fun ListItemAvatar(itemID : String/*, contextPadding : PaddingValues*/){
             .background(color = MaterialTheme.colorScheme.primaryContainer)
             .fillMaxSize(),
         leadingContent = { Avatar(itemID.get(0)) },
-        trailingContent = { Checkbox(checked = true, onCheckedChange = {}, interactionSource = remember { MutableInteractionSource() })},
+        trailingContent = {
+            Checkbox(
+                checked = true,
+                onCheckedChange = {},
+                interactionSource = remember { MutableInteractionSource() }
+            )},
         colors = ListItemDefaults.colors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             headlineColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -240,7 +250,6 @@ fun ListItemAvatar(itemID : String/*, contextPadding : PaddingValues*/){
 
 @Composable
 fun CardItemAvatar(itemID : String, onclick : () -> Unit){
-
     Card (
         modifier = Modifier
             .height(60.dp)
@@ -272,29 +281,119 @@ fun CardItemAvatar(itemID : String, onclick : () -> Unit){
 }
 
 @Composable
-fun Avatar(
-    char: Char,
-    modifierBox: Modifier = Modifier,
-    textColor : Color =  MaterialTheme.colorScheme.onPrimary,
-    size : Dp = 35.dp,
-    shape: Shape = CircleShape,
-    backgroundColor: Color = MaterialTheme.colorScheme.primary,
-    ){
-    Box(
-        modifier = modifierBox
-            .size(size)
-            .clip(shape)
-            .background(backgroundColor),
-        contentAlignment = Alignment.Center
+fun ToggleIconButton(checked : Boolean, onCheckedChange: (Boolean) -> Unit) {
+    val rotation by animateFloatAsState(
+        targetValue = if (checked) 180f else 0f,
+        label = "Trailing Icon Rotation"
+    )
+
+    IconButton(
+        onClick = {
+            onCheckedChange(!checked)
+        }
     ) {
-        Text(
-            text = char.toString(),
-            color = textColor,
-            fontSize = MaterialTheme.typography.bodyLarge.fontSize
+        Icon(
+            imageVector = Icons.Filled.KeyboardArrowDown,
+            modifier = Modifier.graphicsLayer {
+                this.rotationZ = rotation
+            },
+            contentDescription = if (checked) "Ritira" else "Espandi"
         )
     }
 }
 
+@Composable
+fun CustomDropDownMenu(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+        modifier = Modifier
+            .height(300.dp)
+            .border(1.dp, MaterialTheme.colorScheme.onPrimary, RoundedCornerShape(15.dp))
+            .background(MaterialTheme.colorScheme.primary),
+        shape = RoundedCornerShape(15.dp)
+    ) {
+        content()
+    }
+}
+
+@Composable
+fun SplitButtonMenu(
+    content: String,
+    items : List<String> = itemsList,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    contextPadding : PaddingValues,
+    colorTextMenu: Color = MaterialTheme.colorScheme.onPrimary
+){
+    var checked by remember { mutableStateOf(false) }
+    Row(
+        modifier = Modifier
+            .padding(end = contextPadding.calculateEndPadding(LayoutDirection.Ltr), start = contextPadding.calculateStartPadding(LayoutDirection.Ltr))
+            .padding(horizontal = 8.dp)
+            .padding(bottom = 8.dp)
+            .height(60.dp)
+            .fillMaxSize()
+            .clip(CircleShape),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.75f)
+                .fillMaxHeight()
+                .clip(RoundedCornerShape(topStart = 45.dp, bottomStart = 45.dp))
+                .background(backgroundColor)
+                .padding(12.dp),
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Avatar(content.get(0))
+                Spacer(Modifier.size(8.dp))
+                Text(
+                    text = content.toString(),
+                    color = textColor,
+                    fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                )
+            }
+        }
+        Spacer(Modifier.size(2.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .clip(RoundedCornerShape(topStart = 0.dp, bottomStart = 0.dp))
+                .background(backgroundColor),
+            contentAlignment = Alignment.Center
+        ){
+            ToggleIconButton(checked, { checked = it })
+            CustomDropDownMenu(checked, {checked = false}){
+                Column(
+                    modifier = Modifier.padding(end = 20.dp, start = 20.dp)
+                ) {
+                    items.forEach { item ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = item.toString(),
+                                    color = colorTextMenu,
+                                    fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                                )
+                            },
+                            onClick = {/* Change name split button */ },
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
 
 //----------------------------------- Composables --------------------
 @Composable
