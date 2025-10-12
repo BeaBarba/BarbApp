@@ -50,7 +50,7 @@ fun CustomersScreen(modifier : Modifier){
     val letters = customers.map { it.get(0) }.distinct()
     Scaffold (
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopAppBar("Customers", { IconButton(
+        topBar = { TopAppBar("Customers",{}, { IconButton(
             content = { Icon(Icons.Filled.ArrowBack, "Back") }, onClick = {},
         )
         })},

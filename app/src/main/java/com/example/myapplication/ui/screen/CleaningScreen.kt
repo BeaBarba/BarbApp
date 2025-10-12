@@ -30,7 +30,7 @@ fun CleaningScreen(modifier : Modifier){
 
     Scaffold (
         modifier = Modifier.fillMaxSize(),
-        topBar = {TopAppBar("Cleaning", { IconButton(
+        topBar = {TopAppBar("Cleaning",{}, {IconButton(
             content = {Icon(Icons.Filled.ArrowBack, "Back")}, onClick = {},
         )})}
     ){ contentPadding ->

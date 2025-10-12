@@ -33,7 +33,7 @@ class HomeActivity : ComponentActivity() {
                     Scaffold(
                         modifier = Modifier.fillMaxSize()
                             .padding(bottom = innerPadding.calculateBottomPadding()),
-                        topBar = { TopAppBar("Screen",{ DropDownMenuHome()} )},
+                        topBar = { TopAppBar("Screen",{ DropDownMenuHome()}, {})},
                     ) { contentPadding ->
                         LazyVerticalGrid(
                             modifier = Modifier.fillMaxSize()

@@ -72,7 +72,7 @@ import com.example.myapplication.ui.screen.itemsList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit){
+fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, action: @Composable () -> Unit){
     CenterAlignedTopAppBar(
         navigationIcon = navigationIcon,
         title = {
@@ -84,8 +84,8 @@ fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit){
         colors = TopAppBarDefaults.topAppBarColors(
         containerColor = MaterialTheme.colorScheme.primary
         ),
-        actions = {
-            IconButton(
+        actions = { action()
+           /*IconButton(
                 onClick = {},
             ) {
                 when{
@@ -115,7 +115,7 @@ fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit){
                             "Check",
                             tint = MaterialTheme.colorScheme.onPrimary)
                 }
-            }
+            }*/
         }
     )
 }
