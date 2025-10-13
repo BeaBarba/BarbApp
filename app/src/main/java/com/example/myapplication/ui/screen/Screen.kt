@@ -61,7 +61,11 @@ import com.example.myapplication.ui.component.CustomDropDownMenu
 import com.example.myapplication.ui.component.CustomersCardsList
 import com.example.myapplication.ui.component.DropDownMenuBubbles
 import com.example.myapplication.ui.component.DropDownMenuCleaning
+import com.example.myapplication.ui.component.DropDownMenuCustumers
 import com.example.myapplication.ui.component.DropDownMenuHome
+import com.example.myapplication.ui.component.DropDownMenuJobs
+import com.example.myapplication.ui.component.DropDownMenuPayments
+import com.example.myapplication.ui.component.DropDownMenuRevenue
 import com.example.myapplication.ui.component.HomeCard
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.SplitButtonMenu
@@ -77,7 +81,7 @@ fun Screen(modifier : Modifier){
 
     Scaffold (
         modifier = Modifier.fillMaxSize(),
-        topBar = {TopAppBar("Screen",{},{ DropDownMenuCleaning() })},
+        topBar = {TopAppBar("Screen",{},{ DropDownMenuCustumers() })},
         floatingActionButton = {AddButton("Screen"){} }
     ){ contentPadding ->
         Column (

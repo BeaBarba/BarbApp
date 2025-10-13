@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -306,13 +307,14 @@ fun ToggleIconButton(checked : Boolean, onCheckedChange: (Boolean) -> Unit) {
 fun CustomDropDownMenu(
     expanded: Boolean,
     onDismissRequest: () -> Unit,
+    height : Dp = 300.dp,
     content: @Composable () -> Unit
 ) {
     DropdownMenu(
         expanded = expanded,
         onDismissRequest = onDismissRequest,
         modifier = Modifier
-            .height(300.dp)
+            .height(height)
             .border(1.dp, MaterialTheme.colorScheme.onPrimary, RoundedCornerShape(15.dp))
             .background(MaterialTheme.colorScheme.primary),
         shape = RoundedCornerShape(15.dp)
