@@ -85,39 +85,7 @@ fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, action: @Compo
         colors = TopAppBarDefaults.topAppBarColors(
         containerColor = MaterialTheme.colorScheme.primary
         ),
-        actions = { action()
-           /*IconButton(
-                onClick = {},
-            ) {
-                when{
-                    id.equals("Home") ->
-                        Icon(
-                            Icons.Filled.ShoppingCart,
-                            "Back",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    id.equals("Customers")
-                            || id.equals("Wrench")
-                            || id.equals("Cleaning")
-                            || id.equals("Receipt") ->
-                        Icon(
-                            painterResource(id=R.drawable.filter_alt_24dp),
-                            "Filter",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    id.equals("ItemA") ->
-                        Icon(
-                            painterResource(id= R.drawable.edit_square_24dp),
-                            "Edit",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    id.equals("Check") ->
-                        Icon(Icons.Filled.Check,
-                            "Check",
-                            tint = MaterialTheme.colorScheme.onPrimary)
-                }
-            }*/
-        }
+        actions = { action() }
     )
 }
 
@@ -135,12 +103,11 @@ fun AddButton(id : String, onClick: () -> Unit){
 }
 
 @Composable
-fun DeleteButton(id: String, onclick: () -> Unit){
+fun DeleteButton(onclick: () -> Unit, contexPadding: PaddingValues){
     IconButton(
         onClick = onclick,
         modifier = Modifier
-            .border( border = BorderStroke(4.dp, color = MaterialTheme.colorScheme.background),
-                    shape = RoundedCornerShape(30.dp))
+            .padding(start = contexPadding.calculateStartPadding(layoutDirection = LayoutDirection.Ltr), end = contexPadding.calculateEndPadding(layoutDirection = LayoutDirection.Ltr))
             .fillMaxWidth()
             .height(60.dp),
         enabled =   true,
@@ -303,25 +270,7 @@ fun ToggleIconButton(checked : Boolean, onCheckedChange: (Boolean) -> Unit) {
     }
 }
 
-@Composable
-fun CustomDropDownMenu(
-    expanded: Boolean,
-    onDismissRequest: () -> Unit,
-    height : Dp = 300.dp,
-    content: @Composable () -> Unit
-) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = onDismissRequest,
-        modifier = Modifier
-            .height(height)
-            .border(1.dp, MaterialTheme.colorScheme.onPrimary, RoundedCornerShape(15.dp))
-            .background(MaterialTheme.colorScheme.primary),
-        shape = RoundedCornerShape(15.dp)
-    ) {
-        content()
-    }
-}
+
 
 @Composable
 fun SplitButtonMenu(
@@ -381,13 +330,7 @@ fun SplitButtonMenu(
                 ) {
                     items.forEach { item ->
                         DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = item.toString(),
-                                    color = colorTextMenu,
-                                    fontSize = MaterialTheme.typography.bodyLarge.fontSize
-                                )
-                            },
+                            text = { MenuText( text = item.toString()) },
                             onClick = {/* Change name split button */ },
                         )
                     }

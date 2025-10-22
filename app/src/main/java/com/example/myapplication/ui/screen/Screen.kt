@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.screen
 
+import android.content.Intent
 import android.widget.PopupMenu
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -54,11 +55,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
+import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.CheckLazyList
 import com.example.myapplication.ui.component.CustomDropDownMenu
 import com.example.myapplication.ui.component.CustomersCardsList
+import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.DropDownMenuBubbles
 import com.example.myapplication.ui.component.DropDownMenuCleaning
 import com.example.myapplication.ui.component.DropDownMenuCustumers
@@ -72,7 +75,7 @@ import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.ToggleIconButton
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-val itemsList = List<String>(100, {item -> "item$item"})
+val itemsList = List<String>(5, {item -> "item $item"})
 
 @Composable
 fun Screen(modifier : Modifier){
@@ -82,7 +85,10 @@ fun Screen(modifier : Modifier){
     Scaffold (
         modifier = Modifier.fillMaxSize(),
         topBar = {TopAppBar("Screen",{},{ DropDownMenuCustumers() })},
-        floatingActionButton = {AddButton("Screen"){} }
+        floatingActionButton = {AddButton("Screen"){
+            val intent = Intent(ctx, HomeActivity ::class.java)
+            ctx.startActivity(intent)
+        } }
     ){ contentPadding ->
         Column (
             modifier = Modifier.fillMaxSize().padding(contentPadding),
@@ -90,9 +96,9 @@ fun Screen(modifier : Modifier){
             SearchAppBar("Screen", contentPadding)
             Spacer(Modifier.size(4.dp))
             SplitButtonMenu(content = "Venditori", contextPadding = contentPadding)
+            DeleteButton({},contexPadding = contentPadding)
             //CheckLazyList(itemsList, contentPadding)
 
-            /*Fare prova se un in uno switch si possono mettere cose diverse per la topapp bar della home */
         }
     }
 }
