@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,21 +26,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -62,6 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -107,22 +101,29 @@ fun DeleteButton(onclick: () -> Unit, contexPadding: PaddingValues){
     IconButton(
         onClick = onclick,
         modifier = Modifier
-            .padding(start = contexPadding.calculateStartPadding(layoutDirection = LayoutDirection.Ltr), end = contexPadding.calculateEndPadding(layoutDirection = LayoutDirection.Ltr))
+            .padding(
+                start = contexPadding.calculateStartPadding(LayoutDirection.Ltr),
+                end = contexPadding.calculateEndPadding(LayoutDirection.Ltr))
             .fillMaxWidth()
             .height(60.dp),
         enabled =   true,
         colors = IconButtonDefaults.iconButtonColors(MaterialTheme.colorScheme.secondary)
     ) {
-        Row{
+        Row (
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ){
            Icon(
                painter = painterResource(R.drawable.delete_24dp),
                contentDescription = "Delete",
-               tint = MaterialTheme.colorScheme.onSecondary
+               tint = MaterialTheme.colorScheme.onSecondary,
+               modifier = Modifier.height(30.dp).width(30.dp)
            )
             Spacer(Modifier.size(8.dp))
             Text(
                 text = "Elimina",
-                color = MaterialTheme.colorScheme.onSecondary
+                color = MaterialTheme.colorScheme.onSecondary,
+                fontSize = MaterialTheme.typography.headlineSmall.fontSize
             )
         }
     }
@@ -189,6 +190,38 @@ fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
                 text = item,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
+        }
+    }
+}
+
+@Composable
+fun StatisticCard(text: String, icon: ImageVector, iconDescription : String, contentPadding : PaddingValues, onClick : () -> Unit){
+    Card(
+        modifier = Modifier
+            .padding(start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
+                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp)
+            .height(60.dp)
+            .clip(RoundedCornerShape(15.dp))
+            .fillMaxSize(),
+        colors = CardColors(
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer
+        ),
+        onClick = onClick
+    ) {
+        Row (
+            modifier = Modifier.padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Icon(icon,
+                contentDescription = iconDescription,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.width(50.dp).height(50.dp)
+            )
+            Spacer(Modifier.size(8.dp))
+            Text(text, fontSize = MaterialTheme.typography.headlineSmall.fontSize)
         }
     }
 }
@@ -270,21 +303,19 @@ fun ToggleIconButton(checked : Boolean, onCheckedChange: (Boolean) -> Unit) {
     }
 }
 
-
-
 @Composable
 fun SplitButtonMenu(
     content: String,
     items : List<String> = itemsList,
     backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    contextPadding : PaddingValues,
+    contentPadding : PaddingValues,
     colorTextMenu: Color = MaterialTheme.colorScheme.onPrimary
 ){
     var checked by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
-            .padding(end = contextPadding.calculateEndPadding(LayoutDirection.Ltr), start = contextPadding.calculateStartPadding(LayoutDirection.Ltr))
+            .padding(end = contentPadding.calculateEndPadding(LayoutDirection.Ltr), start = contentPadding.calculateStartPadding(LayoutDirection.Ltr))
             .padding(horizontal = 8.dp)
             .padding(bottom = 8.dp)
             .height(60.dp)
@@ -342,20 +373,19 @@ fun SplitButtonMenu(
 
 //----------------------------------- Composables --------------------
 @Composable
-fun CheckLazyList(items: List<String>, contextPadding : PaddingValues){
+fun CheckLazyList(items: List<String>, contentPadding : PaddingValues){
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
-            start = contextPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
+            start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
             top = 0.dp,
-            end = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
-            bottom = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 90.dp
+            end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+            bottom = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 90.dp
         ),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ){
         items(items) { item ->
             ListItemAvatar(item)
-
         }
     }
 }
@@ -365,14 +395,14 @@ fun CustomersCardsList(
     letters : List<Char>,
     customers : List<String>,
     context : Context,
-    contextPadding : PaddingValues){
+    contentPadding : PaddingValues
+){
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
-            start = contextPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-            top = 0.dp,
-            end = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
-            bottom = contextPadding.calculateEndPadding(LayoutDirection.Ltr) + 90.dp
+            start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
+            end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+            bottom = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 90.dp
         ),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ){

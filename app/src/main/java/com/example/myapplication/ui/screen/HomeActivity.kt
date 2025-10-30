@@ -70,7 +70,10 @@ class HomeActivity : ComponentActivity() {
                             item { HomeCard("Pagamenti",painterResource(R.drawable.savings_pagamenti)){} }
                             item { HomeCard("Scadenze",painterResource(R.drawable.hourglass_scadenze)){} }
                             item { HomeCard("Magazzino",painterResource(R.drawable.warehouse_magazzino)){} }
-                            item { HomeCard("Statistiche",painterResource(R.drawable.monitor_statistiche)){} }
+                            item { HomeCard("Statistiche",painterResource(R.drawable.monitor_statistiche)){
+                                val intent = Intent(ctx, StatisticsActivity ::class.java)
+                                ctx.startActivity(intent)
+                            } }
                             item { HomeCard("Bolle", painterResource(R.drawable.receipt_bolle)){} }
                             item { HomeCard("Fatture",painterResource(R.drawable.description_24dp)){} }
                         }
