@@ -195,7 +195,7 @@ fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
 }
 
 @Composable
-fun StatisticCard(text: String, icon: ImageVector, iconDescription : String, contentPadding : PaddingValues, onClick : () -> Unit){
+fun StatisticCard(text: String, icon: Painter, iconDescription : String, contentPadding : PaddingValues, onClick : () -> Unit){
     Card(
         modifier = Modifier
             .padding(start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
