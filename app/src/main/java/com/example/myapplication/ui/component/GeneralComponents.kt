@@ -28,12 +28,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonShapes
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,6 +46,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -61,9 +66,47 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import com.example.myapplication.R
 import com.example.myapplication.ui.screen.HomeActivity
 import com.example.myapplication.ui.screen.itemsList
+
+@Composable
+fun checkColor(
+    type: String,
+    primary: Boolean = false,
+    onPrimary: Boolean = false,
+    primaryContainer: Boolean = false,
+    onPrimaryContainer: Boolean = false
+): Color {
+    return when (type) {
+        "ALA" -> when {
+            primary -> MaterialTheme.colorScheme.secondary
+            onPrimary -> MaterialTheme.colorScheme.onSecondary
+            primaryContainer -> MaterialTheme.colorScheme.secondaryContainer
+            else -> MaterialTheme.colorScheme.onSecondaryContainer
+        }
+        "ELE" -> when{
+            primary -> MaterialTheme.colorScheme.tertiary
+            onPrimary -> MaterialTheme.colorScheme.onTertiary
+            primaryContainer -> MaterialTheme.colorScheme.tertiaryContainer
+            else -> MaterialTheme.colorScheme.onTertiaryContainer
+        }
+        "CDZ" -> when{
+            primary -> MaterialTheme.colorScheme.surface
+            onPrimary -> MaterialTheme.colorScheme.onSurface
+            primaryContainer -> MaterialTheme.colorScheme.surfaceVariant
+            else -> MaterialTheme.colorScheme.onSurfaceVariant
+        }
+        "NONE" -> when{
+            primary -> MaterialTheme.colorScheme.primary
+            onPrimary -> MaterialTheme.colorScheme.onPrimary
+            primaryContainer -> MaterialTheme.colorScheme.primaryContainer
+            else -> MaterialTheme.colorScheme.onPrimaryContainer
+        }
+        else -> throw IllegalArgumentException("Tipo non supportato")
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -127,6 +170,93 @@ fun DeleteButton(onclick: () -> Unit, contexPadding: PaddingValues){
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun AlertDialog(contentPadding: PaddingValues, onDismiss: ()-> Unit, content: List<String>, type: String = "NONE"){
+    AlertDialog(
+        modifier = Modifier
+            .padding(
+                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
+                start = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
+            )
+            .fillMaxWidth(0.8f),
+        shape = RoundedCornerShape(15),
+        tonalElevation = 8.dp,
+        containerColor = checkColor(type, primaryContainer = true),
+        titleContentColor = checkColor(type, onPrimaryContainer = true),
+        iconContentColor = checkColor(type, onPrimary = true),
+        icon = {},
+        title = {Text("Oggetto")},
+        onDismissRequest = onDismiss,
+        dismissButton = {},
+        confirmButton= {
+            TextButton(
+                onClick = onDismiss,
+                shapes = ButtonShapes(
+                    shape = RoundedCornerShape(5.dp),
+                    pressedShape = RoundedCornerShape(5.dp)
+                ),
+                colors = ButtonColors(
+                    containerColor = checkColor(type, primaryContainer = true),
+                    disabledContentColor = checkColor(type, primaryContainer = true),
+                    contentColor = checkColor(type, onPrimaryContainer = true),
+                    disabledContainerColor = checkColor(type, onPrimaryContainer = true),
+                )
+            ) {
+                Text("Ok", color = checkColor(type, onPrimaryContainer = true))
+            }
+        },
+        text = {
+            Column(modifier = Modifier.fillMaxWidth()){
+                Box(modifier = Modifier.padding(2.dp)) {
+                    Text(
+                        text = "Modello",
+                        fontSize =  MaterialTheme.typography.bodyLargeEmphasized.fontSize,
+                        color = checkColor(type, onPrimaryContainer = true)
+                    )
+                }
+                Spacer(modifier = Modifier.size(30.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    itemsList.forEach() { item ->
+                        MenuDivider()
+                        Spacer(modifier = Modifier.size(8.dp))
+                        Box(modifier = Modifier.padding(4.dp)) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Box(modifier = Modifier.width(160.dp)) {
+                                    Text(
+                                        text = item,
+                                        color = checkColor(type, onPrimaryContainer = true),
+                                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                                    )
+                                }
+                                Box(modifier = Modifier.width(80.dp)) {
+                                    Text(
+                                        text = "num",
+                                        color = checkColor(type, onPrimaryContainer = true),
+                                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                                    )
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.size(8.dp))
+                    }
+                    Spacer(modifier = Modifier.size(8.dp))
+                    MenuDivider()
+                }
+            }
+        },
+        properties = DialogProperties(
+            usePlatformDefaultWidth = true,
+            decorFitsSystemWindows = true,
+            dismissOnClickOutside = true,
+            dismissOnBackPress = true
+        )
+    )
 }
 
 @Composable
