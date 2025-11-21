@@ -325,7 +325,17 @@ fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
 }
 
 @Composable
-fun StatisticCard(text: String, icon: Painter, iconDescription : String, contentPadding : PaddingValues, onClick : () -> Unit){
+fun GenericCard(
+    text: String,
+    textDescription: String? = null,
+    textSpace : Float = 0.85f,
+    leadingContent: (@Composable () -> Unit)? = null,
+    trailingContent: (@Composable () -> Unit)? = null,
+    contentPadding : PaddingValues,
+    type: String = "NONE",
+    onClick : () -> Unit = {},
+    interactionSource: MutableInteractionSource? = null,
+){
     Card(
         modifier = Modifier
             .padding(start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
@@ -334,26 +344,113 @@ fun StatisticCard(text: String, icon: Painter, iconDescription : String, content
             .clip(RoundedCornerShape(15.dp))
             .fillMaxSize(),
         colors = CardColors(
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer
+            contentColor = checkColor(type, onPrimaryContainer = true),
+            containerColor = checkColor(type, primaryContainer = true),
+            disabledContentColor = checkColor(type, onPrimaryContainer = true),
+            disabledContainerColor = checkColor(type, primaryContainer = true)
         ),
-        onClick = onClick
+        onClick = onClick,
     ) {
-        Row (
-            modifier = Modifier.padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ){
+        if(leadingContent != null) {
+            Row(
+                modifier = Modifier.padding(10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                leadingContent()
+                Spacer(Modifier.size(8.dp))
+                if(textDescription!= null){
+                    Column (modifier = Modifier.fillMaxHeight()){
+                        Text(
+                            text,
+                            fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.fillMaxWidth(textSpace)
+                        )
+                        Text(text = textDescription,
+                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.fillMaxWidth(textSpace),
+
+                            )
+                    }
+                }else{
+                    Text(
+                        text,
+                        fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.fillMaxWidth(textSpace).padding(top = 5.dp)
+                    )
+                }
+                if(trailingContent != null){
+                    trailingContent()
+                }
+            }
+        }else{
+            if(textDescription != null){
+                Row(modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, start = 8.dp, end = 8.dp)){
+                    Column {
+                        Text(
+                            text = text,
+                            modifier = Modifier.padding(start = 8.dp).fillMaxWidth(textSpace),
+                            fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                        )
+                        Text(
+                            text = textDescription,
+                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.padding(start = 8.dp).fillMaxWidth(textSpace)
+                        )
+                    }
+                    if(trailingContent != null){
+                        trailingContent()
+                    }
+                }
+            }else {
+                Column(
+                    modifier = Modifier.fillMaxHeight().fillMaxWidth()
+                        .padding(start = 10.dp, end = 10.dp),
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    if (trailingContent != null) {
+                        Row() {
+
+                            Text(
+                                text = text,
+                                modifier = Modifier.padding(start = 8.dp, top = 10.dp)
+                                    .fillMaxWidth(textSpace),
+                                fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                            )
+
+                            trailingContent()
+                        }
+                    } else {
+                        Text(
+                            text = text,
+                            modifier = Modifier.padding(start = 8.dp),
+                            fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun StatisticCard(text: String, icon: Painter, iconDescription : String, contentPadding : PaddingValues, onClick : () -> Unit){
+    GenericCard(
+        contentPadding = contentPadding,
+        text = text,
+        textSpace = 1.0f,
+        leadingContent = {
             Icon(icon,
                 contentDescription = iconDescription,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.width(50.dp).height(50.dp)
             )
-            Spacer(Modifier.size(8.dp))
-            Text(text, fontSize = MaterialTheme.typography.headlineSmall.fontSize)
         }
-    }
+    )
 }
 
 @Composable
@@ -381,34 +478,22 @@ fun ListItemAvatar(itemID : String){
 
 @Composable
 fun CardItemAvatar(itemID : String, onclick : () -> Unit){
-    Card (
-        modifier = Modifier
-            .height(60.dp)
-            .padding(horizontal = 4.dp)
-            .fillMaxSize(),
-        colors = CardColors(
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer
-        ),
-        onClick = onclick,
-        interactionSource = remember { MutableInteractionSource() }
-    ){
-        Row (
-            modifier = Modifier.padding(vertical = 15.dp, horizontal = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ){
-            Avatar(itemID.get(0), size =30.dp, backgroundColor = MaterialTheme.colorScheme.primary)
+    GenericCard(
+        contentPadding = PaddingValues(4.dp),
+        text = itemID,
+        interactionSource = remember { MutableInteractionSource() },
+        leadingContent = {
+            Column(modifier = Modifier.padding(top = 5.dp, start = 4.dp)) {
+                Avatar(
+                    itemID.get(0),
+                    size = 30.dp,
+                    backgroundColor = MaterialTheme.colorScheme.primary
+                )
+            }
+        },
+        onClick = onclick
 
-            Text(
-                modifier = Modifier.padding(start = 8.dp),
-                text = itemID,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                fontSize = MaterialTheme.typography.headlineSmall.fontSize
-            )
-        }
-    }
+     )
 }
 
 @Composable
