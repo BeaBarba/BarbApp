@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Inbox
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material.icons.filled.Outbox
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -34,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -60,10 +62,10 @@ fun CustomDropDownMenu(
 }
 
 @Composable
-fun MenuText(text: String){
+fun MenuText(text: String, color : Color = MaterialTheme.colorScheme.onPrimary){
     Text(
         text = text,
-        color = MaterialTheme.colorScheme.onPrimary,
+        color = color,
         fontSize = MaterialTheme.typography.bodyLarge.fontSize
     )
 }
@@ -156,7 +158,7 @@ fun DropDownMenuHome(){
                     onClick = { /* Action to import database */ },
                 )
                 DropdownMenuItem(
-                    leadingIcon =  { Icon(painterResource(R.drawable.export), contentDescription = "Export", tint = MaterialTheme.colorScheme.onPrimary) },
+                    leadingIcon =  { Icon(Icons.Filled.Outbox, contentDescription = "Export", tint = MaterialTheme.colorScheme.onPrimary) },
                     text = { MenuText(text = "Esporta Database") },
                     onClick = { /* Action to export database */ },
                 )

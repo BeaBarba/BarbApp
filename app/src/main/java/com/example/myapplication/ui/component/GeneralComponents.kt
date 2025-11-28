@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -57,6 +58,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
@@ -70,9 +72,11 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.screen.HomeActivity
 import com.example.myapplication.ui.screen.itemsList
 
+/* --------------------------------------------------------- Function ------------------------------------------------------------- */
+/* Function that returns a specific color */
 @Composable
 fun checkColor(
-    type: String,
+    type: String = "NONE",
     primary: Boolean = false,
     onPrimary: Boolean = false,
     primaryContainer: Boolean = false,
@@ -107,6 +111,75 @@ fun checkColor(
     }
 }
 
+/* Function that generates a circle with a character inside it */
+@Composable
+fun Avatar(
+    char: Char,
+    modifierBox: Modifier = Modifier,
+    textColor : Color =  MaterialTheme.colorScheme.onPrimary,
+    size : Dp = 35.dp,
+    shape: Shape = CircleShape,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+){
+    Box(
+        modifier = modifierBox
+            .size(size)
+            .clip(shape)
+            .background(backgroundColor),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = char.toString(),
+            color = textColor,
+            fontSize = MaterialTheme.typography.bodyLarge.fontSize
+        )
+    }
+}
+
+@Composable
+fun ListItemAvatar(itemID : String){
+    ListItem(
+        headlineContent = { Text (text = itemID, fontSize = MaterialTheme.typography.headlineSmall.fontSize) } ,
+        modifier =  Modifier
+            .height(60.dp)
+            .clip(shape = RoundedCornerShape(20))
+            .background(color = checkColor(primaryContainer = true))
+            .fillMaxSize(),
+        leadingContent = { Avatar(itemID.get(0)) },
+        trailingContent = {
+            Checkbox(
+                checked = true,
+                onCheckedChange = {},
+                interactionSource = remember { MutableInteractionSource() }
+            )},
+        colors = ListItemDefaults.colors(
+            containerColor = checkColor(primaryContainer = true),
+            headlineColor = checkColor(onPrimaryContainer = true),
+        ),
+    )
+}
+
+@Composable
+fun CardItemAvatar(itemID : String, onclick : () -> Unit){
+    GenericCard(
+        contentPadding = PaddingValues(4.dp),
+        text = itemID,
+        interactionSource = remember { MutableInteractionSource() },
+        leadingContent = {
+            Column(modifier = Modifier.padding(top = 5.dp, start = 4.dp)) {
+                Avatar(
+                    itemID.get(0),
+                    size = 30.dp,
+                    backgroundColor = MaterialTheme.colorScheme.primary
+                )
+            }
+        },
+        onClick = onclick
+    )
+}
+
+/* --------------------------------------------------------- Common Composables  ------------------------------------------------------------- */
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, action: @Composable () -> Unit){
@@ -125,6 +198,7 @@ fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, action: @Compo
     )
 }
 
+/* --------------------------------------------------------- Buttons ------------------------------------------------------------- */
 @Composable
 fun AddButton(id : String, onClick: () -> Unit){
     FloatingActionButton(
@@ -173,6 +247,97 @@ fun DeleteButton(onclick: () -> Unit, contexPadding: PaddingValues){
     }
 }
 
+@Composable
+fun ToggleIconButton(checked : Boolean, onCheckedChange: (Boolean) -> Unit) {
+    val rotation by animateFloatAsState(
+        targetValue = if (checked) 180f else 0f,
+        label = "Trailing Icon Rotation"
+    )
+
+    IconButton(
+        onClick = {
+            onCheckedChange(!checked)
+        }
+    ) {
+        Icon(
+            imageVector = Icons.Filled.KeyboardArrowDown,
+            modifier = Modifier.graphicsLayer {
+                this.rotationZ = rotation
+            },
+            contentDescription = if (checked) "Ritira" else "Espandi"
+        )
+    }
+}
+
+@Composable
+fun SplitButtonMenu(
+    content: String,
+    items : List<String>,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    contentPadding : PaddingValues,
+    colorTextMenu: Color = MaterialTheme.colorScheme.onPrimary
+){
+    var checked by remember { mutableStateOf(false) }
+    Row(
+        modifier = Modifier
+            .padding(end = contentPadding.calculateEndPadding(LayoutDirection.Ltr), start = contentPadding.calculateStartPadding(LayoutDirection.Ltr))
+            .padding(horizontal = 8.dp)
+            .padding(bottom = 8.dp)
+            .height(60.dp)
+            .fillMaxSize()
+            .clip(CircleShape),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.75f)
+                .fillMaxHeight()
+                .clip(RoundedCornerShape(topStart = 45.dp, bottomStart = 45.dp))
+                .background(backgroundColor)
+                .padding(12.dp),
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Avatar(content.get(0))
+                Spacer(Modifier.size(8.dp))
+                Text(
+                    text = content.toString(),
+                    color = textColor,
+                    fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                )
+            }
+        }
+        Spacer(Modifier.size(2.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .clip(RoundedCornerShape(topStart = 0.dp, bottomStart = 0.dp))
+                .background(backgroundColor),
+            contentAlignment = Alignment.Center
+        ){
+            ToggleIconButton(checked, { checked = it })
+            CustomDropDownMenu(checked, {checked = false}){
+                Column(
+                    modifier = Modifier.padding(end = 20.dp, start = 20.dp)
+                ) {
+                    items.forEach { item ->
+                        DropdownMenuItem(
+                            text = { MenuText( text = item, colorTextMenu ) },
+                            onClick = {/* Change name split button */ },
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* --------------------------------------------------------- Popup composables ------------------------------------------------------------- */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AlertDialog(
@@ -271,32 +436,12 @@ fun AlertDialog(
     )
 }
 
-@Composable
-fun Avatar(
-    char: Char,
-    modifierBox: Modifier = Modifier,
-    textColor : Color =  MaterialTheme.colorScheme.onPrimary,
-    size : Dp = 35.dp,
-    shape: Shape = CircleShape,
-    backgroundColor: Color = MaterialTheme.colorScheme.primary,
-){
-    Box(
-        modifier = modifierBox
-            .size(size)
-            .clip(shape)
-            .background(backgroundColor),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = char.toString(),
-            color = textColor,
-            fontSize = MaterialTheme.typography.bodyLarge.fontSize
-        )
-    }
-}
-
+/* --------------------------------------------------------- Card composables ------------------------------------------------------------- */
 @Composable
 fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
+
+    val CONTENT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
+
     Card(
         onClick = onclick,
         modifier = Modifier
@@ -325,12 +470,12 @@ fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
                 modifier = Modifier
                     .size(60.dp)
                     .padding(2.dp),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                tint = CONTENT_COLOR,
             )
             Spacer(Modifier.size(8.dp))
             Text(
                 text = item,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = CONTENT_COLOR
             )
         }
     }
@@ -436,7 +581,6 @@ fun GenericCard(
                                 color = checkColor(type, onPrimaryContainer = true),
                                 fontSize = TEXT_TYPOGRAPHY.fontSize
                             )
-
                             trailingContent()
                         }
                     } else {
@@ -469,139 +613,131 @@ fun StatisticCard(text: String, icon: Painter, iconDescription : String, content
     )
 }
 
-@Composable
-fun ListItemAvatar(itemID : String){
-    ListItem(
-        headlineContent = { Text (text = itemID, fontSize = MaterialTheme.typography.headlineSmall.fontSize) } ,
-        modifier =  Modifier
-            .height(60.dp)
-            .clip(shape = RoundedCornerShape(20))
-            .background(color = MaterialTheme.colorScheme.primaryContainer)
-            .fillMaxSize(),
-        leadingContent = { Avatar(itemID.get(0)) },
-        trailingContent = {
-            Checkbox(
-                checked = true,
-                onCheckedChange = {},
-                interactionSource = remember { MutableInteractionSource() }
-            )},
-        colors = ListItemDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            headlineColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        ),
-    )
-}
+/* --------------------------------------------------------- Table -------------------------------------------------------*/
+data class TableColumn(
+    val title: String,
+    val weight: Float,
+)
 
 @Composable
-fun CardItemAvatar(itemID : String, onclick : () -> Unit){
-    GenericCard(
-        contentPadding = PaddingValues(4.dp),
-        text = itemID,
-        interactionSource = remember { MutableInteractionSource() },
-        leadingContent = {
-            Column(modifier = Modifier.padding(top = 5.dp, start = 4.dp)) {
-                Avatar(
-                    itemID.get(0),
-                    size = 30.dp,
-                    backgroundColor = MaterialTheme.colorScheme.primary
-                )
-            }
-        },
-        onClick = onclick
-     )
-}
-
-@Composable
-fun ToggleIconButton(checked : Boolean, onCheckedChange: (Boolean) -> Unit) {
-    val rotation by animateFloatAsState(
-        targetValue = if (checked) 180f else 0f,
-        label = "Trailing Icon Rotation"
-    )
-
-    IconButton(
-        onClick = {
-            onCheckedChange(!checked)
-        }
-    ) {
-        Icon(
-            imageVector = Icons.Filled.KeyboardArrowDown,
-            modifier = Modifier.graphicsLayer {
-                this.rotationZ = rotation
-            },
-            contentDescription = if (checked) "Ritira" else "Espandi"
-        )
-    }
-}
-
-@Composable
-fun SplitButtonMenu(
-    content: String,
-    items : List<String> = itemsList,
-    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    contentPadding : PaddingValues,
-    colorTextMenu: Color = MaterialTheme.colorScheme.onPrimary
+fun <T> Table(contentPadding: PaddingValues,
+              listData: List<T>,
+              headerColumns: List<TableColumn>
 ){
-    var checked by remember { mutableStateOf(false) }
-    Row(
-        modifier = Modifier
-            .padding(end = contentPadding.calculateEndPadding(LayoutDirection.Ltr), start = contentPadding.calculateStartPadding(LayoutDirection.Ltr))
-            .padding(horizontal = 8.dp)
-            .padding(bottom = 8.dp)
-            .height(60.dp)
-            .fillMaxSize()
-            .clip(CircleShape),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.75f)
-                .fillMaxHeight()
-                .clip(RoundedCornerShape(topStart = 45.dp, bottomStart = 45.dp))
-                .background(backgroundColor)
-                .padding(12.dp),
-        ) {
+    val TABLE_BORDER_WIDTH = 2.dp
+    val TABLE_BORDER_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
+    val HEIGHT_HEADER_ROW = 60.dp
+    val HEADER_TYPOGRAPHY = MaterialTheme.typography.titleSmall
+    val HEIGHT_ROW = 50.dp
+    val TEXT = MaterialTheme.typography.bodyLarge
+    val DESCRIPTION = MaterialTheme.typography.bodyMedium
+
+    LazyColumn(modifier = Modifier
+        .fillMaxWidth()
+        .padding(
+            start = contentPadding.calculateRightPadding(LayoutDirection.Ltr) + 8.dp,
+            end = contentPadding.calculateLeftPadding(LayoutDirection.Ltr) + 8.dp,
+        )
+        .border(TABLE_BORDER_WIDTH, TABLE_BORDER_COLOR),
+        contentPadding = PaddingValues(
+            bottom = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 90.dp
+        )
+    ) {
+        /* Header Cell */
+        item{
             Row(
-                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .height(HEIGHT_HEADER_ROW)
+                    .background(MaterialTheme.colorScheme.primaryContainer, shape = RectangleShape),
                 verticalAlignment = Alignment.CenterVertically
-            ){
-                Avatar(content.get(0))
-                Spacer(Modifier.size(8.dp))
-                Text(
-                    text = content.toString(),
-                    color = textColor,
-                    fontSize = MaterialTheme.typography.headlineSmall.fontSize
-                )
-            }
-        }
-        Spacer(Modifier.size(2.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .clip(RoundedCornerShape(topStart = 0.dp, bottomStart = 0.dp))
-                .background(backgroundColor),
-            contentAlignment = Alignment.Center
-        ){
-            ToggleIconButton(checked, { checked = it })
-            CustomDropDownMenu(checked, {checked = false}){
-                Column(
-                    modifier = Modifier.padding(end = 20.dp, start = 20.dp)
-                ) {
-                    items.forEach { item ->
-                        DropdownMenuItem(
-                            text = { MenuText( text = item ) },
-                            onClick = {/* Change name split button */ },
+            ) {
+                for(column in headerColumns) {
+                    Box(
+                        modifier = Modifier
+                            .weight(column.weight)
+                            .height(HEIGHT_HEADER_ROW),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = column.title, modifier = Modifier
+                                .padding(horizontal = 4.dp), style = HEADER_TYPOGRAPHY
                         )
                     }
                 }
             }
         }
+
+        /* Rows */
+        items(listData) {data ->
+            MenuDivider()
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                /* Column 1 */
+                Box(modifier = Modifier
+                    .weight(headerColumns.get(0).weight)
+                    .height(HEIGHT_ROW),
+                ){
+                    Column {
+                        Text(
+                            text = "",//data.nome,
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            fontSize = TEXT.fontSize,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+
+                        )
+                        Text(
+                            text = "",//data.modello,
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontSize = DESCRIPTION.fontSize
+                        )
+                    }
+                }
+                /* Column 2 */
+                Box(modifier = Modifier
+                    .weight(headerColumns.get(1).weight)
+                    .height(HEIGHT_ROW),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "",//"${data.quantita.toString()} ${data.unitaMisura.toString()}",
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        fontSize = TEXT.fontSize
+                    )
+                }
+                /* Column 3 */
+                Box(modifier = Modifier
+                    .weight(headerColumns.get(2).weight)
+                    .height(HEIGHT_ROW),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(
+                        text = "",//"${data.prezzo}€",
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        fontSize = TEXT.fontSize
+                    )}
+                /* Column 4 */
+                Box(modifier = Modifier
+                    .weight(headerColumns.get(3).weight)
+                    .height(HEIGHT_ROW),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "",//"${data.iva}%",
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        fontSize = TEXT.fontSize
+                    )
+                }
+            }
+            MenuDivider()
+        }
     }
 }
 
-//----------------------------------- Composables --------------------
+//----------------------------------- Composables List --------------------
 @Composable
 fun CheckLazyList(items: List<String>, contentPadding : PaddingValues){
     LazyColumn (
@@ -625,7 +761,8 @@ fun CustomersCardsList(
     letters : List<Char>,
     customers : List<String>,
     context : Context,
-    contentPadding : PaddingValues
+    contentPadding : PaddingValues,
+    type: String = "NONE"
 ){
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
@@ -639,7 +776,7 @@ fun CustomersCardsList(
         items(letters){letter ->
             Column(){
                 Avatar(letter,
-                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    backgroundColor = checkColor(type = type, primaryContainer = true),
                     textColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifierBox = Modifier.padding(8.dp),
                     size = 40.dp
