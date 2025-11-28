@@ -684,14 +684,11 @@ fun <T> Table(contentPadding: PaddingValues,
                         Text(
                             text = "",//data.nome,
                             modifier = Modifier.padding(horizontal = 4.dp),
-                            fontSize = TEXT.fontSize,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-
+                            fontSize = TEXT.fontSize
                         )
                         Text(
                             text = "",//data.modello,
                             modifier = Modifier.padding(horizontal = 4.dp),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                             fontSize = DESCRIPTION.fontSize
                         )
                     }
