@@ -60,7 +60,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -141,6 +140,8 @@ fun AddButton(id : String, onClick: () -> Unit){
 
 @Composable
 fun DeleteButton(onclick: () -> Unit, contexPadding: PaddingValues){
+    val BOX_COLOR = MaterialTheme.colorScheme.secondary
+    val CONTENT_COLOR = MaterialTheme.colorScheme.onSecondary
     IconButton(
         onClick = onclick,
         modifier = Modifier
@@ -150,7 +151,7 @@ fun DeleteButton(onclick: () -> Unit, contexPadding: PaddingValues){
             .fillMaxWidth()
             .height(60.dp),
         enabled =   true,
-        colors = IconButtonDefaults.iconButtonColors(MaterialTheme.colorScheme.secondary)
+        colors = IconButtonDefaults.iconButtonColors(BOX_COLOR)
     ) {
         Row (
             horizontalArrangement = Arrangement.Center,
@@ -159,13 +160,13 @@ fun DeleteButton(onclick: () -> Unit, contexPadding: PaddingValues){
            Icon(
                painter = painterResource(R.drawable.delete_24dp),
                contentDescription = "Delete",
-               tint = MaterialTheme.colorScheme.onSecondary,
+               tint = CONTENT_COLOR,
                modifier = Modifier.height(30.dp).width(30.dp)
            )
             Spacer(Modifier.size(8.dp))
             Text(
                 text = "Elimina",
-                color = MaterialTheme.colorScheme.onSecondary,
+                color = CONTENT_COLOR,
                 fontSize = MaterialTheme.typography.headlineSmall.fontSize
             )
         }
@@ -174,7 +175,18 @@ fun DeleteButton(onclick: () -> Unit, contexPadding: PaddingValues){
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun AlertDialog(contentPadding: PaddingValues, onDismiss: ()-> Unit, content: List<String>, type: String = "NONE"){
+fun AlertDialog(
+    contentPadding: PaddingValues,
+    onDismiss: ()-> Unit,
+    title: String,
+    subtitle: String,
+    content: List<String>, type: String = "NONE"
+){
+
+    val TITLE_TYPOGRAFY = MaterialTheme.typography.headlineMedium
+    val SUBTITLE_TYPOGRAFY = MaterialTheme.typography.titleMedium
+    val ITEM_TYPOGRAPHY = MaterialTheme.typography.bodyLarge
+
     AlertDialog(
         modifier = Modifier
             .padding(
@@ -188,7 +200,7 @@ fun AlertDialog(contentPadding: PaddingValues, onDismiss: ()-> Unit, content: Li
         titleContentColor = checkColor(type, onPrimaryContainer = true),
         iconContentColor = checkColor(type, onPrimary = true),
         icon = {},
-        title = {Text("Oggetto")},
+        title = {Text(title, fontSize = TITLE_TYPOGRAFY.fontSize)},
         onDismissRequest = onDismiss,
         dismissButton = {},
         confirmButton= {
@@ -212,8 +224,8 @@ fun AlertDialog(contentPadding: PaddingValues, onDismiss: ()-> Unit, content: Li
             Column(modifier = Modifier.fillMaxWidth()){
                 Box(modifier = Modifier.padding(2.dp)) {
                     Text(
-                        text = "Modello",
-                        fontSize =  MaterialTheme.typography.bodyLargeEmphasized.fontSize,
+                        text = subtitle,
+                        fontSize =  SUBTITLE_TYPOGRAFY.fontSize,
                         color = checkColor(type, onPrimaryContainer = true)
                     )
                 }
@@ -231,14 +243,14 @@ fun AlertDialog(contentPadding: PaddingValues, onDismiss: ()-> Unit, content: Li
                                     Text(
                                         text = item,
                                         color = checkColor(type, onPrimaryContainer = true),
-                                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                                        fontSize = ITEM_TYPOGRAPHY.fontSize
                                     )
                                 }
                                 Box(modifier = Modifier.width(80.dp)) {
                                     Text(
                                         text = "num",
                                         color = checkColor(type, onPrimaryContainer = true),
-                                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                                        fontSize = ITEM_TYPOGRAPHY.fontSize
                                     )
                                 }
                             }
@@ -336,6 +348,10 @@ fun GenericCard(
     onClick : () -> Unit = {},
     interactionSource: MutableInteractionSource? = null,
 ){
+
+    val TEXT_TYPOGRAPHY = MaterialTheme.typography.headlineSmall
+    val DESCRIPTION_TYPOGRAPHY = MaterialTheme.typography.bodyMedium
+
     Card(
         modifier = Modifier
             .padding(start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
@@ -363,22 +379,21 @@ fun GenericCard(
                     Column (modifier = Modifier.fillMaxHeight()){
                         Text(
                             text,
-                            fontSize = MaterialTheme.typography.headlineSmall.fontSize,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontSize = TEXT_TYPOGRAPHY.fontSize,
+                            color = checkColor(type, onPrimaryContainer = true),
                             modifier = Modifier.fillMaxWidth(textSpace)
                         )
                         Text(text = textDescription,
-                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontSize = DESCRIPTION_TYPOGRAPHY.fontSize,
+                            color = checkColor(type, onPrimaryContainer = true),
                             modifier = Modifier.fillMaxWidth(textSpace),
-
                             )
                     }
                 }else{
                     Text(
                         text,
-                        fontSize = MaterialTheme.typography.headlineSmall.fontSize,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        fontSize = TEXT_TYPOGRAPHY.fontSize,
+                        color = checkColor(type, onPrimaryContainer = true),
                         modifier = Modifier.fillMaxWidth(textSpace).padding(top = 5.dp)
                     )
                 }
@@ -393,12 +408,13 @@ fun GenericCard(
                         Text(
                             text = text,
                             modifier = Modifier.padding(start = 8.dp).fillMaxWidth(textSpace),
-                            fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                            color = checkColor(type, onPrimaryContainer = true),
+                            fontSize = TEXT_TYPOGRAPHY.fontSize
                         )
                         Text(
                             text = textDescription,
-                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontSize = DESCRIPTION_TYPOGRAPHY.fontSize,
+                            color = checkColor(type, onPrimaryContainer = true),
                             modifier = Modifier.padding(start = 8.dp).fillMaxWidth(textSpace)
                         )
                     }
@@ -414,12 +430,11 @@ fun GenericCard(
                 ) {
                     if (trailingContent != null) {
                         Row() {
-
                             Text(
                                 text = text,
-                                modifier = Modifier.padding(start = 8.dp, top = 10.dp)
-                                    .fillMaxWidth(textSpace),
-                                fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                                modifier = Modifier.padding(start = 8.dp, top = 10.dp).fillMaxWidth(textSpace),
+                                color = checkColor(type, onPrimaryContainer = true),
+                                fontSize = TEXT_TYPOGRAPHY.fontSize
                             )
 
                             trailingContent()
@@ -428,7 +443,8 @@ fun GenericCard(
                         Text(
                             text = text,
                             modifier = Modifier.padding(start = 8.dp),
-                            fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                            color = checkColor(type, onPrimaryContainer = true),
+                            fontSize = TEXT_TYPOGRAPHY.fontSize
                         )
                     }
                 }
@@ -492,7 +508,6 @@ fun CardItemAvatar(itemID : String, onclick : () -> Unit){
             }
         },
         onClick = onclick
-
      )
 }
 
@@ -576,7 +591,7 @@ fun SplitButtonMenu(
                 ) {
                     items.forEach { item ->
                         DropdownMenuItem(
-                            text = { MenuText( text = item.toString()) },
+                            text = { MenuText( text = item ) },
                             onClick = {/* Change name split button */ },
                         )
                     }
