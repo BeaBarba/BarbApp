@@ -64,6 +64,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -71,6 +72,9 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.myapplication.R
 import com.example.myapplication.ui.screen.HomeActivity
 import com.example.myapplication.ui.screen.itemsList
+import com.example.myapplication.ui.theme.Yellow30
+import com.example.myapplication.ui.theme.Yellow70
+import com.example.myapplication.ui.theme.Yellow95
 
 /* --------------------------------------------------------- Function ------------------------------------------------------------- */
 /* Function that returns a specific color */
@@ -87,25 +91,29 @@ fun checkColor(
             primary -> MaterialTheme.colorScheme.secondary
             onPrimary -> MaterialTheme.colorScheme.onSecondary
             primaryContainer -> MaterialTheme.colorScheme.secondaryContainer
-            else -> MaterialTheme.colorScheme.onSecondaryContainer
+            onPrimaryContainer -> MaterialTheme.colorScheme.onSecondaryContainer
+            else -> MaterialTheme.colorScheme.surfaceBright
         }
         "ELE" -> when{
             primary -> MaterialTheme.colorScheme.tertiary
             onPrimary -> MaterialTheme.colorScheme.onTertiary
             primaryContainer -> MaterialTheme.colorScheme.tertiaryContainer
-            else -> MaterialTheme.colorScheme.onTertiaryContainer
+            onPrimaryContainer -> MaterialTheme.colorScheme.onTertiaryContainer
+            else -> MaterialTheme.colorScheme.surfaceBright
         }
         "CDZ" -> when{
             primary -> MaterialTheme.colorScheme.surface
             onPrimary -> MaterialTheme.colorScheme.onSurface
             primaryContainer -> MaterialTheme.colorScheme.surfaceVariant
-            else -> MaterialTheme.colorScheme.onSurfaceVariant
+            onPrimaryContainer -> MaterialTheme.colorScheme.onSurfaceVariant
+            else -> MaterialTheme.colorScheme.surfaceBright
         }
         "NONE" -> when{
             primary -> MaterialTheme.colorScheme.primary
             onPrimary -> MaterialTheme.colorScheme.onPrimary
             primaryContainer -> MaterialTheme.colorScheme.primaryContainer
-            else -> MaterialTheme.colorScheme.onPrimaryContainer
+            onPrimaryContainer -> MaterialTheme.colorScheme.onPrimaryContainer
+            else -> MaterialTheme.colorScheme.surfaceBright
         }
         else -> throw IllegalArgumentException("Tipo non supportato")
     }
@@ -611,6 +619,101 @@ fun StatisticCard(text: String, icon: Painter, iconDescription : String, content
             )
         }
     )
+}
+
+@Composable
+fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: List<String>, description: String, onClick: () -> Unit) {
+
+    val TEXT_TYPOGRAPHY = MaterialTheme.typography.headlineSmall
+    val DESCRIPTION_TYPOGRAPHY = MaterialTheme.typography.bodyMedium
+    val TITLE_TYPOGRAPHY = MaterialTheme.typography.titleMedium
+
+    var materialText = ""
+    for (item in items) {
+        materialText = "$materialText$item, "
+    }
+
+    val coloTextAvatar = if(type == "NONE" || type == "ALA") {checkColor(type, onPrimary = true)} else{checkColor(type, primary = true)}
+    val colorCharacterAvatar = if(type == "NONE" || type == "ALA") {checkColor(type, primary = true)} else{checkColor(type, onPrimary = true)}
+
+    Card(
+        modifier = Modifier
+            .height(140.dp)
+            .fillMaxSize(),
+        shape = RoundedCornerShape(15.dp),
+        border = BorderStroke(1.dp, checkColor(type, onPrimaryContainer = true)),
+        colors = CardColors(
+            contentColor = checkColor(type, onPrimaryContainer = true),
+            containerColor = checkColor(type, primaryContainer = true),
+            disabledContentColor = checkColor(type, onPrimaryContainer = true),
+            disabledContainerColor = checkColor(type, primaryContainer = true)
+        ),
+        onClick = onClick,
+    ) {
+        Row(
+            modifier = Modifier.padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Avatar(
+                type.get(0),
+                textColor = coloTextAvatar,
+                size = 40.dp,
+                backgroundColor = colorCharacterAvatar
+            )
+            Spacer(Modifier.size(8.dp))
+            Column() {
+                Text(
+                    title,
+                    fontSize = TEXT_TYPOGRAPHY.fontSize,
+                    color = checkColor(type, onPrimaryContainer = true),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = subtitle,
+                    fontSize = TITLE_TYPOGRAPHY.fontSize,
+                    color = checkColor(type, onPrimaryContainer = true),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
+        Spacer(Modifier.size(8.dp))
+        Column {
+            Row(modifier = Modifier.padding(start = 10.dp, end = 10.dp)) {
+                Text(
+                    text = "Descrizione: ",
+                    modifier = Modifier.padding(start = 8.dp).fillMaxWidth(0.25f),
+                    color = checkColor(type, onPrimaryContainer = true),
+                    fontSize = TITLE_TYPOGRAPHY.fontSize
+                )
+                Text(
+                    text = description,
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = checkColor(type, onPrimaryContainer = true),
+                    fontSize = DESCRIPTION_TYPOGRAPHY.fontSize
+                )
+            }
+            Spacer(Modifier.size(8.dp))
+            Row(modifier = Modifier.padding(start = 10.dp, end = 10.dp)) {
+                Text(
+                    text = "Materiale: ",
+                    modifier = Modifier.padding(start = 8.dp).fillMaxWidth(0.20f),
+                    color = checkColor(type, onPrimaryContainer = true),
+                    fontSize = TITLE_TYPOGRAPHY.fontSize
+                )
+                Text(
+                    text = materialText,
+                    fontSize = DESCRIPTION_TYPOGRAPHY.fontSize,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = checkColor(type, onPrimaryContainer = true),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+    }
 }
 
 /* --------------------------------------------------------- Table -------------------------------------------------------*/
