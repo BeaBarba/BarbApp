@@ -119,6 +119,7 @@ fun checkColor(
     }
 }
 
+/* --------------------------------------------------------- Avatar Composables  ------------------------------------------------------------- */
 /* Function that generates a circle with a character inside it */
 @Composable
 fun Avatar(
@@ -204,6 +205,61 @@ fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, action: @Compo
         ),
         actions = { action() }
     )
+}
+
+/* --------------------------------------------------------- Label  ------------------------------------------------------------- */
+@Composable
+fun TitleLabel(
+    title: String,
+    modifier: Modifier = Modifier
+        .height(40.dp).clip(RoundedCornerShape(10.dp))
+        .background(MaterialTheme.colorScheme.primary).fillMaxWidth(),
+    color: Color = MaterialTheme.colorScheme.onPrimary,
+    alignment: Alignment = Alignment.Center
+){
+    Box(
+        modifier = modifier,
+        contentAlignment = alignment,
+    ) {
+        Text(
+            text = title,
+            color = color,
+            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+            //fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun CustomLabel(
+    title: String,
+    description: String,
+    weightTitle: Float,
+    weighDescription: Float
+){
+    Row(
+        modifier = Modifier
+            .height(40.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(color = MaterialTheme.colorScheme.primaryContainer),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        TitleLabel(title, modifier= Modifier.weight(weightTitle).fillMaxHeight().clip(
+            RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.primary))
+        TitleLabel(
+            description,
+            modifier= Modifier
+                .weight(weighDescription)
+                .fillMaxHeight()
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .padding(horizontal = 10.dp),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            alignment = Alignment.CenterStart
+        )
+    }
 }
 
 /* --------------------------------------------------------- Buttons ------------------------------------------------------------- */
