@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -69,6 +70,23 @@ fun CustomLabel(
                 .padding(horizontal = 10.dp),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             alignment = Alignment.CenterStart
+        )
+    }
+}
+
+@Composable
+fun BoxDescription(text: String){
+    Box(
+        modifier = Modifier
+            .border(2.dp, MaterialTheme.colorScheme.primary)
+            .background(MaterialTheme.colorScheme.onPrimary)
+            .padding(10.dp),
+        contentAlignment = Alignment.CenterStart
+    ){
+        Text(
+            text = text,
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = MaterialTheme.typography.bodyLarge.fontSize
         )
     }
 }
