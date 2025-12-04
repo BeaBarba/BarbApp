@@ -44,7 +44,7 @@ fun CustomTextField(title : String) {
             .padding(4.dp)
             .fillMaxWidth(),
         colors =  OutlinedTextFieldDefaults.colors(
-            /* Color text */
+            /* Color Text */
             focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
             unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
             disabledTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -100,7 +100,7 @@ fun SuggestionTextField(title : String, leadingIcon : @Composable (() -> Unit)? 
                 ) { Icon(Icons.Outlined.Cancel, "Delete Text") }
             },
             colors = OutlinedTextFieldDefaults.colors(
-                /* Color text */
+                /* Color Text */
                 focusedTextColor = MaterialTheme.colorScheme.primary,
                 unfocusedTextColor = MaterialTheme.colorScheme.primary,
                 disabledTextColor = MaterialTheme.colorScheme.primary,

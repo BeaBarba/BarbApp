@@ -81,7 +81,6 @@ fun BoxDescription(text: String){
     Box(
         modifier = Modifier
             .border(2.dp, MaterialTheme.colorScheme.primary)
-            //.background(MaterialTheme.colorScheme.onPrimary)
             .padding(10.dp),
         contentAlignment = Alignment.CenterStart
     ){
