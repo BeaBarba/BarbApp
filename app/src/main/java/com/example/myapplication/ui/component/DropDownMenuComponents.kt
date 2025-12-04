@@ -70,10 +70,10 @@ fun MenuText(text: String, color : Color = MaterialTheme.colorScheme.onPrimary){
 
 @Composable
 fun MenuDivider(){
-    HorizontalDivider(
-        modifier = Modifier.padding(end = 6.dp, start = 6.dp),
-        thickness = 1.dp,
-        color = MaterialTheme.colorScheme.onPrimaryContainer
+    CustomDivider(
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
+        paddingHorizontal = 6.dp,
+        paddingVertical = 0.dp
     )
 }
 

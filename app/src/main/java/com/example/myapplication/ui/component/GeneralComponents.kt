@@ -21,6 +21,7 @@ import androidx.compose.material3.ButtonShapes
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -81,6 +82,15 @@ fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, action: @Compo
         containerColor = MaterialTheme.colorScheme.primary
         ),
         actions = { action() }
+    )
+}
+
+@Composable
+fun CustomDivider(color : Color = MaterialTheme.colorScheme.primary, paddingHorizontal: Dp = 2.dp, paddingVertical: Dp = 8.dp, thickness: Dp = 1.dp){
+    HorizontalDivider(
+        modifier = Modifier.padding(end = paddingHorizontal, start = paddingHorizontal, bottom = paddingVertical, top = paddingVertical),
+        thickness = thickness,
+        color = color
     )
 }
 
