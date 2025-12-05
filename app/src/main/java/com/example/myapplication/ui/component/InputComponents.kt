@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +28,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomTextField(title : String) {
+fun outlinedTextFieldColor(): TextFieldColors {
+    return OutlinedTextFieldDefaults.colors(
+        /* Color Text */
+        focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        errorTextColor = MaterialTheme.colorScheme.error,
+        /* Color Container */
+        focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        /* Color Label */
+        focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unfocusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        /* Color PlaceHolder */
+        focusedPlaceholderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unfocusedPlaceholderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledPlaceholderColor= MaterialTheme.colorScheme.onPrimaryContainer,
+        /* Color Border */
+        focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unfocusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        /* Color LeadingIcon */
+        focusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unfocusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        /* Color TrailingIcon */
+        focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unfocusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+    )
+}
+
+@Composable
+fun CustomOutlineTextField(title : String) {
     var content by remember { mutableStateOf("") }
     OutlinedTextField(
         value = content,
@@ -43,28 +79,7 @@ fun CustomTextField(title : String) {
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth(),
-        colors =  OutlinedTextFieldDefaults.colors(
-            /* Color Text */
-            focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            /* Color Container */
-            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            /* Color label */
-            focusedLabelColor = MaterialTheme.colorScheme.primary,
-            unfocusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledLabelColor = MaterialTheme.colorScheme.primary,
-            /* Color Border */
-            focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            unfocusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            /* Color TrailingIcon */
-            focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            unfocusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
+        colors =  outlinedTextFieldColor()
     )
 }
 
@@ -108,7 +123,7 @@ fun SuggestionTextField(title : String, leadingIcon : @Composable (() -> Unit)? 
                 focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
                 unfocusedContainerColor = MaterialTheme.colorScheme.onPrimary,
                 disabledContainerColor = MaterialTheme.colorScheme.onPrimary,
-                /* Color label */
+                /* Color Label */
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
                 unfocusedLabelColor = MaterialTheme.colorScheme.primary,
                 disabledLabelColor = MaterialTheme.colorScheme.primary,

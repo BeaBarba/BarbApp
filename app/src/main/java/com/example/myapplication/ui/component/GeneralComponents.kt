@@ -69,7 +69,7 @@ fun Avatar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, action: @Composable () -> Unit){
+fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, trailingIcons: @Composable () -> Unit){
     CenterAlignedTopAppBar(
         navigationIcon = navigationIcon,
         title = {
@@ -81,7 +81,7 @@ fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, action: @Compo
         colors = TopAppBarDefaults.topAppBarColors(
         containerColor = MaterialTheme.colorScheme.primary
         ),
-        actions = { action() }
+        actions = { trailingIcons() }
     )
 }
 

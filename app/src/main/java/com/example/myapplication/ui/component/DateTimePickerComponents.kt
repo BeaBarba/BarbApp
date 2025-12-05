@@ -1,29 +1,39 @@
 package com.example.myapplication.ui.component
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -56,57 +66,28 @@ fun DatePickerModal(
         colors = DatePickerDefaults.colors(
             containerColor = CONTAINER_COLOR,
         )
-    ) { DatePicker(
-        state = datePickerState,
-        colors = DatePickerDefaults.colors(
-            containerColor = CONTAINER_COLOR,
-            dividerColor = TEXT_COLOR,
-            titleContentColor = TEXT_COLOR,
-            headlineContentColor = TEXT_COLOR,
-            navigationContentColor = TEXT_COLOR,
-            yearContentColor = TEXT_COLOR,
-            dayContentColor = TEXT_COLOR,
-            weekdayContentColor = TEXT_COLOR,
-            dateTextFieldColors = OutlinedTextFieldDefaults.colors(
-                /* Color Text */
-                focusedTextColor = TEXT_COLOR,
-                unfocusedTextColor = TEXT_COLOR,
-                disabledTextColor = TEXT_COLOR,
-                errorTextColor = MaterialTheme.colorScheme.error,
-                /* Color Container */
-                focusedContainerColor = CONTAINER_COLOR,
-                unfocusedContainerColor = CONTAINER_COLOR,
-                disabledContainerColor = CONTAINER_COLOR,
-                /* Color Label */
-                focusedLabelColor = TEXT_COLOR,
-                unfocusedLabelColor = TEXT_COLOR,
-                /* Color Place Holder */
-                focusedPlaceholderColor = TEXT_COLOR,
-                unfocusedPlaceholderColor = TEXT_COLOR,
-                disabledPlaceholderColor = TEXT_COLOR,
-                /* Color Border */
-                focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                disabledBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                /* Color TrailingIcon */
-                focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                unfocusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                disabledTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                /* Color TrailingIcon */
-                focusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                unfocusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                disabledLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+    ) {
+        DatePicker(
+            state = datePickerState,
+            colors = DatePickerDefaults.colors(
+                //containerColor = CONTAINER_COLOR,
+                dividerColor = TEXT_COLOR,
+                titleContentColor = TEXT_COLOR,
+                headlineContentColor = TEXT_COLOR,
+                navigationContentColor = TEXT_COLOR,
+                yearContentColor = TEXT_COLOR,
+                dayContentColor = TEXT_COLOR,
+                weekdayContentColor = TEXT_COLOR,
+                dateTextFieldColors = outlinedTextFieldColor()
             )
         )
-    ) }
+    }
 }
 
 @Composable
 fun DatePickerFieldToModal() {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
-    val TEXT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
-    val CONTAINER_COLOR = MaterialTheme.colorScheme.primaryContainer
 
     OutlinedTextField(
         value = selectedDate?.let { convertMillisToDate(it) } ?: "",
@@ -129,42 +110,176 @@ fun DatePickerFieldToModal() {
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth(),
-        colors =  OutlinedTextFieldDefaults.colors(
-            /* Color Text */
-            focusedTextColor = TEXT_COLOR,
-            unfocusedTextColor = TEXT_COLOR,
-            disabledTextColor = TEXT_COLOR,
-            /* Color Container */
-            focusedContainerColor = CONTAINER_COLOR,
-            unfocusedContainerColor = CONTAINER_COLOR,
-            disabledContainerColor = CONTAINER_COLOR,
-            /* Color Label */
-            focusedLabelColor = TEXT_COLOR,
-            unfocusedLabelColor = TEXT_COLOR,
-            disabledLabelColor = MaterialTheme.colorScheme.primary,
-            /* Color Place Holder */
-            focusedPlaceholderColor = TEXT_COLOR,
-            unfocusedPlaceholderColor = TEXT_COLOR,
-            disabledPlaceholderColor = TEXT_COLOR,
-            /* Color Border */
-            focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            unfocusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            /* Color TrailingIcon */
-            focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            unfocusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            /* Color TrailingIcon */
-            focusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            unfocusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
+        colors =  outlinedTextFieldColor()
     )
 
     if (showModal) {
         DatePickerModal(
             onDateSelected = { selectedDate = it },
             onDismiss = { showModal = false }
+        )
+    }
+}
+
+@Composable
+fun CustomRangePickerHeader(
+    selectedStartDateMillis: Long?,
+    selectedEndDateMillis: Long?
+) {
+    val TEXT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
+    val startDate = selectedStartDateMillis?.let { convertMillisToDate(it) } ?: "Inizio"
+    val endDate = selectedEndDateMillis?.let { convertMillisToDate(it) } ?: "Fine"
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = startDate,
+                color = TEXT_COLOR,
+                fontWeight = if (selectedStartDateMillis != null) FontWeight.Bold else FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(" - ")
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = endDate,
+                color = TEXT_COLOR,
+                fontWeight = if (selectedEndDateMillis != null) FontWeight.Bold else FontWeight.Normal
+            )
+        }
+    }
+}
+
+@Composable
+fun DateRangePickerFullScreen(onDateRangeSelected: (Pair<Long?, Long?>) -> Unit, onDismiss: () -> Unit) {
+    /* This component can only be used if it is the only element on the screen. */
+
+    val dateRangePickerState = rememberDateRangePickerState()
+    val TEXT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
+    val CONTAINER_COLOR = MaterialTheme.colorScheme.primaryContainer
+    var selectedStartDateMillis =  dateRangePickerState.selectedStartDateMillis
+    var selectedEndDateMillis = dateRangePickerState.selectedEndDateMillis
+
+    Box(
+        modifier = Modifier
+            .padding(top = 10.dp, bottom = 50.dp)
+            .fillMaxSize(),
+    ) {
+        DateRangePicker(
+            state = dateRangePickerState,
+            title = {
+                Row(
+                    modifier = Modifier.padding(5.dp)
+                ) {
+                    IconButton(
+                        onClick = onDismiss,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .weight(1.5f)
+                    ) {
+                        Icon(Icons.Filled.Close, contentDescription = "Close")
+                    }
+                    Spacer(Modifier.weight(3.0f))
+                    val isSaveEnabled = selectedStartDateMillis != null && selectedEndDateMillis != null
+                    TextButton(
+                        onClick = {
+                            onDateRangeSelected(
+                                Pair(
+                                    dateRangePickerState.selectedStartDateMillis,
+                                    dateRangePickerState.selectedEndDateMillis
+                                )
+                            )
+                            onDismiss()
+                        },
+                        modifier = Modifier.weight(2.0f),
+                        enabled = isSaveEnabled
+                    ) {
+                        Text(
+                            "Salva",
+                            color = if (isSaveEnabled) TEXT_COLOR else TEXT_COLOR.copy(alpha = 0.5f)
+                        )
+                    }
+                }
+            },
+            headline = {
+                CustomRangePickerHeader(
+                    selectedStartDateMillis = selectedStartDateMillis,
+                    selectedEndDateMillis = selectedEndDateMillis
+                )
+            },
+            modifier = Modifier.padding(18.dp),
+            colors = DatePickerDefaults.colors(
+                titleContentColor = TEXT_COLOR,
+                headlineContentColor = TEXT_COLOR,
+                navigationContentColor = TEXT_COLOR,
+                dayInSelectionRangeContentColor = TEXT_COLOR,
+                dayInSelectionRangeContainerColor = CONTAINER_COLOR,
+                dayContentColor = TEXT_COLOR,
+                weekdayContentColor = TEXT_COLOR,
+                subheadContentColor = TEXT_COLOR,
+                dateTextFieldColors = outlinedTextFieldColor()
+            )
+        )
+    }
+}
+
+@Composable
+fun CustomDateRangePicker() {
+    var selectedStartDate by remember { mutableStateOf<Long?>(null) }
+    var selectedEndDate by remember { mutableStateOf<Long?>(null) }
+    var showRangeModal by remember { mutableStateOf(false) }
+
+    val dateRangeText = when {
+        selectedStartDate != null && selectedEndDate != null ->
+            "${convertMillisToDate(selectedStartDate!!)} - ${convertMillisToDate(selectedEndDate!!)}"
+        selectedStartDate != null ->
+            convertMillisToDate(selectedStartDate!!) + " - "
+        else -> ""
+    }
+
+    OutlinedTextField(
+        value = dateRangeText,
+        onValueChange = { },
+        readOnly = true,
+        placeholder = { Text("DD/MM/YYYY - DD/MM/YYYY") },
+        label = { Text(text = "Range Data", fontSize = MaterialTheme.typography.titleMedium.fontSize) },
+        leadingIcon = {
+            IconButton(
+                onClick = { showRangeModal = true },
+                shape = RoundedCornerShape(15),
+                modifier = Modifier.size(30.dp),
+            ) { Icon(Icons.Default.DateRange, contentDescription = "Select date range") }
+        },
+        trailingIcon = {
+            IconButton(
+                onClick = {
+                    selectedStartDate = null
+                    selectedEndDate = null
+                },
+                shape = RoundedCornerShape(15),
+                modifier = Modifier.size(30.dp),
+            ) { Icon(Icons.Outlined.Cancel, "Cancel range") }
+        },
+        modifier = Modifier
+            .padding(4.dp)
+            .fillMaxWidth(),
+        colors = outlinedTextFieldColor()
+    )
+
+    if (showRangeModal) {
+        DateRangePickerFullScreen(
+            onDateRangeSelected = { (start, end) ->
+                selectedStartDate = start
+                selectedEndDate = end
+            },
+            onDismiss = { showRangeModal = false }
         )
     }
 }
