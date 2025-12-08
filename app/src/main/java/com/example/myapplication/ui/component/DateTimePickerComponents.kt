@@ -14,18 +14,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.outlined.Cancel
+import androidx.compose.material.icons.outlined.Schedule
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DateRangePicker
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerDefaults
+import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberDateRangePickerState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -280,6 +288,89 @@ fun CustomDateRangePicker() {
                 selectedEndDate = end
             },
             onDismiss = { showRangeModal = false }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TimePickerDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (TimePickerState) -> Unit,
+) {
+    val currentTime = Calendar.getInstance()
+
+    val timePickerState = rememberTimePickerState(
+        initialHour = currentTime.get(Calendar.HOUR_OF_DAY),
+        initialMinute = currentTime.get(Calendar.MINUTE),
+        is24Hour = true,
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        dismissButton = {},
+        confirmButton = {
+            TextButton(onClick = { onConfirm(timePickerState) }) {
+                Text("OK")
+            }
+        },
+        text = {
+            TimePicker(
+                state = timePickerState,
+                colors = TimePickerDefaults.colors(
+                    clockDialUnselectedContentColor  = MaterialTheme.colorScheme.onPrimaryContainer,
+                    periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    timeSelectorUnselectedContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            )
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomTimePicker(){
+    var showDialog by remember { mutableStateOf(false) }
+    var selectedTime by remember { mutableStateOf("") }
+
+
+    OutlinedTextField(
+        value = selectedTime,
+        onValueChange = { },
+        placeholder = { Text("hh:mm") },
+        label = { Text(text = "Ora", fontSize = MaterialTheme.typography.titleMedium.fontSize) },
+        leadingIcon = {
+            IconButton(
+                onClick = { showDialog = true },
+                shape = RoundedCornerShape(15),
+                modifier = Modifier.size(30.dp),
+            ) { Icon(Icons.Outlined.Schedule, contentDescription = "Select time") }
+        },
+        trailingIcon = {
+            IconButton(
+                onClick = {
+                    showDialog = false
+                    selectedTime = ""
+                },
+                shape = RoundedCornerShape(15),
+                modifier = Modifier.size(30.dp),
+            ) { Icon(Icons.Outlined.Cancel, "Cancel") }
+        },
+        modifier = Modifier
+            .padding(4.dp)
+            .fillMaxWidth(),
+        colors = outlinedTextFieldColor()
+    )
+
+    if(showDialog){
+        TimePickerDialog(
+            onConfirm = { timePickerState ->
+                val hour = timePickerState.hour
+                val minute = timePickerState.minute
+                selectedTime = "$hour:$minute"
+                showDialog = false
+            },
+            onDismiss = { showDialog = false }
         )
     }
 }

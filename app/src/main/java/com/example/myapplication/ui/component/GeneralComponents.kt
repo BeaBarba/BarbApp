@@ -97,7 +97,7 @@ fun CustomDivider(color : Color = MaterialTheme.colorScheme.primary, paddingHori
 /* --------------------------------------------------------- Popup composables ------------------------------------------------------------- */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun AlertDialog(
+fun CustomAlertDialog(
     contentPadding: PaddingValues,
     onDismiss: ()-> Unit,
     title: String,
