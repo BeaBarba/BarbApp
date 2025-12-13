@@ -45,3 +45,26 @@ fun checkColor(
         else -> throw IllegalArgumentException("Tipo non supportato")
     }
 }
+
+@Composable
+fun checkColorAvatar(
+    type: String = "NONE",
+    primary: Boolean = false,
+    onPrimary: Boolean = false,
+    primaryContainer: Boolean = false,
+    onPrimaryContainer: Boolean = false
+): Color {
+    return when (type){
+        "ALA" -> when{
+            primary -> checkColor(type, onPrimary = true)
+            onPrimary -> checkColor(type, primary = true)
+            else -> checkColor(type, primary, onPrimary, primaryContainer, onPrimaryContainer)
+        }
+        "NONE" -> when{
+            primary -> checkColor(type, onPrimary = true)
+            onPrimary -> checkColor(type, primary = true)
+            else -> checkColor(type, primary, onPrimary, primaryContainer, onPrimaryContainer)
+        }
+        else -> checkColor(type, primary, onPrimary, primaryContainer, onPrimaryContainer)
+    }
+}

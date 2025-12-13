@@ -102,8 +102,6 @@ fun GenericCard(
 
     Card(
         modifier = Modifier
-            /*.padding(start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp)*/
             .height(60.dp)
             .clip(RoundedCornerShape(15.dp))
             .fillMaxSize(),
@@ -228,9 +226,6 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
         materialText = "$materialText$item, "
     }
 
-    val coloTextAvatar = if(type == "NONE" || type == "ALA") {checkColor(type, onPrimary = true)} else{checkColor(type, primary = true)}
-    val colorCharacterAvatar = if(type == "NONE" || type == "ALA") {checkColor(type, primary = true)} else{checkColor(type, onPrimary = true)}
-
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -252,9 +247,9 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
         ) {
             Avatar(
                 type.get(0),
-                textColor = coloTextAvatar,
+                textColor = checkColorAvatar(type, primary = true),
                 size = 40.dp,
-                backgroundColor = colorCharacterAvatar
+                backgroundColor = checkColorAvatar(type, onPrimary = true)
             )
             Spacer(Modifier.size(8.dp))
             Column() {
