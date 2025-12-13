@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,7 +38,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.screen.itemsList
 
@@ -95,7 +92,6 @@ fun GenericCard(
     textSpace : Float = 0.85f,
     leadingContent: (@Composable () -> Unit)? = null,
     trailingContent: (@Composable () -> Unit)? = null,
-    contentPadding : PaddingValues,
     type: String = "NONE",
     onClick : () -> Unit = {},
     interactionSource: MutableInteractionSource? = null,
@@ -106,8 +102,8 @@ fun GenericCard(
 
     Card(
         modifier = Modifier
-            .padding(start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp)
+            /*.padding(start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
+                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp)*/
             .height(60.dp)
             .clip(RoundedCornerShape(15.dp))
             .fillMaxSize(),
@@ -205,10 +201,10 @@ fun GenericCard(
 }
 
 @Composable
-fun StatisticCard(text: String, icon: Painter, iconDescription : String, contentPadding : PaddingValues, onClick : () -> Unit){
+fun StatisticCard(text: String, icon: Painter, iconDescription : String, description: String? = null, onClick : () -> Unit){
     GenericCard(
-        contentPadding = contentPadding,
         text = text,
+        textDescription =  description,
         textSpace = 1.0f,
         leadingContent = {
             Icon(icon,

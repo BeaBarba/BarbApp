@@ -69,7 +69,7 @@ fun Avatar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, trailingIcons: @Composable () -> Unit){
+fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, trailingIcons: (@Composable () -> Unit)? = null){
     CenterAlignedTopAppBar(
         navigationIcon = navigationIcon,
         title = {
@@ -81,7 +81,7 @@ fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, trailingIcons:
         colors = TopAppBarDefaults.topAppBarColors(
         containerColor = MaterialTheme.colorScheme.primary
         ),
-        actions = { trailingIcons() }
+        actions = { if(trailingIcons != null){ trailingIcons() }}
     )
 }
 
@@ -95,7 +95,7 @@ fun CustomDivider(color : Color = MaterialTheme.colorScheme.primary, paddingHori
 }
 
 /* --------------------------------------------------------- Popup composables ------------------------------------------------------------- */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun CustomAlertDialog(
     contentPadding: PaddingValues,

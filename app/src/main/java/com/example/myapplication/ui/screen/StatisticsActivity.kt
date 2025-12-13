@@ -9,13 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -36,25 +33,45 @@ class StatisticsActivity : ComponentActivity(){
             MyApplicationTheme {
                 Scaffold (Modifier.fillMaxSize()){ innerPadding ->
                     Scaffold( modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()).fillMaxSize(),
-                        topBar = { TopAppBar("Statistiche", {Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.onPrimary)},{})}
+                        topBar = { TopAppBar(
+                            id = "Statistiche",
+                            navigationIcon = {Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.onPrimary)}
+                        )}
                     ){ contentPadding ->
                         Column (
                             modifier = Modifier
                                 .padding(
                                     top = contentPadding.calculateTopPadding() + innerPadding.calculateTopPadding(),
-                                    start = contentPadding.calculateStartPadding(LayoutDirection.Ltr),
-                                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr)
+                                    start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
+                                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp
                                 ).fillMaxSize(),
                         ) {
-                            StatisticCard("Storico Prezzi Materiali", painterResource(R.drawable.line_chart), "Price Statistics", contentPadding, {})
+                            StatisticCard(
+                                text = "Storico Prezzi Materiali",
+                                icon = painterResource(R.drawable.line_chart), iconDescription = "Price Statistics",
+                                onClick = {})
                             Spacer(Modifier.size(15.dp))
-                            StatisticCard("Sommario Interventi", painterResource(R.drawable.pie_chart), "Jobs Statistics", contentPadding, {})
+                            StatisticCard(
+                                text = "Sommario Interventi",
+                                icon = painterResource(R.drawable.pie_chart), iconDescription = "Jobs Statistics",
+                                onClick = {})
                             Spacer(Modifier.size(15.dp))
-                            StatisticCard("Ricavo Interventi", painterResource(R.drawable.diagram_24dp), "Jobs Revenue", contentPadding, {})
+                            StatisticCard(
+                                text = "Ricavo Interventi",
+                                icon = painterResource(R.drawable.diagram_24dp), iconDescription = "Jobs Revenue",
+                                onClick = {})
                             Spacer(Modifier.size(15.dp))
-                            StatisticCard("Tempi Medi Di Riscossione", painterResource(R.drawable.bar_chart_24dp), "Average Collection Times", contentPadding, {})
+                            StatisticCard(
+                                text = "Tempi Medi Di Riscossione",
+                                icon = painterResource(R.drawable.bar_chart_24dp), iconDescription = "Average Collection Times",
+                                description = " Clienti",
+                                onClick = {})
                             Spacer(Modifier.size(15.dp))
-                            StatisticCard("Numero Interventi", painterResource(R.drawable.diagram_24dp), "Number Of Jobs Per Reference", contentPadding, {})
+                            StatisticCard(
+                                text = "Numero Interventi",
+                                icon = painterResource(R.drawable.diagram_24dp), iconDescription = "Number Of Jobs Per Reference",
+                                description = "Riferimento",
+                                onClick = {})
                         }
                     }
                 }

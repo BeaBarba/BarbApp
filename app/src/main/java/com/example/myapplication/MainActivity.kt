@@ -11,7 +11,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.myapplication.ui.screen.CleaningScreen
 import com.example.myapplication.ui.screen.CustomersScreen
-import com.example.myapplication.ui.screen.HomeActivity
 import com.example.myapplication.ui.screen.Screen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 

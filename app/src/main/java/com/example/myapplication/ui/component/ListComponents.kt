@@ -57,7 +57,6 @@ fun ListItemAvatar(itemID : String){
 @Composable
 fun CardItemAvatar(itemID : String, onclick : () -> Unit){
     GenericCard(
-        contentPadding = PaddingValues(4.dp),
         text = itemID,
         interactionSource = remember { MutableInteractionSource() },
         leadingContent = {
