@@ -42,10 +42,7 @@ class HomeActivity : ComponentActivity() {
                             .padding(bottom = innerPadding.calculateBottomPadding()),
                         topBar = { TopAppBar("Home",{ DropDownMenuHome()}, {
                             IconButton(
-                                onClick = {
-                                    val intent = Intent(ctx, MainActivity ::class.java)
-                                    ctx.startActivity(intent)
-                                } ,
+                                onClick = {} ,
                             ){
                                 //CartActivity
                                 Icon(Icons.Filled.ShoppingCart, contentDescription = "Shop item", tint = MaterialTheme.colorScheme.onPrimary)

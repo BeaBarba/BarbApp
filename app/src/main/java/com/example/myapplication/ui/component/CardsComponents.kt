@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,7 +31,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +43,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.ui.screen.Prodotto
 import com.example.myapplication.ui.screen.itemsList
 
 @Composable
@@ -304,6 +309,57 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
             }
         }
     }
+}
+
+@Composable
+fun CartCard(item: Prodotto){
+    var checked by remember { mutableStateOf(false) }
+    GenericCard(
+        text = item.nome,
+        textDescription = item.modello,
+        type = item.tipo,
+        textSpace = 0.7f,
+        leadingContent = {
+            Avatar(
+                char = item.tipo.get(0),
+                textColor = checkColorAvatar(item.tipo, primary = true),
+                backgroundColor = checkColorAvatar(item.tipo, onPrimary = true)
+            )
+        },
+        trailingContent = {
+            Row(
+                modifier = Modifier.padding(end = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                Row(
+                    modifier = Modifier.weight(5.0f),
+                    horizontalArrangement = Arrangement.End
+                ) {
+
+                    Text(
+                        text = item.quantita.toString(),
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                    )
+                    Spacer(Modifier.size(4.dp))
+                    Text(
+                        text = item.unitaMisura,
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                    )
+                }
+                Spacer(Modifier.size(10.dp))
+                Checkbox(
+                    checked = checked,
+                    onCheckedChange = {checked = !checked},
+                    interactionSource = remember { MutableInteractionSource() },
+                    modifier = Modifier.weight(2.0f),
+                    colors = checkboxColors(item.tipo)
+                )
+            }
+
+        }
+    )
+    Spacer(Modifier.size(8.dp))
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

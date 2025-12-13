@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
 
 @Composable
-fun AddButton(id : String, onClick: () -> Unit){
+fun AddButton(onClick: () -> Unit){
     FloatingActionButton(
         onClick = onClick,
         modifier = Modifier.size(60.dp).fillMaxSize(),

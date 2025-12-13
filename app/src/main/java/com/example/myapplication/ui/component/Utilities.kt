@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.component
 
+import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -67,4 +68,28 @@ fun checkColorAvatar(
         }
         else -> checkColor(type, primary, onPrimary, primaryContainer, onPrimaryContainer)
     }
+}
+
+@Composable
+fun checkboxColors(
+    type : String = "NONE"
+) : CheckboxColors{
+    return CheckboxColors(
+        /* Selected */
+        checkedCheckmarkColor = checkColorAvatar(type, primary = true),
+        checkedBoxColor = checkColorAvatar(type, onPrimary = true),
+        checkedBorderColor = checkColorAvatar(type, onPrimary = true),
+        /* Unselected*/
+        uncheckedCheckmarkColor = checkColorAvatar(type, onPrimary = true),
+        uncheckedBoxColor = checkColorAvatar(type, onPrimary = true),
+        uncheckedBorderColor = checkColorAvatar(type, onPrimary = true),
+
+        /* Disable */
+        disabledCheckedBoxColor = checkColorAvatar(type, primary = true).copy(alpha = 0.5f),
+        disabledUncheckedBoxColor = checkColorAvatar(type, primary = true).copy(alpha = 0.5f),
+        disabledIndeterminateBoxColor = checkColorAvatar(type, primary = true).copy(alpha = 0.5f),
+        disabledBorderColor = checkColorAvatar(type, primary = true).copy(alpha = 0.5f),
+        disabledUncheckedBorderColor = checkColorAvatar(type, primary = true).copy(alpha = 0.5f),
+        disabledIndeterminateBorderColor = checkColorAvatar(type, primary = true).copy(alpha = 0.5f),
+    )
 }
