@@ -51,6 +51,12 @@
             android:name="com.example.myapplication.ui.screen.CustomerAddActivity"
             android:exported="false"
             />
+
+        <!-- Jobs -->
+        <activity
+            android:name="com.example.myapplication.ui.screen.AllJobsSummaryActivity"
+            android:exported="false"
+            />
     </application>
 
 </manifest>
