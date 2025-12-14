@@ -61,15 +61,12 @@ fun AddButton(onClick: () -> Unit){
 }
 
 @Composable
-fun DeleteButton(onclick: () -> Unit, contexPadding: PaddingValues){
+fun DeleteButton(onclick: () -> Unit,){
     val BOX_COLOR = MaterialTheme.colorScheme.secondary
     val CONTENT_COLOR = MaterialTheme.colorScheme.onSecondary
     IconButton(
         onClick = onclick,
         modifier = Modifier
-            .padding(
-                start = contexPadding.calculateStartPadding(LayoutDirection.Ltr),
-                end = contexPadding.calculateEndPadding(LayoutDirection.Ltr))
             .fillMaxWidth()
             .height(60.dp),
         enabled =   true,

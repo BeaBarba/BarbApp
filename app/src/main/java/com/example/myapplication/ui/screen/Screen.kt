@@ -55,7 +55,7 @@ fun Screen(modifier : Modifier){
         topBar = {
             TopAppBar("Screen",
             navigationIcon = {
-                BackButton(){val intent = Intent(ctx, SingleCostumerSummaryActivity ::class.java)
+                BackButton(){val intent = Intent(ctx, CustomerAddActivity ::class.java)
                     ctx.startActivity(intent)}
             },
             trailingIcons = { DropDownMenuCustomers() })
@@ -148,7 +148,7 @@ fun Screen(modifier : Modifier){
             item{Spacer(Modifier.size(8.dp))}
             item{BoxDescription(textDescription)}
             item{Spacer(Modifier.size(8.dp))}
-            item{DeleteButton({}, contentPadding)}
+            item{DeleteButton({})}
             item{Spacer(Modifier.size(90.dp))}
         }
         if (showDialog) {
