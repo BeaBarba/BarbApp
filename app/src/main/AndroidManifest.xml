@@ -25,12 +25,22 @@
             android:name="com.example.myapplication.ui.screen.HomeActivity"
             android:exported="false"
         />
+
+        <!-- Statistics -->
         <activity
             android:name="com.example.myapplication.ui.screen.StatisticsActivity"
             android:exported="false"
             />
+
+        <!-- Material -->
         <activity
             android:name="com.example.myapplication.ui.screen.CartActivity"
+            android:exported="false"
+            />
+
+        <!-- Customers -->
+        <activity
+            android:name="com.example.myapplication.ui.screen.AllCustomersSummaryActivity"
             android:exported="false"
             />
     </application>

@@ -11,16 +11,13 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
+import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.StatisticCard
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -35,7 +32,7 @@ class StatisticsActivity : ComponentActivity(){
                     Scaffold( modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()).fillMaxSize(),
                         topBar = { TopAppBar(
                             id = "Statistiche",
-                            navigationIcon = {Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = MaterialTheme.colorScheme.onPrimary)}
+                            navigationIcon = { BackButton {  } }
                         )}
                     ){ contentPadding ->
                         Column (

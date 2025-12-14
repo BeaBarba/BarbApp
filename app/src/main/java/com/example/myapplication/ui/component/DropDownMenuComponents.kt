@@ -124,9 +124,7 @@ fun Order(
 @Composable
 fun DropDownMenuHome(){
     var expanded by remember { mutableStateOf(false) }
-    Box(
-        modifier = Modifier.padding(16.dp)
-    ) {
+    Box() {
         IconButton(onClick = { expanded = !expanded }) {
             Icon(Icons.Filled.Settings, contentDescription = "Settings", tint = MaterialTheme.colorScheme.onPrimary)
         }
@@ -168,9 +166,7 @@ fun DropDownMenuHome(){
 @Composable
 fun DropDownMenuBubbles(){
     var expanded by remember { mutableStateOf(false) }
-    Box(
-        modifier = Modifier.padding(16.dp)
-    ) {
+    Box() {
         IconButton(onClick = { expanded = !expanded }) {
             Icon(Icons.Filled.FilterAlt, contentDescription = "Filter", tint = MaterialTheme.colorScheme.onPrimary)
         }
@@ -206,9 +202,7 @@ fun DropDownMenuBubbles(){
 @Composable
 fun DropDownMenuCleaning(){
     var expanded by remember { mutableStateOf(false) }
-    Box(
-        modifier = Modifier.padding(16.dp)
-    ) {
+    Box() {
         IconButton(onClick = { expanded = !expanded }) {
             Icon(Icons.Filled.FilterAlt, contentDescription = "Filter", tint = MaterialTheme.colorScheme.onPrimary)
         }
@@ -245,9 +239,7 @@ fun DropDownMenuCleaning(){
 fun DropDownMenuJobs(){
     var expanded by remember { mutableStateOf(false) }
 
-    Box(
-        modifier = Modifier.padding(16.dp)
-    ){
+    Box(){
         IconButton(onClick = { expanded = !expanded }) {
             Icon(Icons.Filled.FilterAlt, contentDescription = "Filter", tint = MaterialTheme.colorScheme.onPrimary)
         }
@@ -301,10 +293,10 @@ fun DropDownMenuJobs(){
 }
 
 @Composable
-fun DropDownMenuCustumers(){
+fun DropDownMenuCustomers(){
     var expanded by remember { mutableStateOf(false) }
 
-    Box( modifier = Modifier.padding(16.dp)){
+    Box( ){
         IconButton( onClick = {expanded = !expanded} ) {
             Icon(Icons.Filled.FilterAlt, "Filter", tint = MaterialTheme.colorScheme.onPrimary)
         }
@@ -355,7 +347,7 @@ fun DropDownMenuCustumers(){
 fun DropDownMenuRevenue(){
     var expanded by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.padding(16.dp)){
+    Box(){
         IconButton(onClick = {expanded = !expanded}) {
             Icon(Icons.Filled.FilterAlt, contentDescription = "Filter", tint = MaterialTheme.colorScheme.onPrimary)
         }
@@ -380,7 +372,7 @@ fun DropDownMenuPayments(){
     var expanded by remember { mutableStateOf(false) }
     var category =  listOf("cat1" , "cat2" , "cat3")
 
-    Box(modifier = Modifier.padding(16.dp)) {
+    Box() {
         IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 Icons.Filled.FilterAlt,

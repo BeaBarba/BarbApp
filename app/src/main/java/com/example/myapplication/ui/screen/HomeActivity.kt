@@ -24,7 +24,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -40,11 +39,10 @@ class HomeActivity : ComponentActivity() {
                     Scaffold(
                         modifier = Modifier.fillMaxSize()
                             .padding(bottom = innerPadding.calculateBottomPadding()),
-                        topBar = { TopAppBar("Home",{ DropDownMenuHome()}, {
-                            IconButton(
-                                onClick = {} ,
-                            ){
-                                //CartActivity
+                        topBar = { TopAppBar(
+                            id = "Home",
+                            navigationIcon = { DropDownMenuHome()},
+                            trailingIcons = {IconButton(onClick = {/*CartActivity*/}){
                                 Icon(Icons.Filled.ShoppingCart, contentDescription = "Shop item", tint = MaterialTheme.colorScheme.onPrimary)
                             }
                         })},

@@ -1,0 +1,105 @@
+package com.example.myapplication.ui.screen
+
+import androidx.compose.ui.platform.LocalContext
+
+/* --------------------------------------------- Variabili Globali ------------------------------------------*/
+val customers = listOf(
+    "Alessandro", "Andrea", "Anna", "Alessia", "Amelia", "Antonio",
+    "Barbara", "Bruno", "Beatrice", "Bianca", "Benedetto", "Bernardo",
+    "Carlo", "Chiara", "Cristina", "Camilla", "Cesare", "Claudia",
+    "Davide", "Daniela", "Diego", "Dario", "Diana", "Domenico",
+    "Elena", "Emanuele", "Erica", "Elisa", "Enrico", "Eugenio",
+    "Francesco", "Federica", "Fabio", "Flavio", "Francesca", "Franco",
+    "Gabriele", "Giulia", "Giovanni", "Gabriella", "Giancarlo", "Giorgio",
+    "Hanna", "Hugo", "Helena",
+    "Ivan", "Isabella", "Irene", "Ilaria", "Ivo", "Ivana",
+    "Jacopo", "Jasmine", "Julia", "Jasmine", "Jeremy", "Jessica",
+    "Kevin", "Katia", "Kyle", "Katia", "Kenneth", "Kristen",
+    "Luca", "Laura", "Leonardo", "Liliana", "Lorenzo", "Lucia",
+    "Marco", "Martina", "Matteo", "Marina", "Mario", "Marisa",
+    "Nicola", "Nadia", "Nina", "Nadine", "Nicolò", "Noemi",
+    "Omar", "Olivia", "Ottavia", "Olimpia", "Oreste", "Ottavio",
+    "Paolo", "Paola", "Pietro", "Patrizia", "Piero", "Pietro",
+    "Quentin", "Quinn", "Quirino",
+    "Riccardo", "Roberta", "Rocco", "Raffaella", "Raimondo", "Rebecca",
+    "Simone", "Sofia", "Stefano", "Sabrina", "Salvatore", "Samantha",
+    "Tommaso", "Tiziana", "Tobias", "Tania", "Teodoro", "Teresa",
+    "Umberto", "Ursula", "Ugo", "Ubaldo", "Umberto", "Ursula",
+    "Valentina", "Vincenzo", "Veronica", "Valeria", "Vincenzo", "Virginia",
+    "William", "Wendy", "Walter", "Walter", "Wendy", "Wilhelm",
+    "Xander", "Xenia", "Xiomara", "Xanthe", "Xenia", "Ximena",
+    "Ylenia", "Yves", "Yolanda", "Yara", "Yves", "Yolanda",
+    "Zeno", "Zoe", "Zoran", "Zaira", "Zeno", "Zita"
+)
+
+val letters = customers.map { it.get(0) }.distinct()
+
+val itemsList = List<String>(10, {item -> "item $item"})
+
+data class Prodotto(
+    val nome: String,
+    val modello: String,
+    val quantita: Int,
+    val prezzo : Double,
+    val iva : Int,
+    val unitaMisura: String,
+    val tipo : String
+)
+val prodotti = listOf<Prodotto>(
+    Prodotto("Interruttore", "Bticino", 10, 20.0, 22, "u", "ELE"),
+    Prodotto("Interruttore", "Vimar", 50, 20.0, 10, "u","ELE"),
+    Prodotto("Deviatore", "Bticino", 10, 20.0, 22, "m","ELE"),
+    Prodotto("Calma", "Bticino", 10, 20.0, 22, "cm","ELE"),
+    // ----------------------------------------------------
+    // CATEGORIA 1: ELETTRONICA E TECNOLOGIA (Prodotti 1-30)
+    // ----------------------------------------------------
+    Prodotto("Smartphone", "Modello X12", 50, 799.99, 22, "Pz","ELE"),
+    Prodotto("Laptop Gaming", "Aurora R5", 25, 1599.50, 22, "Pz","ELE"),
+    Prodotto("Smartwatch", "Geo 3", 150, 199.00, 22, "Pz","ELE"),
+    Prodotto("Cuffie Wireless", "SoundBlast 5", 300, 89.90, 22, "Pz","ELE"),
+    Prodotto("Power Bank", "Energy 20k", 400, 35.50, 22, "Pz","ALA"),
+    Prodotto("Tastiera Meccanica", "K-Raptor", 80, 119.99, 22, "Pz","ALA"),
+    Prodotto("Mouse Ottico", "M-Comfort", 600, 12.50, 22, "Pz","ALA"),
+    Prodotto("Monitor 27'' 4K", "ViewUltra", 30, 450.00, 22, "Pz","ALA"),
+    Prodotto("Webcam Full HD", "CamPro", 220, 55.99, 22, "Pz","ALA"),
+    Prodotto("Scheda SD 128GB", "Flash XL", 500, 29.99, 22, "Pz","ELE"),
+    Prodotto("Router Wi-Fi 6", "SpeedNet 1000", 75, 95.00, 22, "Pz","ELE"),
+    Prodotto("Altoparlante Bluetooth", "BassCube", 180, 65.00, 22, "Pz","ELE"),
+    Prodotto("Stampante Laser B/N", "PrintFast 200", 40, 240.00, 22, "Pz","ELE"),
+    Prodotto("Cartuccia Toner Nera", "T-2000", 120, 45.90, 22, "Pz","ELE"),
+    Prodotto("NAS 2 Bay", "Storage Pro", 15, 320.00, 22, "Pz","CDZ"),
+    Prodotto("Cavo HDMI 2m", "HD-Connect", 700, 8.50, 22, "Pz","CDZ"),
+    Prodotto("Adattatore USB-C", "MultiPort", 350, 19.99, 22, "Pz","CDZ"),
+    Prodotto("Fotocamera Mirrorless", "Alpha Z", 10, 850.00, 22, "Pz","CDZ"),
+    Prodotto("Obiettivo 50mm", "Prime Lens", 18, 290.00, 22, "Pz","CDZ"),
+    Prodotto("Drone Compact", "FlyMini", 5, 499.00, 22, "Pz","ALA"),
+    Prodotto("Smart TV 55'' OLED", "Vision 55", 8, 1199.00, 22, "Pz","ALA"),
+    Prodotto("Soundbar", "AudioWave", 35, 149.99, 22, "Pz","ALA"),
+    Prodotto("Lettore Blu-Ray", "DiscPlay 4", 12, 85.00, 22, "Pz","ALA"),
+    Prodotto("Joystick PC", "GamePad Pro", 90, 25.00, 22, "Pz","ALA"),
+    Prodotto("Lampada LED Smart", "Light IQ", 280, 15.00, 22, "Pz","CDZ"),
+    Prodotto("Termostato Intelligente", "ClimaHome", 60, 99.00, 22, "Pz","CDZ"),
+    Prodotto("Presa Smart Wi-Fi", "PlugON", 450, 18.00, 22, "Pz","NONE"),
+    Prodotto("Mini PC Desktop", "Cube Mini 4", 20, 399.00, 22, "Pz","CDZ"),
+    Prodotto("Ventola Raffreddamento PC", "Cooler Max", 100, 22.00, 22, "Pz", "CDZ"),
+    Prodotto("Hard Disk Esterno 2TB", "StoreSafe", 140, 75.90, 22, "Pz","CDZ"),
+)
+
+val textDescription = """Sto facendo il refactoring del file dei componenti (era 1570 righe di codice tra codice puro e gli import) in:
+- Utilities --> Dove metto le funzioni tipo per stabilire di che colore devono essere i componenti in base al loro tipo (Ele, CDZ o ALLARME) 
+- Cards --> Dove vanno i componenti cliccabili che poi mostrano tutti i dati 
+- Lists --> Dove metto tutte le liste di altri componenti che ho creato perchè ce ne sono diverse . Ad esempio quella che abbiamo fatto insieme, 
+non so se ti ricordi, che metteva la lettera iniziale dei cognomi, poi tutti i clienti con quella lettera e poi di nuovo un altra lettera dentro un 
+cerchio per dividere in ordine alfabetico i clienti 
+- Buttons --> Dove metto tutti i vari bottoni
+- DropDownMenu --> Dove metto tutti i menu a tendina
+- Tables --> Dove metto la tabella
+- GeneralComponent --> Tutti i componenti rimasti, quindi gli avatar (sono i cerchi con la lettera dentro), la TopAppBar (la barra sopra che indica 
+in che sezione si è e quali impostazioni si possono cambiare per quella schermata), le Label (Sono solo 2 e sono quelle che nel video c'è la parte verde 
+che indica la specifica e la parte verde chiaro che indica tipo il cognome), l'AlertDialog (il menu a comparsa tipo popup)
+"""
+
+val materialList: List<String> = prodotti.map { prodotto -> prodotto.nome}
+
+var suggerimenti = listOf("Suggerimento 1", "Suggerimento 2", "Suggerimento 3", "Ciao")
+

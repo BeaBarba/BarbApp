@@ -1,36 +1,28 @@
 package com.example.myapplication.ui.screen
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.MainActivity
-import com.example.myapplication.R
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
-import com.example.myapplication.ui.component.CartCard
+import com.example.myapplication.ui.component.CustomersCardsList
+import com.example.myapplication.ui.component.DropDownMenuCustomers
+import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-class CartActivity : ComponentActivity() {
+class AllCustomersSummaryActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -41,22 +33,15 @@ class CartActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
-                        TopAppBar(id = "Carrello",
-                            navigationIcon = { BackButton {val intent = Intent(ctx, MainActivity::class.java)
-                                ctx.startActivity(intent)} },
-                            trailingIcons = {
-                                IconButton(onClick = {}) {
-                                    Icon(
-                                        painterResource(R.drawable.description_24dp),
-                                        contentDescription = "Shop item",
-                                        tint = MaterialTheme.colorScheme.onPrimary
-                                    )
-                                }
-                            })
+                        TopAppBar(
+                            id = "Clienti",
+                            navigationIcon = { BackButton() {} },
+                            trailingIcons = { DropDownMenuCustomers() }
+                        )
                     },
-                    floatingActionButton = {AddButton(){} }
+                    floatingActionButton = { AddButton() {} }
                 ) { contentPadding ->
-                    LazyColumn(
+                    Column(
                         modifier = Modifier
                             .padding(
                                 top = contentPadding.calculateTopPadding(),
@@ -65,12 +50,8 @@ class CartActivity : ComponentActivity() {
                             )
                             .fillMaxSize()
                     ) {
-
-                        item{ Spacer(Modifier.size(10.dp))}
-                        items(prodotti) { item ->
-                            CartCard(item)
-                        }
-                        item { Spacer(Modifier.size(120.dp)) }
+                        SearchAppBar("Cliente", contentPadding)
+                        CustomersCardsList(letters, customers, ctx, contentPadding)
                     }
                 }
             }

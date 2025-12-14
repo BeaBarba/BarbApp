@@ -21,12 +21,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -90,6 +92,24 @@ fun DeleteButton(onclick: () -> Unit, contexPadding: PaddingValues){
                 fontSize = MaterialTheme.typography.headlineSmall.fontSize
             )
         }
+    }
+}
+
+@Composable
+fun BackButton(onClick: () -> Unit){
+    IconButton(
+        onClick = onClick,
+        colors = IconButtonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.primaryContainer
+        )
+    ) {
+        Icon(
+            Icons.AutoMirrored.Filled.ArrowBack,
+            "Back"
+        )
     }
 }
 
