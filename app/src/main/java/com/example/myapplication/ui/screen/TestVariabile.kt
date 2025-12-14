@@ -103,3 +103,28 @@ val materialList: List<String> = prodotti.map { prodotto -> prodotto.nome}
 
 var suggerimenti = listOf("Suggerimento 1", "Suggerimento 2", "Suggerimento 3", "Ciao")
 
+data class Intervento(
+    val cognomeNome: String,
+    val indirizzo: String,
+    val comune: String,
+    val cap: String,
+    val provincia: String,
+    val prezzo: Float,
+    val data: String,
+    val oraI: String,
+    val oraF: String,
+    val tipo: String
+)
+
+val interventi = listOf(
+    Intervento("Rossi Mario", "Via Garibaldi 12", "Milano", "20121", "MI", 85.50f, "14/12/2025", "09:00", "10:30", "ELE"),
+    Intervento("Bianchi Anna", "Piazza Duomo 3", "Milano", "20122", "MI", 120.00f, "15/12/2025", "11:00", "12:15", "ALA"),
+    Intervento("Verdi Luca", "Corso Italia 45", "Torino", "10121", "TO", 60.75f, "16/12/2025", "08:30", "09:15", "CDZ"),
+    Intervento("Ferrari Laura", "Via Roma 7", "Genova", "16121", "GE", 95.20f, "17/12/2025", "13:00", "14:45", "NONE"),
+    Intervento("Esposito Marco", "Viale Europa 10", "Napoli", "80121", "NA", 150.00f, "18/12/2025", "15:30", "17:00", "ELE"),
+    Intervento("Romano Silvia", "Via Po 29", "Torino", "10124", "TO", 72.30f, "19/12/2025", "09:15", "10:00", "ALA"),
+    Intervento("Ricci Paolo", "Via Mazzini 2", "Bologna", "40121", "BO", 45.00f, "20/12/2025", "10:30", "11:00", "CDZ"),
+    Intervento("Gallo Elisa", "Piazza San Marco 1", "Venezia", "30124", "VE", 110.40f, "21/12/2025", "14:00", "15:30", "ELE"),
+    Intervento("Moretti Fabio", "Via Larga 8", "Firenze", "50123", "FI", 55.99f, "22/12/2025", "08:00", "08:45", "NONE"),
+    Intervento("Conti Laura", "Via Sant'Angelo 6", "Bari", "70121", "BA", 130.00f, "23/12/2025", "16:00", "17:30", "ALA")
+)
