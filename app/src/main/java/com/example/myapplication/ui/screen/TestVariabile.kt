@@ -39,7 +39,7 @@ val itemsList = List<String>(10, {item -> "item $item"})
 data class Prodotto(
     val nome: String,
     val modello: String,
-    val quantita: Int,
+    var quantita: Int,
     val prezzo : Double,
     val iva : Int,
     val unitaMisura: String,
