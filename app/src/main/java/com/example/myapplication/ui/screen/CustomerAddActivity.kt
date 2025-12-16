@@ -58,7 +58,8 @@ class CustomerAddActivity : ComponentActivity() {
                             .padding(
                                 top = contentPadding.calculateTopPadding() + 8.dp,
                                 start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp
+                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+                                bottom = contentPadding.calculateBottomPadding()
                             )
                             .fillMaxSize()
                     ) {

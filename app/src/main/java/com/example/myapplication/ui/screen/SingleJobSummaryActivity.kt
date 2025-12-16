@@ -65,7 +65,8 @@ class SingleJobSummaryActivity: ComponentActivity() {
                             .padding(
                                 top = contentPadding.calculateTopPadding() + 8.dp,
                                 start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp
+                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+                                bottom = contentPadding.calculateBottomPadding()
                             )
                     ) {
                         item{ GenericCard(
@@ -145,7 +146,6 @@ class SingleJobSummaryActivity: ComponentActivity() {
                             )
                             Spacer(Modifier.size(8.dp))
                         }
-                        item{Spacer(Modifier.size(60.dp))}
                     }
                 }
             }

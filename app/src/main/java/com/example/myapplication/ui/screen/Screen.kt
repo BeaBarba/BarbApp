@@ -59,7 +59,7 @@ fun Screen(modifier : Modifier){
         topBar = {
             TopAppBar("Screen",
             navigationIcon = {
-                BackButton(){val intent = Intent(ctx, SingleJobSummaryActivity ::class.java)
+                BackButton(){val intent = Intent(ctx, JobAddActivity ::class.java)
                     ctx.startActivity(intent)}
             },
             trailingIcons = { DropDownMenuCustomers() })
@@ -92,7 +92,8 @@ fun Screen(modifier : Modifier){
                 .padding(
                     top = contentPadding.calculateTopPadding(),
                     start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp
+                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+                    bottom = contentPadding.calculateBottomPadding()
                 )
                 .fillMaxSize()
         ) {
@@ -101,7 +102,7 @@ fun Screen(modifier : Modifier){
             item{TitleLabel("Dati Anagrafici")}
             item{Spacer(Modifier.size(8.dp))}
 
-            item { Spacer(Modifier.size(8.dp)) }
+            item{Spacer(Modifier.size(8.dp)) }
             item{KeyValueLabel("CF", "RSSMRA80A01A944I", weightTitle = 0.5f, weighDescription = 1.0f)}
             item{Spacer(Modifier.size(8.dp))}
             item{KeyValueLabel("Nome", "Mario", weightTitle = 0.5f, weighDescription = 1.0f)}
@@ -126,7 +127,7 @@ fun Screen(modifier : Modifier){
             item{Spacer(Modifier.size(8.dp))}
             item{TitleLabel("Interventi")}
             item{Spacer(Modifier.size(8.dp))}
-            item{SplitButtonMenu(items = itemsList, content = "Venditori", contentPadding = contentPadding)}
+            item{SplitButtonMenu(items = itemsList, content = "Venditori")}
             item{Spacer(Modifier.size(8.dp))}
             item{GenericCard(prodotti.get(1).nome, textDescription = "Vimar", leadingContent = {
                 Avatar('E', textColor = MaterialTheme.colorScheme.tertiary, backgroundColor = MaterialTheme.colorScheme.onTertiary)
@@ -155,7 +156,7 @@ fun Screen(modifier : Modifier){
             item{BoxDescription(textDescription)}
             item{Spacer(Modifier.size(8.dp))}
             item{DeleteButton({})}
-            item{Spacer(Modifier.size(90.dp))}
+            item{ Spacer(Modifier.size(40.dp))}
         }
         if (showDialog) {
             CustomAlertDialog(contentPadding, { showDialog = false }, "OGGETTO", "Modello", itemsList)

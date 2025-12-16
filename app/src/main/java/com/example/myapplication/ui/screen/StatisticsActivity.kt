@@ -40,8 +40,10 @@ class StatisticsActivity : ComponentActivity(){
                                 .padding(
                                     top = contentPadding.calculateTopPadding() + innerPadding.calculateTopPadding(),
                                     start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp
-                                ).fillMaxSize(),
+                                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+                                    bottom = contentPadding.calculateBottomPadding()
+                                )
+                                .fillMaxSize(),
                         ) {
                             StatisticCard(
                                 text = "Storico Prezzi Materiali",

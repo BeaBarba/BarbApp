@@ -36,7 +36,7 @@ import com.example.myapplication.ui.component.checkColor
 import com.example.myapplication.ui.component.checkColorAvatar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-class SingleCostumerSummaryActivity : ComponentActivity() {
+class SingleCustomerSummaryActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -62,26 +62,27 @@ class SingleCostumerSummaryActivity : ComponentActivity() {
                             .padding(
                                 top = contentPadding.calculateTopPadding() + 8.dp,
                                 start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp
+                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+                                bottom = contentPadding.calculateBottomPadding()
                             )
                             .fillMaxSize()
                     ){
-                        item{ TitleLabel("Dati Anagrafici") }
-                        item{ Spacer(Modifier.size(8.dp)) }
-                        item{ KeyValueLabel("CF", "RSSMRA80A01A944I", 1.0f, 2.0f) }
-                        item{ Spacer(Modifier.size(8.dp)) }
-                        item{ KeyValueLabel("Nome", "Mario", 1.0f, 2.0f) }
-                        item{ Spacer(Modifier.size(8.dp)) }
-                        item{ KeyValueLabel("Cognome", "Rossi", 1.0f, 2.0f) }
-                        item{ Spacer(Modifier.size(8.dp)) }
-                        item{ KeyValueLabel("Indirizzo", "Piazza dei martiri", 1.0f, 2.0f) }
-                        item{ Spacer(Modifier.size(8.dp)) }
-                        item{ KeyValueLabel("Comune", "Bologna", 1.0f, 2.0f) }
-                        item{ Spacer(Modifier.size(8.dp)) }
-                        item{ KeyValueLabel("CAP", "40133", 1.0f, 2.0f) }
-                        item{ CustomDivider() }
-                        item{ TitleLabel("Interventi")  }
-                        item{ Spacer(Modifier.size(8.dp)) }
+                        item{TitleLabel("Dati Anagrafici")}
+                        item{Spacer(Modifier.size(8.dp))}
+                        item{KeyValueLabel("CF", "RSSMRA80A01A944I", 1.0f, 2.0f)}
+                        item{Spacer(Modifier.size(8.dp))}
+                        item{KeyValueLabel("Nome", "Mario", 1.0f, 2.0f)}
+                        item{Spacer(Modifier.size(8.dp))}
+                        item{KeyValueLabel("Cognome", "Rossi", 1.0f, 2.0f)}
+                        item{Spacer(Modifier.size(8.dp))}
+                        item{KeyValueLabel("Indirizzo", "Piazza dei martiri", 1.0f, 2.0f)}
+                        item{Spacer(Modifier.size(8.dp))}
+                        item{KeyValueLabel("Comune", "Bologna", 1.0f, 2.0f)}
+                        item{Spacer(Modifier.size(8.dp))}
+                        item{KeyValueLabel("CAP", "40133", 1.0f, 2.0f)}
+                        item{CustomDivider()}
+                        item{TitleLabel("Interventi")}
+                        item{Spacer(Modifier.size(8.dp))}
                         items(interventi){item ->
                             GenericCard(
                                 text = item.indirizzo,
@@ -102,10 +103,10 @@ class SingleCostumerSummaryActivity : ComponentActivity() {
                             )
                             Spacer(Modifier.size(8.dp))
                         }
-                        item{ Spacer(Modifier.size(120.dp))}
+                        item{Spacer(Modifier.size(80.dp))}
                     }
                 }
             }
         }
-    } 
+    }
 }

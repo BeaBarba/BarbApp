@@ -61,16 +61,16 @@ class CartActivity : ComponentActivity() {
                             .padding(
                                 top = contentPadding.calculateTopPadding(),
                                 start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp
+                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+                                bottom = contentPadding.calculateBottomPadding()
                             )
                             .fillMaxSize()
                     ) {
-
                         item{ Spacer(Modifier.size(10.dp))}
                         items(prodotti) { item ->
                             CartCard(item)
                         }
-                        item { Spacer(Modifier.size(120.dp)) }
+                        item{Spacer(Modifier.size(80.dp))}
                     }
                 }
             }

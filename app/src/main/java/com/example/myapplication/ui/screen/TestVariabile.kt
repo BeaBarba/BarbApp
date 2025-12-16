@@ -128,3 +128,5 @@ val interventi = listOf(
     Intervento("Moretti Fabio", "Via Larga 8", "Firenze", "50123", "FI", 55.99f, "22/12/2025", "08:00", "08:45", "NONE"),
     Intervento("Conti Laura", "Via Sant'Angelo 6", "Bari", "70121", "BA", 130.00f, "23/12/2025", "16:00", "17:30", "ALA")
 )
+
+val tipi = interventi.map { intervento -> intervento.tipo }.distinct()

@@ -10,7 +10,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.myapplication.ui.screen.CleaningScreen
-import com.example.myapplication.ui.screen.CustomersScreen
 import com.example.myapplication.ui.screen.Screen
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
@@ -24,7 +23,6 @@ class MainActivity : ComponentActivity() {
             MyApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
-                    //CustomersScreen(modifier)
                     //CleaningScreen(modifier)
                     Screen(modifier)
                 }

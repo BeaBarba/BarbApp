@@ -329,7 +329,9 @@ fun TimePickerDialog(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTimePicker(){
+fun CustomTimePicker(
+    title : String = "Ora"
+){
     var showDialog by remember { mutableStateOf(false) }
     var selectedTime by remember { mutableStateOf("") }
 
@@ -338,7 +340,7 @@ fun CustomTimePicker(){
         value = selectedTime,
         onValueChange = { },
         placeholder = { Text("hh:mm") },
-        label = { Text(text = "Ora", fontSize = MaterialTheme.typography.titleMedium.fontSize) },
+        label = { Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
         leadingIcon = {
             IconButton(
                 onClick = { showDialog = true },

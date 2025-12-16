@@ -43,6 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
@@ -138,14 +139,12 @@ fun SplitButtonMenu(
     items : List<String>,
     backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    contentPadding : PaddingValues,
-    colorTextMenu: Color = MaterialTheme.colorScheme.onPrimary
+    colorTextMenu: Color = MaterialTheme.colorScheme.onPrimary,
+    heightMenu : Dp = 300.dp,
 ){
     var checked by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
-            .padding(end = contentPadding.calculateEndPadding(LayoutDirection.Ltr), start = contentPadding.calculateStartPadding(
-                LayoutDirection.Ltr))
             .padding(horizontal = 8.dp)
             .padding(bottom = 8.dp)
             .height(60.dp)
@@ -165,7 +164,7 @@ fun SplitButtonMenu(
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 Avatar(content.get(0))
                 Spacer(Modifier.size(8.dp))
                 Text(
@@ -185,7 +184,7 @@ fun SplitButtonMenu(
             contentAlignment = Alignment.Center
         ){
             ToggleIconButton(checked, { checked = it })
-            CustomDropDownMenu(checked, {checked = false}){
+            CustomDropDownMenu(checked, {checked = false}, heightMenu){
                 Column(
                     modifier = Modifier.padding(end = 20.dp, start = 20.dp)
                 ) {

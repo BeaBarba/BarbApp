@@ -66,7 +66,8 @@ class AllJobsSummaryActivity : ComponentActivity() {
                             .padding(
                                 top = contentPadding.calculateTopPadding() + 8.dp,
                                 start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp
+                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+                                bottom = contentPadding.calculateBottomPadding()
                             )
                             .fillMaxSize()
                     ) {
@@ -95,7 +96,7 @@ class AllJobsSummaryActivity : ComponentActivity() {
                             )
                             Spacer(Modifier.size(8.dp))
                         }
-                        item { Spacer(Modifier.size(120.dp)) }
+                        item{Spacer(Modifier.size(90.dp)) }
                     }
                 }
             }
