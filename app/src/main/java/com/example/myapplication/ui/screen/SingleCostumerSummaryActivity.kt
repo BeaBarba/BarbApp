@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -29,8 +28,7 @@ import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
-import com.example.myapplication.ui.component.CustomLabel
-import com.example.myapplication.ui.component.DropDownMenuCustomers
+import com.example.myapplication.ui.component.KeyValueLabel
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
@@ -70,17 +68,17 @@ class SingleCostumerSummaryActivity : ComponentActivity() {
                     ){
                         item{ TitleLabel("Dati Anagrafici") }
                         item{ Spacer(Modifier.size(8.dp)) }
-                        item{ CustomLabel("CF", "RSSMRA80A01A944I", 1.0f, 2.0f) }
+                        item{ KeyValueLabel("CF", "RSSMRA80A01A944I", 1.0f, 2.0f) }
                         item{ Spacer(Modifier.size(8.dp)) }
-                        item{ CustomLabel("Nome", "Mario", 1.0f, 2.0f) }
+                        item{ KeyValueLabel("Nome", "Mario", 1.0f, 2.0f) }
                         item{ Spacer(Modifier.size(8.dp)) }
-                        item{ CustomLabel("Cognome", "Rossi", 1.0f, 2.0f) }
+                        item{ KeyValueLabel("Cognome", "Rossi", 1.0f, 2.0f) }
                         item{ Spacer(Modifier.size(8.dp)) }
-                        item{ CustomLabel("Indirizzo", "Piazza dei martiri", 1.0f, 2.0f) }
+                        item{ KeyValueLabel("Indirizzo", "Piazza dei martiri", 1.0f, 2.0f) }
                         item{ Spacer(Modifier.size(8.dp)) }
-                        item{ CustomLabel("Comune", "Bologna", 1.0f, 2.0f) }
+                        item{ KeyValueLabel("Comune", "Bologna", 1.0f, 2.0f) }
                         item{ Spacer(Modifier.size(8.dp)) }
-                        item{ CustomLabel("CAP", "40133", 1.0f, 2.0f) }
+                        item{ KeyValueLabel("CAP", "40133", 1.0f, 2.0f) }
                         item{ CustomDivider() }
                         item{ TitleLabel("Interventi")  }
                         item{ Spacer(Modifier.size(8.dp)) }
@@ -109,5 +107,5 @@ class SingleCostumerSummaryActivity : ComponentActivity() {
                 }
             }
         }
-    }
+    } 
 }

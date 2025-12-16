@@ -102,7 +102,7 @@ fun GenericCard(
     interactionSource: MutableInteractionSource? = null,
 ){
 
-    val TEXT_TYPOGRAPHY = MaterialTheme.typography.headlineSmall
+    val TEXT_TYPOGRAPHY = MaterialTheme.typography.bodyLarge
     val DESCRIPTION_TYPOGRAPHY = MaterialTheme.typography.bodyMedium
 
     Card(

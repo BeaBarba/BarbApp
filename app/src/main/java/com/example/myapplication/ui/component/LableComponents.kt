@@ -1,15 +1,18 @@
 package com.example.myapplication.ui.component
 
+import android.content.ClipDescription
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,12 +28,15 @@ fun TitleLabel(
     title: String,
     modifier: Modifier = Modifier
         .height(40.dp).clip(RoundedCornerShape(10.dp))
-        .background(MaterialTheme.colorScheme.primary).fillMaxWidth(),
+        .background(MaterialTheme.colorScheme.primary)//,
+        .fillMaxWidth(),
     color: Color = MaterialTheme.colorScheme.onPrimary,
-    alignment: Alignment = Alignment.Center
+    alignment: Alignment = Alignment.Center,
+    //fullWith: Boolean = true
 ){
+    //val baseModifier = if(fullWith){Modifier.fillMaxWidth()}else{Modifier}
     Box(
-        modifier = modifier,
+        modifier = modifier,//.then(baseModifier),
         contentAlignment = alignment,
     ) {
         Text(
@@ -43,7 +49,7 @@ fun TitleLabel(
 }
 
 @Composable
-fun CustomLabel(
+fun KeyValueLabel(
     title: String,
     description: String,
     weightTitle: Float,
@@ -66,6 +72,63 @@ fun CustomLabel(
             modifier= Modifier
                 .weight(weighDescription)
                 .fillMaxHeight()
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .padding(horizontal = 10.dp),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            alignment = Alignment.CenterStart
+        )
+    }
+}
+
+@Composable
+fun DoubleKeyValueLabel(
+    firstTitle: String,
+    secondTitle: String,
+    firstDescription: String,
+    secondDescription: String
+){
+    Row(
+        modifier = Modifier
+            .height(40.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(color = MaterialTheme.colorScheme.primaryContainer),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        TitleLabel(
+            title = firstTitle,
+            modifier = Modifier
+                .height(40.dp)
+                .weight(1.0f)
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.primary)
+        )
+        TitleLabel(
+            title = firstDescription,
+            modifier= Modifier
+                .weight(1.0f)
+                .height(40.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .padding(horizontal = 10.dp),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            alignment = Alignment.CenterStart
+        )
+        Spacer(Modifier.size(8.dp))
+        TitleLabel(
+            title = secondTitle,
+            modifier = Modifier
+                .weight(1.0f)
+                .height(40.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.primary)
+        )
+        TitleLabel(
+            title = secondDescription,
+            modifier= Modifier
+                .weight(1.5f)
+                .height(40.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .background(MaterialTheme.colorScheme.primaryContainer)
                 .padding(horizontal = 10.dp),
