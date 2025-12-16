@@ -69,6 +69,12 @@
             android:name="com.example.myapplication.ui.screen.JobsMaterialActivity"
             android:exported="false"
             />
+
+        <!-- Payments -->
+        <activity
+            android:name="com.example.myapplication.ui.screen.AllPaymentsSummaryActivity"
+            android:exported="false"
+            />
     </application>
 
 </manifest>

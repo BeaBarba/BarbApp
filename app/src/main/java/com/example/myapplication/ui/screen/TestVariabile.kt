@@ -130,3 +130,32 @@ val interventi = listOf(
 )
 
 val tipi = interventi.map { intervento -> intervento.tipo }.distinct()
+
+data class Pagamenti(
+    val cliente: String,
+    val indirizzo: String,
+    val prezzo: String
+)
+
+val pagamenti = listOf(
+    Pagamenti("Mario Rossi", "Via Roma 1, Milano", "€120.00"),
+    Pagamenti("Giulia Bianchi", "Corso Garibaldi 12, Torino", "€85.50"),
+    Pagamenti("Luca Verdi", "Piazza Duomo 3, Milano", "€200.00"),
+    Pagamenti("Sara Neri", "Via Dante 7, Firenze", "€45.00"),
+    Pagamenti("Paolo Romano", "Viale Europa 20, Napoli", "€99.99"),
+    Pagamenti("Elena Russo", "Via Giulia 5, Roma", "€60.00"),
+    Pagamenti("Andrea Ferri", "Via Manzoni 10, Bologna", "€150.00"),
+    Pagamenti("Francesca Sala", "Via Po 18, Torino", "€30.00"),
+    Pagamenti("Matteo Longo", "Corso Venezia 25, Milano", "€250.00"),
+    Pagamenti("Valentina Greco", "Via San Marco 8, Venezia", "€75.00"),
+    Pagamenti("Roberto Fontana", "Viale Mazzini 2, Genova", "€1.100.00"),
+    Pagamenti("Chiara Conte", "Piazza San Carlo 4, Torino", "€40.00"),
+    Pagamenti("Stefano Moretti", "Via Cavour 14, Roma", "€95.00"),
+    Pagamenti("Marta De Luca", "Via S. Lucia 9, Napoli", "€55.00"),
+    Pagamenti("Giorgio Martini", "Corso Italia 6, Firenze", "€180.00"),
+    Pagamenti("Laura Rinaldi", "Via Nettuno 11, Bari", "€65.00"),
+    Pagamenti("Nicola Caputo", "Piazza Maggiore 1, Bologna", "€130.00"),
+    Pagamenti("Elisa Romano", "Via Verdi 22, Parma", "€49.90"),
+    Pagamenti("Alessio Galli", "Via Larga 16, Milano", "€210.00"),
+    Pagamenti("Federica Pini", "Viale Regina Margherita 30, Roma", "€70.00")
+)
