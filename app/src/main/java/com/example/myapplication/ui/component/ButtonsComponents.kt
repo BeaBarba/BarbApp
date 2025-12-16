@@ -25,6 +25,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -62,7 +63,7 @@ fun AddButton(onClick: () -> Unit){
 }
 
 @Composable
-fun DeleteButton(onclick: () -> Unit,){
+fun DeleteButton(onclick: () -> Unit){
     val BOX_COLOR = MaterialTheme.colorScheme.secondary
     val CONTENT_COLOR = MaterialTheme.colorScheme.onSecondary
     IconButton(

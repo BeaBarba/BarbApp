@@ -27,6 +27,7 @@ import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
+import com.example.myapplication.ui.component.DropDownMenuJobs
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TitleLabel
@@ -48,14 +49,7 @@ class AllJobsSummaryActivity : ComponentActivity() {
                         TopAppBar(
                             id = "Interventi",
                             navigationIcon = { BackButton() {}},
-                            trailingIcons = {
-                                IconButton(
-                                    onClick = {},
-                                    colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
-                                ) {
-                                        Icon(Icons.Filled.FilterAlt, "Filter")
-                                }
-                            }
+                            trailingIcons = {DropDownMenuJobs()}
                         )
                     },
                     floatingActionButton = { AddButton {} }
