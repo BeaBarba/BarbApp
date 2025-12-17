@@ -93,7 +93,9 @@ fun DatePickerModal(
 }
 
 @Composable
-fun DatePickerFieldToModal() {
+fun DatePickerFieldToModal(
+    title : String = "Data"
+) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
 
@@ -101,7 +103,7 @@ fun DatePickerFieldToModal() {
         value = selectedDate?.let { convertMillisToDate(it) } ?: "",
         onValueChange = { showModal = true },
         placeholder = { Text("DD/MM/YYYY") },
-        label = { Text(text = "Data", fontSize = MaterialTheme.typography.titleMedium.fontSize) },
+        label = { Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
         leadingIcon = { IconButton(
             onClick = { showModal = true},
             shape = RoundedCornerShape(15),
