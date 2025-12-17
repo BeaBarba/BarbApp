@@ -49,7 +49,7 @@ class SingleJobSummaryActivity: ComponentActivity() {
                     topBar = { TopAppBar(
                             id = "Intervento",
                             navigationIcon = { BackButton {} },
-                            trailingIcons = {
+                            trailingIcon = {
                                 IconButton(
                                     onClick = {},
                                     colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)

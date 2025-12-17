@@ -45,7 +45,7 @@ class CustomerAddActivity : ComponentActivity() {
                             navigationIcon = {
                                 BackButton {}
                             },
-                            trailingIcons = {
+                            trailingIcon = {
                                 IconButton(onClick = {}, colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)) {
                                     Icon(Icons.Filled.Check, "Save")
                                 }

@@ -42,7 +42,7 @@ class HomeActivity : ComponentActivity() {
                         topBar = { TopAppBar(
                             id = "Home",
                             navigationIcon = { DropDownMenuHome()},
-                            trailingIcons = {IconButton(onClick = {/*CartActivity*/}){
+                            trailingIcon = {IconButton(onClick = {/*CartActivity*/}){
                                 Icon(Icons.Filled.ShoppingCart, contentDescription = "Shop item", tint = MaterialTheme.colorScheme.onPrimary)
                             }
                         })},

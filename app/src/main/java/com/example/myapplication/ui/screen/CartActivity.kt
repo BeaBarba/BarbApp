@@ -44,7 +44,7 @@ class CartActivity : ComponentActivity() {
                         TopAppBar(id = "Carrello",
                             navigationIcon = { BackButton {val intent = Intent(ctx, MainActivity::class.java)
                                 ctx.startActivity(intent)} },
-                            trailingIcons = {
+                            trailingIcon = {
                                 IconButton(onClick = {}) {
                                     Icon(
                                         painterResource(R.drawable.description_24dp),

@@ -36,7 +36,7 @@ class AllCustomersSummaryActivity : ComponentActivity() {
                         TopAppBar(
                             id = "Clienti",
                             navigationIcon = { BackButton() {} },
-                            trailingIcons = { DropDownMenuCustomers() }
+                            trailingIcon = { DropDownMenuCustomers() }
                         )
                     },
                     floatingActionButton = { AddButton() {} }

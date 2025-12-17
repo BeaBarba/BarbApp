@@ -49,7 +49,7 @@ class AllJobsSummaryActivity : ComponentActivity() {
                         TopAppBar(
                             id = "Interventi",
                             navigationIcon = { BackButton() {}},
-                            trailingIcons = {DropDownMenuJobs()}
+                            trailingIcon = {DropDownMenuJobs()}
                         )
                     },
                     floatingActionButton = { AddButton {} }

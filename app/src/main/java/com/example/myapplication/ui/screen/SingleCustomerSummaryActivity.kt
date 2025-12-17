@@ -50,7 +50,7 @@ class SingleCustomerSummaryActivity : ComponentActivity() {
                         TopAppBar(
                             id = "Clienti",
                             navigationIcon = { BackButton() {} },
-                            trailingIcons = { IconButton(onClick = {}) {
+                            trailingIcon = { IconButton(onClick = {}) {
                                 Icon(painterResource(R.drawable.edit_square_24dp), contentDescription = "Edit", tint = MaterialTheme.colorScheme.onPrimary)
                             } }
                         )

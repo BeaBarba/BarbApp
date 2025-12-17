@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -17,7 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +32,6 @@ import com.example.myapplication.ui.component.DropDownMenuPayments
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkColorAvatar
 import com.example.myapplication.ui.component.checkboxColors
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
@@ -52,7 +49,7 @@ class AllPaymentsSummaryActivity : ComponentActivity() {
                         TopAppBar(
                             navigationIcon = {BackButton {  }},
                             id = "Pagamenti",
-                            trailingIcons = {DropDownMenuPayments()}
+                            trailingIcon = {DropDownMenuPayments()}
                         )
                     },
                     floatingActionButton = {AddButton {  }}

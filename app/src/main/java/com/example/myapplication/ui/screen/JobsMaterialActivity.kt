@@ -54,7 +54,7 @@ class JobsMaterialActivity : ComponentActivity() {
                         TopAppBar(
                             id = "Materiale - Intervento",
                             navigationIcon = { BackButton {  } },
-                            trailingIcons = {
+                            trailingIcon = {
                                 IconButton(
                                     onClick = {},
                                     colors = IconButtonDefaults.iconButtonColors(

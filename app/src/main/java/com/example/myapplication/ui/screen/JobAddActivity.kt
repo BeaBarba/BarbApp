@@ -49,7 +49,7 @@ class JobAddActivity : ComponentActivity() {
                         TopAppBar(
                             id = "Intervento",
                             navigationIcon = {BackButton {}},
-                            trailingIcons = {
+                            trailingIcon = {
                                 IconButton(
                                     onClick = {},
                                     colors = IconButtonDefaults.iconButtonColors(
