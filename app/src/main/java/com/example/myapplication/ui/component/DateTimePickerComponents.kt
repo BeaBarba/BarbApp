@@ -19,6 +19,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,6 +35,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,31 +56,46 @@ fun convertMillisToDate(millis: Long): String {
 
 @Composable
 fun DatePickerModal(
+    datePickerState: DatePickerState, //
+    openDialogState: MutableState<Boolean>,//
     onDateSelected: (Long?) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: (() -> Unit)? = null//() -> Unit
 ) {
-    val datePickerState = rememberDatePickerState()
+    if(!openDialogState.value){ return }//
+
     val TEXT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
     val CONTAINER_COLOR = MaterialTheme.colorScheme.primaryContainer
 
     DatePickerDialog(
-        onDismissRequest = onDismiss,
+        onDismissRequest = {
+            openDialogState.value = false
+            onDismiss?.invoke()
+            //onDismiss
+        },
         confirmButton = {
             TextButton(
                 onClick = {
                     onDateSelected(datePickerState.selectedDateMillis)
-                    onDismiss()
-                }) { Text("OK", color = TEXT_COLOR) }
+                    openDialogState.value = false //
+                }
+            ) {
+                Text("OK", color = TEXT_COLOR)
+            }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel", color = TEXT_COLOR) } },
-        colors = DatePickerDefaults.colors(
-            containerColor = CONTAINER_COLOR,
-        )
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    openDialogState.value = false
+                    onDismiss?.invoke()
+                    //onDismiss
+                }) { Text("Cancel", color = TEXT_COLOR) }
+
+        },
+        colors = DatePickerDefaults.colors(containerColor = CONTAINER_COLOR)
     ) {
         DatePicker(
             state = datePickerState,
             colors = DatePickerDefaults.colors(
-                //containerColor = CONTAINER_COLOR,
                 dividerColor = TEXT_COLOR,
                 titleContentColor = TEXT_COLOR,
                 headlineContentColor = TEXT_COLOR,
@@ -97,15 +114,16 @@ fun DatePickerFieldToModal(
     title : String = "Data"
 ) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
-    var showModal by remember { mutableStateOf(false) }
+    var showModal = remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState()
 
     OutlinedTextField(
         value = selectedDate?.let { convertMillisToDate(it) } ?: "",
-        onValueChange = { showModal = true },
+        onValueChange = { showModal.value= true },
         placeholder = { Text("DD/MM/YYYY") },
         label = { Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
         leadingIcon = { IconButton(
-            onClick = { showModal = true},
+            onClick = { showModal.value = true},
             shape = RoundedCornerShape(15),
             modifier = Modifier.size(30.dp),
         ) { Icon(Icons.Default.DateRange, contentDescription = "Select date") }
@@ -123,10 +141,12 @@ fun DatePickerFieldToModal(
         colors =  outlinedTextFieldColor()
     )
 
-    if (showModal) {
+    if (showModal.value) {
         DatePickerModal(
+            datePickerState = datePickerState,
+            openDialogState = showModal,
             onDateSelected = { selectedDate = it },
-            onDismiss = { showModal = false }
+            onDismiss = { showModal.value = false }
         )
     }
 }

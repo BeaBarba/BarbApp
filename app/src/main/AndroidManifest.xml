@@ -83,6 +83,12 @@
             android:name="com.example.myapplication.ui.screen.PaymentAddActivity"
             android:exported="false"
             />
+
+        <!-- Calendar -->
+        <activity
+            android:name="com.example.myapplication.ui.screen.TodayCalendarActivity"
+            android:exported="false"
+            />
     </application>
 
 </manifest>

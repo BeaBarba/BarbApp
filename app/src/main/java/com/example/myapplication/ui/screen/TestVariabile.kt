@@ -160,3 +160,23 @@ val pagamenti = listOf(
     Pagamenti("Alessio Galli", "Via Larga 16, Milano", "€210.00", "27/07/2025"),
     Pagamenti("Federica Pini", "Viale Regina Margherita 30, Roma", "€70.00", "13/08/2025")
 )
+
+data class Appuntamento(
+    val indirizzo: String,
+    val cliente: String,
+    val tipo: String,
+    val descrizione: String
+)
+
+val appuntamenti = listOf(
+    Appuntamento("Via Garibaldi 12, Milano", "Rossi Mario", "ELE",  "Sostituzione contatore elettrico, controllo cablaggio"),
+    Appuntamento("Piazza Duomo 3, Milano",   "Bianchi Anna", "ALA",  "Installazione antenna TV sul tetto"),
+    Appuntamento("Corso Italia 45, Torino",  "Verdi Luca",   "CDZ",  "Manutenzione condizionatore split, ricarica gas"),
+    Appuntamento("Via Roma 7, Genova",       "Ferrari Laura","NONE", "Ispezione generale, nessun intervento previsto"),
+    Appuntamento("Viale Europa 10, Napoli",  "Esposito Marco","ELE", "Riparazione quadro elettrico, sostituzione fusibili"),
+    Appuntamento("Via Po 29, Torino",        "Romano Silvia","ALA",  "Regolazione antenna satellitare"),
+    Appuntamento("Via Mazzini 2, Bologna",   "Ricci Paolo",  "CDZ",  "Pulizia filtri e controllo compressore"),
+    Appuntamento("Piazza San Marco 1, Venezia","Gallo Elisa","ELE",  "Verifica impianto e sostituzione presa"),
+    Appuntamento("Via Larga 8, Firenze",     "Moretti Fabio","NONE", "Consulenza e preventivo"),
+    Appuntamento("Via Sant'Angelo 6, Bari",  "Conti Laura",  "ALA",  "Montaggio antenna per ricezione digitale")
+)
