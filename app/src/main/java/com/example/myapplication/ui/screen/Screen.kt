@@ -59,10 +59,10 @@ fun Screen(modifier : Modifier){
         topBar = {
             TopAppBar("Screen",
             navigationIcon = {
-                BackButton(){val intent = Intent(ctx, JobsMaterialActivity::class.java)
+                BackButton(){val intent = Intent(ctx, SinglePaymentSummaryActivity::class.java)
                     ctx.startActivity(intent)}
             },
-            trailingIcons = { DropDownMenuCustomers() })
+            trailingIcon = { DropDownMenuCustomers() })
         },
         floatingActionButton = {AddButton(){
             val intent = Intent(ctx, HomeActivity ::class.java)

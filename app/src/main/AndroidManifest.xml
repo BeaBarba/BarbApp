@@ -75,6 +75,10 @@
             android:name="com.example.myapplication.ui.screen.AllPaymentsSummaryActivity"
             android:exported="false"
             />
+        <activity
+            android:name="com.example.myapplication.ui.screen.SinglePaymentSummaryActivity"
+            android:exported="false"
+            />
     </application>
 
 </manifest>
