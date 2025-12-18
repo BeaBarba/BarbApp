@@ -181,6 +181,10 @@ val appuntamenti = listOf(
     Appuntamento("Via Sant'Angelo 6, Bari",  "Conti Laura",  "ALA",  "Montaggio antenna per ricezione digitale")
 )
 
+val categorie = listOf("Ristorante","Fornitore","Macchina")
+
+val venditori = listOf("Venditore1", "Venditore2", "Venditore3" )
+
 data class Scadenze(
     val fornitore: String,
     val categoria: String,
