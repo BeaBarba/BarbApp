@@ -109,6 +109,10 @@
             android:name="com.example.myapplication.ui.screen.DeadlineAddActivity"
             android:exported="false"
             />
+        <activity
+            android:name="com.example.myapplication.ui.screen.SingleDeadlineSummaryActivity"
+            android:exported="false"
+            />
     </application>
 
 </manifest>

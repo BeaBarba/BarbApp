@@ -98,7 +98,6 @@ fun CustomDivider(color : Color = MaterialTheme.colorScheme.primary, paddingHori
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun CustomAlertDialog(
-    //contentPadding: PaddingValues,
     onDismiss: ()-> Unit,
     title: String,
     subtitle: String,
@@ -111,11 +110,7 @@ fun CustomAlertDialog(
 
     AlertDialog(
         modifier = Modifier
-            /*.padding(
-                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
-                start = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
-            )*/
-            .fillMaxWidth(/*0.8f*/),
+            .fillMaxWidth(0.8f),
         shape = RoundedCornerShape(15),
         tonalElevation = 8.dp,
         containerColor = checkColor(type, primaryContainer = true),

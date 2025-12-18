@@ -144,7 +144,8 @@ fun BoxDescription(text: String){
     Box(
         modifier = Modifier
             .border(2.dp, MaterialTheme.colorScheme.primary)
-            .padding(10.dp),
+            .padding(10.dp)
+            .fillMaxWidth(),
         contentAlignment = Alignment.CenterStart
     ){
         Text(
