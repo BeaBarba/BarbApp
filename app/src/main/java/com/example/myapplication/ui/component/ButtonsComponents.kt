@@ -204,7 +204,11 @@ fun SplitButtonMenu(
 }
 
 @Composable
-fun SplitButtonList(showItems: Boolean, onClick: () -> Unit){
+fun SplitButtonList(
+    text : String,
+    showItems: Boolean,
+    onClick: () -> Unit
+){
     GenericCard(
         leadingContent = {
             if(showItems){
@@ -213,7 +217,7 @@ fun SplitButtonList(showItems: Boolean, onClick: () -> Unit){
                 Icon(Icons.Filled.KeyboardArrowDown, contentDescription = "Hide items", modifier = Modifier.size(35.dp))
             }
         },
-        text = "Completati",
+        text = text,
         onClick = onClick
     )
 }

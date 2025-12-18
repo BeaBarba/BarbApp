@@ -59,7 +59,7 @@ fun Screen(modifier : Modifier){
         topBar = {
             TopAppBar("Screen",
                 navigationIcon = {
-                    BackButton(){val intent = Intent(ctx, AllDeadlinesSummaryActivity ::class.java)
+                    BackButton(){val intent = Intent(ctx, StatisticsActivity ::class.java)
                         ctx.startActivity(intent)}
                 },
                 trailingIcon = { DropDownMenuCustomers() }
@@ -80,7 +80,6 @@ fun Screen(modifier : Modifier){
                 .fillMaxSize()
         ){
             Spacer(Modifier.size(8.dp))
-            //CheckLazyList(itemsList, contentPadding)
             Table<Prodotto>(contentPadding, prodotti, listOf(
                 TableColumn("PRODOTTO", 3.0f ),
                 TableColumn("QTÀ", 1.5f),

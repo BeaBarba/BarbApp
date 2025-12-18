@@ -15,14 +15,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,9 +33,9 @@ import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
+import com.example.myapplication.ui.component.ListItemCheckbox
+import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkColorAvatar
-import com.example.myapplication.ui.component.checkboxColors
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class PaymentAddActivity : ComponentActivity(){
@@ -76,7 +73,8 @@ class PaymentAddActivity : ComponentActivity(){
                                 bottom = contentPadding.calculateBottomPadding()
                             )
                     ) {
-                        item{GenericCard(
+                        item{
+                            GenericCard(
                             leadingContent = {
                                 Avatar(char = pagamenti[0].cliente.get(0))
                             },
@@ -90,44 +88,19 @@ class PaymentAddActivity : ComponentActivity(){
                         item{Spacer(Modifier.size(8.dp))}
                         item{DatePickerFieldToModal("Data Riscossione")}
                         item{Spacer(Modifier.size(8.dp))}
-                        item{GenericCard(
-                            leadingContent = {
-                                if(showItems){
-                                    Icon(Icons.Filled.KeyboardArrowDown, contentDescription = "Show items", modifier = Modifier.size(35.dp))
-                                }else{
-                                    Icon(Icons.Filled.ChevronRight, contentDescription = "Hide items", modifier = Modifier.size(35.dp))
-                                }
-                            },
-                            text = "Interventi",
-                            onClick = {showItems = !showItems}
-                        ) }
+                        item{SplitButtonList(text = "Interventi", showItems = showItems, onClick = {showItems = !showItems})}
                         item{Spacer(Modifier.size(8.dp))}
                         if(showItems) {
                             items(interventi){item ->
                                 var checked by remember { mutableStateOf(false) }
-                                GenericCard(
-                                    type = item.tipo,
-                                    leadingContent = {
-                                        Avatar(
-                                            char = item.tipo.get(0),
-                                            textColor = checkColorAvatar(item.tipo, primary = true),
-                                            backgroundColor = checkColorAvatar(
-                                                item.tipo,
-                                                onPrimary = true
-                                            )
-                                        )
-                                    },
+                                ListItemCheckbox(
+                                    char = item.tipo.get(0),
                                     text = item.indirizzo + ", " + item.comune,
                                     textDescription = item.data,
-                                    trailingContent = {
-                                        Checkbox(
-                                            checked = checked,
-                                            onCheckedChange = { checked = !checked},
-                                            colors = checkboxColors(type = item.tipo)
-                                        )
-                                    }
+                                    checked = checked,
+                                    onCheckedChange = {checked = !checked},
+                                    type = item.tipo
                                 )
-
                                 Spacer(Modifier.size(8.dp))
                             }
                         }

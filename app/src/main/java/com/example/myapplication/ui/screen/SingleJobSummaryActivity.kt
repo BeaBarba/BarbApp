@@ -69,54 +69,66 @@ class SingleJobSummaryActivity: ComponentActivity() {
                                 bottom = contentPadding.calculateBottomPadding()
                             )
                     ) {
-                        item{ GenericCard(
-                            text = customers[0],
-                            leadingContent = { Avatar(char = customers[0][0]) }
-                        )}
-                        item{Spacer(Modifier.size(8.dp))}
-                        item{KeyValueLabel(
-                            title = "Indirizzo",
-                            description = "Pasquale ordlandi 21",
-                            weightTitle = 1.0f,
-                            weighDescription = 2.0f
+                        item{
+                            GenericCard(
+                                text = customers[0],
+                                leadingContent = { Avatar(char = customers[0][0]) }
                             )
                         }
                         item{Spacer(Modifier.size(8.dp))}
-                        item{KeyValueLabel(
-                            title = "Comune",
-                            description = "Medicina",
-                            weightTitle = 1.0f,
-                            weighDescription = 2.0f
-                        )
+                        item{
+                            KeyValueLabel(
+                                title = "Indirizzo",
+                                description = "Pasquale ordlandi 21",
+                                weightTitle = 1.0f,
+                                weighDescription = 2.0f
+                            )
                         }
                         item{Spacer(Modifier.size(8.dp))}
-                        item{DoubleKeyValueLabel(
-                            firstTitle = "CAP",
-                            firstDescription = "40059",
-                            secondTitle = "Provincia",
-                            secondDescription = "BO"
-                        )}
+                        item{
+                            KeyValueLabel(
+                                title = "Comune",
+                                description = "Medicina",
+                                weightTitle = 1.0f,
+                                weighDescription = 2.0f
+                            )
+                        }
                         item{Spacer(Modifier.size(8.dp))}
-                        item{DoubleKeyValueLabel(
-                            firstTitle = "Prezzo",
-                            firstDescription = "1.000€",
-                            secondTitle = "Data",
-                            secondDescription = "01/01/2025"
-                        )}
+                        item{
+                            DoubleKeyValueLabel(
+                                firstTitle = "CAP",
+                                firstDescription = "40059",
+                                secondTitle = "Provincia",
+                                secondDescription = "BO"
+                            )
+                        }
                         item{Spacer(Modifier.size(8.dp))}
-                        item{DoubleKeyValueLabel(
-                            firstTitle = "Ora Inizio",
-                            firstDescription = "09:00",
-                            secondTitle = "Ora Fine",
-                            secondDescription = "12:00"
-                        )}
+                        item{
+                            DoubleKeyValueLabel(
+                                firstTitle = "Prezzo",
+                                firstDescription = "1.000€",
+                                secondTitle = "Data",
+                                secondDescription = "01/01/2025"
+                            )
+                        }
                         item{Spacer(Modifier.size(8.dp))}
-                        item{KeyValueLabel(
-                            title = "Tipo",
-                            description = "Elettrico",
-                            weightTitle = 1.0f,
-                            weighDescription = 2.0f
-                        )}
+                        item{
+                            DoubleKeyValueLabel(
+                                firstTitle = "Ora Inizio",
+                                firstDescription = "09:00",
+                                secondTitle = "Ora Fine",
+                                secondDescription = "12:00"
+                            )
+                        }
+                        item{Spacer(Modifier.size(8.dp))}
+                        item{
+                            KeyValueLabel(
+                                title = "Tipo",
+                                description = "Elettrico",
+                                weightTitle = 1.0f,
+                                weighDescription = 2.0f
+                            )
+                        }
                         item{Spacer(Modifier.size(8.dp))}
                         item{TitleLabel(title = "Descrizione")}
                         item{Spacer(Modifier.size(8.dp))}

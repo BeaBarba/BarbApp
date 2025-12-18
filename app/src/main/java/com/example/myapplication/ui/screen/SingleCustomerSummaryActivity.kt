@@ -50,9 +50,15 @@ class SingleCustomerSummaryActivity : ComponentActivity() {
                         TopAppBar(
                             id = "Clienti",
                             navigationIcon = { BackButton() {} },
-                            trailingIcon = { IconButton(onClick = {}) {
-                                Icon(painterResource(R.drawable.edit_square_24dp), contentDescription = "Edit", tint = MaterialTheme.colorScheme.onPrimary)
-                            } }
+                            trailingIcon = {
+                                IconButton(onClick = {}) {
+                                    Icon(
+                                        painterResource(R.drawable.edit_square_24dp),
+                                        contentDescription = "Edit",
+                                        tint = MaterialTheme.colorScheme.onPrimary
+                                    )
+                                }
+                            }
                         )
                     },
                     floatingActionButton = { AddButton() {} }
@@ -95,9 +101,9 @@ class SingleCustomerSummaryActivity : ComponentActivity() {
                                     )
                                 },
                                 trailingContent = {
-                                    IconButton(
-                                        onClick = {}
-                                    ) {Icon(Icons.Filled.Mode, contentDescription = "Modify", tint = checkColor(item.tipo, onPrimaryContainer = true)) }
+                                    IconButton(onClick = {}) {
+                                        Icon(Icons.Filled.Mode, contentDescription = "Modify", tint = checkColor(item.tipo, onPrimaryContainer = true))
+                                    }
                                 },
                                 type = item.tipo
                             )

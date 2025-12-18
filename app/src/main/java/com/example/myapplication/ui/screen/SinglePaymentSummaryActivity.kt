@@ -14,9 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -32,6 +29,7 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.DoubleKeyValueLabel
 import com.example.myapplication.ui.component.GenericCard
+import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -71,31 +69,23 @@ class SinglePaymentSummaryActivity : ComponentActivity() {
                                 bottom = contentPadding.calculateBottomPadding()
                             )
                     ){
-                        item{GenericCard(
-                            leadingContent = {
-                                Avatar(char = pagamenti[0].cliente.get(0))
-                            },
-                            text = pagamenti[0].cliente,
-                        )}
+                        item{
+                            GenericCard(
+                                leadingContent = {Avatar(char = pagamenti[0].cliente.get(0))},
+                                text = pagamenti[0].cliente,
+                            )
+                        }
                         item{Spacer(Modifier.size(8.dp))}
-                        item{DoubleKeyValueLabel(
-                            firstTitle = "Prezzo",
-                            firstDescription = pagamenti[0].prezzo,
-                            secondTitle = "Data",
-                            secondDescription = pagamenti[0].data
-                        )}
+                        item{
+                            DoubleKeyValueLabel(
+                                firstTitle = "Prezzo",
+                                firstDescription = pagamenti[0].prezzo,
+                                secondTitle = "Data",
+                                secondDescription = pagamenti[0].data
+                            )
+                        }
                         item{Spacer(Modifier.size(8.dp))}
-                        item{GenericCard(
-                            leadingContent = {
-                                if(showItems){
-                                    Icon(Icons.Filled.KeyboardArrowDown, contentDescription = "Show items", modifier = Modifier.size(35.dp))
-                                }else{
-                                    Icon(Icons.Filled.ChevronRight, contentDescription = "Hide items", modifier = Modifier.size(35.dp))
-                                }
-                            },
-                            text = "Interventi",
-                            onClick = {showItems = !showItems}
-                        ) }
+                        item{SplitButtonList(text = "Interventi", showItems = showItems, onClick = {showItems = !showItems})}
                         item{Spacer(Modifier.size(8.dp))}
                         if(showItems) {
                             items(interventi){item ->
@@ -117,7 +107,6 @@ class SinglePaymentSummaryActivity : ComponentActivity() {
                                         Text(text = item.prezzo.toString())
                                     }
                                 )
-
                                 Spacer(Modifier.size(8.dp))
                             }
                         }

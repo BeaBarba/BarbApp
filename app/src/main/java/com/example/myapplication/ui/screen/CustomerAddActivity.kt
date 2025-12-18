@@ -46,7 +46,10 @@ class CustomerAddActivity : ComponentActivity() {
                                 BackButton {}
                             },
                             trailingIcon = {
-                                IconButton(onClick = {}, colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)) {
+                                IconButton(
+                                    onClick = {},
+                                    colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
+                                ) {
                                     Icon(Icons.Filled.Check, "Save")
                                 }
                             }
@@ -64,15 +67,15 @@ class CustomerAddActivity : ComponentActivity() {
                             .fillMaxSize()
                     ) {
                         item {TitleLabel("Dati Anagrafici")}
-                        item { CustomOutlineTextField("CF") }
-                        item { CustomOutlineTextField("Nome") }
-                        item { CustomOutlineTextField("Cognome") }
-                        item { CustomOutlineTextField("Indirizzo") }
-                        item { CustomOutlineTextField("Comune") }
-                        item { CustomOutlineTextField("Provincia") }
-                        item { CustomOutlineTextField("CAP") }
-                        item { Spacer(Modifier.size(10.dp)) }
-                        item { DeleteButton({}) }
+                        item {CustomOutlineTextField("CF")}
+                        item {CustomOutlineTextField("Nome")}
+                        item {CustomOutlineTextField("Cognome")}
+                        item {CustomOutlineTextField("Indirizzo")}
+                        item {CustomOutlineTextField("Comune")}
+                        item {CustomOutlineTextField("Provincia")}
+                        item {CustomOutlineTextField("CAP")}
+                        item {Spacer(Modifier.size(10.dp))}
+                        item {DeleteButton({})}
                     }
                 }
             }

@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.outlined.AddPhotoAlternate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -72,15 +72,23 @@ class JobAddActivity : ComponentActivity() {
                             )
                             .fillMaxSize()
                     ){
-                        item{GenericCard(
-                            leadingContent = {
-                                Avatar(
-                                    char = letters.get(0),
-                                )
-                            },
-                            text = customers.get(0),
-                            trailingContent = {Icon(Icons.AutoMirrored.Filled.ArrowRight, contentDescription = "Edit Customer", modifier = Modifier.size(40.dp))}
-                        )}
+                        item{
+                            GenericCard(
+                                leadingContent = {
+                                    Avatar(
+                                        char = letters.get(0),
+                                    )
+                                },
+                                text = customers.get(0),
+                                trailingContent = {
+                                    Icon(
+                                        Icons.Filled.ChevronRight,
+                                        contentDescription = "Edit Customer",
+                                        modifier = Modifier.size(35.dp)
+                                    )
+                                }
+                            )
+                        }
                         item{Spacer(Modifier.size(8.dp))}
                         item{CustomOutlineTextField("Indirizzo")}
                         item{Spacer(Modifier.size(8.dp))}
@@ -102,10 +110,18 @@ class JobAddActivity : ComponentActivity() {
                         item{Spacer(Modifier.size(8.dp))}
                         item{SplitButtonMenu(content = "Tipo", items = tipi, heightMenu = (tipi.size *55).dp)}
                         item{Spacer(Modifier.size(8.dp))}
-                        item{GenericCard(
-                            text = "Materiale",
-                            trailingContent = {Icon(Icons.AutoMirrored.Filled.ArrowRight, contentDescription = "Edit Materials", modifier = Modifier.size(40.dp))}
-                        )}
+                        item{
+                            GenericCard(
+                                text = "Materiale",
+                                trailingContent = {
+                                    Icon(
+                                        Icons.Filled.ChevronRight,
+                                        contentDescription = "Edit Materials",
+                                        modifier = Modifier.size(35.dp)
+                                    )
+                                }
+                            )
+                        }
                         item{Spacer(Modifier.size(8.dp))}
                         item{GenericCard(
                             text = "Aggiungi Foto",

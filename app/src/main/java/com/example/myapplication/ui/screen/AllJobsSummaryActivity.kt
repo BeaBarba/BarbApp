@@ -12,12 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FilterAlt
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -65,32 +59,41 @@ class AllJobsSummaryActivity : ComponentActivity() {
                             )
                             .fillMaxSize()
                     ) {
-                        item { SearchAppBar("Intervento", contentPadding) }
+                        item {SearchAppBar("Intervento", contentPadding)}
                         items(interventi){item ->
                             GenericCard(
                                 item.indirizzo,
                                 textDescription = item.cognomeNome,
-                                leadingContent = { Avatar(item.tipo[0],
-                                    textColor = checkColorAvatar(item.tipo, primary = true),
-                                    backgroundColor = checkColorAvatar(item.tipo, onPrimary = true))
+                                leadingContent = {
+                                    Avatar(
+                                        item.tipo[0],
+                                        textColor = checkColorAvatar(item.tipo, primary = true),
+                                        backgroundColor = checkColorAvatar(item.tipo, onPrimary = true)
+                                    )
                                 },
                                 type = item.tipo
                             )
                             Spacer(Modifier.size(8.dp))
                         }
-                        item { CustomDivider() }
-                        item { TitleLabel("Effettuati") }
-                        item { Spacer(Modifier.size(8.dp)) }
+                        item {CustomDivider()}
+                        item {TitleLabel("Effettuati")}
+                        item {Spacer(Modifier.size(8.dp))}
                         items(interventi){item ->
                             GenericCard(
                                 item.indirizzo,
                                 textDescription = item.cognomeNome,
-                                leadingContent = { Avatar(item.tipo[0], textColor = checkColorAvatar(item.tipo, primary = true), backgroundColor = checkColorAvatar(item.tipo, onPrimary = true))},
+                                leadingContent = {
+                                    Avatar(
+                                        item.tipo[0],
+                                        textColor = checkColorAvatar(item.tipo, primary = true),
+                                        backgroundColor = checkColorAvatar(item.tipo, onPrimary = true)
+                                    )
+                                },
                                 type = item.tipo
                             )
                             Spacer(Modifier.size(8.dp))
                         }
-                        item{Spacer(Modifier.size(90.dp)) }
+                        item{Spacer(Modifier.size(90.dp))}
                     }
                 }
             }
