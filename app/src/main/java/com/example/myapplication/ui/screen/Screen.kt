@@ -58,11 +58,12 @@ fun Screen(modifier : Modifier){
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar("Screen",
-            navigationIcon = {
-                BackButton(){val intent = Intent(ctx, JobsMaterialActivity::class.java)
-                    ctx.startActivity(intent)}
-            },
-            trailingIcon = { DropDownMenuCustomers() })
+                navigationIcon = {
+                    BackButton(){val intent = Intent(ctx, AllCleaningSummaryActivity ::class.java)
+                        ctx.startActivity(intent)}
+                },
+                trailingIcon = { DropDownMenuCustomers() }
+            )
         },
         floatingActionButton = {AddButton(){
             val intent = Intent(ctx, HomeActivity ::class.java)

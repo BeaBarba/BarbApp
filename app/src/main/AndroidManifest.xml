@@ -93,6 +93,12 @@
             android:name="com.example.myapplication.ui.screen.DayCalendarActivity"
             android:exported="false"
             />
+
+        <!-- Cleaning -->
+        <activity
+            android:name="com.example.myapplication.ui.screen.AllCleaningSummaryActivity"
+            android:exported="false"
+            />
     </application>
 
 </manifest>
