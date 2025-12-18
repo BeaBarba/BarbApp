@@ -99,6 +99,12 @@
             android:name="com.example.myapplication.ui.screen.AllCleaningSummaryActivity"
             android:exported="false"
             />
+
+        <!-- Deadlines -->
+        <activity
+            android:name="com.example.myapplication.ui.screen.AllDeadlinesSummaryActivity"
+            android:exported="false"
+            />
     </application>
 
 </manifest>

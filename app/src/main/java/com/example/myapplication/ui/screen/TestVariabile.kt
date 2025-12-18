@@ -180,3 +180,32 @@ val appuntamenti = listOf(
     Appuntamento("Via Larga 8, Firenze",     "Moretti Fabio","NONE", "Consulenza e preventivo"),
     Appuntamento("Via Sant'Angelo 6, Bari",  "Conti Laura",  "ALA",  "Montaggio antenna per ricezione digitale")
 )
+
+data class Scadenze(
+    val fornitore: String,
+    val categoria: String,
+    val prezzo: Float
+)
+
+val scadenze = listOf(
+    Scadenze("Pizzeria Bella", "Ristorante", 45.50f),
+    Scadenze("Forniture S.p.A.", "fornitore", 120.00f),
+    Scadenze("Autocarrozzeria Rossi", "macchina", 350.75f),
+    Scadenze("Trattoria Da Mario", "Ristorante", 80.00f),
+    Scadenze("Fornitore Alimentare SRL", "fornitore", 210.30f),
+    Scadenze("Lavaggio Auto Milano", "macchina", 60.00f),
+    Scadenze("Osteria del Porto", "Ristorante", 95.20f),
+    Scadenze("Elettronica & Co.", "fornitore", 499.99f),
+    Scadenze("Carrozzeria Latina", "macchina", 275.40f),
+    Scadenze("Ristorante Il Girasole", "Ristorante", 120.00f),
+    Scadenze("Forniture Cucina SRL", "fornitore", 330.10f),
+    Scadenze("Officina Meccanica Bianchi", "macchina", 420.00f),
+    Scadenze("Trattoria La Nonna", "Ristorante", 68.75f),
+    Scadenze("Fornitore Bevande SPA", "fornitore", 150.25f),
+    Scadenze("Centro Revisioni Roma", "macchina", 89.90f),
+    Scadenze("Pasticceria Dolce Vita", "Ristorante", 34.60f),
+    Scadenze("Forniture Gelato SRL", "fornitore", 245.00f),
+    Scadenze("Gomme & Co.", "macchina", 210.50f),
+    Scadenze("Ristorante La Scala", "Ristorante", 132.40f),
+    Scadenze("Fornitore Packaging", "fornitore", 77.80f)
+)

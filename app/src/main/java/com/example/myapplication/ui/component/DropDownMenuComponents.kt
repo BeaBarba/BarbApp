@@ -344,7 +344,7 @@ fun DropDownMenuCustomers(){
 }
 
 @Composable
-fun DropDownMenuRevenue(){
+fun DropDownMenuPayments(){
     var expanded by remember { mutableStateOf(false) }
 
     Box(){
@@ -368,7 +368,7 @@ fun DropDownMenuRevenue(){
 }
 
 @Composable
-fun DropDownMenuPayments(){
+fun DropDownMenuDeadlines(){
     var expanded by remember { mutableStateOf(false) }
     var category =  listOf("cat1" , "cat2" , "cat3")
 
