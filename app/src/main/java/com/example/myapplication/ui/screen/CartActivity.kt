@@ -17,6 +17,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -27,6 +31,7 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CartCard
+import com.example.myapplication.ui.component.CustomAlertDialog
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
@@ -68,7 +73,19 @@ class CartActivity : ComponentActivity() {
                     ) {
                         item{ Spacer(Modifier.size(10.dp))}
                         items(prodotti) { item ->
-                            CartCard(item)
+                            var showDialog by remember { mutableStateOf(false) }
+
+                            CartCard(item, {showDialog = true})
+
+                            if (showDialog) {
+                                CustomAlertDialog(
+                                    onDismiss = { showDialog = false },
+                                    title = item.nome,
+                                    subtitle = item.modello,
+                                    content = itemsList.subList(0,5),
+                                    type = item.tipo
+                                )
+                            }
                         }
                         item{Spacer(Modifier.size(80.dp))}
                     }

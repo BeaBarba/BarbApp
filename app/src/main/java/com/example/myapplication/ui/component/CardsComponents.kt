@@ -3,6 +3,7 @@ package com.example.myapplication.ui.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -108,14 +109,14 @@ fun GenericCard(
     Card(
         modifier = Modifier
             .height(60.dp)
-            .clip(RoundedCornerShape(15.dp))
-            .fillMaxSize(),
+            .fillMaxWidth(),
         colors = CardColors(
             contentColor = checkColor(type, onPrimaryContainer = true),
             containerColor = checkColor(type, primaryContainer = true),
             disabledContentColor = checkColor(type, onPrimaryContainer = true),
             disabledContainerColor = checkColor(type, primaryContainer = true)
         ),
+        shape = RoundedCornerShape(15.dp),
         onClick = onClick,
     ) {
         if(leadingContent != null) {
@@ -312,12 +313,13 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
 }
 
 @Composable
-fun CartCard(item: Prodotto){
+fun CartCard(item: Prodotto, onClick: () -> Unit){
     var checked by remember { mutableStateOf(false) }
     GenericCard(
         text = item.nome,
         textDescription = item.modello,
         type = item.tipo,
+        onClick = onClick,
         textSpace = 0.7f,
         leadingContent = {
             Avatar(

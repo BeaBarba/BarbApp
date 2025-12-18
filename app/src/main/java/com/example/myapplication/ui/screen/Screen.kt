@@ -59,7 +59,7 @@ fun Screen(modifier : Modifier){
         topBar = {
             TopAppBar("Screen",
                 navigationIcon = {
-                    BackButton(){val intent = Intent(ctx, DeadlineAddActivity ::class.java)
+                    BackButton(){val intent = Intent(ctx, CartActivity ::class.java)
                         ctx.startActivity(intent)}
                 },
                 trailingIcon = { DropDownMenuCustomers() }
@@ -159,7 +159,13 @@ fun Screen(modifier : Modifier){
             item{ Spacer(Modifier.size(40.dp))}
         }
         if (showDialog) {
-            CustomAlertDialog(contentPadding, { showDialog = false }, "OGGETTO", "Modello", itemsList)
+            CustomAlertDialog(
+                //contentPadding,
+                { showDialog = false },
+                "OGGETTO",
+                "Modello",
+                itemsList
+            )
         }
     }
 }

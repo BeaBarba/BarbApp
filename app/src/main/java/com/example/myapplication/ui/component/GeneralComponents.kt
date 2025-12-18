@@ -98,11 +98,12 @@ fun CustomDivider(color : Color = MaterialTheme.colorScheme.primary, paddingHori
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun CustomAlertDialog(
-    contentPadding: PaddingValues,
+    //contentPadding: PaddingValues,
     onDismiss: ()-> Unit,
     title: String,
     subtitle: String,
-    content: List<String>, type: String = "NONE"
+    content: List<String>,
+    type: String = "NONE"
 ){
     val TITLE_TYPOGRAFY = MaterialTheme.typography.headlineMedium
     val SUBTITLE_TYPOGRAFY = MaterialTheme.typography.titleMedium
@@ -110,11 +111,11 @@ fun CustomAlertDialog(
 
     AlertDialog(
         modifier = Modifier
-            .padding(
+            /*.padding(
                 end = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
                 start = contentPadding.calculateStartPadding(LayoutDirection.Ltr)
-            )
-            .fillMaxWidth(0.8f),
+            )*/
+            .fillMaxWidth(/*0.8f*/),
         shape = RoundedCornerShape(15),
         tonalElevation = 8.dp,
         containerColor = checkColor(type, primaryContainer = true),
@@ -152,7 +153,7 @@ fun CustomAlertDialog(
                 }
                 Spacer(modifier = Modifier.size(30.dp))
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    itemsList.forEach() { item ->
+                    content.forEach() { item ->
                         MenuDivider()
                         Spacer(modifier = Modifier.size(8.dp))
                         Box(modifier = Modifier.padding(4.dp)) {
