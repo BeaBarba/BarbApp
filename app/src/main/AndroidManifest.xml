@@ -117,6 +117,10 @@
             android:name="com.example.myapplication.ui.screen.JobStatisticsActivity"
             android:exported="false"
             />
+        <activity
+            android:name="com.example.myapplication.ui.screen.AveragePaymentsTimesStatisticsActivity"
+            android:exported="false"
+            />
 
     </application>
 
