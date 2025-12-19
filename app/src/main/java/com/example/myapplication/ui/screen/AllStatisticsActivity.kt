@@ -22,7 +22,7 @@ import com.example.myapplication.ui.component.StatisticCard
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-class StatisticsActivity : ComponentActivity(){
+class AllStatisticsActivity : ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
