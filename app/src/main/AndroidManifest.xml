@@ -35,6 +35,10 @@
             android:name="com.example.myapplication.ui.screen.WarehouseActivity"
             android:exported="false"
             />
+        <activity
+            android:name="com.example.myapplication.ui.screen.SingleMaterialSummaryActivity"
+            android:exported="false"
+            />
 
         <!-- Customers -->
         <activity

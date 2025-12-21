@@ -59,7 +59,7 @@ fun Screen(modifier : Modifier){
         topBar = {
             TopAppBar("Screen",
                 navigationIcon = {
-                    BackButton(){val intent = Intent(ctx, WarehouseActivity ::class.java)
+                    BackButton(){val intent = Intent(ctx, SingleMaterialSummaryActivity ::class.java)
                         ctx.startActivity(intent)}
                 },
                 trailingIcon = { DropDownMenuCustomers() }
@@ -101,8 +101,6 @@ fun Screen(modifier : Modifier){
             item{SearchAppBar("Screen", contentPadding)}
             item{TitleLabel("Dati Anagrafici")}
             item{Spacer(Modifier.size(8.dp))}
-
-            item{Spacer(Modifier.size(8.dp)) }
             item{KeyValueLabel("CF", "RSSMRA80A01A944I", weightTitle = 0.5f, weighDescription = 1.0f)}
             item{Spacer(Modifier.size(8.dp))}
             item{KeyValueLabel("Nome", "Mario", weightTitle = 0.5f, weighDescription = 1.0f)}

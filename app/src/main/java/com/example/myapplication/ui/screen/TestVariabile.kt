@@ -214,3 +214,33 @@ val scadenze = listOf(
     Scadenze("Ristorante La Scala", "Ristorante", 132.40f, "25/04/2024"),
     Scadenze("Fornitore Packaging", "fornitore", 77.80f, "30/04/2024")
 )
+
+data class Provenienze(
+    val fornitore: String,
+    val quantita: String,
+    val numeroBolla: String?, // Nullable
+    val fattura: String?       // Nullable
+)
+
+val provenienze = listOf(
+    Provenienze(fornitore = "Acciai Italia", quantita = "2000 kg", numeroBolla = "BO-2024-001",fattura = null),
+    Provenienze(fornitore = "Elettronica 2000",quantita = "15 unità",numeroBolla = null,fattura = "FA-445566"),
+    Provenienze(fornitore = "Packaging Sud",quantita = "500 scatole",numeroBolla = "B-889",fattura = "F-990"),
+            // Caso 1: Solo Bolla presente
+            Provenienze("Mario Rossi S.r.l.", "150 kg", "BO-2023-001", null),
+Provenienze("Logistica Nord", "12 bancali", "BL-9928", null),
+Provenienze("Ferramenta Veneta", "500 viti", "BOL-12/A", null),
+
+// Caso 2: Solo Fattura presente
+Provenienze("Tech Solution SPA", "5 tablet", null, "FT-2024-05"),
+Provenienze("Energia Pura", "1200 kWh", null, "FAT-88921"),
+Provenienze("Consulenze IT", "40 ore", null, "2023/450"),
+
+// Caso 3: Entrambi presenti
+Provenienze("Agricola Bio", "20 litri", "B-772", "F-2024-B"),
+Provenienze("Edilizia Moderna", "5 mc sabbia", "BO-551", "FA-112"),
+Provenienze("Packaging Italia", "1000 scatole", "BL-009", "FT-990"),
+
+// Caso 4: Fornitore estero (misto)
+Provenienze("Global Export Ltd", "2 container", "EXP-7712", "INV-2024-X1")
+)
