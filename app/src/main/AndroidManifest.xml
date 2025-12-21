@@ -31,6 +31,10 @@
             android:name="com.example.myapplication.ui.screen.CartActivity"
             android:exported="false"
             />
+        <activity
+            android:name="com.example.myapplication.ui.screen.WarehouseActivity"
+            android:exported="false"
+            />
 
         <!-- Customers -->
         <activity
