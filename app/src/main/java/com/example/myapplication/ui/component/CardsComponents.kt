@@ -372,17 +372,19 @@ fun Images(){
         modifier = Modifier.wrapContentHeight(),
         itemSpacing = 8.dp,
         preferredItemWidth = 140.dp,
-        content = { Image(
-            Icons.Outlined.Image,
-            "Image",
-            modifier = Modifier
-                .size(140.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .padding(20.dp),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer),
-            contentScale = ContentScale.Fit)
+        content = {
+            Image(
+                Icons.Outlined.Image,
+                "Image",
+                modifier = Modifier
+                    .size(140.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primaryContainer)
+                    .padding(20.dp),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer),
+                contentScale = ContentScale.Fit
+            )
         },
-        contentPadding = PaddingValues(horizontal = 8.dp)
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
     )
 }

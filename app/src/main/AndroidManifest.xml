@@ -39,6 +39,10 @@
             android:name="com.example.myapplication.ui.screen.SingleMaterialSummaryActivity"
             android:exported="false"
             />
+        <activity
+            android:name="com.example.myapplication.ui.screen.MaterialAddActivity"
+            android:exported="false"
+            />
 
         <!-- Customers -->
         <activity
@@ -68,7 +72,7 @@
             android:exported="false"
             />
         <activity
-            android:name="com.example.myapplication.ui.screen.JobsMaterialActivity"
+            android:name="com.example.myapplication.ui.screen.JobMaterialsActivity"
             android:exported="false"
             />
 
