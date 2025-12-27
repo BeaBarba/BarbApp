@@ -219,30 +219,31 @@ data class Provenienze(
     val fornitore: String,
     val quantita: String,
     val numeroBolla: String?, // Nullable
-    val fattura: String?       // Nullable
+    val fattura: String?,     // Nullable
+    val data: String         // formato 10/10/1990
 )
 
 val provenienze = listOf(
-    Provenienze(fornitore = "Acciai Italia", quantita = "2000 kg", numeroBolla = "BO-2024-001",fattura = null),
-    Provenienze(fornitore = "Elettronica 2000",quantita = "15 unità",numeroBolla = null,fattura = "FA-445566"),
-    Provenienze(fornitore = "Packaging Sud",quantita = "500 scatole",numeroBolla = "B-889",fattura = "F-990"),
+    Provenienze(fornitore = "Acciai Italia", quantita = "2000 kg", numeroBolla = "BO-2024-001", fattura = null, data = "01/03/2024"),
+    Provenienze(fornitore = "Elettronica 2000", quantita = "15 unità", numeroBolla = null, fattura = "FA-445566", data = "12/04/2024"),
+    Provenienze(fornitore = "Packaging Sud", quantita = "500 scatole", numeroBolla = "B-889", fattura = "F-990", data = "05/02/2024"),
     // Caso 1: Solo Bolla presente
-    Provenienze("Mario Rossi S.r.l.", "150 kg", "BO-2023-001", null),
-    Provenienze("Logistica Nord", "12 bancali", "BL-9928", null),
-    Provenienze("Ferramenta Veneta", "500 viti", "BOL-12/A", null),
+    Provenienze(fornitore = "Mario Rossi S.r.l.", quantita = "150 kg", numeroBolla = "BO-2023-001", fattura = null, data = "20/11/2023"),
+    Provenienze(fornitore = "Logistica Nord", quantita = "12 bancali", numeroBolla = "BL-9928", fattura = null, data = "15/06/2024"),
+    Provenienze(fornitore = "Ferramenta Veneta", quantita = "500 viti", numeroBolla = "BOL-12/A", fattura = null, data = "02/01/2024"),
 
     // Caso 2: Solo Fattura presente
-    Provenienze("Tech Solution SPA", "5 tablet", null, "FT-2024-05"),
-    Provenienze("Energia Pura", "1200 kWh", null, "FAT-88921"),
-    Provenienze("Consulenze IT", "40 ore", null, "2023/450"),
+    Provenienze(fornitore = "Tech Solution SPA", quantita = "5 tablet", numeroBolla = null, fattura = "FT-2024-05", data = "10/05/2024"),
+    Provenienze(fornitore = "Energia Pura", quantita = "1200 kWh", numeroBolla = null, fattura = "FAT-88921", data = "30/09/2024"),
+    Provenienze(fornitore = "Consulenze IT", quantita = "40 ore", numeroBolla = null, fattura = "2023/450", data = "18/12/2023"),
 
     // Caso 3: Entrambi presenti
-    Provenienze("Agricola Bio", "20 litri", "B-772", "F-2024-B"),
-    Provenienze("Edilizia Moderna", "5 mc sabbia", "BO-551", "FA-112"),
-    Provenienze("Packaging Italia", "1000 scatole", "BL-009", "FT-990"),
+    Provenienze(fornitore = "Agricola Bio", quantita = "20 litri", numeroBolla = "B-772", fattura = "F-2024-B", data = "07/03/2024"),
+    Provenienze(fornitore = "Edilizia Moderna", quantita = "5 mc sabbia", numeroBolla = "BO-551", fattura = "FA-112", data = "22/08/2024"),
+    Provenienze(fornitore = "Packaging Italia", quantita = "1000 scatole", numeroBolla = "BL-009", fattura = "FT-990", data = "11/07/2024"),
 
     // Caso 4: Fornitore estero (misto)
-    Provenienze("Global Export Ltd", "2 container", "EXP-7712", "INV-2024-X1")
+    Provenienze(fornitore = "Global Export Ltd", quantita = "2 container", numeroBolla = "EXP-7712", fattura = "INV-2024-X1", data = "29/05/2024")
 )
 val fatture : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.fattura}.distinct()
 val bolle : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.numeroBolla}.distinct()
