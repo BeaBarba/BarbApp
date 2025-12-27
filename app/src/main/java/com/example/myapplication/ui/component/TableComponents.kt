@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.ui.screen.Prodotto
 
 data class TableColumn(
     val title: String,
@@ -27,9 +28,9 @@ data class TableColumn(
 )
 
 @Composable
-fun <T> Table(contentPadding: PaddingValues,
-              listData: List<T>,
-              headerColumns: List<TableColumn>
+fun Table(contentPadding: PaddingValues,
+          listData: List<Prodotto>,
+          headerColumns: List<TableColumn>
 ){
     val TABLE_BORDER_WIDTH = 2.dp
     val TABLE_BORDER_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
@@ -89,12 +90,12 @@ fun <T> Table(contentPadding: PaddingValues,
                 ){
                     Column {
                         Text(
-                            text = "",//data.nome,
+                            text = data.nome,
                             modifier = Modifier.padding(horizontal = 4.dp),
                             fontSize = TEXT.fontSize
                         )
                         Text(
-                            text = "",//data.modello,
+                            text = data.modello,
                             modifier = Modifier.padding(horizontal = 4.dp),
                             fontSize = DESCRIPTION.fontSize
                         )
@@ -107,7 +108,7 @@ fun <T> Table(contentPadding: PaddingValues,
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "",//"${data.quantita.toString()} ${data.unitaMisura.toString()}",
+                        text = "${data.quantita} ${data.unitaMisura}",
                         modifier = Modifier.padding(horizontal = 4.dp),
                         fontSize = TEXT.fontSize
                     )
@@ -119,7 +120,7 @@ fun <T> Table(contentPadding: PaddingValues,
                     contentAlignment = Alignment.Center
                 ){
                     Text(
-                        text = "",//"${data.prezzo}€",
+                        text = "${data.prezzo}€",
                         modifier = Modifier.padding(horizontal = 4.dp),
                         fontSize = TEXT.fontSize
                     )
@@ -131,7 +132,7 @@ fun <T> Table(contentPadding: PaddingValues,
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "",//"${data.iva}%",
+                        text = "${data.iva}%",
                         modifier = Modifier.padding(horizontal = 4.dp),
                         fontSize = TEXT.fontSize
                     )
