@@ -79,7 +79,6 @@ fun ListItemCheckbox(
 fun CardItemAvatar(itemID : String, onclick : () -> Unit){
     GenericCard(
         text = itemID,
-        interactionSource = remember { MutableInteractionSource() },
         leadingContent = {
             Column(modifier = Modifier.padding(top = 5.dp, start = 4.dp)) {
                 Avatar(

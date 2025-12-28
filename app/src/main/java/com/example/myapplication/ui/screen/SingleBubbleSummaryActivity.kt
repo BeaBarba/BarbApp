@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -86,12 +88,15 @@ class SingleBubbleSummaryActivity : ComponentActivity() {
                         )}
                         item{Spacer(Modifier.size(8.dp))}
                         if(!provenienze.get(1).fattura.isNullOrEmpty()){
-                            item{KeyValueLabel(
-                                title = "Fattura",
-                                description = provenienze.get(1).fattura.toString(),
-                                weightTitle = 1.0f,
-                                weighDescription = 2.0f
-                            )}
+                            item{
+                                GenericCard(
+                                    text = "Fattura: " + provenienze.get(1).fattura.toString(),
+                                    trailingContent = {
+                                        Icon(Icons.Filled.ChevronRight, contentDescription = "View")
+                                    },
+                                    textSpace = 0.9f
+                                )
+                            }
                             item{Spacer(Modifier.size(8.dp))}
                         }
                         item{

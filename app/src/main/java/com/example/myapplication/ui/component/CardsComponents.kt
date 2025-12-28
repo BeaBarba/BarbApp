@@ -3,9 +3,9 @@ package com.example.myapplication.ui.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -100,9 +100,8 @@ fun GenericCard(
     trailingContent: (@Composable () -> Unit)? = null,
     type: String = "NONE",
     onClick : () -> Unit = {},
-    interactionSource: MutableInteractionSource? = null,
+    //interactionSource: MutableInteractionSource? = null,
 ){
-
     val TEXT_TYPOGRAPHY = MaterialTheme.typography.bodyLarge
     val DESCRIPTION_TYPOGRAPHY = MaterialTheme.typography.bodyMedium
 
@@ -143,10 +142,10 @@ fun GenericCard(
                     }
                 }else{
                     Text(
-                        text,
+                        text = text,
+                        modifier = Modifier.fillMaxWidth(textSpace).padding(top = 5.dp),
                         fontSize = TEXT_TYPOGRAPHY.fontSize,
                         color = checkColor(type, onPrimaryContainer = true),
-                        modifier = Modifier.fillMaxWidth(textSpace).padding(top = 5.dp)
                     )
                 }
                 if(trailingContent != null){
@@ -155,7 +154,9 @@ fun GenericCard(
             }
         }else{
             if(textDescription != null){
-                Row(modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, start = 8.dp, end = 8.dp)){
+                Row(
+                    modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, start = 8.dp, end = 8.dp),
+                ){
                     Column {
                         Text(
                             text = text,
@@ -175,16 +176,23 @@ fun GenericCard(
                     }
                 }
             }else {
-                Column(
-                    modifier = Modifier.fillMaxHeight().fillMaxWidth()
+               Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth()
                         .padding(start = 10.dp, end = 10.dp),
                     verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (trailingContent != null) {
-                        Row() {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
                             Text(
                                 text = text,
-                                modifier = Modifier.padding(start = 8.dp, top = 10.dp).fillMaxWidth(textSpace),
+                                modifier = Modifier.padding(start = 8.dp, top = 10.dp)
+                                    .fillMaxWidth(textSpace),
                                 color = checkColor(type, onPrimaryContainer = true),
                                 fontSize = TEXT_TYPOGRAPHY.fontSize
                             )

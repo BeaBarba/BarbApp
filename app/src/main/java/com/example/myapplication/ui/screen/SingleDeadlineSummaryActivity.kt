@@ -83,17 +83,11 @@ class SingleDeadlineSummaryActivity : ComponentActivity() {
                             )
                         }
                         item{Spacer(Modifier.size(8.dp))}
-                        item{
-                            TitleLabel("Descrizione")
-                        }
+                        item{TitleLabel("Descrizione")}
                         item{Spacer(Modifier.size(8.dp))}
-                        item{
-                            BoxDescription("")
-                        }
+                        item{BoxDescription("")}
                         item{Spacer(Modifier.size(8.dp))}
-                        item{
-                            TitleLabel("Materiali")
-                        }
+                        item{TitleLabel("Materiali")}
                         item{Spacer(Modifier.size(8.dp))}
                         items(prodotti){item ->
                             GenericCard(
