@@ -89,6 +89,10 @@
             android:name="com.example.myapplication.ui.screen.BubbleMaterialsActivity"
             android:exported="false"
             />
+        <activity
+            android:name="com.example.myapplication.ui.screen.SingleBubbleSummaryActivity"
+            android:exported="false"
+            />
 
         <!-- Payments -->
         <activity

@@ -11,30 +11,22 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SuggestionChip
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
-import com.example.myapplication.ui.component.DropDownMenuBubbles
-import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.MaterialTable
 import com.example.myapplication.ui.component.SearchAppBar
-import com.example.myapplication.ui.component.SuggestionTextField
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
-import com.example.myapplication.ui.theme.TableColumn
 
 class BubbleMaterialsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +67,6 @@ class BubbleMaterialsActivity : ComponentActivity() {
                             contentPadding = contentPadding,
                             listData = prodotti
                         )
-                        //Spacer(Modifier.size(90.dp))
                     }
                 }
             }
