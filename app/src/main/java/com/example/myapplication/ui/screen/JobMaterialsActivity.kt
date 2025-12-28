@@ -40,7 +40,7 @@ import com.example.myapplication.ui.component.checkColor
 import com.example.myapplication.ui.component.checkColorAvatar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
-class JobsMaterialActivity : ComponentActivity() {
+class JobMaterialsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

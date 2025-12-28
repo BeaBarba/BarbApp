@@ -29,12 +29,12 @@ import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuBubbles
 import com.example.myapplication.ui.component.GenericCard
+import com.example.myapplication.ui.component.MaterialTable
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.SuggestionTextField
-import com.example.myapplication.ui.component.Table
-import com.example.myapplication.ui.component.TableColumn
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.ui.theme.TableColumn
 
 class BubbleMaterialsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,16 +71,11 @@ class BubbleMaterialsActivity : ComponentActivity() {
                     ) {
                         SearchAppBar("Materiale", contentPadding)
                         Spacer(Modifier.size(8.dp))
-                        Table(
+                        MaterialTable(
                             contentPadding = contentPadding,
-                            listData = prodotti,
-                            headerColumns = listOf(
-                                TableColumn("Nome", 3.0f),
-                                TableColumn("QTÀ", 1.5f),
-                                TableColumn("PREZZO", 1.5f),
-                                TableColumn("IVA", 1.0f)
-                            )
+                            listData = prodotti
                         )
+                        //Spacer(Modifier.size(90.dp))
                     }
                 }
             }

@@ -71,14 +71,25 @@ class DeadlineAddActivity : ComponentActivity() {
                         item{Spacer(Modifier.size(8.dp))}
                         item{SplitButtonMenu("Categoria", items = categorie, heightMenu = (categorie.size * 55).dp)}
                         item{Spacer(Modifier.size(8.dp))}
-                        item{ SplitButtonMenu("Venditore", items = venditori, heightMenu = (venditori.size * 55).dp)}
+                        item{SplitButtonMenu("Venditore", items = venditori, heightMenu = (venditori.size * 55).dp)}
+                        item{Spacer(Modifier.size(8.dp))}
+                        item{
+                            GenericCard(
+                                text = "Bolle",
+                                trailingContent = {
+                                    Icon(Icons.Filled.ChevronRight, contentDescription = "Add Bubbles", modifier = Modifier.size(35.dp))
+                                },
+                                onClick = {}
+                            )
+                        }
                         item{Spacer(Modifier.size(8.dp))}
                         item{
                             GenericCard(
                                 text = "Materiale",
                                 trailingContent = {
                                     Icon(Icons.Filled.ChevronRight, contentDescription = "Add Materials", modifier = Modifier.size(35.dp))
-                                }
+                                },
+                                onClick = {}
                             )
                         }
                         item{Spacer(Modifier.size(8.dp))}
