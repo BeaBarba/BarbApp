@@ -1,6 +1,9 @@
 package com.example.myapplication.ui.screen
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.AddPhotoAlternate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -90,7 +94,27 @@ class JobAddActivity : ComponentActivity() {
                             )
                         }
                         item{Spacer(Modifier.size(8.dp))}
-                        item{CustomOutlineTextField("Indirizzo")}
+                        item{
+                            CustomOutlineTextField(
+                                leadingIcon = {
+                                    IconButton(
+                                        onClick = {
+                                            println("DEBUG: Bottone cliccato!")
+                                            val location = Uri.parse("geo:44.1391, 12.24315")
+                                            val intent = Intent(Intent.ACTION_VIEW, location)
+                                            try {
+                                                ctx.startActivity(intent)
+                                            } catch (e: Exception) {
+                                                Toast.makeText(ctx, "Nessuna applicazione di mappe trovata", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                    ) {
+                                        Icon(Icons.Filled.LocationOn, contentDescription = "Address")
+                                    }
+                                },
+                            label = "Indirizzo"
+                            )
+                        }
                         item{Spacer(Modifier.size(8.dp))}
                         item{CustomOutlineTextField("Comune")}
                         item{Spacer(Modifier.size(8.dp))}

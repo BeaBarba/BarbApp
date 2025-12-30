@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -55,7 +56,7 @@ fun Screen(modifier : Modifier){
         topBar = {
             TopAppBar("Screen",
                 navigationIcon = {
-                    BackButton(){val intent = Intent(ctx, SingleBubbleSummaryActivity ::class.java)
+                    BackButton(){val intent = Intent(ctx, CustomerAddActivity ::class.java)
                         ctx.startActivity(intent)}
                 },
                 trailingIcon = { DropDownMenuCustomers() }
@@ -112,6 +113,8 @@ fun Screen(modifier : Modifier){
             item{SuggestionTextField(title = "Cognome", leadingIcon = {Icon(Icons.Outlined.Search, "Search")}, isAutocompleteMode = true, suggestions = suggerimenti)}
             item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField("Nome")}
+            item{Spacer(Modifier.size(8.dp))}
+            item{CustomOutlineTextField(label = "Indirizzo", leadingIcon = {Icon(Icons.Filled.LocationOn, contentDescription = "Address")})}
             item{Spacer(Modifier.size(8.dp))}
             item{DatePickerFieldToModal()}
             item{Spacer(Modifier.size(8.dp))}

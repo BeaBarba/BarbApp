@@ -64,15 +64,16 @@ fun outlinedTextFieldColor(): TextFieldColors {
 
 @Composable
 fun CustomOutlineTextField(
-    title : String,
+    label : String,
     leadingIcon : @Composable (() -> Unit)? = null,
+    value : String? = ""
 ) {
-    var content by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf(value) }
     OutlinedTextField(
-        value = content,
+        value = content.toString(),
         onValueChange = {newContent -> content = newContent},
         leadingIcon = leadingIcon,
-        label = { Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
+        label = { Text(text = label, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
         trailingIcon = {
             IconButton(
                 onClick = { content = ""},

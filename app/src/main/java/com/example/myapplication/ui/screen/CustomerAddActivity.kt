@@ -1,6 +1,9 @@
 package com.example.myapplication.ui.screen
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -34,9 +38,8 @@ class CustomerAddActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            var ctx = LocalContext.current
             MyApplicationTheme {
-                var ctx = LocalContext.current
-
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
@@ -70,7 +73,29 @@ class CustomerAddActivity : ComponentActivity() {
                         item {CustomOutlineTextField("CF")}
                         item {CustomOutlineTextField("Nome")}
                         item {CustomOutlineTextField("Cognome")}
-                        item {CustomOutlineTextField("Indirizzo")}
+                        item {
+                            val location = Uri.parse("geo:44.1391, 12.24315")
+                            CustomOutlineTextField(
+                                leadingIcon = {
+                                    IconButton(
+                                        onClick = {
+                                            println("DEBUG: Bottone cliccato!")
+
+                                            val intent = Intent(Intent.ACTION_VIEW, location)
+                                            try {
+                                                ctx.startActivity(intent)
+                                            } catch (e: Exception) {
+                                                Toast.makeText(ctx, "Nessuna applicazione di mappe trovata", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                    ) {
+                                        Icon(Icons.Filled.LocationOn, contentDescription = "Address")
+                                    }
+                                },
+                                label = "Indirizzo",
+                                value = location.toString()
+                            )
+                        }
                         item {CustomOutlineTextField("Comune")}
                         item {CustomOutlineTextField("Provincia")}
                         item {CustomOutlineTextField("CAP")}
