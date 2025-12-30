@@ -63,11 +63,15 @@ fun outlinedTextFieldColor(): TextFieldColors {
 }
 
 @Composable
-fun CustomOutlineTextField(title : String) {
+fun CustomOutlineTextField(
+    title : String,
+    leadingIcon : @Composable (() -> Unit)? = null,
+) {
     var content by remember { mutableStateOf("") }
     OutlinedTextField(
         value = content,
         onValueChange = {newContent -> content = newContent},
+        leadingIcon = leadingIcon,
         label = { Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
         trailingIcon = {
             IconButton(
@@ -85,7 +89,12 @@ fun CustomOutlineTextField(title : String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuggestionTextField(title : String, leadingIcon : @Composable (() -> Unit)? = null, isAutocompleteMode : Boolean = false, suggestions : List<String>? = null){
+fun SuggestionTextField(
+    title : String,
+    leadingIcon : @Composable (() -> Unit)? = null,
+    isAutocompleteMode : Boolean = false,
+    suggestions : List<String>? = null
+){
     var content by remember { mutableStateOf( "") }
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(

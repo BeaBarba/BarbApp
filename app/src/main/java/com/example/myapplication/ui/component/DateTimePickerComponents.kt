@@ -120,21 +120,27 @@ fun DatePickerFieldToModal(
 
     OutlinedTextField(
         value = selectedDate?.let { convertMillisToDate(it) } ?: "",
-        onValueChange = { showModal.value= true },
+        onValueChange = { showModal.value = true
+        },
         placeholder = { Text("DD/MM/YYYY") },
         label = { Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
-        leadingIcon = { IconButton(
-            onClick = { showModal.value = true},
-            shape = RoundedCornerShape(15),
-            modifier = Modifier.size(30.dp),
-        ) { Icon(Icons.Default.DateRange, contentDescription = "Select date") }
+        leadingIcon = {
+            IconButton(
+                onClick = { showModal.value = true},
+                shape = RoundedCornerShape(15),
+                modifier = Modifier.size(30.dp),
+            ) {
+                Icon(Icons.Default.DateRange, contentDescription = "Select date")
+            }
         },
         trailingIcon = {
             IconButton(
                 onClick = { selectedDate = null},
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
-            ) { Icon(Icons.Outlined.Cancel, "Cancel") }
+            ) {
+                Icon(Icons.Outlined.Cancel, "Cancel")
+            }
         },
         modifier = Modifier
             .padding(4.dp)
@@ -370,7 +376,7 @@ fun CustomTimePicker(
 
     OutlinedTextField(
         value = selectedTime,
-        onValueChange = { },
+        onValueChange = { showDialog = true },
         placeholder = { Text("hh:mm") },
         label = { Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
         leadingIcon = {
