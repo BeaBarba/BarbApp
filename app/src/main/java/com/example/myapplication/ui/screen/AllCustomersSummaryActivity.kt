@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.LayoutDirection
@@ -21,6 +22,9 @@ import com.example.myapplication.ui.component.DropDownMenuCustomers
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
+@Composable
+fun AllCustomersSummaryActivity(){
+    /*
 
 class AllCustomersSummaryActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +32,8 @@ class AllCustomersSummaryActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
+
+     */
                 var ctx = LocalContext.current
 
                 Scaffold(
@@ -55,6 +61,8 @@ class AllCustomersSummaryActivity : ComponentActivity() {
                     }
                 }
             }
-        }
+        /*}
     }
 }
+
+         */

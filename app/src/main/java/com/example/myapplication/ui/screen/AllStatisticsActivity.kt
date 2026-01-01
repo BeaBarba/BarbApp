@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -22,12 +23,17 @@ import com.example.myapplication.ui.component.StatisticCard
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
+@Composable
+fun AllStatisticsActivity(){
+    /*
 class AllStatisticsActivity : ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
+
+     */
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
@@ -81,6 +87,8 @@ class AllStatisticsActivity : ComponentActivity(){
                     }
                 }
             }
-        }
+        /*}
     }
 }
+
+         */

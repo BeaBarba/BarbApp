@@ -62,10 +62,13 @@ fun Screen(modifier : Modifier){
                 trailingIcon = { DropDownMenuCustomers() }
             )
         },
-        floatingActionButton = {AddButton(){
-            val intent = Intent(ctx, HomeActivity ::class.java)
+        floatingActionButton = {
+            AddButton(){
+            /*val intent = Intent(ctx, HomeActivity ::class.java)
             ctx.startActivity(intent)
-        } }
+            */
+            }
+        }
     ) { contentPadding ->/***/
         /*Column(
             modifier = modifier
@@ -153,7 +156,7 @@ fun Screen(modifier : Modifier){
             item{BoxDescription(textDescription)}
             item{Spacer(Modifier.size(8.dp))}
             item{DeleteButton({})}
-            item{ Spacer(Modifier.size(40.dp))}
+            item{Spacer(Modifier.size(80.dp))}
         }
         if (showDialog) {
             CustomAlertDialog(

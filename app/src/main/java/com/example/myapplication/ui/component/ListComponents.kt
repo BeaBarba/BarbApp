@@ -121,8 +121,8 @@ fun CustomersCardsList(
                     Spacer(Modifier.size(4.dp))
                     customers.filter{ it[0] == letter }.forEach{ contact ->
                         CardItemAvatar(contact){
-                            val intent = Intent(context, HomeActivity::class.java)
-                            context.startActivity(intent)
+                            //val intent = Intent(context, HomeActivity::class.java)
+                            //context.startActivity(intent)
                         }
                         Spacer(Modifier.size(4.dp))
                     }
