@@ -29,20 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.example.myapplication.ui.screen.HomeActivity"
-            android:exported="false"
-        />
 
         <!-- Material -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.CartActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name="com.example.myapplication.ui.screen.WarehouseActivity"
-            android:exported="false"
-            />
         <activity
             android:name="com.example.myapplication.ui.screen.SingleMaterialSummaryActivity"
             android:exported="false"
@@ -54,10 +42,6 @@
 
         <!-- Customers -->
         <activity
-            android:name="com.example.myapplication.ui.screen.AllCustomersSummaryActivity"
-            android:exported="false"
-            />
-        <activity
             android:name="com.example.myapplication.ui.screen.SingleCustomerSummaryActivity"
             android:exported="false"
             />
@@ -67,10 +51,6 @@
             />
 
         <!-- Jobs -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.AllJobsSummaryActivity"
-            android:exported="false"
-            />
         <activity
             android:name="com.example.myapplication.ui.screen.SingleJobSummaryActivity"
             android:exported="false"
@@ -86,10 +66,6 @@
 
         <!-- Bubbles -->
         <activity
-            android:name="com.example.myapplication.ui.screen.AllBubblesSummaryActivity"
-            android:exported="false"
-            />
-        <activity
             android:name="com.example.myapplication.ui.screen.BubbleAddActivity"
             android:exported="false"
             />
@@ -104,10 +80,6 @@
 
         <!-- Payments -->
         <activity
-            android:name="com.example.myapplication.ui.screen.AllPaymentsSummaryActivity"
-            android:exported="false"
-            />
-        <activity
             android:name="com.example.myapplication.ui.screen.SinglePaymentSummaryActivity"
             android:exported="false"
             />
@@ -118,25 +90,10 @@
 
         <!-- Calendar -->
         <activity
-            android:name="com.example.myapplication.ui.screen.TodayCalendarActivity"
-            android:exported="false"
-            />
-        <activity
             android:name="com.example.myapplication.ui.screen.DayCalendarActivity"
             android:exported="false"
             />
-
-        <!-- Cleaning -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.AllCleaningSummaryActivity"
-            android:exported="false"
-            />
-
         <!-- Deadlines -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.AllDeadlinesSummaryActivity"
-            android:exported="false"
-            />
         <activity
             android:name="com.example.myapplication.ui.screen.DeadlineAddActivity"
             android:exported="false"
@@ -147,10 +104,6 @@
             />
 
         <!-- Statistics -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.AllStatisticsActivity"
-            android:exported="false"
-            />
         <activity
             android:name="com.example.myapplication.ui.screen.JobStatisticsActivity"
             android:exported="false"

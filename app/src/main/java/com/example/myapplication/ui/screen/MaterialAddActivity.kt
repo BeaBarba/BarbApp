@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -29,12 +30,18 @@ import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
+@Composable
+fun MaterialAddActivity(){
+    /*
+}
 class MaterialAddActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
+
+     */
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
@@ -75,17 +82,17 @@ class MaterialAddActivity : ComponentActivity() {
                         item{SplitButtonMenu(content = "Venditori", venditori, heightMenu = (v_size * 55).dp)}
                         item{Spacer(Modifier.size(8.dp))}
                         val b_size = if(bolle.size < 5){bolle.size}else{5}
-                        item{SplitButtonMenu(content = "Bolla", venditori, heightMenu = (b_size * 55).dp)}
+                        item{SplitButtonMenu(content = "Bolla", bolle, heightMenu = (b_size * 55).dp)}
                         item{Spacer(Modifier.size(8.dp))}
                         val f_size = if(fatture.size < 5){fatture.size}else{5}
                         item{SplitButtonMenu(content = "Fattura", fatture, heightMenu =  (f_size * 55).dp)}
                         item{Spacer(Modifier.size(8.dp))}
                         item{Images()}
                         item{Spacer(Modifier.size(8.dp))}
-                        item{DeleteButton {  }}
+                        item{DeleteButton{  }}
                     }
                 }
             }
-        }
+        /*}
     }
-}
+}*/

@@ -2,8 +2,6 @@ package com.example.myapplication.ui.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -104,7 +102,6 @@ fun NavGraph(
     navController : NavHostController,
     modifier : Modifier
 ){
-    val ctx = LocalContext.current
     NavHost(
         navController = navController,
         modifier = modifier,
@@ -144,7 +141,7 @@ fun NavGraph(
             BubbleMaterialsActivity()
         }
         composable<NavigationRoute.Cart>{
-            CartActivity()
+            CartActivity(navController)
         }
         composable<NavigationRoute.CustomerAdd>{
             CustomerAddActivity()
