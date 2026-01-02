@@ -35,7 +35,7 @@ fun AllJobsSummaryActivity(
         topBar = {
             TopAppBar(
                 id = "Interventi",
-                navigationIcon = {BackButton{navController.navigateUp()}},
+                navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
                 trailingIcon = {DropDownMenuJobs()}
             )
         },
