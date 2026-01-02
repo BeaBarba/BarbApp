@@ -180,7 +180,7 @@ fun NavGraph(
             SingleDeadlineSummaryActivity()
         }
         composable<NavigationRoute.SingleJobSummary>{
-            SingleJobSummaryActivity()
+            SingleJobSummaryActivity(navController)
         }
         composable<NavigationRoute.SingleMaterialSummary>{
             SingleMaterialSummaryActivity()

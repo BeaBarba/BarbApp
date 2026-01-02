@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.component
 
-import android.content.ClipDescription
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -64,9 +63,14 @@ fun KeyValueLabel(
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        TitleLabel(title, modifier= Modifier.weight(weightTitle).fillMaxHeight().clip(
-            RoundedCornerShape(10.dp)
-        ).background(MaterialTheme.colorScheme.primary))
+        TitleLabel(
+            title = title,
+            modifier= Modifier
+                .weight(weightTitle)
+                .fillMaxHeight()
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.primary)
+        )
         TitleLabel(
             description,
             modifier= Modifier
