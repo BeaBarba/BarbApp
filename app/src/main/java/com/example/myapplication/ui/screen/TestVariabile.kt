@@ -116,7 +116,7 @@ data class Intervento(
     val tipo: String
 )
 
-val interventi = listOf(
+var interventi = listOf(
     Intervento("Rossi Mario",    "Via Garibaldi 12",      "Milano",  "20121", "MI",  85.50f, "14/12/2025", "09:00", "10:30", "ELE"),
     Intervento("Bianchi Anna",   "Piazza Duomo 3",       "Milano",  "20122", "MI", 120.00f, "15/12/2025", "11:00", "12:15", "ALA"),
     Intervento("Verdi Luca",     "Corso Italia 45",      "Torino",  "10121", "TO",  60.75f, "16/12/2025", "08:30", "09:15", "CDZ"),

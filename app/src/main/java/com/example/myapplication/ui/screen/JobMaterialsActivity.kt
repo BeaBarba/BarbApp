@@ -23,6 +23,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
@@ -40,12 +42,18 @@ import com.example.myapplication.ui.component.checkColor
 import com.example.myapplication.ui.component.checkColorAvatar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
+@Composable
+fun JobMaterialsActivity(){
+    /*
+}
 class JobMaterialsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
+
+     */
                 var ctx = LocalContext.current
 
                 Scaffold(
@@ -65,7 +73,8 @@ class JobMaterialsActivity : ComponentActivity() {
                                 }
                             }
                         )
-                    }
+                    },
+                    floatingActionButton = { AddButton {  }}
                 ) { contentPadding ->
                     LazyColumn(
                         modifier = Modifier
@@ -124,6 +133,8 @@ class JobMaterialsActivity : ComponentActivity() {
 
                 }
             }
-        }
+        /*}
     }
 }
+
+         */

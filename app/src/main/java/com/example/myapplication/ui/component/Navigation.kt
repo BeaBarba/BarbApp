@@ -156,7 +156,7 @@ fun NavGraph(
             HomeActivity(modifier, navController)
         }
         composable<NavigationRoute.JobAdd>{
-            JobAddActivity()
+            JobAddActivity(navController)
         }
         composable<NavigationRoute.JobMaterials>{
             JobMaterialsActivity()

@@ -56,8 +56,8 @@ fun Screen(modifier : Modifier){
         topBar = {
             TopAppBar("Screen",
                 navigationIcon = {
-                    BackButton(){val intent = Intent(ctx, CustomerAddActivity ::class.java)
-                        ctx.startActivity(intent)}
+                    BackButton(){/*val intent = Intent(ctx, CustomerAddActivity ::class.java)
+                        ctx.startActivity(intent)*/}
                 },
                 trailingIcon = { DropDownMenuCustomers() }
             )
