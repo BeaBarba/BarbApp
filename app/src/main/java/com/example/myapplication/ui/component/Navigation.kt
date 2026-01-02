@@ -120,7 +120,7 @@ fun NavGraph(
             AllCustomersSummaryActivity(navController)
         }
         composable<NavigationRoute.AllDeadlinesSummary>{
-            AllDeadlinesSummaryActivity()
+            AllDeadlinesSummaryActivity(navController)
         }
         composable<NavigationRoute.AllJobsSummary>{
             AllJobsSummaryActivity(navController)
