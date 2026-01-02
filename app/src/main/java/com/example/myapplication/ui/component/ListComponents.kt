@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.myapplication.ui.screen.HomeActivity
 
 @Composable
@@ -96,23 +97,22 @@ fun CardItemAvatar(itemID : String, onclick : () -> Unit){
 fun CustomersCardsList(
     letters : List<Char>,
     customers : List<String>,
-    context : Context,
-    contentPadding : PaddingValues,
-    type: String = "NONE"
+    //contentPadding : PaddingValues,
+    navController : NavHostController
 ){
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(
+        /*contentPadding = PaddingValues(
             start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
             end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
             bottom = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 90.dp
-        ),
+        ),*/
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ){
         items(letters){letter ->
             Column(){
                 Avatar(letter,
-                    backgroundColor = checkColor(type = type, primaryContainer = true),
+                    backgroundColor = checkColor(type = "NONE", primaryContainer = true),
                     textColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifierBox = Modifier.padding(8.dp),
                     size = 40.dp
@@ -121,8 +121,7 @@ fun CustomersCardsList(
                     Spacer(Modifier.size(4.dp))
                     customers.filter{ it[0] == letter }.forEach{ contact ->
                         CardItemAvatar(contact){
-                            //val intent = Intent(context, HomeActivity::class.java)
-                            //context.startActivity(intent)
+                            navController.navigate(NavigationRoute.SingleCustomerSummary)
                         }
                         Spacer(Modifier.size(4.dp))
                     }
