@@ -19,26 +19,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
+import com.example.myapplication.ui.component.NavigationRoute
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
-fun DeadlineAddActivity() {
+fun DeadlineAddActivity(navController: NavController) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                navigationIcon = { BackButton { } },
+                navigationIcon = {BackButton{navController.navigateUp()}},
                 id = "Scadenza",
                 trailingIcon = {
                     IconButton(
-                        onClick = {},
-                        colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
+                        onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)},
+                        colors = IconButtonDefaults.iconButtonColors(
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
                     ) {
                         Icon(Icons.Filled.Check, contentDescription = "Save")
                     }
@@ -61,17 +65,33 @@ fun DeadlineAddActivity() {
             item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField("Numero")}
             item{Spacer(Modifier.size(8.dp))}
-            item{SplitButtonMenu("Categoria", items = categorie, heightMenu = (categorie.size * 55).dp)}
+            item{
+                SplitButtonMenu(
+                    content = "Categoria",
+                    items = categorie,
+                    heightMenu = (categorie.size * 55).dp
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
-            item{SplitButtonMenu("Venditore", items = venditori, heightMenu = (venditori.size * 55).dp)}
+            item{
+                SplitButtonMenu(
+                    content = "Venditore",
+                    items = venditori,
+                    heightMenu = (venditori.size * 55).dp
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
                     text = "Bolle",
                     trailingContent = {
-                        Icon(Icons.Filled.ChevronRight, contentDescription = "Add Bubbles", modifier = Modifier.size(35.dp))
+                        Icon(
+                            imageVector = Icons.Filled.ChevronRight,
+                            contentDescription = "Add Bubbles",
+                            modifier = Modifier.size(35.dp)
+                        )
                     },
-                    onClick = {}
+                    onClick = {navController.navigate(NavigationRoute.BubbleAdd)}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -79,13 +99,22 @@ fun DeadlineAddActivity() {
                 GenericCard(
                     text = "Materiale",
                     trailingContent = {
-                        Icon(Icons.Filled.ChevronRight, contentDescription = "Add Materials", modifier = Modifier.size(35.dp))
+                        Icon(
+                            imageVector = Icons.Filled.ChevronRight,
+                            contentDescription = "Add Materials",
+                            modifier = Modifier.size(35.dp)
+                        )
                     },
-                    onClick = {}
+                    onClick = {navController.navigate(NavigationRoute.MaterialAdd)}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{DeleteButton{}}
+            item{
+                DeleteButton{
+                    scadenze = scadenze.subList(1, scadenze.size)
+                    navController.navigate(NavigationRoute.AllDeadlinesSummary)
+                }
+            }
         }
     }
 }

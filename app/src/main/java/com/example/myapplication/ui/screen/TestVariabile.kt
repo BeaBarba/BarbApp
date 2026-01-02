@@ -192,7 +192,7 @@ data class Scadenze(
     val data: String
 )
 
-val scadenze = listOf(
+var scadenze = listOf(
     Scadenze("Pizzeria Bella", "Ristorante", 45.50f, "15/01/2024"),
     Scadenze("Forniture S.p.A.", "fornitore", 120.00f, "20/01/2024"),
     Scadenze("Autocarrozzeria Rossi", "macchina", 350.75f, "22/01/2024"),

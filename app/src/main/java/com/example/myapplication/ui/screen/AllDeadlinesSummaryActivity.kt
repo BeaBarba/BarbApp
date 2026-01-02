@@ -33,18 +33,14 @@ fun AllDeadlinesSummaryActivity(navController: NavController){
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                navigationIcon = {BackButton {
-                    navController.navigate(NavigationRoute.Home)
-                }},
+                navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
                 id = "Scadenze",
-                trailingIcon = { DropDownMenuDeadlines() }
+                trailingIcon = {DropDownMenuDeadlines()}
             )
         },
-        floatingActionButton = {AddButton {
-            navController.navigate(NavigationRoute.DeadlineAdd)
-        }}
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.DeadlineAdd)}}
     ) { contentPadding ->
-        var showItems by remember { mutableStateOf(false) }
+        var showItems by remember {mutableStateOf(false)}
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -56,7 +52,7 @@ fun AllDeadlinesSummaryActivity(navController: NavController){
         ) {
             item{SearchAppBar("Categoria", contentPadding)}
             items(scadenze.subList(0,5)){item ->
-                var checked by remember { mutableStateOf(false)}
+                var checked by remember {mutableStateOf(false)}
                 ListItemCheckbox(
                     char = item.categoria.get(0),
                     text = item.fornitore,
@@ -64,15 +60,17 @@ fun AllDeadlinesSummaryActivity(navController: NavController){
                     trailingText = item.prezzo.toString() + "€",
                     checked = checked,
                     onCheckedChange = {checked = !checked},
-                    onClick = {
-                        navController.navigate(NavigationRoute.SingleDeadlineSummary)
-                    }
+                    onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)}
                 )
                 Spacer(Modifier.size(8.dp))
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
-                SplitButtonList(text = "Completati", showItems = showItems, onClick = {showItems = !showItems})
+                SplitButtonList(
+                    text = "Completati",
+                    showItems = showItems,
+                    onClick = {showItems = !showItems}
+                )
             }
             item{Spacer(Modifier.size(8.dp))}
             if(showItems){
@@ -85,9 +83,7 @@ fun AllDeadlinesSummaryActivity(navController: NavController){
                         trailingText = item.prezzo.toString() + "€",
                         checked = checked,
                         onCheckedChange = {checked = !checked},
-                        onClick = {
-                            navController.navigate(NavigationRoute.SingleDeadlineSummary)
-                        }
+                        onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)}
                     )
                     Spacer(Modifier.size(8.dp))
                 }
