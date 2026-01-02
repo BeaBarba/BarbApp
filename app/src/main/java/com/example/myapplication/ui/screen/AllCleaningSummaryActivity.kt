@@ -1,9 +1,5 @@
 package com.example.myapplication.ui.screen
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -21,67 +17,77 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
 import com.example.myapplication.ui.component.DropDownMenuCleaning
 import com.example.myapplication.ui.component.ListItemCheckbox
+import com.example.myapplication.ui.component.NavigationRoute
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.theme.MyApplicationTheme
-@Composable
-fun AllCleaningSummaryActivity(){
-    /*
-class AllCleaningSummaryActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent{
-            MyApplicationTheme {
 
-     */
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        TopAppBar(
-                            navigationIcon = {BackButton {  }},
-                            id = "Pulizie",
-                            trailingIcon = {DropDownMenuCleaning()}
-                        )
-                    },
-                    floatingActionButton = {AddButton {  }}
-                ) { contentPadding ->
-                    var showItems by remember { mutableStateOf(false) }
-                    LazyColumn(
-                        modifier = Modifier
-                            .padding(
-                                top = contentPadding.calculateTopPadding(),
-                                start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                                end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
-                                bottom = contentPadding.calculateBottomPadding()
-                            )
-                    ) {
-                        item{SearchAppBar("Cliente", contentPadding)}
-                        items(customers.subList(0,5)){item ->
-                            var checked by remember {mutableStateOf(false)}
-                            ListItemCheckbox(char = item.get(0), text = item, checked = checked, onCheckedChange = {checked = !checked})
-                            Spacer(Modifier.size(8.dp))
-                        }
-                        item{CustomDivider()}
-                        item{SplitButtonList(text = "Completati", showItems = showItems, onClick = {showItems = !showItems})}
-                        item{Spacer(Modifier.size(8.dp))}
-                        if(showItems){
-                            items(customers){item ->
-                                var checked by remember { mutableStateOf(true) }
-                                ListItemCheckbox(char = item.get(0), text = item, checked = checked, onCheckedChange = {checked = !checked})
-                                Spacer(Modifier.size(8.dp))
-                            }
-                        }
-                        item{Spacer(Modifier.size(80.dp))}
-                    }
+@Composable
+fun AllCleaningSummaryActivity(
+    navController : NavHostController
+){
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                navigationIcon = {BackButton {navController.navigate(NavigationRoute.Home)}},
+                id = "Pulizie",
+                trailingIcon = {DropDownMenuCleaning()}
+            )
+        },
+        floatingActionButton = {AddButton {navController.navigate(NavigationRoute.JobAdd)}}
+    ) { contentPadding ->
+        var showItems by remember { mutableStateOf(false) }
+        LazyColumn(
+            modifier = Modifier
+                .padding(
+                    top = contentPadding.calculateTopPadding(),
+                    start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
+                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+                    bottom = contentPadding.calculateBottomPadding()
+                )
+        ) {
+            item{SearchAppBar("Cliente", contentPadding)}
+            items(customers.subList(0,5)){item ->
+                var checked by remember {mutableStateOf(false)}
+                ListItemCheckbox(
+                    char = item.get(0),
+                    text = item,
+                    checked = checked,
+                    onCheckedChange = {checked = !checked},
+                    onClick = {navController.navigate(NavigationRoute.SingleCustomerSummary)}
+                )
+                Spacer(Modifier.size(8.dp))
+            }
+            item{CustomDivider()}
+            item{
+                SplitButtonList(
+                    text = "Completati",
+                    showItems = showItems,
+                    onClick = {showItems = !showItems}
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
+            if(showItems){
+                items(customers){item ->
+                    var checked by remember { mutableStateOf(true) }
+                    ListItemCheckbox(
+                        char = item.get(0),
+                        text = item,
+                        checked = checked,
+                        onCheckedChange = {checked = !checked},
+                        onClick = {navController.navigate(NavigationRoute.SingleCustomerSummary)}
+                    )
+                    Spacer(Modifier.size(8.dp))
                 }
             }
-        /*}
+            item{Spacer(Modifier.size(80.dp))}
+        }
     }
-}*/
+}

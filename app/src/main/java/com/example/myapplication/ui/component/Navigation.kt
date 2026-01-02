@@ -114,7 +114,7 @@ fun NavGraph(
             AllBubblesSummaryActivity()
         }
         composable<NavigationRoute.AllCleaningSummary>{
-            AllCleaningSummaryActivity()
+            AllCleaningSummaryActivity(navController)
         }
         composable<NavigationRoute.AllCustomersSummary>{
             AllCustomersSummaryActivity(navController)

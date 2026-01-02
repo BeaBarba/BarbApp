@@ -1,15 +1,9 @@
 package com.example.myapplication.ui.component
 
-import android.content.Context
-import android.content.Intent
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,13 +13,10 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.myapplication.ui.screen.HomeActivity
 
 @Composable
 fun ListItemCheckbox(
@@ -35,7 +26,8 @@ fun ListItemCheckbox(
     trailingText : String? = null,
     type: String? = "NONE",
     checked : Boolean,
-    onCheckedChange : ((Boolean) -> Unit)? = null
+    onCheckedChange : ((Boolean) -> Unit)? = null,
+    onClick: () -> Unit
 ) {
     GenericCard(
         type = type.toString(),
@@ -72,7 +64,8 @@ fun ListItemCheckbox(
                     )
                 }
             }
-        }
+        },
+        onClick = onClick
     )
 }
 
@@ -97,16 +90,10 @@ fun CardItemAvatar(itemID : String, onclick : () -> Unit){
 fun CustomersCardsList(
     letters : List<Char>,
     customers : List<String>,
-    //contentPadding : PaddingValues,
     navController : NavHostController
 ){
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
-        /*contentPadding = PaddingValues(
-            start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-            end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
-            bottom = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 90.dp
-        ),*/
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ){
         items(letters){letter ->
