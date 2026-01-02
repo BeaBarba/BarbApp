@@ -144,7 +144,7 @@ fun NavGraph(
             CartActivity(navController)
         }
         composable<NavigationRoute.CustomerAdd>{
-            CustomerAddActivity()
+            CustomerAddActivity(navController)
         }
         composable<NavigationRoute.DayCalendar>{
             DayCalendarActivity()
