@@ -177,7 +177,7 @@ fun NavGraph(
             SingleCustomerSummaryActivity(navController)
         }
         composable<NavigationRoute.SingleDeadlineSummary>{
-            SingleDeadlineSummaryActivity()
+            SingleDeadlineSummaryActivity(navController)
         }
         composable<NavigationRoute.SingleJobSummary>{
             SingleJobSummaryActivity(navController)

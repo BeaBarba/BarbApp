@@ -30,7 +30,9 @@ import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
-fun DeadlineAddActivity(navController: NavController) {
+fun DeadlineAddActivity(
+    navController: NavController
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {

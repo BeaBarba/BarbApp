@@ -19,27 +19,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.BoxDescription
 import com.example.myapplication.ui.component.DoubleKeyValueLabel
 import com.example.myapplication.ui.component.GenericCard
+import com.example.myapplication.ui.component.KeyValueLabel
+import com.example.myapplication.ui.component.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
 
 @Composable
-fun SingleDeadlineSummaryActivity () {
+fun SingleDeadlineSummaryActivity (
+    navController : NavHostController
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(id = "Scadenza",
-                navigationIcon = {BackButton {}},
+                navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
-                        onClick = {},
-                        colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
+                        onClick = {navController.navigate(NavigationRoute.DeadlineAdd)},
+                        colors = IconButtonDefaults.iconButtonColors(
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
                     ) {
                         Icon(
                             painterResource(R.drawable.edit_square_24dp),
@@ -60,9 +67,11 @@ fun SingleDeadlineSummaryActivity () {
                 .fillMaxSize()
         ) {
             item{
-                GenericCard(
-                    leadingContent = { Avatar(char = scadenze.get(2).fornitore.get(0))},
-                    text = scadenze.get(2).fornitore,
+                KeyValueLabel(
+                    title = "Nome",
+                    description = scadenze.get(2).fornitore,
+                    weightTitle = 1.0f,
+                    weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -75,14 +84,18 @@ fun SingleDeadlineSummaryActivity () {
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{TitleLabel("Descrizione")}
-            item{Spacer(Modifier.size(8.dp))}
-            item{BoxDescription("")}
-            item{Spacer(Modifier.size(8.dp))}
+            val text = "fsdffsfs"
+            if(!text.isNullOrEmpty()) {
+                item { TitleLabel("Descrizione") }
+                item { Spacer(Modifier.size(8.dp)) }
+                item { BoxDescription(text) }
+                item { Spacer(Modifier.size(8.dp)) }
+            }
             item{TitleLabel("Materiali")}
             item{Spacer(Modifier.size(8.dp))}
             items(prodotti){item ->
                 GenericCard(
+                    type = item.tipo,
                     leadingContent = {
                         Avatar(
                             char = item.tipo.get(0),
@@ -93,10 +106,10 @@ fun SingleDeadlineSummaryActivity () {
                     textSpace = 0.8f,
                     text = item.nome,
                     textDescription = item.modello,
-                    type = item.tipo,
                     trailingContent = {
                         Text(text = item.quantita.toString() + " " + item.unitaMisura)
-                    }
+                    },
+                    onClick = {navController.navigate(NavigationRoute.SingleMaterialSummary)}
                 )
                 Spacer(Modifier.size(8.dp))
             }
