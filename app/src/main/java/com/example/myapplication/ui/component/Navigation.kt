@@ -111,7 +111,7 @@ fun NavGraph(
             Screen(modifier)
         }
         composable<NavigationRoute.AllBubblesSummary>{
-            AllBubblesSummaryActivity()
+            AllBubblesSummaryActivity(navController)
         }
         composable<NavigationRoute.AllCleaningSummary>{
             AllCleaningSummaryActivity(navController)

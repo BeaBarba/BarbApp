@@ -20,6 +20,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -34,12 +35,18 @@ import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
+@Composable
+fun SingleBubbleSummaryActivity(){
+    /*
+}
 class SingleBubbleSummaryActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
+
+     */
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
@@ -126,6 +133,8 @@ class SingleBubbleSummaryActivity : ComponentActivity() {
                     }
                 }
             }
-        }
+       /* }
     }
 }
+
+        */
