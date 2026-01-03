@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
@@ -31,7 +31,7 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun DeadlineAddActivity(
-    navController: NavController
+    navController: NavHostController
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),

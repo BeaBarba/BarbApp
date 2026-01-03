@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuDeadlines
@@ -28,7 +28,9 @@ import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
-fun AllDeadlinesSummaryActivity(navController: NavController){
+fun AllDeadlinesSummaryActivity(
+    navController: NavHostController
+){
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {

@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.DoubleKeyValueLabel
@@ -34,7 +34,7 @@ import com.example.myapplication.ui.component.checkColorAvatar
 
 @Composable
 fun SinglePaymentSummaryActivity(
-    navController: NavController
+    navController: NavHostController
 ){
     Scaffold(
         modifier = Modifier.fillMaxSize(),

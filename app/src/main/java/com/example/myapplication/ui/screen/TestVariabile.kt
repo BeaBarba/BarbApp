@@ -138,7 +138,7 @@ data class Pagamenti(
     val data: String
 )
 
-val pagamenti = listOf(
+var pagamenti = listOf(
     Pagamenti("Mario Rossi", "Via Roma 1, Milano", "€120.00", "05/02/2025"),
     Pagamenti("Giulia Bianchi", "Corso Garibaldi 12, Torino", "€85.50", "12/03/2025"),
     Pagamenti("Luca Verdi", "Piazza Duomo 3, Milano", "€200.00", "20/01/2025"),
@@ -168,7 +168,7 @@ data class Appuntamento(
     val descrizione: String
 )
 
-val appuntamenti = listOf(
+var appuntamenti = listOf(
     Appuntamento("Via Garibaldi 12, Milano", "Rossi Mario", "ELE",  "Sostituzione contatore elettrico, controllo cablaggio"),
     Appuntamento("Piazza Duomo 3, Milano",   "Bianchi Anna", "ALA",  "Installazione antenna TV sul tetto"),
     Appuntamento("Corso Italia 45, Torino",  "Verdi Luca",   "CDZ",  "Manutenzione condizionatore split, ricarica gas"),
@@ -223,7 +223,7 @@ data class Provenienze(
     val data: String         // formato 10/10/1990
 )
 
-val provenienze = listOf(
+var provenienze = listOf(
     Provenienze(fornitore = "Acciai Italia", quantita = "2000 kg", numeroBolla = "BO-2024-001", fattura = null, data = "01/03/2024"),
     Provenienze(fornitore = "Elettronica 2000", quantita = "15 unità", numeroBolla = null, fattura = "FA-445566", data = "12/04/2024"),
     Provenienze(fornitore = "Packaging Sud", quantita = "500 scatole", numeroBolla = "B-889", fattura = "F-990", data = "05/02/2024"),

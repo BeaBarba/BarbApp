@@ -168,7 +168,7 @@ fun NavGraph(
             MaterialAddActivity()
         }
         composable<NavigationRoute.PaymentAdd>{
-            PaymentAddActivity()
+            PaymentAddActivity(navController)
         }
         composable<NavigationRoute.SingleBubbleSummary>{
             SingleBubbleSummaryActivity()
