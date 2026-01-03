@@ -213,7 +213,13 @@ fun GenericCard(
 }
 
 @Composable
-fun StatisticCard(text: String, icon: Painter, iconDescription : String, description: String? = null, onClick : () -> Unit){
+fun StatisticCard(
+    text: String,
+    icon: Painter,
+    iconDescription : String,
+    description: String? = null,
+    onClick : () -> Unit
+){
     GenericCard(
         text = text,
         textDescription =  description,
@@ -224,7 +230,8 @@ fun StatisticCard(text: String, icon: Painter, iconDescription : String, descrip
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.width(50.dp).height(50.dp)
             )
-        }
+        },
+        onClick = onClick
     )
 }
 

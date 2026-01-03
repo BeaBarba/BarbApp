@@ -129,7 +129,7 @@ fun NavGraph(
             AllPaymentsSummaryActivity(navController)
         }
         composable<NavigationRoute.AllStatistics>{
-            AllStatisticsActivity()
+            AllStatisticsActivity(navController)
         }
         composable<NavigationRoute.AveragePaymentsTimesStatistics>{
             AveragePaymentsTimesStatisticsActivity()
