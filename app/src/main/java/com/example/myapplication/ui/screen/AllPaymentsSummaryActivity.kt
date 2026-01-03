@@ -1,9 +1,5 @@
 package com.example.myapplication.ui.screen
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,69 +14,56 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuPayments
 import com.example.myapplication.ui.component.ListItemCheckbox
+import com.example.myapplication.ui.component.NavigationRoute
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
-fun AllPaymentsSummaryActivity(){/*}
-class AllPaymentsSummaryActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            MyApplicationTheme {
-            */
-                var ctx = LocalContext.current
-
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        TopAppBar(
-                            navigationIcon = {BackButton {  }},
-                            id = "Pagamenti",
-                            trailingIcon = {DropDownMenuPayments()}
-                        )
-                    },
-                    floatingActionButton = {AddButton {  }}
-                ) { contentPadding ->
-
-                    LazyColumn(
-                        modifier = Modifier
-                            .padding(
-                                top = contentPadding.calculateTopPadding(),
-                                start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                                end = contentPadding.calculateLeftPadding(LayoutDirection.Ltr) + 8.dp,
-                                bottom = contentPadding.calculateBottomPadding()
-                            )
-                    ) {
-                        item{ SearchAppBar("Cliente", contentPadding)}
-                        items(pagamenti.subList(5,10)){item ->
-                            var checked by remember{ mutableStateOf(false) }
-                            ListItemCheckbox(
-                                char = item.cliente.get(0),
-                                text = item.cliente,
-                                textDescription = item.indirizzo,
-                                trailingText = item.prezzo,
-                                checked = checked,
-                                onCheckedChange = {checked = !checked}
-                            )
-                            Spacer(Modifier.size(8.dp))
-                        }
-                        item{Spacer(Modifier.size(80.dp))}
-                    }
-
-                }
+fun AllPaymentsSummaryActivity(
+    navController : NavHostController
+){
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
+                id = "Pagamenti",
+                trailingIcon = {DropDownMenuPayments()}
+            )
+        },
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.PaymentAdd)}}
+    ) {contentPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(
+                    top = contentPadding.calculateTopPadding(),
+                    start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
+                    end = contentPadding.calculateLeftPadding(LayoutDirection.Ltr) + 8.dp,
+                    bottom = contentPadding.calculateBottomPadding()
+                )
+        ) {
+            item{SearchAppBar("Cliente", contentPadding)}
+            items(pagamenti.subList(5,10)){item ->
+                var checked by remember{mutableStateOf(false)}
+                ListItemCheckbox(
+                    char = item.cliente.get(0),
+                    text = item.cliente,
+                    textDescription = item.indirizzo,
+                    trailingText = item.prezzo,
+                    checked = checked,
+                    onCheckedChange = {checked = !checked},
+                    onClick = {navController.navigate(NavigationRoute.SinglePaymentSummary)}
+                )
+                Spacer(Modifier.size(8.dp))
             }
-        /*}
+            item{Spacer(Modifier.size(80.dp))}
+        }
     }
 }
-
-         */

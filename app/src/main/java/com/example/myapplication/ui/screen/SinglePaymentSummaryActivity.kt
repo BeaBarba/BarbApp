@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,12 +35,18 @@ import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
+@Composable
+fun SinglePaymentSummaryActivity(){
+    /*
+}
 class SinglePaymentSummaryActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState : Bundle?){
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent{
             MyApplicationTheme {
+
+     */
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
@@ -113,6 +120,8 @@ class SinglePaymentSummaryActivity : ComponentActivity() {
                     }
                 }
             }
-        }
+       /* }
     }
 }
+
+        */
