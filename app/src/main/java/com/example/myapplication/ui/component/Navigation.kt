@@ -183,7 +183,7 @@ fun NavGraph(
             SingleJobSummaryActivity(navController)
         }
         composable<NavigationRoute.SingleMaterialSummary>{
-            SingleMaterialSummaryActivity()
+            SingleMaterialSummaryActivity(navController)
         }
         composable<NavigationRoute.SinglePaymentSummary>{
             SinglePaymentSummaryActivity(navController)
