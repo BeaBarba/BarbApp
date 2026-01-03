@@ -186,7 +186,7 @@ fun NavGraph(
             SingleMaterialSummaryActivity()
         }
         composable<NavigationRoute.SinglePaymentSummary>{
-            SinglePaymentSummaryActivity()
+            SinglePaymentSummaryActivity(navController)
         }
         composable<NavigationRoute.TodayCalendar>{
             TodayCalendarActivity()
