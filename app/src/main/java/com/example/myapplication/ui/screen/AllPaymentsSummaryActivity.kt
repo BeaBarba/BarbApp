@@ -49,7 +49,7 @@ fun AllPaymentsSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{SearchAppBar("Cliente", contentPadding)}
+            item{SearchAppBar("Cliente")}
             items(pagamenti.subList(5,10)){item ->
                 var checked by remember{mutableStateOf(false)}
                 ListItemCheckbox(

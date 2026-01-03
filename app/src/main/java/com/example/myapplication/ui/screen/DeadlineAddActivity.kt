@@ -117,6 +117,7 @@ fun DeadlineAddActivity(
                     navController.navigate(NavigationRoute.AllDeadlinesSummary)
                 }
             }
+            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }

@@ -1,10 +1,12 @@
 package com.example.myapplication.ui.screen
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
@@ -58,11 +60,12 @@ fun BubbleMaterialsActivity(
                 )
                 .fillMaxSize()
         ) {
-            SearchAppBar("Materiale", contentPadding)
+            SearchAppBar("Materiale")
             MaterialTable(
                 contentPadding = contentPadding,
                 listData = prodotti
             )
+            Spacer(Modifier.size(80.dp))
         }
     }
 }

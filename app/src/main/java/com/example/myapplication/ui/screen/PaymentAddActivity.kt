@@ -115,6 +115,7 @@ fun PaymentAddActivity(
                     navController.navigate(NavigationRoute.AllPaymentsSummary)
                 }
             }
+            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }

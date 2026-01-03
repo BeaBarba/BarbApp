@@ -141,7 +141,7 @@ fun JobAddActivity(
                     navController.navigate(NavigationRoute.AllJobsSummary)
                 }
             }
-
+            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }

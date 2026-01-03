@@ -48,7 +48,7 @@ fun WarehouseActivity(
                 )
                 .fillMaxSize()
         ) {
-            item{ SearchAppBar("Materiale", contentPadding)}
+            item{ SearchAppBar("Materiale")}
             items(prodotti){item ->
                 GenericCard(
                     type = item.tipo,

@@ -69,7 +69,7 @@ fun JobMaterialsActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{SearchAppBar("Materiale", contentPadding)}
+            item{SearchAppBar("Materiale")}
             items(prodotti){item ->
                 var quantita by remember{ mutableStateOf(item.quantita)}
                 if(quantita > 0) {

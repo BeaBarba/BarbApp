@@ -88,6 +88,7 @@ fun BubbleAddActivity(
                     navController.navigate(NavigationRoute.AllBubblesSummary)
                 }
             }
+            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }

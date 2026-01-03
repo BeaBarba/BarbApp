@@ -53,7 +53,7 @@ fun AllCleaningSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{SearchAppBar("Cliente", contentPadding)}
+            item{SearchAppBar("Cliente")}
             items(customers.subList(0,5)){item ->
                 var checked by remember {mutableStateOf(false)}
                 ListItemCheckbox(

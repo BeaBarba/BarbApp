@@ -79,6 +79,7 @@ fun CustomerAddActivity(
             item {CustomOutlineTextField("CAP")}
             item {Spacer(Modifier.size(10.dp))}
             item {DeleteButton({navController.navigate(NavigationRoute.AllCustomersSummary)})}
+            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }

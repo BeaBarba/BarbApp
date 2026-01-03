@@ -52,7 +52,7 @@ fun AllDeadlinesSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{SearchAppBar("Categoria", contentPadding)}
+            item{SearchAppBar("Categoria")}
             items(scadenze.subList(0,5)){item ->
                 var checked by remember {mutableStateOf(false)}
                 ListItemCheckbox(

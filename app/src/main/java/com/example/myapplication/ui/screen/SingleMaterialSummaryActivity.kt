@@ -145,6 +145,7 @@ fun SingleMaterialSummaryActivity(
                 CustomDivider()
             }
             item{Images()}
+            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }

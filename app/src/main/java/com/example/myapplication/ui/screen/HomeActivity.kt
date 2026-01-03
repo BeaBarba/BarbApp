@@ -2,10 +2,12 @@ package com.example.myapplication.ui.screen
 
 import com.example.myapplication.ui.component.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
@@ -125,6 +127,7 @@ fun HomeActivity(
                     onclick = {/*navController.navigate(NavigationRoute.)*/}
                 )
             }
+            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }

@@ -98,7 +98,7 @@ fun Screen(modifier : Modifier){
                 .fillMaxSize()
         ) {
 
-            item{SearchAppBar("Screen", contentPadding)}
+            item{SearchAppBar("Screen")}
             item{TitleLabel("Dati Anagrafici")}
             item{Spacer(Modifier.size(8.dp))}
             item{KeyValueLabel("CF", "RSSMRA80A01A944I", weightTitle = 0.5f, weighDescription = 1.0f)}

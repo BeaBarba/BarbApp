@@ -86,6 +86,7 @@ fun MaterialAddActivity(
                     navController.navigate(NavigationRoute.Warehouse)
                 }
             }
+            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }

@@ -44,7 +44,7 @@ fun AllCustomersSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            SearchAppBar("Cliente", contentPadding)
+            SearchAppBar("Cliente")
             CustomersCardsList(letters, customers, navController)
         }
     }

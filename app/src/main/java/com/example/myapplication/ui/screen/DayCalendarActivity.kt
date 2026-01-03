@@ -89,7 +89,7 @@ fun DayCalendarActivity(
                 )
                 Spacer(Modifier.size(8.dp))
             }
-            item{Spacer(Modifier.size(8.dp))}
+            //item{Spacer(Modifier.size(8.dp))}
             item{Spacer(Modifier.size(80.dp))}
         }
     }

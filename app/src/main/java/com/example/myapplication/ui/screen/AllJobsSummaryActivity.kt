@@ -52,7 +52,7 @@ fun AllJobsSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            item {SearchAppBar("Intervento", contentPadding)}
+            item {SearchAppBar("Intervento")}
             items(interventi){item ->
                 GenericCard(
                     type = item.tipo,
