@@ -110,7 +110,8 @@ fun TodayCalendarActivity(
                         )
                     },
                     text = item.indirizzo,
-                    textDescription = item.cliente
+                    textDescription = item.cliente,
+                    onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}
                 )
                 Spacer(Modifier.size(8.dp))
             }
