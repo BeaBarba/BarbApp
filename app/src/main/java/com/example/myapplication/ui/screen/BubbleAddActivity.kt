@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -33,6 +34,7 @@ import com.example.myapplication.ui.component.TopAppBar
 fun BubbleAddActivity(
     navController : NavHostController
 ){
+    val previousBackStackEntry = navController.previousBackStackEntry
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -62,13 +64,13 @@ fun BubbleAddActivity(
                 )
                 .fillMaxSize()
         ) {
-            item{CustomOutlineTextField("Numero di bolla")}
-            item{Spacer(Modifier.size(8.dp))}
-            item{DatePickerFieldToModal("Data Emissione")}
-            item{Spacer(Modifier.size(8.dp))}
-            item{SplitButtonMenu("Venditori", venditori)}
-            item{Spacer(Modifier.size(8.dp))}
-            item{
+            item { CustomOutlineTextField("Numero di bolla") }
+            item { Spacer(Modifier.size(8.dp)) }
+            item { DatePickerFieldToModal("Data Emissione") }
+            item { Spacer(Modifier.size(8.dp)) }
+            item { SplitButtonMenu("Venditori", venditori) }
+            item { Spacer(Modifier.size(8.dp)) }
+            item {
                 GenericCard(
                     text = "Materiale",
                     trailingContent = {
@@ -78,17 +80,20 @@ fun BubbleAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.BubbleMaterials)}
+                    onClick = { navController.navigate(NavigationRoute.BubbleMaterials) }
                 )
             }
-            item{Spacer(Modifier.size(8.dp))}
-            item{
-                DeleteButton{
-                    bolle = bolle.subList(1, bolle.size)
-                    navController.navigate(NavigationRoute.AllBubblesSummary)
+            item { Spacer(Modifier.size(8.dp)) }
+            if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleBubbleSummary>() == true) {
+                item {
+
+                    DeleteButton {
+                        bolle = bolle.subList(1, bolle.size)
+                        navController.navigate(NavigationRoute.AllBubblesSummary)
+                    }
                 }
+                item { Spacer(Modifier.size(8.dp)) }
             }
-            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }
