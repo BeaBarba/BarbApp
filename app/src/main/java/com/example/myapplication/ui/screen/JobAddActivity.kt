@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
@@ -37,6 +38,7 @@ import com.example.myapplication.ui.component.TopAppBar
 fun JobAddActivity(
     navController : NavHostController
 ){
+    val previousBackStackEntry = navController.previousBackStackEntry
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -134,14 +136,16 @@ fun JobAddActivity(
                 text = "Aggiungi Foto",
                 trailingContent = {Icon(Icons.Outlined.AddPhotoAlternate, contentDescription = "Add Photo", modifier = Modifier.size(40.dp))}
             )}
-            item{Spacer(Modifier.size(10.dp))}
-            item{
-                DeleteButton{
-                    interventi = interventi.subList(1, interventi.size)
-                    navController.navigate(NavigationRoute.AllJobsSummary)
-                }
-            }
             item{Spacer(Modifier.size(8.dp))}
+            if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleJobSummary>() == true) {
+                item {
+                    DeleteButton {
+                        interventi = interventi.subList(1, interventi.size)
+                        navController.navigate(NavigationRoute.AllJobsSummary)
+                    }
+                }
+                item { Spacer(Modifier.size(8.dp)) }
+            }
         }
     }
 }

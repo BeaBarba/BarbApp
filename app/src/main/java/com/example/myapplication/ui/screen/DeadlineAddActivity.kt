@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -33,6 +34,7 @@ import com.example.myapplication.ui.component.TopAppBar
 fun DeadlineAddActivity(
     navController: NavHostController
 ) {
+    val previousBackStackEntry = navController.previousBackStackEntry
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -111,13 +113,15 @@ fun DeadlineAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{
-                DeleteButton{
-                    scadenze = scadenze.subList(1, scadenze.size)
-                    navController.navigate(NavigationRoute.AllDeadlinesSummary)
+            if(previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleDeadlineSummary>() == true) {
+                item {
+                    DeleteButton {
+                        scadenze = scadenze.subList(1, scadenze.size)
+                        navController.navigate(NavigationRoute.AllDeadlinesSummary)
+                    }
                 }
+                item { Spacer(Modifier.size(8.dp)) }
             }
-            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }

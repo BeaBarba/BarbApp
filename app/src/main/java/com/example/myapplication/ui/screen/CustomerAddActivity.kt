@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -31,6 +32,7 @@ import com.example.myapplication.ui.component.TopAppBar
 fun CustomerAddActivity(
     navController : NavHostController
 ){
+    val previousBackStackEntry = navController.previousBackStackEntry
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -77,9 +79,15 @@ fun CustomerAddActivity(
             item {CustomOutlineTextField("Comune")}
             item {CustomOutlineTextField("Provincia")}
             item {CustomOutlineTextField("CAP")}
-            item {Spacer(Modifier.size(10.dp))}
-            item {DeleteButton({navController.navigate(NavigationRoute.AllCustomersSummary)})}
-            item{Spacer(Modifier.size(8.dp))}
+            item {Spacer(Modifier.size(8.dp))}
+            if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleCustomerSummary>() == true) {
+                item {
+                    DeleteButton{
+                        navController.navigate(NavigationRoute.AllCustomersSummary)
+                    }
+                }
+                item{Spacer(Modifier.size(8.dp))}
+            }
         }
     }
 }

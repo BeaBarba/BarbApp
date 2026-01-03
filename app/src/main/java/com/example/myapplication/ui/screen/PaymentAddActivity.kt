@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
@@ -40,6 +41,7 @@ import com.example.myapplication.ui.component.TopAppBar
 fun PaymentAddActivity(
     navController: NavHostController
 ){
+    val previousBackStackEntry = navController.previousBackStackEntry
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -109,13 +111,15 @@ fun PaymentAddActivity(
                 }
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{
-                DeleteButton{
-                    pagamenti = pagamenti.subList(1, pagamenti.size)
-                    navController.navigate(NavigationRoute.AllPaymentsSummary)
+            if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SinglePaymentSummary>() == true) {
+                item {
+                    DeleteButton {
+                        pagamenti = pagamenti.subList(1, pagamenti.size)
+                        navController.navigate(NavigationRoute.AllPaymentsSummary)
+                    }
                 }
+                item { Spacer(Modifier.size(8.dp)) }
             }
-            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }
