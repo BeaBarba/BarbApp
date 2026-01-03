@@ -20,6 +20,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,15 +32,22 @@ import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DatePickerModal
 import com.example.myapplication.ui.component.LargeCard
+import com.example.myapplication.ui.component.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
+@Composable
+fun DayCalendarActivity(){
+    /*
+}
 class DayCalendarActivity : ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent{
             MyApplicationTheme {
+
+     */
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
@@ -80,7 +88,7 @@ class DayCalendarActivity : ComponentActivity(){
                             bottom = contentPadding.calculateBottomPadding()
                         )
                     ) {
-                        items(appuntamenti){item ->
+                        items(appuntamenti.subList(4, appuntamenti.size)){item ->
                             LargeCard(
                                 type = item.tipo,
                                 title = item.indirizzo,
@@ -97,6 +105,8 @@ class DayCalendarActivity : ComponentActivity(){
 
                 }
             }
-        }
+        /*}
     }
 }
+
+         */

@@ -189,7 +189,7 @@ fun NavGraph(
             SinglePaymentSummaryActivity(navController)
         }
         composable<NavigationRoute.TodayCalendar>{
-            TodayCalendarActivity()
+            TodayCalendarActivity(navController)
         }
         composable<NavigationRoute.Warehouse> {
             WarehouseActivity()

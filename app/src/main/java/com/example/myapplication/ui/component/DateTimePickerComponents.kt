@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -47,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavHostController
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -89,8 +91,10 @@ fun DatePickerModal(
                 onClick = {
                     openDialogState.value = false
                     onDismiss?.invoke()
-                }) { Text("Cancel", color = TEXT_COLOR) }
-
+                }
+            ) {
+                Text("Cancel", color = TEXT_COLOR)
+            }
         },
         colors = DatePickerDefaults.colors(containerColor = CONTAINER_COLOR)
     ) {
@@ -114,16 +118,16 @@ fun DatePickerModal(
 fun DatePickerFieldToModal(
     title : String = "Data"
 ) {
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
-    var showModal = remember { mutableStateOf(false) }
+    var selectedDate by remember {mutableStateOf<Long?>(null)}
+    var showModal = remember {mutableStateOf(false)}
     val datePickerState = rememberDatePickerState()
 
     OutlinedTextField(
-        value = selectedDate?.let { convertMillisToDate(it) } ?: "",
-        onValueChange = { showModal.value = true
-        },
+        value = selectedDate?.let {convertMillisToDate(it)} ?: "",
+        onValueChange = {},
+        readOnly = true,
         placeholder = { Text("DD/MM/YYYY") },
-        label = { Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
+        label = {Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize)},
         leadingIcon = {
             IconButton(
                 onClick = { showModal.value = true},
@@ -144,7 +148,8 @@ fun DatePickerFieldToModal(
         },
         modifier = Modifier
             .padding(4.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable{showModal.value = true},
         colors =  outlinedTextFieldColor()
     )
 
@@ -195,8 +200,10 @@ fun CustomRangePickerHeader(
 }
 
 @Composable
-fun DateRangePickerFullScreen(onDateRangeSelected: (Pair<Long?, Long?>) -> Unit, onDismiss: () -> Unit) {
-
+fun DateRangePickerFullScreen(
+    onDateRangeSelected: (Pair<Long?, Long?>) -> Unit,
+    onDismiss: () -> Unit
+) {
     val dateRangePickerState = rememberDateRangePickerState()
     val TEXT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
     val CONTAINER_COLOR = MaterialTheme.colorScheme.primaryContainer
