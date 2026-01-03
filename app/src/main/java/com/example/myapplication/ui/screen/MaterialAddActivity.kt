@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -31,6 +32,7 @@ import com.example.myapplication.ui.component.TopAppBar
 fun MaterialAddActivity(
     navController : NavHostController
 ){
+    val previousBackStackEntry = navController.previousBackStackEntry
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -80,13 +82,15 @@ fun MaterialAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{Images()}
             item{Spacer(Modifier.size(8.dp))}
-            item{
-                DeleteButton{
-                    prodotti = prodotti.subList(1, prodotti.size)
-                    navController.navigate(NavigationRoute.Warehouse)
+            if(previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleMaterialSummary>() == true) {
+                item {
+                    DeleteButton {
+                        prodotti = prodotti.subList(1, prodotti.size)
+                        navController.navigate(NavigationRoute.Warehouse)
+                    }
                 }
+                item { Spacer(Modifier.size(8.dp)) }
             }
-            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }
