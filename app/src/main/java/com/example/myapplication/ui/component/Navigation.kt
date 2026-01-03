@@ -192,7 +192,7 @@ fun NavGraph(
             TodayCalendarActivity(navController)
         }
         composable<NavigationRoute.Warehouse> {
-            WarehouseActivity()
+            WarehouseActivity(navController)
         }
     }
 }
