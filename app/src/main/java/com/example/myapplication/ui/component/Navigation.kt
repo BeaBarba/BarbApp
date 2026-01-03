@@ -138,7 +138,7 @@ fun NavGraph(
             BubbleAddActivity(navController)
         }
         composable<NavigationRoute.BubbleMaterials>{
-            BubbleMaterialsActivity()
+            BubbleMaterialsActivity(navController)
         }
         composable<NavigationRoute.Cart>{
             CartActivity(navController)
