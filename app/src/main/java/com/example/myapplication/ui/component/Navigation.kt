@@ -165,7 +165,7 @@ fun NavGraph(
             JobStatisticsActivity()
         }
         composable<NavigationRoute.MaterialAdd>{
-            MaterialAddActivity()
+            MaterialAddActivity(navController)
         }
         composable<NavigationRoute.PaymentAdd>{
             PaymentAddActivity(navController)

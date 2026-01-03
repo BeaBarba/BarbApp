@@ -3,7 +3,7 @@ package com.example.myapplication.ui.screen
 import androidx.compose.ui.platform.LocalContext
 
 /* --------------------------------------------- Variabili Globali ------------------------------------------*/
-val customers = listOf(
+var customers = listOf(
     "Alessandro", "Andrea", "Anna", "Alessia", "Amelia", "Antonio",
     "Barbara", "Bruno", "Beatrice", "Bianca", "Benedetto", "Bernardo",
     "Carlo", "Chiara", "Cristina", "Camilla", "Cesare", "Claudia",
@@ -34,7 +34,7 @@ val customers = listOf(
 
 val letters = customers.map { it.get(0) }.distinct()
 
-val itemsList = List<String>(10, {item -> "item $item"})
+var itemsList = List<String>(10, {item -> "item $item"})
 
 data class Prodotto(
     val nome: String,
@@ -45,7 +45,7 @@ data class Prodotto(
     val unitaMisura: String,
     val tipo : String
 )
-val prodotti = listOf<Prodotto>(
+var prodotti = listOf<Prodotto>(
     Prodotto("Interruttore", "Bticino", 10, 20.0, 22, "u", "ELE"),
     Prodotto("Interruttore", "Vimar", 50, 20.0, 10, "u","ELE"),
     Prodotto("Deviatore", "Bticino", 10, 20.0, 22, "m","ELE"),
@@ -99,7 +99,7 @@ in che sezione si è e quali impostazioni si possono cambiare per quella scherma
 che indica la specifica e la parte verde chiaro che indica tipo il cognome), l'AlertDialog (il menu a comparsa tipo popup)
 """
 
-val materialList: List<String> = prodotti.map { prodotto -> prodotto.nome}
+var materialList: List<String> = prodotti.map { prodotto -> prodotto.nome}
 
 var suggerimenti = listOf("Suggerimento 1", "Suggerimento 2", "Suggerimento 3", "Ciao")
 
