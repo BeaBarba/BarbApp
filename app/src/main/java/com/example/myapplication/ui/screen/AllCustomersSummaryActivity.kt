@@ -39,7 +39,8 @@ fun AllCustomersSummaryActivity(
                 .padding(
                     top = contentPadding.calculateTopPadding(),
                     start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
-                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp
+                    end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
+                    bottom = contentPadding.calculateBottomPadding()
                 )
                 .fillMaxSize()
         ) {

@@ -115,6 +115,6 @@ fun CustomersCardsList(
                 }
             }
         }
-        item{Spacer(Modifier.size(45.dp))}
+        item{Spacer(Modifier.size(80.dp))}
     }
 }

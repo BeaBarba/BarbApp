@@ -25,11 +25,10 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun HomeActivity(
-    modifier: Modifier,
     navController : NavHostController
 ) {
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 id = "Home",
@@ -49,7 +48,8 @@ fun HomeActivity(
                 .padding(
                     top = contentPadding.calculateTopPadding(),
                     end = contentPadding.calculateEndPadding(layoutDirection = LayoutDirection.Ltr),
-                    start = contentPadding.calculateStartPadding(layoutDirection = LayoutDirection.Ltr)
+                    start = contentPadding.calculateStartPadding(layoutDirection = LayoutDirection.Ltr),
+                    bottom = contentPadding.calculateBottomPadding()
                 ),
             columns = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(1.dp),

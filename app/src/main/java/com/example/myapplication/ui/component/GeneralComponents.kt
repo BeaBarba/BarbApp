@@ -69,7 +69,11 @@ fun Avatar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(id: String, navigationIcon: @Composable () -> Unit, trailingIcon: (@Composable () -> Unit)? = null){
+fun TopAppBar(
+    id: String,
+    navigationIcon: @Composable () -> Unit,
+    trailingIcon: (@Composable () -> Unit)? = null
+){
     CenterAlignedTopAppBar(
         navigationIcon = navigationIcon,
         title = {

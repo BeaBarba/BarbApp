@@ -22,12 +22,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 val navController = rememberNavController()
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val modifier = Modifier
-                        .padding(bottom = innerPadding.calculateBottomPadding() - 25.dp)
-                    //Screen(modifier)
-                    NavGraph(navController, modifier)
-                }
+                //Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    NavGraph(navController, Modifier)
+                //}
             }
         }
     }

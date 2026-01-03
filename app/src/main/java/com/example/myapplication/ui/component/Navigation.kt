@@ -153,7 +153,7 @@ fun NavGraph(
             DeadlineAddActivity(navController)
         }
         composable<NavigationRoute.Home>{
-            HomeActivity(modifier, navController)
+            HomeActivity(navController)
         }
         composable<NavigationRoute.JobAdd>{
             JobAddActivity(navController)

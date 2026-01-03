@@ -35,8 +35,8 @@ fun CustomerAddActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                id = "Cliente",
                 navigationIcon = {BackButton{navController.navigateUp()}},
+                id = "Cliente",
                 trailingIcon = {
                     IconButton(
                         onClick = {navController.navigate(NavigationRoute.SingleCustomerSummary)},

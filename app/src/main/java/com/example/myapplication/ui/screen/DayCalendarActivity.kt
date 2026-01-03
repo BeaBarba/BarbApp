@@ -43,8 +43,8 @@ fun DayCalendarActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                id = "Giorno Selezionato",
                 navigationIcon = {BackButton{navController.navigateUp()}},
+                id = "Giorno Selezionato",
                 trailingIcon = {
                     IconButton(
                         onClick = {openPicker.value = true},

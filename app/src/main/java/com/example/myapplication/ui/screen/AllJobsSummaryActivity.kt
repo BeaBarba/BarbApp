@@ -88,7 +88,7 @@ fun AllJobsSummaryActivity(
                 )
                 Spacer(Modifier.size(8.dp))
             }
-            item{Spacer(Modifier.size(90.dp))}
+            item{Spacer(Modifier.size(80.dp))}
         }
     }
 }
