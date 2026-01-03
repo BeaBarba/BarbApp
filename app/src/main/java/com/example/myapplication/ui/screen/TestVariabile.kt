@@ -245,5 +245,5 @@ var provenienze = listOf(
     // Caso 4: Fornitore estero (misto)
     Provenienze(fornitore = "Global Export Ltd", quantita = "2 container", numeroBolla = "EXP-7712", fattura = "INV-2024-X1", data = "29/05/2024")
 )
-val fatture : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.fattura}.distinct()
-val bolle : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.numeroBolla}.distinct()
+var fatture : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.fattura}.distinct()
+var bolle : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.numeroBolla}.distinct()

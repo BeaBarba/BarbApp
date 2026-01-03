@@ -135,7 +135,7 @@ fun NavGraph(
             AveragePaymentsTimesStatisticsActivity(navController)
         }
         composable<NavigationRoute.BubbleAdd>{
-            BubbleAddActivity()
+            BubbleAddActivity(navController)
         }
         composable<NavigationRoute.BubbleMaterials>{
             BubbleMaterialsActivity()
