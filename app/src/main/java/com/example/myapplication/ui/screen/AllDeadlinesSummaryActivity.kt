@@ -15,14 +15,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuDeadlines
 import com.example.myapplication.ui.component.ListItemCheckbox
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
@@ -36,8 +38,8 @@ fun AllDeadlinesSummaryActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
-                id = "Scadenze",
-                trailingIcon = {DropDownMenuDeadlines()}
+                id = stringResource(R.string.deadline),
+                trailingIcon = {DropDownMenuDeadlines(categorie, venditori)}
             )
         },
         floatingActionButton = {AddButton{navController.navigate(NavigationRoute.DeadlineAdd)}}
@@ -52,7 +54,7 @@ fun AllDeadlinesSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{SearchAppBar("Categoria")}
+            item{SearchAppBar(stringResource(R.string.category))}
             items(scadenze.subList(0,5)){item ->
                 var checked by remember {mutableStateOf(false)}
                 ListItemCheckbox(
@@ -69,7 +71,7 @@ fun AllDeadlinesSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 SplitButtonList(
-                    text = "Completati",
+                    text = stringResource(R.string.completed),
                     showItems = showItems,
                     onClick = {showItems = !showItems}
                 )

@@ -22,9 +22,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
@@ -32,7 +34,7 @@ import com.example.myapplication.ui.component.CustomDivider
 import com.example.myapplication.ui.component.DatePickerModal
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.LargeCard
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
@@ -49,7 +51,7 @@ fun TodayCalendarActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
-                id = "Oggi",
+                id = stringResource(R.string.today),
                 trailingIcon = {
                     IconButton(
                         onClick = {openPicker.value = true},
@@ -57,7 +59,7 @@ fun TodayCalendarActivity(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Icon(Icons.Default.DateRange, contentDescription = "Apri date picker")
+                        Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.open_d_picker))
                     }
 
                     DatePickerModal(
@@ -97,7 +99,7 @@ fun TodayCalendarActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{CustomDivider()}
             item{Spacer(Modifier.size(8.dp))}
-            item{TitleLabel("Da Programmare")}
+            item{TitleLabel(stringResource(R.string.schedule))}
             item{Spacer(Modifier.size(8.dp))}
             items(appuntamenti){ item ->
                 GenericCard(

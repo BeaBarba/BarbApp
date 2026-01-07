@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -28,7 +29,7 @@ import com.example.myapplication.ui.component.DoubleKeyValueLabel
 import com.example.myapplication.ui.component.KeyValueLabel
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.Images
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
@@ -41,14 +42,14 @@ fun SingleJobSummaryActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                id = "Intervento",
+                id = stringResource(R.string.intervention),
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
                         onClick = {navController.navigate(NavigationRoute.JobAdd)},
                         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
                     ) {
-                        Icon(painterResource(R.drawable.edit_square_24dp), contentDescription = "Edit")
+                        Icon(painterResource(R.drawable.edit_square_24dp), contentDescription = stringResource(R.string.edit))
                     }
                 }
             )
@@ -73,7 +74,7 @@ fun SingleJobSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
-                    title = "Indirizzo",
+                    title = stringResource(R.string.address),
                     description = "Pasquale Ordlandi 21",
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
@@ -82,7 +83,7 @@ fun SingleJobSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
-                    title = "Comune",
+                    title = stringResource(R.string.city),
                     description = "Medicina",
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
@@ -91,47 +92,47 @@ fun SingleJobSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DoubleKeyValueLabel(
-                    firstTitle = "CAP",
+                    firstTitle = stringResource(R.string.postal_code),
                     firstDescription = "40059",
-                    secondTitle = "Provincia",
+                    secondTitle = stringResource(R.string.province),
                     secondDescription = "BO"
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DoubleKeyValueLabel(
-                    firstTitle = "Prezzo",
+                    firstTitle = stringResource(R.string.price),
                     firstDescription = "1.000€",
-                    secondTitle = "Data",
+                    secondTitle = stringResource(R.string.date),
                     secondDescription = "01/01/2025"
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DoubleKeyValueLabel(
-                    firstTitle = "Ora Inizio",
+                    firstTitle = stringResource(R.string.start_time),
                     firstDescription = "09:00",
-                    secondTitle = "Ora Fine",
+                    secondTitle = stringResource(R.string.end_time),
                     secondDescription = "12:00"
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
-                    title = "Tipo",
+                    title = stringResource(R.string.type),
                     description = "Elettrico",
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{TitleLabel(title = "Descrizione")}
+            item{TitleLabel(title = stringResource(R.string.description))}
             item{Spacer(Modifier.size(8.dp))}
             item{BoxDescription(textDescription)}
             item{Spacer(Modifier.size(8.dp))}
             item{Images()}
             item{Spacer(Modifier.size(8.dp))}
-            item{TitleLabel("Materiali")}
+            item{TitleLabel(stringResource(R.string.materials))}
             item{Spacer(Modifier.size(8.dp))}
             items(prodotti.subList(0,5)){item ->
                 GenericCard(

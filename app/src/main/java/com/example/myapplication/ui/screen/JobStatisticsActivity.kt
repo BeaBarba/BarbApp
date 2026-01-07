@@ -12,12 +12,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDateRangePicker
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -29,7 +31,7 @@ fun JobStatisticsActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.AllStatistics)}},
-                id = "Sommario Interventi"
+                id = stringResource(R.string.intervention_summary)
             )
         }
     ) { contentPadding ->

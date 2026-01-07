@@ -164,7 +164,7 @@ fun Screen(modifier : Modifier){
                 { showDialog = false },
                 "OGGETTO",
                 "Modello",
-                itemsList
+                item_num
             )
         }
     }

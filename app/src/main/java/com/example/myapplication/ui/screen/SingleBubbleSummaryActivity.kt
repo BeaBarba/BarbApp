@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -27,7 +28,7 @@ import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.KeyValueLabel
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
@@ -41,7 +42,7 @@ fun SingleBubbleSummaryActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigateUp()}},
-                id = "Bolla",
+                id = stringResource(R.string.bubble),
                 trailingIcon = {
                     IconButton(
                         onClick = {navController.navigate(NavigationRoute.BubbleAdd)},
@@ -51,7 +52,7 @@ fun SingleBubbleSummaryActivity(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.edit_square_24dp),
-                            contentDescription = "Edit"
+                            contentDescription = stringResource(R.string.edit)
                         )
                     }
                 }
@@ -69,21 +70,21 @@ fun SingleBubbleSummaryActivity(
                 .fillMaxSize()
         ) {
             item{KeyValueLabel(
-                title = "Venditore",
+                title = stringResource(R.string.seller),
                 description = provenienze.get(0).fornitore,
                 weightTitle = 1.0f,
                 weighDescription = 2.0f
             )}
             item{Spacer(Modifier.size(8.dp))}
             item{KeyValueLabel(
-                title = "Numero",
+                title = stringResource(R.string.number),
                 description = provenienze.get(0).numeroBolla.toString(),
                 weightTitle = 1.0f,
                 weighDescription = 2.0f
             )}
             item{Spacer(Modifier.size(8.dp))}
             item{KeyValueLabel(
-                title = "Data emissione",
+                title = stringResource(R.string.date_issue),
                 description = provenienze.get(0).data,
                 weightTitle = 1.0f,
                 weighDescription = 2.0f
@@ -92,9 +93,9 @@ fun SingleBubbleSummaryActivity(
             if(!provenienze.get(1).fattura.isNullOrEmpty()){
                 item{
                     GenericCard(
-                        text = "Fattura: " + provenienze.get(1).fattura.toString(),
+                        text = stringResource(R.string.invoice) + ": " + provenienze.get(1).fattura.toString(),
                         trailingContent = {
-                            Icon(Icons.Filled.ChevronRight, contentDescription = "View")
+                            Icon(Icons.Filled.ChevronRight, contentDescription = stringResource(R.string.show_items))
                         },
                         textSpace = 0.9f,
                         onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)}
@@ -103,7 +104,7 @@ fun SingleBubbleSummaryActivity(
                 item{Spacer(Modifier.size(8.dp))}
             }
             item{
-                TitleLabel(title = "Materiale")
+                TitleLabel(title = stringResource(R.string.material))
             }
             item{Spacer(Modifier.size(8.dp))}
             items(prodotti){item ->

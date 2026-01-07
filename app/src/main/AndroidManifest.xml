@@ -20,98 +20,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.MyApplication">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-
-        <!-- Material -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.SingleMaterialSummaryActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name="com.example.myapplication.ui.screen.MaterialAddActivity"
-            android:exported="false"
-            />
-
-        <!-- Customers -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.SingleCustomerSummaryActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name="com.example.myapplication.ui.screen.CustomerAddActivity"
-            android:exported="false"
-            />
-
-        <!-- Jobs -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.SingleJobSummaryActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name="com.example.myapplication.ui.screen.JobAddActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name="com.example.myapplication.ui.screen.JobMaterialsActivity"
-            android:exported="false"
-            />
-
-        <!-- Bubbles -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.BubbleAddActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name="com.example.myapplication.ui.screen.BubbleMaterialsActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name="com.example.myapplication.ui.screen.SingleBubbleSummaryActivity"
-            android:exported="false"
-            />
-
-        <!-- Payments -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.SinglePaymentSummaryActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name="com.example.myapplication.ui.screen.PaymentAddActivity"
-            android:exported="false"
-            />
-
-        <!-- Calendar -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.DayCalendarActivity"
-            android:exported="false"
-            />
-        <!-- Deadlines -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.DeadlineAddActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name="com.example.myapplication.ui.screen.SingleDeadlineSummaryActivity"
-            android:exported="false"
-            />
-
-        <!-- Statistics -->
-        <activity
-            android:name="com.example.myapplication.ui.screen.JobStatisticsActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name="com.example.myapplication.ui.screen.AveragePaymentsTimesStatisticsActivity"
-            android:exported="false"
-            />
 
     </application>
 </manifest>

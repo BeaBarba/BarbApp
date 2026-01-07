@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,12 +11,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.ui.component.BackButton
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.StatisticCard
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -29,7 +29,7 @@ fun AllStatisticsActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                id = "Statistiche",
+                id = stringResource(R.string.statistics),
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}}
             )
         }
@@ -45,39 +45,39 @@ fun AllStatisticsActivity(
                 .fillMaxSize(),
         ) {
             StatisticCard(
-                text = "Storico Prezzi Materiali",
+                text = stringResource(R.string.material_price_history),
                 icon = painterResource(R.drawable.line_chart),
-                iconDescription = "Price Statistics",
+                iconDescription = stringResource(R.string.material_price_history),
                 onClick = {/*navController.navigate(NavigationRoute.)*/}
             )
             Spacer(Modifier.size(15.dp))
             StatisticCard(
-                text = "Sommario Interventi",
+                text = stringResource(R.string.intervention_summary),
                 icon = painterResource(R.drawable.pie_chart),
-                iconDescription = "Jobs Statistics",
+                iconDescription = stringResource(R.string.intervention_summary),
                 onClick = {navController.navigate(NavigationRoute.JobStatistics)}
             )
             Spacer(Modifier.size(15.dp))
             StatisticCard(
-                text = "Ricavo Interventi",
+                text = stringResource(R.string.intervention_revenue),
                 icon = painterResource(R.drawable.diagram_24dp),
-                iconDescription = "Jobs Revenue",
+                iconDescription = stringResource(R.string.intervention_revenue),
                 onClick = {/*navController.navigate(NavigationRoute.)*/}
             )
             Spacer(Modifier.size(15.dp))
             StatisticCard(
-                text = "Tempi Medi Di Riscossione",
+                text = stringResource(R.string.average_times),
                 icon = painterResource(R.drawable.bar_chart_24dp),
-                iconDescription = "Average Collection Times",
-                description = " Clienti",
+                iconDescription = stringResource(R.string.average_times),
+                description = stringResource(R.string.customers),
                 onClick = {navController.navigate(NavigationRoute.AveragePaymentsTimesStatistics)}
             )
             Spacer(Modifier.size(15.dp))
             StatisticCard(
-                text = "Numero Interventi",
+                text = stringResource(R.string.intervention_number),
                 icon = painterResource(R.drawable.diagram_24dp),
-                iconDescription = "Number Of Jobs Per Reference",
-                description = "Riferimento",
+                iconDescription = stringResource(R.string.intervention_number),
+                description = stringResource(R.string.reference),
                 onClick = {/*navController.navigate(NavigationRoute.)*/}
             )
             Spacer(Modifier.size(15.dp))

@@ -36,6 +36,14 @@ val letters = customers.map { it.get(0) }.distinct()
 
 var itemsList = List<String>(10, {item -> "item $item"})
 
+var item_num = listOf<Pair<String,Int>>(
+    Pair<String,Int>("item", 10),
+    Pair<String,Int>("item", 5),
+    Pair<String,Int>("item", 3),
+    Pair<String,Int>("item", 4),
+    Pair<String,Int>("item", 1),
+)
+
 data class Prodotto(
     val nome: String,
     val modello: String,
@@ -214,6 +222,8 @@ var scadenze = listOf(
     Scadenze("Ristorante La Scala", "Ristorante", 132.40f, "25/04/2024"),
     Scadenze("Fornitore Packaging", "fornitore", 77.80f, "30/04/2024")
 )
+
+var category =  listOf("cat1" , "cat2" , "cat3")
 
 data class Provenienze(
     val fornitore: String,

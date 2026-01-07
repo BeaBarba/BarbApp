@@ -17,14 +17,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DeleteButton
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -38,13 +40,13 @@ fun CustomerAddActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigateUp()}},
-                id = "Cliente",
+                id = stringResource(R.string.customer),
                 trailingIcon = {
                     IconButton(
                         onClick = {navController.navigate(NavigationRoute.SingleCustomerSummary)},
                         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
                     ) {
-                        Icon(Icons.Filled.Check, "Save")
+                        Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
                 }
             )
@@ -60,25 +62,25 @@ fun CustomerAddActivity(
                 )
                 .fillMaxSize()
         ) {
-            item {TitleLabel("Dati Anagrafici")}
-            item {CustomOutlineTextField("CF")}
-            item {CustomOutlineTextField("Nome")}
-            item {CustomOutlineTextField("Cognome")}
+            item {TitleLabel(stringResource(R.string.personal_details))}
+            item {CustomOutlineTextField(stringResource(R.string.id))}
+            item {CustomOutlineTextField(stringResource(R.string.name))}
+            item {CustomOutlineTextField(stringResource(R.string.last_name))}
             item {
                 CustomOutlineTextField(
                     leadingIcon = {
                         /*IconButton(
                             onClick = {}
                         ) {*/
-                            Icon(Icons.Filled.LocationOn, contentDescription = "Address")
+                            Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))
                         //}
                     },
-                    label = "Indirizzo"
+                    label = stringResource(R.string.address)
                 )
             }
-            item {CustomOutlineTextField("Comune")}
-            item {CustomOutlineTextField("Provincia")}
-            item {CustomOutlineTextField("CAP")}
+            item {CustomOutlineTextField(stringResource(R.string.city))}
+            item {CustomOutlineTextField(stringResource(R.string.province))}
+            item {CustomOutlineTextField(stringResource(R.string.postal_code))}
             item {Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleCustomerSummary>() == true) {
                 item {

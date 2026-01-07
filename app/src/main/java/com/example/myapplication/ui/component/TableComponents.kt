@@ -17,9 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.R
 import com.example.myapplication.ui.screen.Prodotto
 import com.example.myapplication.ui.theme.TableStyleDefaults
 import com.example.myapplication.ui.theme.TableColumn
@@ -28,6 +30,12 @@ import com.example.myapplication.ui.theme.TableColumn
 fun MaterialTable(contentPadding: PaddingValues,
           listData: List<Prodotto>,
 ){
+    val headerColumns = listOf(
+        TableColumn(title = stringResource(R.string.name).uppercase(), 3.0f),
+        TableColumn(title = stringResource(R.string.short_quantity), 1.0f),
+        TableColumn(title = stringResource(R.string.price), 1.5f),
+        TableColumn(title = stringResource(R.string.vat), 1.0f)
+    )
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,12 +47,6 @@ fun MaterialTable(contentPadding: PaddingValues,
             .border(TableStyleDefaults.measures().borderWidth, TableStyleDefaults.colors().border),
     ){
         LazyColumn() {
-            val headerColumns = listOf(
-                TableColumn("NOME", 3.0f),
-                TableColumn("QTÀ", 1.0f),
-                TableColumn("PREZZO", 1.5f),
-                TableColumn("IVA", 1.0f)
-            )
             /* Header Cell */
             item {
                 Row(

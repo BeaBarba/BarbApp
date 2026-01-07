@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Air
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material.icons.filled.AutoMode
 import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.FilterAlt
@@ -35,8 +36,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.R
 
 @Composable
 fun CustomDropDownMenu(
@@ -93,30 +96,30 @@ fun MenuTitle(text : String){
 
 @Composable
 fun Order(
-    text : String = "Ordinamento",
+    text : String = stringResource(R.string.sorting),
     onClickAscending : () -> Unit,
     onClickDescending : () -> Unit
 ){
     MenuTitle(text)
     DropdownMenuItem(
         leadingIcon = {
-            Icon(Icons.Filled.ArrowDropUp, contentDescription = "Ascending order",
+            Icon(Icons.Filled.ArrowDropUp, contentDescription = stringResource(R.string.a_order),
                 tint = MaterialTheme.colorScheme.onPrimary
             ) },
         text = {
-            MenuText(text = "Crescente")
+            MenuText(text = stringResource(R.string.ascending))
         },
-        onClick = { onClickAscending() /* Order items to ascending order */ }
+        onClick = { onClickAscending() }
     )
     DropdownMenuItem(
         leadingIcon = {
-            Icon(Icons.Filled.ArrowDropDown, contentDescription = "Descending order",
+            Icon(Icons.Filled.ArrowDropDown, contentDescription = stringResource(R.string.d_order),
                 tint = MaterialTheme.colorScheme.onPrimary
             ) },
         text = {
-            MenuText(text = "Decrescente")
+            MenuText(text = stringResource(R.string.descending))
         },
-        onClick = { onClickDescending() /* Order items to descending order */ }
+        onClick = { onClickDescending() }
     )
 }
 
@@ -125,36 +128,71 @@ fun DropDownMenuHome(){
     var expanded by remember { mutableStateOf(false) }
     Box() {
         IconButton(onClick = { expanded = !expanded }) {
-            Icon(Icons.Filled.Settings, contentDescription = "Settings", tint = MaterialTheme.colorScheme.onPrimary)
+            Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.settings), tint = MaterialTheme.colorScheme.onPrimary)
         }
 
-        CustomDropDownMenu(expanded, { expanded = false }) {
+        CustomDropDownMenu(expanded, { expanded = false }, 350.dp) {
             Column(
                 modifier = Modifier.padding(end = 20.dp, start = 20.dp),
             ) {
-                MenuTitle("Aspetto")
+                MenuTitle(stringResource(R.string.apparence))
                 DropdownMenuItem(
-                    leadingIcon = { Icon(Icons.Filled.LightMode, contentDescription = "Chiaro",tint = MaterialTheme.colorScheme.onPrimary) },
-                    text = { MenuText(text = "Chiaro") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.LightMode,
+                            contentDescription = stringResource(R.string.light_mode),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    text = {MenuText(text = stringResource(R.string.light_mode))},
                     onClick = { /* Change color light */ },
                 )
                 DropdownMenuItem(
-                    leadingIcon =  { Icon(Icons.Filled.DarkMode, contentDescription = "Scuro",tint = MaterialTheme.colorScheme.onPrimary) },
-                    text = { MenuText(text = "Scuro") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.DarkMode,
+                            contentDescription = stringResource(R.string.dark_mode),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    text = {MenuText(text = stringResource(R.string.dark_mode))},
                     onClick = { /* Change color dark */ },
+                )
+                DropdownMenuItem(
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.AutoMode,
+                            contentDescription = stringResource(R.string.system_mode),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    text = {MenuText(text = stringResource(R.string.system_mode))},
+                    onClick = { /* Change dependence of system color */ },
                 )
 
                 MenuDivider()
 
-                MenuTitle("Dati")
+                MenuTitle(stringResource(R.string.data))
                 DropdownMenuItem(
-                    leadingIcon = { Icon(Icons.Filled.Inbox, contentDescription = "Import", tint = MaterialTheme.colorScheme.onPrimary) },
-                    text = { MenuText(text = "Importa Database") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Inbox,
+                            contentDescription = stringResource(R.string.import_DB),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    text = { MenuText(text = stringResource(R.string.import_DB)) },
                     onClick = { /* Action to import database */ },
                 )
                 DropdownMenuItem(
-                    leadingIcon =  { Icon(Icons.Filled.Outbox, contentDescription = "Export", tint = MaterialTheme.colorScheme.onPrimary) },
-                    text = { MenuText(text = "Esporta Database") },
+                    leadingIcon =  {
+                        Icon(
+                            imageVector = Icons.Filled.Outbox,
+                            contentDescription = stringResource(R.string.export_DB),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    text = { MenuText(text = stringResource(R.string.export_DB)) },
                     onClick = { /* Action to export database */ },
                 )
             }
@@ -167,7 +205,7 @@ fun DropDownMenuBubbles(){
     var expanded by remember { mutableStateOf(false) }
     Box() {
         IconButton(onClick = { expanded = !expanded }) {
-            Icon(Icons.Filled.FilterAlt, contentDescription = "Filter", tint = MaterialTheme.colorScheme.onPrimary)
+            Icon(Icons.Filled.FilterAlt, contentDescription = stringResource(R.string.filters), tint = MaterialTheme.colorScheme.onPrimary)
         }
 
         CustomDropDownMenu(
@@ -178,15 +216,15 @@ fun DropDownMenuBubbles(){
                 modifier = Modifier.padding(end = 20.dp, start = 20.dp),
             ) {
                 DropdownMenuItem(
-                    text = { MenuText(text = "Tutte") },
+                    text = { MenuText(text = stringResource(R.string.all)) },
                     onClick = { /* Query that select all bubbles */ }
                 )
                 DropdownMenuItem(
-                    text = { MenuText(text = "Venditore") },
+                    text = { MenuText(text = stringResource(R.string.seller)) },
                     onClick = { /* Query that select all bubbles based on seller */ }
                 )
                 DropdownMenuItem(
-                    text = { MenuText(text = "Data") },
+                    text = { MenuText(text = stringResource(R.string.date)) },
                     onClick = { /* Query that select all bubbles on date */ }
                 )
 
@@ -203,7 +241,7 @@ fun DropDownMenuCleaning(){
     var expanded by remember { mutableStateOf(false) }
     Box() {
         IconButton(onClick = { expanded = !expanded }) {
-            Icon(Icons.Filled.FilterAlt, contentDescription = "Filter", tint = MaterialTheme.colorScheme.onPrimary)
+            Icon(Icons.Filled.FilterAlt, contentDescription = stringResource(R.string.filters), tint = MaterialTheme.colorScheme.onPrimary)
         }
 
         CustomDropDownMenu(
@@ -214,15 +252,15 @@ fun DropDownMenuCleaning(){
                 modifier = Modifier.padding(end = 20.dp, start = 20.dp),
             ) {
                 DropdownMenuItem(
-                    text = { MenuText(text = "Tutte") },
+                    text = { MenuText(text = stringResource(R.string.all)) },
                     onClick = { /* Query that select all bubbles */ }
                 )
                 DropdownMenuItem(
-                    text = { MenuText(text = "Indirizzo") },
+                    text = { MenuText(text = stringResource(R.string.address)) },
                     onClick = { /* Query that select all bubbles based on address */ }
                 )
                 DropdownMenuItem(
-                    text = { MenuText(text = "Data Inserimento") },
+                    text = { MenuText(text = stringResource(R.string.date_added)) },
                     onClick = { /* Query that select all bubbles on date */ }
                 )
 
@@ -240,7 +278,7 @@ fun DropDownMenuJobs(){
 
     Box(){
         IconButton(onClick = { expanded = !expanded }) {
-            Icon(Icons.Filled.FilterAlt, contentDescription = "Filter", tint = MaterialTheme.colorScheme.onPrimary)
+            Icon(Icons.Filled.FilterAlt, contentDescription = stringResource(R.string.filters), tint = MaterialTheme.colorScheme.onPrimary)
         }
 
         CustomDropDownMenu(
@@ -252,34 +290,34 @@ fun DropDownMenuJobs(){
                 modifier = Modifier.padding(start = 20.dp, end = 20.dp)
             ) {
                 DropdownMenuItem(
-                    text = { MenuText(text = "Tutti") },
+                    text = { MenuText(text = stringResource(R.string.all)) },
                     onClick = { /* Query that select all jobs */ }
                 )
                 DropdownMenuItem(
-                    text = { MenuText(text = "Effettuati") },
+                    text = { MenuText(text = stringResource(R.string.j_completed)) },
                     onClick = { /* Query that select jobs taken */ }
                 )
                 DropdownMenuItem(
-                    text = { MenuText(text = "Da programmare") },
+                    text = { MenuText(text = stringResource(R.string.schedule)) },
                     onClick = { /* Query that select jobs to be planned */ }
                 )
 
                 MenuDivider()
 
-                MenuTitle("Tipologia")
+                MenuTitle(stringResource(R.string.type))
                 DropdownMenuItem(
-                    leadingIcon = { Icon(Icons.Filled.Lightbulb,contentDescription = "Eletric",tint = MaterialTheme.colorScheme.onPrimary) },
-                    text = { MenuText(text = "Elettrico") },
+                    leadingIcon = { Icon(Icons.Filled.Lightbulb,contentDescription = stringResource(R.string.eletric),tint = MaterialTheme.colorScheme.onPrimary) },
+                    text = { MenuText(text = stringResource(R.string.eletric)) },
                     onClick = { /* Query that select jobs on eletric */ }
                 )
                 DropdownMenuItem(
-                    leadingIcon = {Icon(Icons.Filled.Air,contentDescription = "Air conditioning",tint = MaterialTheme.colorScheme.onPrimary) },
-                    text = { MenuText(text = "Condizionamento") },
+                    leadingIcon = {Icon(Icons.Filled.Air,contentDescription = stringResource(R.string.air_conditioning),tint = MaterialTheme.colorScheme.onPrimary) },
+                    text = { MenuText(text = stringResource(R.string.air_conditioning)) },
                     onClick = { /* Query that select jobs on air conditioning */ }
                 )
                 DropdownMenuItem(
-                    leadingIcon = { Icon(Icons.Filled.Campaign,contentDescription = "Alarm",tint = MaterialTheme.colorScheme.onPrimary) },
-                    text = { MenuText(text = "Allarme") },
+                    leadingIcon = { Icon(Icons.Filled.Campaign,contentDescription = stringResource(R.string.alarm),tint = MaterialTheme.colorScheme.onPrimary) },
+                    text = { MenuText(text = stringResource(R.string.alarm)) },
                     onClick = { /* Query that select jobs on air alarm */ }
                 )
 
@@ -297,7 +335,7 @@ fun DropDownMenuCustomers(){
 
     Box( ){
         IconButton( onClick = {expanded = !expanded} ) {
-            Icon(Icons.Filled.FilterAlt, "Filter", tint = MaterialTheme.colorScheme.onPrimary)
+            Icon(Icons.Filled.FilterAlt, stringResource(R.string.filters), tint = MaterialTheme.colorScheme.onPrimary)
         }
 
         CustomDropDownMenu(
@@ -307,30 +345,48 @@ fun DropDownMenuCustomers(){
         ) {
             Column(modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
                 DropdownMenuItem(
-                    text = { MenuText(text = "Tutti") },
+                    text = { MenuText(text = stringResource(R.string.all)) },
                     onClick = { /* Query that select all custumers */}
                 )
                 DropdownMenuItem(
-                    text = { MenuText(text = "Riferimento") },
+                    text = { MenuText(text = stringResource(R.string.reference)) },
                     onClick = { /* Query tghat groups custumers by reference */ }
                 )
 
                 MenuDivider()
 
-                MenuTitle("Intervento")
+                MenuTitle(stringResource(R.string.intervention))
                 DropdownMenuItem(
-                    leadingIcon = { Icon(Icons.Filled.Air, contentDescription = "Air conditioning", tint = MaterialTheme.colorScheme.onPrimary)},
-                    text = { MenuText(text = "Condizionamento") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Air,
+                            contentDescription = stringResource(R.string.air_conditioning),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    text = { MenuText(text = stringResource(R.string.air_conditioning)) },
                     onClick = { /* Query that groups and filter custumers by air conditioning */ }
                 )
                 DropdownMenuItem(
-                    leadingIcon = { Icon(Icons.Filled.Lightbulb, contentDescription = "Eletric", tint = MaterialTheme.colorScheme.onPrimary)},
-                    text = { MenuText(text = "Elettrico") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Lightbulb,
+                            contentDescription = stringResource(R.string.eletric),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    text = { MenuText(text = stringResource(R.string.eletric)) },
                     onClick = { /*Query that group and filter custumers by eletric */ }
                 )
                 DropdownMenuItem(
-                    leadingIcon = { Icon(Icons.Filled.Campaign, contentDescription = "Alarm", tint = MaterialTheme.colorScheme.onPrimary)},
-                    text = { MenuText("Allarme") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Campaign,
+                            contentDescription = stringResource(R.string.alarm),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    text = { MenuText(stringResource(R.string.alarm)) },
                     onClick = { /* Query that groups and filter custumers by alarm */ }
                 )
 
@@ -348,7 +404,7 @@ fun DropDownMenuPayments(){
 
     Box(){
         IconButton(onClick = {expanded = !expanded}) {
-            Icon(Icons.Filled.FilterAlt, contentDescription = "Filter", tint = MaterialTheme.colorScheme.onPrimary)
+            Icon(Icons.Filled.FilterAlt, contentDescription = stringResource(R.string.filters), tint = MaterialTheme.colorScheme.onPrimary)
         }
 
         CustomDropDownMenu(
@@ -356,26 +412,28 @@ fun DropDownMenuPayments(){
             onDismissRequest = {expanded = false}
         ) {
             Column(modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
-                Order("Importo", {}, {})
+                Order(stringResource(R.string.amount), {}, {})
 
                 MenuDivider()
 
-                Order("Data Emissione", {}, {})
+                Order(stringResource(R.string.date_issue), {}, {})
             }
         }
     }
 }
 
 @Composable
-fun DropDownMenuDeadlines(){
+fun DropDownMenuDeadlines(
+    category : List<String>,
+    sellers : List<String>
+){
     var expanded by remember { mutableStateOf(false) }
-    var category =  listOf("cat1" , "cat2" , "cat3")
 
     Box() {
         IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 Icons.Filled.FilterAlt,
-                contentDescription = "Filter",
+                contentDescription = stringResource(R.string.filters),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }
@@ -387,27 +445,29 @@ fun DropDownMenuDeadlines(){
         ) {
             Column(modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
                 DropdownMenuItem(
-                    text = { MenuText(text = "Tutti") },
+                    text = { MenuText(text = stringResource(R.string.all)) },
                     onClick = { /* Query that select all payments */ }
                 )
 
                 MenuDivider()
 
-                MenuTitle("Categorie")
+                MenuTitle(stringResource(R.string.category))
                 category.forEach { cat ->
                     DropdownMenuItem(
-                        text = { MenuText(cat.toString()) },
+                        text = { MenuText(cat) },
                         onClick = { /* Query that filter payments by category */ }
                     )
                 }
 
                 MenuDivider()
 
-                MenuTitle("Venditori")
-                DropdownMenuItem(
-                    text = { MenuText("Venditore 1") },
-                    onClick = { /* Query that filter payments by sellers */ }
-                )
+                MenuTitle(stringResource(R.string.seller))
+                sellers.forEach { seller ->
+                    DropdownMenuItem(
+                        text = { MenuText(seller) },
+                        onClick = { /* Query that filter payments by sellers */ }
+                    )
+                }
 
                 MenuDivider()
                 Order(onClickDescending = {}, onClickAscending = {})

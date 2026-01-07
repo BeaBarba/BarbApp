@@ -16,13 +16,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.MaterialTable
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -35,7 +37,7 @@ fun BubbleMaterialsActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton {navController.navigateUp()}},
-                id = "Materiale - Bolla",
+                id = stringResource(R.string.material) + " - " + stringResource(R.string.bubble),
                 trailingIcon = {
                     IconButton(
                         onClick = {navController.navigate(NavigationRoute.BubbleAdd)},
@@ -43,7 +45,7 @@ fun BubbleMaterialsActivity(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Icon(Icons.Filled.Check, contentDescription = "Save")
+                        Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
                 }
             )
@@ -60,7 +62,7 @@ fun BubbleMaterialsActivity(
                 )
                 .fillMaxSize()
         ) {
-            SearchAppBar("Materiale")
+            SearchAppBar(stringResource(R.string.material))
             MaterialTable(
                 contentPadding = contentPadding,
                 listData = prodotti

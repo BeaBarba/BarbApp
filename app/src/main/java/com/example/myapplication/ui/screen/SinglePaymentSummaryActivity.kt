@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -27,7 +28,7 @@ import com.example.myapplication.R
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.DoubleKeyValueLabel
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
@@ -41,7 +42,7 @@ fun SinglePaymentSummaryActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigateUp()}},
-                id = "Pagamento",
+                id = stringResource(R.string.payment),
                 trailingIcon = {
                     IconButton(
                         onClick = {navController.navigate(NavigationRoute.PaymentAdd)},
@@ -51,7 +52,7 @@ fun SinglePaymentSummaryActivity(
                     ){
                         Icon(
                             painter = painterResource(R.drawable.edit_square_24dp),
-                            contentDescription = "Edit"
+                            contentDescription = stringResource(R.string.edit)
                         )
                     }
                 }
@@ -78,16 +79,16 @@ fun SinglePaymentSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DoubleKeyValueLabel(
-                    firstTitle = "Prezzo",
+                    firstTitle = stringResource(R.string.price),
                     firstDescription = pagamenti[0].prezzo,
-                    secondTitle = "Data",
+                    secondTitle = stringResource(R.string.date),
                     secondDescription = pagamenti[0].data
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 SplitButtonList(
-                    text = "Interventi",
+                    text = stringResource(R.string.interventions),
                     showItems = showItems,
                     onClick = {showItems = !showItems}
                 )

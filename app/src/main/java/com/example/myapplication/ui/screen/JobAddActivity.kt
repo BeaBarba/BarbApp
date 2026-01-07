@@ -19,10 +19,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -30,7 +32,7 @@ import com.example.myapplication.ui.component.CustomTimePicker
 import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -43,7 +45,7 @@ fun JobAddActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                id = "Intervento",
+                id = stringResource(R.string.intervention),
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
@@ -52,7 +54,7 @@ fun JobAddActivity(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Icon(Icons.Filled.Check, contentDescription = "Save")
+                        Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
                 }
             )
@@ -79,7 +81,7 @@ fun JobAddActivity(
                     trailingContent = {
                         Icon(
                             Icons.Filled.ChevronRight,
-                            contentDescription = "Edit Customer",
+                            contentDescription = stringResource(R.string.edit),
                             modifier = Modifier.size(35.dp)
                         )
                     },
@@ -93,38 +95,38 @@ fun JobAddActivity(
                         /*IconButton(
                             onClick = {}
                         ) {*/
-                            Icon(Icons.Filled.LocationOn, contentDescription = "Address")
+                            Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))
                         //}
                     },
-                label = "Indirizzo"
+                label = stringResource(R.string.address)
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("Comune")}
+            item{CustomOutlineTextField(stringResource(R.string.city))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("CAP")}
+            item{CustomOutlineTextField(stringResource(R.string.postal_code))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("Provincia")}
+            item{CustomOutlineTextField(stringResource(R.string.province))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("Prezzo")}
+            item{CustomOutlineTextField(stringResource(R.string.price))}
             item{Spacer(Modifier.size(8.dp))}
             item{DatePickerFieldToModal()}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomTimePicker("Ora Inizio")}
+            item{CustomTimePicker(stringResource(R.string.start_time))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomTimePicker("Ora Fine")}
+            item{CustomTimePicker(stringResource(R.string.end_time))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("Descrizione")}
+            item{CustomOutlineTextField(stringResource(R.string.description))}
             item{Spacer(Modifier.size(8.dp))}
-            item{SplitButtonMenu(content = "Tipo", items = tipi, heightMenu = (tipi.size *55).dp)}
+            item{SplitButtonMenu(content = stringResource(R.string.type), items = tipi, heightMenu = (tipi.size *55).dp)}
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
-                    text = "Materiale",
+                    text = stringResource(R.string.material),
                     trailingContent = {
                         Icon(
                             Icons.Filled.ChevronRight,
-                            contentDescription = "Edit Materials",
+                            contentDescription = stringResource(R.string.edit),
                             modifier = Modifier.size(35.dp)
                         )
                     },
@@ -133,8 +135,14 @@ fun JobAddActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             item{GenericCard(
-                text = "Aggiungi Foto",
-                trailingContent = {Icon(Icons.Outlined.AddPhotoAlternate, contentDescription = "Add Photo", modifier = Modifier.size(40.dp))}
+                text = stringResource(R.string.photo_add),
+                trailingContent = {
+                    Icon(
+                        imageVector = Icons.Outlined.AddPhotoAlternate,
+                        contentDescription = stringResource(R.string.photo_add),
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
             )}
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleJobSummary>() == true) {

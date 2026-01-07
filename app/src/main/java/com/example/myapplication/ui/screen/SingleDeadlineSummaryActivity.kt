@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -27,7 +28,7 @@ import com.example.myapplication.ui.component.BoxDescription
 import com.example.myapplication.ui.component.DoubleKeyValueLabel
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.KeyValueLabel
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
@@ -39,7 +40,7 @@ fun SingleDeadlineSummaryActivity (
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(id = "Scadenza",
+            TopAppBar(id = stringResource(R.string.deadline),
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
@@ -50,7 +51,7 @@ fun SingleDeadlineSummaryActivity (
                     ) {
                         Icon(
                             painterResource(R.drawable.edit_square_24dp),
-                            contentDescription = "Edit"
+                            contentDescription = stringResource(R.string.edit)
                         )
                     }
                 })
@@ -68,7 +69,7 @@ fun SingleDeadlineSummaryActivity (
         ) {
             item{
                 KeyValueLabel(
-                    title = "Nome",
+                    title = stringResource(R.string.name),
                     description = scadenze.get(2).fornitore,
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
@@ -77,21 +78,21 @@ fun SingleDeadlineSummaryActivity (
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DoubleKeyValueLabel(
-                    firstTitle = "Prezzo",
+                    firstTitle = stringResource(R.string.price),
                     firstDescription = scadenze.get(2).prezzo.toString() + " €",
-                    secondTitle = "Data",
+                    secondTitle = stringResource(R.string.date),
                     secondDescription = scadenze.get(2).data
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             val text = "fsdffsfs"
             if(!text.isNullOrEmpty()) {
-                item { TitleLabel("Descrizione") }
+                item { TitleLabel(stringResource(R.string.description)) }
                 item { Spacer(Modifier.size(8.dp)) }
                 item { BoxDescription(text) }
                 item { Spacer(Modifier.size(8.dp)) }
             }
-            item{TitleLabel("Materiali")}
+            item{TitleLabel(stringResource(R.string.materials))}
             item{Spacer(Modifier.size(8.dp))}
             items(prodotti){item ->
                 GenericCard(

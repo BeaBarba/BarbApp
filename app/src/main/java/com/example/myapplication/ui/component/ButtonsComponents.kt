@@ -41,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
@@ -54,7 +55,7 @@ fun AddButton(onClick: () -> Unit){
         contentColor = MaterialTheme.colorScheme.onPrimary,
         interactionSource = remember { MutableInteractionSource() } // Per le interazioni
     ) {
-        Icon(Icons.Filled.Add, "Add item")
+        Icon(Icons.Filled.Add, stringResource(R.string.add_item))
     }
 }
 
@@ -76,13 +77,13 @@ fun DeleteButton(onclick: () -> Unit){
         ){
             Icon(
                 painter = painterResource(R.drawable.delete_24dp),
-                contentDescription = "Delete",
+                contentDescription = stringResource(R.string.delete),
                 tint = CONTENT_COLOR,
                 modifier = Modifier.height(30.dp).width(30.dp)
             )
             Spacer(Modifier.size(8.dp))
             Text(
-                text = "Elimina",
+                text = stringResource(R.string.delete),
                 color = CONTENT_COLOR,
                 fontSize = MaterialTheme.typography.headlineSmall.fontSize
             )
@@ -102,8 +103,8 @@ fun BackButton(onClick: () -> Unit){
         )
     ) {
         Icon(
-            Icons.AutoMirrored.Filled.ArrowBack,
-            "Back"
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = stringResource(R.string.back)
         )
     }
 }
@@ -112,7 +113,7 @@ fun BackButton(onClick: () -> Unit){
 fun ToggleIconButton(checked : Boolean, onCheckedChange: (Boolean) -> Unit) {
     val rotation by animateFloatAsState(
         targetValue = if (checked) 180f else 0f,
-        label = "Trailing Icon Rotation"
+        label = stringResource(R.string.trailing_rotation)
     )
 
     IconButton(
@@ -125,7 +126,7 @@ fun ToggleIconButton(checked : Boolean, onCheckedChange: (Boolean) -> Unit) {
             modifier = Modifier.graphicsLayer {
                 this.rotationZ = rotation
             },
-            contentDescription = if (checked) "Ritira" else "Espandi"
+            contentDescription = if (checked) stringResource(R.string.collapse) else stringResource(R.string.expand)
         )
     }
 }
@@ -165,7 +166,7 @@ fun SplitButtonMenu(
                 Avatar(content.get(0))
                 Spacer(Modifier.size(8.dp))
                 Text(
-                    text = content.toString(),
+                    text = content,
                     color = textColor,
                     fontSize = MaterialTheme.typography.headlineSmall.fontSize
                 )
@@ -206,9 +207,9 @@ fun SplitButtonList(
     GenericCard(
         leadingContent = {
             if(showItems){
-                Icon(Icons.Filled.ChevronRight, contentDescription = "Show items", modifier = Modifier.size(35.dp))
+                Icon(Icons.Filled.ChevronRight, contentDescription = stringResource(R.string.show_items), modifier = Modifier.size(35.dp))
             }else{
-                Icon(Icons.Filled.KeyboardArrowDown, contentDescription = "Hide items", modifier = Modifier.size(35.dp))
+                Icon(Icons.Filled.KeyboardArrowDown, contentDescription = stringResource(R.string.hide_items), modifier = Modifier.size(35.dp))
             }
         },
         text = text,

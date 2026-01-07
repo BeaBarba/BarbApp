@@ -11,14 +11,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuBubbles
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -30,7 +32,7 @@ fun AllBubblesSummaryActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
-                id = "Bolle",
+                id = stringResource(R.string.bubbles),
                 trailingIcon = {DropDownMenuBubbles()}
             )
         },

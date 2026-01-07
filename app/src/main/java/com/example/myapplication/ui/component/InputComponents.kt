@@ -25,7 +25,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.R
 
 @Composable
 fun outlinedTextFieldColor(): TextFieldColors {
@@ -79,7 +81,7 @@ fun CustomOutlineTextField(
                 onClick = { content = ""},
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
-            ) { Icon(Icons.Outlined.Cancel, "Delete", /*tint = MaterialTheme.colorScheme.onPrimaryContainer*/) }
+            ) { Icon(Icons.Outlined.Cancel, contentDescription = stringResource(R.string.delete)) }
         },
         modifier = Modifier
             .padding(4.dp)
@@ -122,7 +124,7 @@ fun SuggestionTextField(
                     },
                     shape = RoundedCornerShape(15),
                     modifier = Modifier.size(30.dp),
-                ) { Icon(Icons.Outlined.Cancel, "Delete Text") }
+                ) { Icon(Icons.Outlined.Cancel, contentDescription = stringResource(R.string.delete)) }
             },
             colors = OutlinedTextFieldDefaults.colors(
                 /* Color Text */

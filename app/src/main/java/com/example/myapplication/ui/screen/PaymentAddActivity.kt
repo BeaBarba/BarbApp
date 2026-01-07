@@ -22,10 +22,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -33,7 +35,7 @@ import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.ListItemCheckbox
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -47,7 +49,7 @@ fun PaymentAddActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigateUp()}},
-                id = "Pagamento",
+                id = stringResource(R.string.payment),
                 trailingIcon = {
                     IconButton(
                         onClick = {navController.navigate(NavigationRoute.SinglePaymentSummary)},
@@ -55,7 +57,7 @@ fun PaymentAddActivity(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Icon(Icons.Filled.Check, contentDescription = "Save")
+                        Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
                 }
             )
@@ -78,18 +80,18 @@ fun PaymentAddActivity(
                     },
                     text = pagamenti[0].cliente,
                     trailingContent = {
-                        Icon(Icons.Filled.ChevronRight, contentDescription = "Edit Customer")
+                        Icon(Icons.Filled.ChevronRight, contentDescription = stringResource(R.string.edit))
                     },
                     onClick = {navController.navigate(NavigationRoute.CustomerAdd)}
             )}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("Prezzo")}
+            item{CustomOutlineTextField(stringResource(R.string.price))}
             item{Spacer(Modifier.size(8.dp))}
-            item{DatePickerFieldToModal("Data Riscossione")}
+            item{DatePickerFieldToModal(stringResource(R.string.date_collection))}
             item{Spacer(Modifier.size(8.dp))}
             item{
                 SplitButtonList(
-                    text = "Interventi",
+                    text = stringResource(R.string.interventions),
                     showItems = showItems,
                     onClick = {showItems = !showItems}
                 )

@@ -4,6 +4,8 @@ import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.example.myapplication.R
 
 /* Function that returns a specific color */
 @Composable
@@ -43,7 +45,7 @@ fun checkColor(
             onPrimaryContainer -> MaterialTheme.colorScheme.onPrimaryContainer
             else -> MaterialTheme.colorScheme.surfaceBright
         }
-        else -> throw IllegalArgumentException("Tipo non supportato")
+        else -> throw IllegalArgumentException(stringResource(R.string.type_not))
     }
 }
 

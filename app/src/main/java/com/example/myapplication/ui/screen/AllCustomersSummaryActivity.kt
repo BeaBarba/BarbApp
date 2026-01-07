@@ -8,14 +8,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomersCardsList
 import com.example.myapplication.ui.component.DropDownMenuCustomers
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -27,7 +29,7 @@ fun AllCustomersSummaryActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                id = "Clienti",
+                id = stringResource(R.string.customers),
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
                 trailingIcon = {DropDownMenuCustomers()}
             )
@@ -44,7 +46,7 @@ fun AllCustomersSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            SearchAppBar("Cliente")
+            SearchAppBar(stringResource(R.string.customer))
             CustomersCardsList(letters, customers, navController)
         }
     }

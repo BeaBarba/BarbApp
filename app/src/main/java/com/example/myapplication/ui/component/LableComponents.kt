@@ -31,11 +31,9 @@ fun TitleLabel(
         .fillMaxWidth(),
     color: Color = MaterialTheme.colorScheme.onPrimary,
     alignment: Alignment = Alignment.Center,
-    //fullWith: Boolean = true
 ){
-    //val baseModifier = if(fullWith){Modifier.fillMaxWidth()}else{Modifier}
     Box(
-        modifier = modifier,//.then(baseModifier),
+        modifier = modifier,
         contentAlignment = alignment,
     ) {
         Text(

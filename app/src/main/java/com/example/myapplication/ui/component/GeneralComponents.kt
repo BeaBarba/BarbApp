@@ -29,10 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import com.example.myapplication.R
 
 /* --------------------------------------------------------- Avatar Composables  ------------------------------------------------------------- */
 /* Function that generates a circle with a character inside it */
@@ -100,7 +102,7 @@ fun CustomAlertDialog(
     onDismiss: ()-> Unit,
     title: String,
     subtitle: String,
-    content: List<String>,
+    content: List<Pair<String,Int>>,
     type: String = "NONE"
 ){
     val TITLE_TYPOGRAFY = MaterialTheme.typography.headlineMedium
@@ -133,7 +135,7 @@ fun CustomAlertDialog(
                     disabledContainerColor = checkColor(type, onPrimaryContainer = true),
                 )
             ) {
-                Text("Ok", color = checkColor(type, onPrimaryContainer = true))
+                Text(text = stringResource(R.string.ok), color = checkColor(type, onPrimaryContainer = true))
             }
         },
         text = {
@@ -157,14 +159,14 @@ fun CustomAlertDialog(
                             ) {
                                 Box(modifier = Modifier.width(160.dp)) {
                                     Text(
-                                        text = item,
+                                        text = item.first,
                                         color = checkColor(type, onPrimaryContainer = true),
                                         fontSize = ITEM_TYPOGRAPHY.fontSize
                                     )
                                 }
                                 Box(modifier = Modifier.width(80.dp)) {
                                     Text(
-                                        text = "num",
+                                        text = item.second.toString(),
                                         color = checkColor(type, onPrimaryContainer = true),
                                         fontSize = ITEM_TYPOGRAPHY.fontSize
                                     )

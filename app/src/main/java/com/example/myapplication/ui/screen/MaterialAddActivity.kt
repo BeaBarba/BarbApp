@@ -16,15 +16,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.Images
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -36,7 +38,7 @@ fun MaterialAddActivity(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(id = "Materiale",
+            TopAppBar(id = stringResource(R.string.material),
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
@@ -45,7 +47,7 @@ fun MaterialAddActivity(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Icon(Icons.Filled.Check, contentDescription = "Save")
+                        Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
                 }
             )
@@ -61,24 +63,24 @@ fun MaterialAddActivity(
                 )
                 .fillMaxSize()
         ) {
-            item{CustomOutlineTextField("Nome")}
+            item{CustomOutlineTextField(stringResource(R.string.name))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("Marca")}
+            item{CustomOutlineTextField(stringResource(R.string.brand))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("Modello")}
+            item{CustomOutlineTextField(stringResource(R.string.model))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("Prezzo unitario")}
+            item{CustomOutlineTextField(stringResource(R.string.unit_price))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("Quantità")}
+            item{CustomOutlineTextField(stringResource(R.string.quantity))}
             item{Spacer(Modifier.size(8.dp))}
             val v_size = if(venditori.size < 5){venditori.size}else{5}
-            item{SplitButtonMenu(content = "Venditori", venditori, heightMenu = (v_size * 55).dp)}
+            item{SplitButtonMenu(content = stringResource(R.string.seller), venditori, heightMenu = (v_size * 55).dp)}
             item{Spacer(Modifier.size(8.dp))}
             val b_size = if(bolle.size < 5){bolle.size}else{5}
-            item{SplitButtonMenu(content = "Bolla", bolle, heightMenu = (b_size * 55).dp)}
+            item{SplitButtonMenu(content = stringResource(R.string.bubble), bolle, heightMenu = (b_size * 55).dp)}
             item{Spacer(Modifier.size(8.dp))}
             val f_size = if(fatture.size < 5){fatture.size}else{5}
-            item{SplitButtonMenu(content = "Fattura", fatture, heightMenu =  (f_size * 55).dp)}
+            item{SplitButtonMenu(content = stringResource(R.string.invoice), fatture, heightMenu =  (f_size * 55).dp)}
             item{Spacer(Modifier.size(8.dp))}
             item{Images()}
             item{Spacer(Modifier.size(8.dp))}

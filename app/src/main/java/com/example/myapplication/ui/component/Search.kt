@@ -21,12 +21,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchAppBar(id : String){
-    var query by remember { mutableStateOf("Cerca") }
+    val queryInitial = stringResource(R.string.search)
+    var query by remember { mutableStateOf(queryInitial) }
     var active by remember { mutableStateOf(false) }
     SearchBar(
         query = query,
@@ -46,7 +49,7 @@ fun SearchAppBar(id : String){
         trailingIcon = {
             Icon(
                 Icons.Filled.Search,
-                "Search",
+                contentDescription = stringResource(R.string.search),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         },

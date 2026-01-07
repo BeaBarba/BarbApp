@@ -26,9 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
@@ -45,7 +47,7 @@ fun JobMaterialsActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                id = "Materiale - Intervento",
+                id = stringResource(R.string.material)+ " - " + stringResource(R.string.intervention),
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
@@ -54,7 +56,7 @@ fun JobMaterialsActivity(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Icon(Icons.Filled.Check, contentDescription = "Save")
+                        Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
                 }
             )
@@ -69,7 +71,7 @@ fun JobMaterialsActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{SearchAppBar("Materiale")}
+            item{SearchAppBar(stringResource(R.string.material))}
             items(prodotti){item ->
                 var quantita by remember{ mutableStateOf(item.quantita)}
                 if(quantita > 0) {
@@ -99,7 +101,7 @@ fun JobMaterialsActivity(
                                         )
                                     )
                                 ) {
-                                    Icon(Icons.Filled.Remove, contentDescription = "Decrease")
+                                    Icon(Icons.Filled.Remove, contentDescription = stringResource(R.string.decrease))
                                 }
                                 Text(
                                     text = quantita.toString() + " " + item.unitaMisura,
@@ -114,7 +116,7 @@ fun JobMaterialsActivity(
                                         )
                                     )
                                 ) {
-                                    Icon(Icons.Filled.Add, contentDescription = "Increase")
+                                    Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.increase))
                                 }
                             }
                         }

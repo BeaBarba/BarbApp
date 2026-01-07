@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -24,7 +25,7 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
 import com.example.myapplication.ui.component.Images
 import com.example.myapplication.ui.component.KeyValueLabel
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -35,7 +36,7 @@ fun SingleMaterialSummaryActivity(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(id = "Materiale",
+            TopAppBar(id = stringResource(R.string.material),
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
@@ -46,7 +47,7 @@ fun SingleMaterialSummaryActivity(
                     ){
                         Icon(
                             painter = painterResource(R.drawable.edit_square_24dp),
-                            contentDescription = "Edit"
+                            contentDescription = stringResource(R.string.edit)
                         )
                     }
                 }
@@ -72,7 +73,7 @@ fun SingleMaterialSummaryActivity(
             }
             item{
                 KeyValueLabel(
-                    title = "Nome",
+                    title = stringResource(R.string.name),
                     weightTitle = 1.0f,
                     description = "Interruttore",
                     weighDescription = 2.0f
@@ -81,7 +82,7 @@ fun SingleMaterialSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
-                    title = "Marca",
+                    title = stringResource(R.string.brand),
                     weightTitle = 1.0f,
                     description = "Vimar",
                     weighDescription = 2.0f
@@ -90,7 +91,7 @@ fun SingleMaterialSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
-                    title = "Modello",
+                    title = stringResource(R.string.model),
                     weightTitle = 1.0f,
                     description = "Plana",
                     weighDescription = 2.0f
@@ -99,7 +100,7 @@ fun SingleMaterialSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
-                    title = "Quantità tot.",
+                    title = stringResource(R.string.total_q),
                     weightTitle = 1.0f,
                     description = somma.toString(),
                     weighDescription = 2.0f
@@ -107,18 +108,18 @@ fun SingleMaterialSummaryActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             item{CustomDivider()}
-            item{TitleLabel("Provenienza")}
+            item{TitleLabel(stringResource(R.string.origin))}
             item{Spacer(Modifier.size(8.dp))}
             items(provenienze){item ->
                 KeyValueLabel(
-                    title = "Venditore",
+                    title = stringResource(R.string.seller),
                     weightTitle = 1.0f,
                     description = item.fornitore,
                     weighDescription = 2.0f
                 )
                 Spacer(Modifier.size(8.dp))
                 KeyValueLabel(
-                    title = "Quantità",
+                    title = stringResource(R.string.quantity),
                     weightTitle = 1.0f,
                     description = item.quantita,
                     weighDescription = 2.0f
@@ -126,7 +127,7 @@ fun SingleMaterialSummaryActivity(
                 Spacer(Modifier.size(8.dp))
                 if(!item.numeroBolla.isNullOrEmpty()) {
                     KeyValueLabel(
-                        title = "Bolla n.",
+                        title = stringResource(R.string.bubble),
                         weightTitle = 1.0f,
                         description = item.numeroBolla,
                         weighDescription = 2.0f
@@ -135,7 +136,7 @@ fun SingleMaterialSummaryActivity(
                 }
                 if(!item.fattura.isNullOrEmpty()){
                     KeyValueLabel(
-                        title = "Fattura",
+                        title = stringResource(R.string.invoice),
                         weightTitle = 1.0f,
                         description = item.fattura,
                         weighDescription = 2.0f

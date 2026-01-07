@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -27,7 +28,7 @@ import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CartCard
 import com.example.myapplication.ui.component.CustomAlertDialog
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -37,7 +38,7 @@ fun CartActivity(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(id = "Carrello",
+            TopAppBar(id = stringResource(R.string.cart),
                 navigationIcon = {BackButton {navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
@@ -45,7 +46,7 @@ fun CartActivity(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.description_24dp),
-                            contentDescription = "Shop item",
+                            contentDescription = stringResource(R.string.bubble_add),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -74,7 +75,7 @@ fun CartActivity(
                         onDismiss = { showDialog = false },
                         title = item.nome,
                         subtitle = item.modello,
-                        content = itemsList.subList(0,5),
+                        content = item_num,
                         type = item.tipo
                     )
                 }

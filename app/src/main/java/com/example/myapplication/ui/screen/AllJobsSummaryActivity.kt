@@ -11,16 +11,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
 import com.example.myapplication.ui.component.DropDownMenuJobs
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
@@ -34,7 +36,7 @@ fun AllJobsSummaryActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                id = "Interventi",
+                id = stringResource(R.string.interventions),
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
                 trailingIcon = {DropDownMenuJobs()}
             )
@@ -52,7 +54,7 @@ fun AllJobsSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            item {SearchAppBar("Intervento")}
+            item {SearchAppBar(stringResource(R.string.intervention))}
             items(interventi){item ->
                 GenericCard(
                     type = item.tipo,
@@ -70,7 +72,7 @@ fun AllJobsSummaryActivity(
                 Spacer(Modifier.size(8.dp))
             }
             item {CustomDivider()}
-            item {TitleLabel("Effettuati")}
+            item {TitleLabel(stringResource(R.string.j_completed))}
             item {Spacer(Modifier.size(8.dp))}
             items(interventi){item ->
                 GenericCard(

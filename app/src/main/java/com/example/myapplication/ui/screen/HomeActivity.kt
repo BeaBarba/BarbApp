@@ -19,10 +19,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -59,70 +61,70 @@ fun HomeActivity(
         ) {
             item{
                 HomeCard(
-                    item = "Interventi",
+                    item = stringResource(R.string.interventions),
                     iconName =  painterResource(R.drawable.wrench_interventi),
                     onclick = {navController.navigate(NavigationRoute.AllJobsSummary)}
                 )
             }
             item{
                 HomeCard(
-                    item = "Clienti",
+                    item = stringResource(R.string.customers),
                     iconName = painterResource(R.drawable.account_circle_24dp),
                     onclick = {navController.navigate(NavigationRoute.AllCustomersSummary)}
                 )
             }
             item{
                 HomeCard(
-                    item = "Calendario",
+                    item = stringResource(R.string.calendar),
                     iconName = painterResource(R.drawable.calendar),
                     onclick = {navController.navigate(NavigationRoute.TodayCalendar)}
                 )
             }
             item{
                 HomeCard(
-                    item = "Pulizie",
+                    item = stringResource(R.string.cleaning_all),
                     iconName = painterResource(R.drawable.vacuum_pulizie),
                     onclick = {navController.navigate(NavigationRoute.AllCleaningSummary)}
                 )
             }
             item{
                 HomeCard(
-                    item = "Pagamenti",
+                    item = stringResource(R.string.payments),
                     iconName = painterResource(R.drawable.savings_pagamenti),
                     onclick = {navController.navigate(NavigationRoute.AllPaymentsSummary)}
                 )
             }
             item{
                 HomeCard(
-                    item = "Scadenze",
+                    item = stringResource(R.string.deadlines),
                     iconName = painterResource(R.drawable.hourglass_scadenze),
                     onclick = {navController.navigate(NavigationRoute.AllDeadlinesSummary)}
                 )
             }
             item{
                 HomeCard(
-                    item = "Magazzino",
+                    item = stringResource(R.string.warehouse),
                     painterResource(R.drawable.warehouse_magazzino),
                     onclick = {navController.navigate(NavigationRoute.Warehouse)}
                 )
             }
             item{
                 HomeCard(
-                    item = "Statistiche",
+                    item = stringResource(R.string.statistics),
                     iconName = painterResource(R.drawable.monitor_statistiche),
                     onclick = {navController.navigate(NavigationRoute.AllStatistics)}
                 )
             }
             item{
                 HomeCard(
-                    item = "Bolle",
+                    item = stringResource(R.string.bubbles),
                     iconName = painterResource(R.drawable.receipt_bolle),
                     onclick = {navController.navigate(NavigationRoute.AllBubblesSummary)}
                 )
             }
             item{
                 HomeCard(
-                    item = "Fatture",
+                    item = stringResource(R.string.invoices),
                     iconName = painterResource(R.drawable.description_24dp),
                     onclick = {/*navController.navigate(NavigationRoute.)*/}
                 )

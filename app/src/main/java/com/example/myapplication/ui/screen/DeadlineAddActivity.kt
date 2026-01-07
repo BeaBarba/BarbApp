@@ -17,16 +17,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -40,7 +42,7 @@ fun DeadlineAddActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigateUp()}},
-                id = "Scadenza",
+                id = stringResource(R.string.deadline),
                 trailingIcon = {
                     IconButton(
                         onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)},
@@ -48,7 +50,7 @@ fun DeadlineAddActivity(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Icon(Icons.Filled.Check, contentDescription = "Save")
+                        Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
                 }
             )
@@ -63,15 +65,15 @@ fun DeadlineAddActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{CustomOutlineTextField("Nome")}
+            item{CustomOutlineTextField(stringResource(R.string.name))}
             item{Spacer(Modifier.size(8.dp))}
-            item{DatePickerFieldToModal("Data Emissione")}
+            item{DatePickerFieldToModal(stringResource(R.string.date_issue))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField("Numero")}
+            item{CustomOutlineTextField(stringResource(R.string.number))}
             item{Spacer(Modifier.size(8.dp))}
             item{
                 SplitButtonMenu(
-                    content = "Categoria",
+                    content = stringResource(R.string.category),
                     items = categorie,
                     heightMenu = (categorie.size * 55).dp
                 )
@@ -79,7 +81,7 @@ fun DeadlineAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 SplitButtonMenu(
-                    content = "Venditore",
+                    content = stringResource(R.string.seller),
                     items = venditori,
                     heightMenu = (venditori.size * 55).dp
                 )
@@ -87,7 +89,7 @@ fun DeadlineAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
-                    text = "Bolle",
+                    text = stringResource(R.string.bubbles),
                     trailingContent = {
                         Icon(
                             imageVector = Icons.Filled.ChevronRight,
@@ -101,11 +103,11 @@ fun DeadlineAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
-                    text = "Materiale",
+                    text = stringResource(R.string.materials),
                     trailingContent = {
                         Icon(
                             imageVector = Icons.Filled.ChevronRight,
-                            contentDescription = "Add Materials",
+                            contentDescription = stringResource(R.string.add_item),
                             modifier = Modifier.size(35.dp)
                         )
                     },

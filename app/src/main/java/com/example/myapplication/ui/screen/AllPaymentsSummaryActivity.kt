@@ -14,14 +14,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuPayments
 import com.example.myapplication.ui.component.ListItemCheckbox
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -34,7 +36,7 @@ fun AllPaymentsSummaryActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
-                id = "Pagamenti",
+                id = stringResource(R.string.payments),
                 trailingIcon = {DropDownMenuPayments()}
             )
         },
@@ -49,7 +51,7 @@ fun AllPaymentsSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{SearchAppBar("Cliente")}
+            item{SearchAppBar(stringResource(R.string.customers))}
             items(pagamenti.subList(5,10)){item ->
                 var checked by remember{mutableStateOf(false)}
                 ListItemCheckbox(

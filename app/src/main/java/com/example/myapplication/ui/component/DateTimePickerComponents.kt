@@ -44,11 +44,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -83,7 +85,7 @@ fun DatePickerModal(
                     openDialogState.value = false
                 }
             ) {
-                Text("OK", color = TEXT_COLOR)
+                Text(text = stringResource(R.string.ok), color = TEXT_COLOR)
             }
         },
         dismissButton = {
@@ -93,7 +95,7 @@ fun DatePickerModal(
                     onDismiss?.invoke()
                 }
             ) {
-                Text("Cancel", color = TEXT_COLOR)
+                Text(text = stringResource(R.string.clear), color = TEXT_COLOR)
             }
         },
         colors = DatePickerDefaults.colors(containerColor = CONTAINER_COLOR)
@@ -116,7 +118,7 @@ fun DatePickerModal(
 
 @Composable
 fun DatePickerFieldToModal(
-    title : String = "Data"
+    title : String = stringResource(R.string.date)
 ) {
     var selectedDate by remember {mutableStateOf<Long?>(null)}
     var showModal = remember {mutableStateOf(false)}
@@ -134,7 +136,7 @@ fun DatePickerFieldToModal(
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
             ) {
-                Icon(Icons.Default.DateRange, contentDescription = "Select date")
+                Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.select_date))
             }
         },
         trailingIcon = {
@@ -143,7 +145,7 @@ fun DatePickerFieldToModal(
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
             ) {
-                Icon(Icons.Outlined.Cancel, "Cancel")
+                Icon(Icons.Outlined.Cancel, contentDescription = stringResource(R.string.clear))
             }
         },
         modifier = Modifier
@@ -169,8 +171,8 @@ fun CustomRangePickerHeader(
     selectedEndDateMillis: Long?
 ) {
     val TEXT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
-    val startDate = selectedStartDateMillis?.let { convertMillisToDate(it) } ?: "Inizio"
-    val endDate = selectedEndDateMillis?.let { convertMillisToDate(it) } ?: "Fine"
+    val startDate = selectedStartDateMillis?.let { convertMillisToDate(it) } ?: stringResource(R.string.start)
+    val endDate = selectedEndDateMillis?.let { convertMillisToDate(it) } ?: stringResource(R.string.end)
 
     Row(
         modifier = Modifier
@@ -236,7 +238,7 @@ fun DateRangePickerFullScreen(
                                     .size(40.dp)
                                     .weight(1.5f)
                             ) {
-                                Icon(Icons.Filled.Close, contentDescription = "Close")
+                                Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.close))
                             }
                             Spacer(Modifier.weight(3.0f))
                             val isSaveEnabled =
@@ -255,7 +257,7 @@ fun DateRangePickerFullScreen(
                                 enabled = isSaveEnabled
                             ) {
                                 Text(
-                                    "Salva",
+                                    text = stringResource(R.string.save),
                                     color = if (isSaveEnabled) TEXT_COLOR else TEXT_COLOR.copy(alpha = 0.5f)
                                 )
                             }
@@ -305,13 +307,13 @@ fun CustomDateRangePicker(
         onValueChange = { },
         readOnly = true,
         placeholder = { Text("DD/MM/YYYY - DD/MM/YYYY") },
-        label = { Text(text = "Range Data", fontSize = MaterialTheme.typography.titleMedium.fontSize) },
+        label = { Text(text = stringResource(R.string.range) + stringResource(R.string.date), fontSize = MaterialTheme.typography.titleMedium.fontSize) },
         leadingIcon = {
             IconButton(
                 onClick = { showRangeModal = true },
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
-            ) { Icon(Icons.Default.DateRange, contentDescription = "Select date range") }
+            ) { Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.select_date) + stringResource(R.string.range)) }
         },
         trailingIcon = {
             IconButton(
@@ -320,7 +322,7 @@ fun CustomDateRangePicker(
                 },
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
-            ) { Icon(Icons.Outlined.Cancel, "Cancel range") }
+            ) { Icon(Icons.Outlined.Cancel, contentDescription = stringResource(R.string.clear)) }
         },
         modifier = Modifier
             .padding(4.dp)
@@ -357,7 +359,7 @@ fun TimePickerDialog(
         dismissButton = {},
         confirmButton = {
             TextButton(onClick = { onConfirm(timePickerState) }) {
-                Text("OK")
+                Text(text = stringResource(R.string.ok))
             }
         },
         text = {
@@ -376,7 +378,7 @@ fun TimePickerDialog(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTimePicker(
-    title : String = "Ora"
+    title : String = stringResource(R.string.time)
 ){
     var showDialog by remember { mutableStateOf(false) }
     var selectedTime by remember { mutableStateOf("") }
@@ -391,7 +393,7 @@ fun CustomTimePicker(
                 onClick = { showDialog = true },
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
-            ) { Icon(Icons.Outlined.Schedule, contentDescription = "Select time") }
+            ) { Icon(Icons.Outlined.Schedule, contentDescription = stringResource(R.string.select_time)) }
         },
         trailingIcon = {
             IconButton(
@@ -401,7 +403,7 @@ fun CustomTimePicker(
                 },
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
-            ) { Icon(Icons.Outlined.Cancel, "Cancel") }
+            ) { Icon(Icons.Outlined.Cancel, contentDescription = stringResource(R.string.clear)) }
         },
         modifier = Modifier
             .padding(4.dp)

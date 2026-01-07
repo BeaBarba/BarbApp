@@ -41,8 +41,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.R
 import com.example.myapplication.ui.screen.Prodotto
 import com.example.myapplication.ui.screen.itemsList
 
@@ -274,7 +276,7 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
             Spacer(Modifier.size(8.dp))
             Column() {
                 Text(
-                    title,
+                    text = title,
                     fontSize = TEXT_TYPOGRAPHY.fontSize,
                     color = checkColor(type, onPrimaryContainer = true),
                     modifier = Modifier.fillMaxWidth()
@@ -291,7 +293,7 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
         Column {
             Row(modifier = Modifier.padding(start = 10.dp, end = 10.dp)) {
                 Text(
-                    text = "Descrizione: ",
+                    text = stringResource(R.string.description) + ": ",
                     modifier = Modifier.padding(start = 8.dp).fillMaxWidth(0.25f),
                     color = checkColor(type, onPrimaryContainer = true),
                     fontSize = TITLE_TYPOGRAPHY.fontSize
@@ -308,7 +310,7 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
             Spacer(Modifier.size(8.dp))
             Row(modifier = Modifier.padding(start = 10.dp, end = 10.dp)) {
                 Text(
-                    text = "Materiale: ",
+                    text = stringResource(R.string.material) + ": ",
                     modifier = Modifier.padding(start = 8.dp).fillMaxWidth(0.20f),
                     color = checkColor(type, onPrimaryContainer = true),
                     fontSize = TITLE_TYPOGRAPHY.fontSize
@@ -388,8 +390,8 @@ fun Images(){
         preferredItemWidth = 140.dp,
         content = {
             Image(
-                Icons.Outlined.Image,
-                "Image",
+                imageVector = Icons.Outlined.Image,
+                contentDescription = stringResource(R.string.image),
                 modifier = Modifier
                     .size(140.dp)
                     .clip(CircleShape)

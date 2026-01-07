@@ -12,14 +12,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.myapplication.R
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
@@ -33,7 +35,7 @@ fun WarehouseActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
-                id = "Magazzino"
+                id = stringResource(R.string.warehouse)
             )
         },
         floatingActionButton = {AddButton{navController.navigate(NavigationRoute.MaterialAdd)}}
@@ -48,7 +50,7 @@ fun WarehouseActivity(
                 )
                 .fillMaxSize()
         ) {
-            item{ SearchAppBar("Materiale")}
+            item{ SearchAppBar(stringResource(R.string.material))}
             items(prodotti){item ->
                 GenericCard(
                     type = item.tipo,

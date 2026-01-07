@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -26,7 +27,7 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
 import com.example.myapplication.ui.component.KeyValueLabel
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.NavigationRoute
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColor
@@ -40,7 +41,7 @@ fun SingleCustomerSummaryActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                id = "Clienti",
+                id = stringResource(R.string.customers),
                 navigationIcon = {BackButton{navController.navigateUp()} },
                 trailingIcon = {
                     IconButton(
@@ -48,7 +49,7 @@ fun SingleCustomerSummaryActivity(
                     ){
                         Icon(
                             painterResource(R.drawable.edit_square_24dp),
-                            contentDescription = "Edit",
+                            contentDescription = stringResource(R.string.edit),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -66,21 +67,21 @@ fun SingleCustomerSummaryActivity(
                 )
                 .fillMaxSize()
         ){
-            item{TitleLabel("Dati Anagrafici")}
+            item{TitleLabel(stringResource(R.string.personal_details))}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel("CF", "RSSMRA80A01A944I", 1.0f, 2.0f)}
+            item{KeyValueLabel(stringResource(R.string.id), "RSSMRA80A01A944I", 1.0f, 2.0f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel("Nome", "Mario", 1.0f, 2.0f)}
+            item{KeyValueLabel(stringResource(R.string.name), "Mario", 1.0f, 2.0f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel("Cognome", "Rossi", 1.0f, 2.0f)}
+            item{KeyValueLabel(stringResource(R.string.last_name), "Rossi", 1.0f, 2.0f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel("Indirizzo", "Piazza dei martiri", 1.0f, 2.0f)}
+            item{KeyValueLabel(stringResource(R.string.address), "Piazza dei martiri", 1.0f, 2.0f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel("Comune", "Bologna", 1.0f, 2.0f)}
+            item{KeyValueLabel(stringResource(R.string.city), "Bologna", 1.0f, 2.0f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel("CAP", "40133", 1.0f, 2.0f)}
+            item{KeyValueLabel(stringResource(R.string.postal_code), "40133", 1.0f, 2.0f)}
             item{CustomDivider()}
-            item{TitleLabel("Interventi")}
+            item{TitleLabel(stringResource(R.string.interventions))}
             item{Spacer(Modifier.size(8.dp))}
             items(interventi){item ->
                 GenericCard(
@@ -98,7 +99,7 @@ fun SingleCustomerSummaryActivity(
                         IconButton(
                             onClick = {navController.navigate(NavigationRoute.JobAdd)}
                         ) {
-                            Icon(Icons.Filled.Mode, contentDescription = "Modify", tint = checkColor(item.tipo, onPrimaryContainer = true))
+                            Icon(Icons.Filled.Mode, contentDescription = stringResource(R.string.edit), tint = checkColor(item.tipo, onPrimaryContainer = true))
                         }
                     },
                     onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}
