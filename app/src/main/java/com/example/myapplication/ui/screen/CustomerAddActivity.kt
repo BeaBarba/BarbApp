@@ -43,7 +43,11 @@ fun CustomerAddActivity(
                 id = stringResource(R.string.customer),
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.SingleCustomerSummary)},
+                        onClick = {
+                            navController.navigate(NavigationRoute.SingleCustomerSummary){
+                                popUpTo(NavigationRoute.CustomerAdd){inclusive = true}
+                            }
+                        },
                         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
                     ) {
                         Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
