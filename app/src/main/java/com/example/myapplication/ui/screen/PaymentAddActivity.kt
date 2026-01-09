@@ -54,7 +54,11 @@ fun PaymentAddActivity(
                 id = stringResource(R.string.payment),
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.SinglePaymentSummary)},
+                        onClick = {
+                            navController.navigate(NavigationRoute.SinglePaymentSummary){
+                                popUpTo(NavigationRoute.PaymentAdd){inclusive = true}
+                            }
+                        },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
