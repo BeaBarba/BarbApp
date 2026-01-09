@@ -86,7 +86,7 @@ fun SingleJobSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
-                    title = stringResource(R.string.city),
+                    title = stringResource(R.string.municipality),
                     description = "Medicina",
                     weightTitle = 1.0f,
                     weighDescription = 2.0f

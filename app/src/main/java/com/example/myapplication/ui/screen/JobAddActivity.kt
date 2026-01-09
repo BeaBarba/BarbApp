@@ -110,7 +110,7 @@ fun JobAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.city))}
+            item{CustomOutlineTextField(stringResource(R.string.municipality))}
             item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField(stringResource(R.string.postal_code))}
             item{Spacer(Modifier.size(8.dp))}

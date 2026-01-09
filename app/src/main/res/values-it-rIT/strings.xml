@@ -78,7 +78,7 @@
     <string name="invoice">Fattura</string>
     <string name="invoices">Fatture</string>
     <string name="quantity">Quantità</string>
-    <string name="city">Comune</string>
+    <string name="municipality">Comune</string>
     <string name="postal_code">CAP</string>
     <string name="province">Provincia</string>
     <string name="start_time">Ora inizio</string>
@@ -105,4 +105,14 @@
     <string name="number">Numero</string>
     <string name="bubble_add">Aggiungi bolla</string>
     <string name="cart">Carrello</string>
+    <string name="contact">Contatti</string>
+    <string name="email">Email</string>
+    <string name="city">Città</string>
+    <string name="phone">Telefono</string>
+    <string name="company_name">Ragione sociale</string>
+    <string name="unique_code">Codice univoco</string>
+    <string name="vat_number">Partita IVA</string>
+    <string name="place_birth">Luogo di nascita</string>
+    <string name="date_birth">Data di nascita</string>
+    <string name="residence">Residenza</string>
 </resources>

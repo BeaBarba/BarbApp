@@ -255,3 +255,68 @@ var provenienze = listOf(
 )
 var fatture : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.fattura}.distinct()
 var bolle : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.numeroBolla}.distinct()
+
+
+data class Cliente(
+    val tipo : String, // P o A (privato o azienda)
+    val nome : String,
+    val CF : String,
+    val cognome : String?,
+    val email : String,
+    val telefono : String,
+    val indirizzo : String,
+    val citta : String,
+    val comune : String,
+    val provincia : String,
+    val cap : String,
+    val riferimento : String,
+    val dataNascita : String?,
+    val luogoNascita : String?,
+    val codiceUnivoco : String?,
+    val ragioneSociale : String?,
+    val partitaIVA : String?,
+)
+
+val listaClienti = listOf(
+    // Esempio Tipo P - Privato
+    Cliente(
+        tipo = "P",
+        nome = "Mario",
+        cognome = "Rossi", // Obbligatorio per P
+        CF = "RSSMRA80A01H501U",
+        dataNascita = "01/01/1980", // Obbligatorio per P
+        luogoNascita = "Roma", // Obbligatorio per P
+        indirizzo = "Via Roma 12",
+        citta = "Roma",
+        comune = "Roma",
+        provincia = "RM",
+        cap = "00100",
+        riferimento = "Privato standard",
+        codiceUnivoco = null,
+        ragioneSociale = null,
+        partitaIVA = null,
+        email = "mariorossi80@gmail.com",
+        telefono = "+39 347 1234567"
+    ),
+
+    // Esempio Tipo A - Azienda
+    Cliente(
+        tipo = "A",
+        nome = "Luca", // Rappresentante o referente
+        cognome = null,
+        CF = "01234567890", // Spesso coincide con la P.IVA
+        dataNascita = null,
+        luogoNascita = null,
+        indirizzo = "Via delle Industrie 50",
+        citta = "Milano",
+        comune = "Milano",
+        provincia = "MI",
+        cap = "20100",
+        riferimento = "Ufficio acquisti",
+        codiceUnivoco = "SUBM70N", // Obbligatorio per A
+        ragioneSociale = "Tech Solutions S.R.L.", // Obbligatorio per A
+        partitaIVA = "01234567890", // Obbligatorio per A
+        email = "amministrazione@techsolutions.it",
+        telefono = "02 9876543"
+    )
+)

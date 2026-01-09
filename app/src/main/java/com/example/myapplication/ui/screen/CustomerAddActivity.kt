@@ -82,7 +82,7 @@ fun CustomerAddActivity(
                     label = stringResource(R.string.address)
                 )
             }
-            item {CustomOutlineTextField(stringResource(R.string.city))}
+            item {CustomOutlineTextField(stringResource(R.string.municipality))}
             item {CustomOutlineTextField(stringResource(R.string.province))}
             item {CustomOutlineTextField(stringResource(R.string.postal_code))}
             item {Spacer(Modifier.size(8.dp))}
