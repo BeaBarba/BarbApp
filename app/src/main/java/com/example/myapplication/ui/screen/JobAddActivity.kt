@@ -53,7 +53,11 @@ fun JobAddActivity(
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.SingleJobSummary)},
+                        onClick = {
+                            navController.navigate(NavigationRoute.SingleJobSummary){
+                                popUpTo(NavigationRoute.JobAdd){inclusive = true}
+                            }
+                        },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )

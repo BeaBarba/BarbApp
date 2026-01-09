@@ -34,13 +34,11 @@ import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
-import androidx.navigation.NavDestination.Companion.hasRoute
 
 @Composable
 fun SingleBubbleSummaryActivity(
     navController : NavHostController
 ){
-    val previousBackStackEntry = navController.previousBackStackEntry
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
