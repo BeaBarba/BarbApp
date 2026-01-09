@@ -48,7 +48,11 @@ fun DeadlineAddActivity(
                 id = stringResource(R.string.deadline),
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)},
+                        onClick = {
+                            navController.navigate(NavigationRoute.SingleDeadlineSummary){
+                                popUpTo(NavigationRoute.DeadlineAdd){inclusive = true}
+                            }
+                        },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
