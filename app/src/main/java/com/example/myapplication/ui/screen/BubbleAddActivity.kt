@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.bolle
+import com.example.myapplication.debug.venditori
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
@@ -45,7 +47,11 @@ fun BubbleAddActivity(
                 id = stringResource(R.string.bubble),
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.SingleBubbleSummary)},
+                        onClick = {
+                            navController.navigate(NavigationRoute.SingleBubbleSummary){
+                                popUpTo(NavigationRoute.BubbleAdd){inclusive = true}
+                            }
+                        },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )

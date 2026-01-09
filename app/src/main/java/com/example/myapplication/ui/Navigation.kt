@@ -25,7 +25,7 @@ import com.example.myapplication.ui.screen.JobMaterialsActivity
 import com.example.myapplication.ui.screen.JobStatisticsActivity
 import com.example.myapplication.ui.screen.MaterialAddActivity
 import com.example.myapplication.ui.screen.PaymentAddActivity
-import com.example.myapplication.ui.screen.Screen
+import com.example.myapplication.debug.Screen
 import com.example.myapplication.ui.screen.SingleBubbleSummaryActivity
 import com.example.myapplication.ui.screen.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.SingleDeadlineSummaryActivity

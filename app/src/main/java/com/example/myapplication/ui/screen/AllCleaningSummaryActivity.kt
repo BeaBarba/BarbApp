@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.customers
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
@@ -56,7 +57,7 @@ fun AllCleaningSummaryActivity(
                 )
         ) {
             item{SearchAppBar(stringResource(R.string.customers))}
-            items(customers.subList(0,5)){item ->
+            items(customers.subList(0,5)){ item ->
                 var checked by remember {mutableStateOf(false)}
                 ListItemCheckbox(
                     char = item.get(0),
@@ -77,7 +78,7 @@ fun AllCleaningSummaryActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             if(showItems){
-                items(customers){item ->
+                items(customers){ item ->
                     var checked by remember { mutableStateOf(true) }
                     ListItemCheckbox(
                         char = item.get(0),

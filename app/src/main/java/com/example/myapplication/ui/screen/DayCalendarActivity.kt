@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.appuntamenti
+import com.example.myapplication.debug.materialList
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DatePickerModal
@@ -80,7 +82,7 @@ fun DayCalendarActivity(
                 bottom = contentPadding.calculateBottomPadding()
             )
         ) {
-            items(appuntamenti.subList(7, appuntamenti.size)){item ->
+            items(appuntamenti.subList(7, appuntamenti.size)){ item ->
                 LargeCard(
                     type = item.tipo,
                     title = item.indirizzo,

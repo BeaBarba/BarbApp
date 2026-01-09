@@ -20,6 +20,9 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.categorie
+import com.example.myapplication.debug.scadenze
+import com.example.myapplication.debug.venditori
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuDeadlines
@@ -55,7 +58,7 @@ fun AllDeadlinesSummaryActivity(
                 )
         ) {
             item{SearchAppBar(stringResource(R.string.category))}
-            items(scadenze.subList(0,5)){item ->
+            items(scadenze.subList(0,5)){ item ->
                 var checked by remember {mutableStateOf(false)}
                 ListItemCheckbox(
                     char = item.categoria.get(0),
@@ -78,7 +81,7 @@ fun AllDeadlinesSummaryActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             if(showItems){
-                items(scadenze){item ->
+                items(scadenze){ item ->
                     var checked by remember { mutableStateOf(true) }
                     ListItemCheckbox(
                         char = item.categoria.get(0),

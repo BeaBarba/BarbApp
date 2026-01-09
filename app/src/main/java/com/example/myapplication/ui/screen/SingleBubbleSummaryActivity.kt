@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.prodotti
+import com.example.myapplication.debug.provenienze
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
@@ -32,11 +34,13 @@ import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
+import androidx.navigation.NavDestination.Companion.hasRoute
 
 @Composable
 fun SingleBubbleSummaryActivity(
     navController : NavHostController
 ){
+    val previousBackStackEntry = navController.previousBackStackEntry
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -45,7 +49,9 @@ fun SingleBubbleSummaryActivity(
                 id = stringResource(R.string.bubble),
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.BubbleAdd)},
+                        onClick = {
+                            navController.navigate(NavigationRoute.BubbleAdd)
+                                  },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
@@ -107,7 +113,7 @@ fun SingleBubbleSummaryActivity(
                 TitleLabel(title = stringResource(R.string.material))
             }
             item{Spacer(Modifier.size(8.dp))}
-            items(prodotti){item ->
+            items(prodotti){ item ->
                 GenericCard(
                     type = item.tipo,
                     leadingContent = {

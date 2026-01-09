@@ -22,6 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.bolle
+import com.example.myapplication.debug.fatture
+import com.example.myapplication.debug.prodotti
+import com.example.myapplication.debug.venditori
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DeleteButton
@@ -73,13 +77,16 @@ fun MaterialAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField(stringResource(R.string.quantity))}
             item{Spacer(Modifier.size(8.dp))}
-            val v_size = if(venditori.size < 5){venditori.size}else{5}
+            val v_size = if(venditori.size < 5){
+                venditori.size}else{5}
             item{SplitButtonMenu(content = stringResource(R.string.seller), venditori, heightMenu = (v_size * 55).dp)}
             item{Spacer(Modifier.size(8.dp))}
-            val b_size = if(bolle.size < 5){bolle.size}else{5}
+            val b_size = if(bolle.size < 5){
+                bolle.size}else{5}
             item{SplitButtonMenu(content = stringResource(R.string.bubble), bolle, heightMenu = (b_size * 55).dp)}
             item{Spacer(Modifier.size(8.dp))}
-            val f_size = if(fatture.size < 5){fatture.size}else{5}
+            val f_size = if(fatture.size < 5){
+                fatture.size}else{5}
             item{SplitButtonMenu(content = stringResource(R.string.invoice), fatture, heightMenu =  (f_size * 55).dp)}
             item{Spacer(Modifier.size(8.dp))}
             item{Images()}

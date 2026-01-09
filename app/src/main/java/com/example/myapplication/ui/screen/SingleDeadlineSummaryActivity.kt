@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.prodotti
+import com.example.myapplication.debug.scadenze
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.BoxDescription
@@ -94,7 +96,7 @@ fun SingleDeadlineSummaryActivity (
             }
             item{TitleLabel(stringResource(R.string.materials))}
             item{Spacer(Modifier.size(8.dp))}
-            items(prodotti){item ->
+            items(prodotti){ item ->
                 GenericCard(
                     type = item.tipo,
                     leadingContent = {

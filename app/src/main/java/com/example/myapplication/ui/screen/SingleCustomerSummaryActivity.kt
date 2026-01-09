@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.interventi
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
@@ -83,7 +84,7 @@ fun SingleCustomerSummaryActivity(
             item{CustomDivider()}
             item{TitleLabel(stringResource(R.string.interventions))}
             item{Spacer(Modifier.size(8.dp))}
-            items(interventi){item ->
+            items(interventi){ item ->
                 GenericCard(
                     type = item.tipo,
                     text = item.indirizzo,

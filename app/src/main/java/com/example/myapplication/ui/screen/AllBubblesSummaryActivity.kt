@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.provenienze
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuBubbles
@@ -48,7 +49,7 @@ fun AllBubblesSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            items(provenienze){item ->
+            items(provenienze){ item ->
                 GenericCard(
                     text = item.fornitore,
                     textDescription = item.data,

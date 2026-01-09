@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
@@ -47,7 +48,7 @@ fun AveragePaymentsTimesStatisticsActivity(
                 )
                 .fillMaxSize()
         ) {
-            items(pagamenti) {item ->
+            items(pagamenti) { item ->
                 var difference = 30 - item.data.substring(0,2).toInt()
                 val check : Boolean = (difference < 20)
                 GenericCard(

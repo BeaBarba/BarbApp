@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.appuntamenti
+import com.example.myapplication.debug.materialList
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
@@ -85,7 +87,7 @@ fun TodayCalendarActivity(
                 bottom = contentPadding.calculateBottomPadding()
             )
         ) {
-            items(appuntamenti){item ->
+            items(appuntamenti){ item ->
                 LargeCard(
                     type = item.tipo,
                     title = item.indirizzo,

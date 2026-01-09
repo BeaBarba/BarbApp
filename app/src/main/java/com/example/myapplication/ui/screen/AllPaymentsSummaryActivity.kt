@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuPayments
@@ -52,7 +53,7 @@ fun AllPaymentsSummaryActivity(
                 )
         ) {
             item{SearchAppBar(stringResource(R.string.customers))}
-            items(pagamenti.subList(5,10)){item ->
+            items(pagamenti.subList(5,10)){ item ->
                 var checked by remember{mutableStateOf(false)}
                 ListItemCheckbox(
                     char = item.cliente.get(0),

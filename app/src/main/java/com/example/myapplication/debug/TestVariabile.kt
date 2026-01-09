@@ -1,6 +1,4 @@
-package com.example.myapplication.ui.screen
-
-import androidx.compose.ui.platform.LocalContext
+package com.example.myapplication.debug
 
 /* --------------------------------------------- Variabili Globali ------------------------------------------*/
 var customers = listOf(

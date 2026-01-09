@@ -1,6 +1,5 @@
-package com.example.myapplication.ui.screen
+package com.example.myapplication.debug
 
-import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize

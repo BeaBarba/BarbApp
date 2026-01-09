@@ -45,8 +45,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
-import com.example.myapplication.ui.screen.Prodotto
-import com.example.myapplication.ui.screen.itemsList
+import com.example.myapplication.debug.Prodotto
+import com.example.myapplication.debug.itemsList
 
 @Composable
 fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.provenienze
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
 import com.example.myapplication.ui.component.Images
@@ -65,7 +66,7 @@ fun SingleMaterialSummaryActivity(
                 .fillMaxSize()
         ) {
             var somma = 0
-            provenienze.forEach{p->
+            provenienze.forEach{ p->
                 val numero = p.quantita.filter { it.isDigit() }
                 if(numero.isNotEmpty()){
                     somma += numero.toInt()
@@ -110,7 +111,7 @@ fun SingleMaterialSummaryActivity(
             item{CustomDivider()}
             item{TitleLabel(stringResource(R.string.origin))}
             item{Spacer(Modifier.size(8.dp))}
-            items(provenienze){item ->
+            items(provenienze){ item ->
                 KeyValueLabel(
                     title = stringResource(R.string.seller),
                     weightTitle = 1.0f,

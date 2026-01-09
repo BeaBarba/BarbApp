@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.interventi
+import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -98,7 +100,7 @@ fun PaymentAddActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             if(showItems) {
-                items(interventi){item ->
+                items(interventi){ item ->
                     var checked by remember { mutableStateOf(false) }
                     ListItemCheckbox(
                         char = item.tipo.get(0),

@@ -22,13 +22,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
-import com.example.myapplication.ui.screen.Prodotto
+import com.example.myapplication.debug.Prodotto
 import com.example.myapplication.ui.theme.TableStyleDefaults
 import com.example.myapplication.ui.theme.TableColumn
 
 @Composable
 fun MaterialTable(contentPadding: PaddingValues,
-          listData: List<Prodotto>,
+                  listData: List<Prodotto>,
 ){
     val headerColumns = listOf(
         TableColumn(title = stringResource(R.string.name).uppercase(), 3.0f),

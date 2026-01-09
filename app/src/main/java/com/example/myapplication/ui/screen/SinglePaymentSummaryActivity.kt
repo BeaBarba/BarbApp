@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.interventi
+import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.DoubleKeyValueLabel
 import com.example.myapplication.ui.component.GenericCard
@@ -95,7 +97,7 @@ fun SinglePaymentSummaryActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             if(showItems) {
-                items(interventi){item ->
+                items(interventi){ item ->
                     GenericCard(
                         type = item.tipo,
                         leadingContent = {
