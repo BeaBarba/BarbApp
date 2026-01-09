@@ -46,7 +46,11 @@ fun MaterialAddActivity(
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.SingleMaterialSummary)},
+                        onClick = {
+                            navController.navigate(NavigationRoute.SingleMaterialSummary){
+                                popUpTo(NavigationRoute.MaterialAdd){inclusive = true}
+                            }
+                        },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
