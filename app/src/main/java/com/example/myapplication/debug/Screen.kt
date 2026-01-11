@@ -38,7 +38,6 @@ import com.example.myapplication.ui.component.Images
 import com.example.myapplication.ui.component.KeyValueLabel
 import com.example.myapplication.ui.component.LargeCard
 import com.example.myapplication.ui.component.SearchAppBar
-import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.SuggestionTextField
 import com.example.myapplication.ui.component.TitleLabel
 
@@ -126,7 +125,7 @@ fun Screen(modifier : Modifier){
             item{Spacer(Modifier.size(8.dp))}
             item{TitleLabel("Interventi")}
             item{Spacer(Modifier.size(8.dp))}
-            item{SplitButtonMenu(items = itemsList, content = "Venditori")}
+            //item{SplitButtonMenu(items = itemsList, content = "Venditori")}
             item{Spacer(Modifier.size(8.dp))}
             item{GenericCard(prodotti.get(1).nome, textDescription = "Vimar", leadingContent = {
                 Avatar('E', textColor = MaterialTheme.colorScheme.tertiary, backgroundColor = MaterialTheme.colorScheme.onTertiary)
@@ -156,6 +155,7 @@ fun Screen(modifier : Modifier){
             item{Spacer(Modifier.size(8.dp))}
             item{DeleteButton({})}
             item{Spacer(Modifier.size(80.dp))}
+
         }
         if (showDialog) {
             CustomAlertDialog(

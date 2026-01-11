@@ -115,4 +115,9 @@
     <string name="place_birth">Luogo di nascita</string>
     <string name="date_birth">Data di nascita</string>
     <string name="residence">Residenza</string>
+    <string name="note_number">Nota Telefono</string>
+    <string name="existing">Esistente</string>
+    <string name="private_customer">Privato</string>
+    <string name="company">Azienda</string>
+    <string name="select">Seleziona</string>
 </resources>

@@ -21,7 +21,7 @@ import com.example.myapplication.ui.NavigationRoute
 
 @Composable
 fun ListItemCheckbox(
-    char : Char,
+    char : Char? = null,
     text : String,
     textDescription : String? = null,
     trailingText : String? = null,
@@ -33,11 +33,13 @@ fun ListItemCheckbox(
     GenericCard(
         type = type.toString(),
         leadingContent = {
-            Avatar(
-                char = char,
-                textColor = checkColorAvatar(type.toString(), primary = true),
-                backgroundColor = checkColorAvatar(type.toString(), onPrimary = true)
-            )
+            if(char != null) {
+                Avatar(
+                    char = char,
+                    textColor = checkColorAvatar(type.toString(), primary = true),
+                    backgroundColor = checkColorAvatar(type.toString(), onPrimary = true)
+                )
+            }else{null}
         },
         textSpace = if(trailingText.isNullOrEmpty()){0.85f}else{0.65f},
         text = text,

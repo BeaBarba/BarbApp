@@ -76,7 +76,7 @@ fun BubbleAddActivity(
             item { Spacer(Modifier.size(8.dp)) }
             item { DatePickerFieldToModal(stringResource(R.string.date_issue)) }
             item { Spacer(Modifier.size(8.dp)) }
-            item { SplitButtonMenu(stringResource(R.string.seller), venditori) }
+            //item { SplitButtonMenu(stringResource(R.string.seller), venditori) }
             item { Spacer(Modifier.size(8.dp)) }
             item {
                 GenericCard(

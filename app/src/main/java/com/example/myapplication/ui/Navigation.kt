@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.example.myapplication.ui.screen.AllBubblesSummaryActivity
 import com.example.myapplication.ui.screen.AllCleaningSummaryActivity
 import com.example.myapplication.ui.screen.AllCustomersSummaryActivity
@@ -26,6 +27,7 @@ import com.example.myapplication.ui.screen.JobStatisticsActivity
 import com.example.myapplication.ui.screen.MaterialAddActivity
 import com.example.myapplication.ui.screen.PaymentAddActivity
 import com.example.myapplication.debug.Screen
+import com.example.myapplication.ui.screen.SelectActivity
 import com.example.myapplication.ui.screen.SingleBubbleSummaryActivity
 import com.example.myapplication.ui.screen.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.SingleDeadlineSummaryActivity
@@ -93,6 +95,8 @@ sealed interface NavigationRoute{
     data object TodayCalendar : NavigationRoute
     @Serializable
     data object Warehouse : NavigationRoute
+    @Serializable
+    data class Select(val textSearch : String, val entry : String,) : NavigationRoute
     @Serializable
     data object Screen : NavigationRoute
 }
@@ -193,6 +197,10 @@ fun NavGraph(
         }
         composable<NavigationRoute.Warehouse> {
             WarehouseActivity(navController)
+        }
+        composable<NavigationRoute.Select> { backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.Select>()
+            SelectActivity(route.textSearch, route.entry, navController)
         }
     }
 }

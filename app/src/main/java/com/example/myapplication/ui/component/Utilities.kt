@@ -95,3 +95,8 @@ fun checkboxColors(
         disabledIndeterminateBorderColor = checkColorAvatar(type, primary = true).copy(alpha = 0.5f),
     )
 }
+
+data class MenuItem(
+    val name : String,
+    val onClick : (String) -> Unit
+)

@@ -134,7 +134,7 @@ fun ToggleIconButton(checked : Boolean, onCheckedChange: (Boolean) -> Unit) {
 @Composable
 fun SplitButtonMenu(
     content: String,
-    items : List<String>,
+    items : List<MenuItem>,
     backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     textColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     colorTextMenu: Color = MaterialTheme.colorScheme.onPrimary,
@@ -188,8 +188,11 @@ fun SplitButtonMenu(
                 ) {
                     items.forEach { item ->
                         DropdownMenuItem(
-                            text = { MenuText( text = item, colorTextMenu ) },
-                            onClick = {/* Change name split button */ },
+                            text = { MenuText( text = item.name, colorTextMenu ) },
+                            onClick = {
+                                item.onClick(item.name)
+                                checked = false
+                            },
                         )
                     }
                 }

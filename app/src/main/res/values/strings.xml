@@ -114,4 +114,9 @@
     <string name="place_birth">Place of birth</string>
     <string name="date_birth">Date of birth</string>
     <string name="residence">Residence</string>
+    <string name="note_number">Note phone number</string>
+    <string name="existing">Existing</string>
+    <string name="private_customer">Private</string>
+    <string name="company">Company</string>
+    <string name="select">Select</string>
 </resources>

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.data.modules.CustomerType
 import com.example.myapplication.debug.interventi
 import com.example.myapplication.debug.listaClienti
 import com.example.myapplication.ui.component.Avatar
@@ -75,14 +76,14 @@ fun SingleCustomerSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{KeyValueLabel(stringResource(R.string.name), listaClienti.get(1).nome, 1.2f, 2.0f)}
             item{Spacer(Modifier.size(8.dp))}
-            if(listaClienti.get(1).tipo == "P") {
+            if(listaClienti.get(1).tipo == CustomerType.Private.toString()) {
                 item{KeyValueLabel(stringResource(R.string.last_name),listaClienti.get(1).cognome.toString(),1.2f,2.0f)}
                 item{Spacer(Modifier.size(8.dp))}
                 item{KeyValueLabel(stringResource(R.string.place_birth),listaClienti.get(1).luogoNascita.toString(),1.2f,2.0f)}
                 item{Spacer(Modifier.size(8.dp))}
                 item{KeyValueLabel(stringResource(R.string.date_birth),listaClienti.get(1).dataNascita.toString(),1.2f,2.0f)}
             }
-            if(listaClienti.get(1).tipo == "A"){
+            if(listaClienti.get(1).tipo == CustomerType.Company.toString()){
                 item{KeyValueLabel(stringResource(R.string.company_name),listaClienti.get(1).ragioneSociale.toString(),1.2f,2.0f)}
                 item{Spacer(Modifier.size(8.dp))}
                 item{KeyValueLabel(stringResource(R.string.unique_code),listaClienti.get(1).codiceUnivoco.toString(),1.2f,2.0f)}
@@ -98,7 +99,7 @@ fun SingleCustomerSummaryActivity(
             item{KeyValueLabel(stringResource(R.string.phone), listaClienti.get(1).telefono, 1.2f, 2.0f)}
 
             item{CustomDivider()}
-            item{TitleLabel(title = if(listaClienti.get(1).tipo == "P"){stringResource(R.string.residence)}else{stringResource(R.string.address)})}
+            item{TitleLabel(title = if(listaClienti.get(1).tipo == CustomerType.Private.toString()){stringResource(R.string.residence)}else{stringResource(R.string.address)})}
             item{Spacer(Modifier.size(8.dp))}
             item{KeyValueLabel(stringResource(R.string.address), listaClienti.get(1).indirizzo, 1.2f, 2.0f)}
             item{Spacer(Modifier.size(8.dp))}

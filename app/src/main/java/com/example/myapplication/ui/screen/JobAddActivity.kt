@@ -126,7 +126,7 @@ fun JobAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField(stringResource(R.string.description))}
             item{Spacer(Modifier.size(8.dp))}
-            item{SplitButtonMenu(content = stringResource(R.string.type), items = tipi, heightMenu = (tipi.size *55).dp)}
+            //item{SplitButtonMenu(content = stringResource(R.string.type), items = tipi, heightMenu = (tipi.size *55).dp)}
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(

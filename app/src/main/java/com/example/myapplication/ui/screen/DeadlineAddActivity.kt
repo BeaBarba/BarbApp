@@ -78,7 +78,7 @@ fun DeadlineAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField(stringResource(R.string.number))}
             item{Spacer(Modifier.size(8.dp))}
-            item{
+            /*item{
                 SplitButtonMenu(
                     content = stringResource(R.string.category),
                     items = categorie,
@@ -107,6 +107,8 @@ fun DeadlineAddActivity(
                     onClick = {navController.navigate(NavigationRoute.BubbleAdd)}
                 )
             }
+
+             */
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(

@@ -81,7 +81,7 @@ fun MaterialAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField(stringResource(R.string.quantity))}
             item{Spacer(Modifier.size(8.dp))}
-            val v_size = if(venditori.size < 5){
+            /*val v_size = if(venditori.size < 5){
                 venditori.size}else{5}
             item{SplitButtonMenu(content = stringResource(R.string.seller), venditori, heightMenu = (v_size * 55).dp)}
             item{Spacer(Modifier.size(8.dp))}
@@ -104,6 +104,7 @@ fun MaterialAddActivity(
                 }
                 item { Spacer(Modifier.size(8.dp)) }
             }
+            */
         }
     }
 }

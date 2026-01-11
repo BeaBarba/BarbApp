@@ -1,5 +1,7 @@
 package com.example.myapplication.debug
 
+import com.example.myapplication.data.modules.CustomerType
+
 /* --------------------------------------------- Variabili Globali ------------------------------------------*/
 var customers = listOf(
     "Alessandro", "Andrea", "Anna", "Alessia", "Amelia", "Antonio",
@@ -280,7 +282,7 @@ data class Cliente(
 val listaClienti = listOf(
     // Esempio Tipo P - Privato
     Cliente(
-        tipo = "P",
+        tipo = CustomerType.Private.toString(),
         nome = "Mario",
         cognome = "Rossi", // Obbligatorio per P
         CF = "RSSMRA80A01H501U",
@@ -301,7 +303,7 @@ val listaClienti = listOf(
 
     // Esempio Tipo A - Azienda
     Cliente(
-        tipo = "A",
+        tipo = CustomerType.Company.toString(),
         nome = "Luca", // Rappresentante o referente
         cognome = null,
         CF = "01234567890", // Spesso coincide con la P.IVA
