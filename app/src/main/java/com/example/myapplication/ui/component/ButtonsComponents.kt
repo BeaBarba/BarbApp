@@ -172,7 +172,6 @@ fun SplitButtonMenu(
                 )
             }
         }
-        Spacer(Modifier.size(2.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()

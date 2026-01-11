@@ -31,6 +31,7 @@ import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 import androidx.compose.foundation.lazy.items
+import com.example.myapplication.debug.address
 
 @Composable
 fun SelectActivity(
@@ -41,6 +42,7 @@ fun SelectActivity(
     var items_list =
         when(entry){
             "CustomerAdd" -> customers
+            "AddressAdd" -> address
             else -> listOf("prova1", "prova2", "prova3")
         }
     Scaffold(

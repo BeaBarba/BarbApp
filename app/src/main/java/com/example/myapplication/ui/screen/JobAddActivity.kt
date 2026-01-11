@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.LocationOn
@@ -25,10 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.cantieri_menu
 import com.example.myapplication.debug.customers
 import com.example.myapplication.debug.interventi
 import com.example.myapplication.debug.letters
 import com.example.myapplication.debug.tipi
+import com.example.myapplication.debug.tipi_menu
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -81,11 +84,13 @@ fun JobAddActivity(
             item{
                 GenericCard(
                     leadingContent = {
-                        Avatar(
-                            char = letters.get(0),
-                        )
+                        IconButton(
+                            onClick = {navController.navigate(NavigationRoute.CustomerAdd)}
+                        ) {
+                            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_item))
+                        }
                     },
-                    text = customers.get(0),
+                    text = stringResource(R.string.customer),
                     trailingContent = {
                         Icon(
                             Icons.Filled.ChevronRight,
@@ -93,30 +98,42 @@ fun JobAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.CustomerAdd)}
+                    onClick = {navController.navigate(NavigationRoute.Select("Cliente", "CustomerAdd"))}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
-                CustomOutlineTextField(
-                    leadingIcon = {
-                        /*IconButton(
-                            onClick = {}
-                        ) {*/
-                            Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))
-                        //}
+                GenericCard(
+                    leadingContent = {Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_item))},
+                    text = stringResource(R.string.add) + " " + stringResource(R.string.address).lowercase(),
+                    trailingContent = {
+                        Icon(
+                            Icons.Filled.ChevronRight,
+                            contentDescription = stringResource(R.string.edit),
+                            modifier = Modifier.size(35.dp)
+                        )
                     },
-                label = stringResource(R.string.address)
+                    onClick = {navController.navigate(NavigationRoute.AddressAdd)}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.municipality))}
+            item{
+                GenericCard(
+                    leadingContent = {Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))},
+                    text = stringResource(R.string.address) + " " + stringResource(R.string.existing).lowercase(),
+                    trailingContent = {
+                        Icon(
+                            Icons.Filled.ChevronRight,
+                            contentDescription = stringResource(R.string.edit),
+                            modifier = Modifier.size(35.dp)
+                        )
+                    },
+                    onClick = {navController.navigate(NavigationRoute.Select("Indirizzo", "AddressAdd"))}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.postal_code))}
-            item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.province))}
-            item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.price))}
+            item{SplitButtonMenu(content = stringResource(R.string.type), items = tipi_menu, heightMenu = (tipi_menu.size *55).dp)}
+            item{CustomOutlineTextField(stringResource(R.string.people_number))}
             item{Spacer(Modifier.size(8.dp))}
             item{DatePickerFieldToModal()}
             item{Spacer(Modifier.size(8.dp))}
@@ -124,10 +141,11 @@ fun JobAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{CustomTimePicker(stringResource(R.string.end_time))}
             item{Spacer(Modifier.size(8.dp))}
+            item{CustomOutlineTextField(stringResource(R.string.price))}
+            item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField(stringResource(R.string.description))}
             item{Spacer(Modifier.size(8.dp))}
-            //item{SplitButtonMenu(content = stringResource(R.string.type), items = tipi, heightMenu = (tipi.size *55).dp)}
-            item{Spacer(Modifier.size(8.dp))}
+            item{SplitButtonMenu(content = stringResource(R.string.construction_site), items = cantieri_menu, heightMenu = (cantieri_menu.size *55).dp)}
             item{
                 GenericCard(
                     text = stringResource(R.string.material),

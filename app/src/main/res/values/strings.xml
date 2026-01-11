@@ -119,4 +119,18 @@
     <string name="private_customer">Private</string>
     <string name="company">Company</string>
     <string name="select">Select</string>
+    <string name="address_details">Address details</string>
+    <string name="property_details">Property details</string>
+    <string name="sheet">Sheet</string>
+    <string name="property_map">Map</string>
+    <string name="subordinate">Subordinate</string>
+    <string name="staircase">Staircase</string>
+    <string name="floor">Floor</string>
+    <string name="interior">Interior</string>
+    <string name="year_construction">Year of construction</string>
+    <string name="usable_area">Usable area</string>
+    <string name="real_estate_units">Real estate units</string>
+    <string name="add">Add</string>
+    <string name="construction_site">Construction site</string>
+    <string name="people_number">Number of people</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.myapplication.debug
 
 import com.example.myapplication.data.modules.CustomerType
+import com.example.myapplication.ui.component.MenuItem
 
 /* --------------------------------------------- Variabili Globali ------------------------------------------*/
 var customers = listOf(
@@ -322,3 +323,8 @@ val listaClienti = listOf(
         telefono = "02 9876543"
     )
 )
+
+var address = appuntamenti.map{a -> a.indirizzo}
+var tipi_menu = tipi.map{tipo -> MenuItem(tipo, {})}
+var cantieri = List<String>(10, {item -> "Cantiere $item"})
+var cantieri_menu = cantieri.map { c -> MenuItem(c, {}) }

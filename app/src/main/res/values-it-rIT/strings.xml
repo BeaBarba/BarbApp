@@ -120,4 +120,18 @@
     <string name="private_customer">Privato</string>
     <string name="company">Azienda</string>
     <string name="select">Seleziona</string>
+    <string name="address_details">Dati di indirizzo</string>
+    <string name="property_details">Dati catastali</string>
+    <string name="sheet">Foglio</string>
+    <string name="property_map">Mappale</string>
+    <string name="subordinate">Subalterno</string>
+    <string name="staircase">Scala</string>
+    <string name="floor">Piano</string>
+    <string name="interior">Interno</string>
+    <string name="year_construction">Anno di costruzione</string>
+    <string name="usable_area">Superficie utile</string>
+    <string name="real_estate_units">Unità Immobiliare</string>
+    <string name="add">Aggiungi</string>
+    <string name="construction_site">Cantiere</string>
+    <string name="people_number">Numero persone</string>
 </resources>

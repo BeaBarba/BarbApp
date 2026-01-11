@@ -27,6 +27,7 @@ import com.example.myapplication.ui.screen.JobStatisticsActivity
 import com.example.myapplication.ui.screen.MaterialAddActivity
 import com.example.myapplication.ui.screen.PaymentAddActivity
 import com.example.myapplication.debug.Screen
+import com.example.myapplication.ui.screen.AddressAddActivity
 import com.example.myapplication.ui.screen.SelectActivity
 import com.example.myapplication.ui.screen.SingleBubbleSummaryActivity
 import com.example.myapplication.ui.screen.SingleCustomerSummaryActivity
@@ -97,6 +98,8 @@ sealed interface NavigationRoute{
     data object Warehouse : NavigationRoute
     @Serializable
     data class Select(val textSearch : String, val entry : String,) : NavigationRoute
+    @Serializable
+    data object AddressAdd : NavigationRoute
     @Serializable
     data object Screen : NavigationRoute
 }
@@ -201,6 +204,9 @@ fun NavGraph(
         composable<NavigationRoute.Select> { backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.Select>()
             SelectActivity(route.textSearch, route.entry, navController)
+        }
+        composable<NavigationRoute.AddressAdd> {
+            AddressAddActivity(navController)
         }
     }
 }
