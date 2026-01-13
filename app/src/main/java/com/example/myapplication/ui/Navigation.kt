@@ -29,6 +29,7 @@ import com.example.myapplication.ui.screen.PaymentAddActivity
 import com.example.myapplication.debug.Screen
 import com.example.myapplication.ui.screen.AddressAddActivity
 import com.example.myapplication.ui.screen.SelectActivity
+import com.example.myapplication.ui.screen.SingleAddressSummaryActivity
 import com.example.myapplication.ui.screen.SingleBubbleSummaryActivity
 import com.example.myapplication.ui.screen.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.SingleDeadlineSummaryActivity
@@ -102,6 +103,8 @@ sealed interface NavigationRoute{
     data object AddressAdd : NavigationRoute
     @Serializable
     data object Screen : NavigationRoute
+    @Serializable
+    data object  SingleAddressSummary : NavigationRoute
 }
 
 @Composable
@@ -207,6 +210,9 @@ fun NavGraph(
         }
         composable<NavigationRoute.AddressAdd> {
             AddressAddActivity(navController)
+        }
+        composable<NavigationRoute.SingleAddressSummary> {
+            SingleAddressSummaryActivity(navController)
         }
     }
 }

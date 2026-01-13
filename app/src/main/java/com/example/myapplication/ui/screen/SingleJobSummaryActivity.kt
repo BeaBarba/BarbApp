@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -16,12 +19,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.cantieri
 import com.example.myapplication.debug.customers
 import com.example.myapplication.debug.prodotti
 import com.example.myapplication.debug.textDescription
@@ -76,32 +81,37 @@ fun SingleJobSummaryActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
-                KeyValueLabel(
-                    title = stringResource(R.string.address),
-                    description = "Pasquale Ordlandi 21",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
+                GenericCard(
+                    leadingContent = {Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))},
+                    text = stringResource(R.string.address),
+                    trailingContent = {
+                        Icon(
+                            Icons.Filled.ChevronRight,
+                            contentDescription = stringResource(R.string.edit),
+                            modifier = Modifier.size(35.dp)
+                        )
+                    },
+                    onClick = {navController.navigate(NavigationRoute.SingleAddressSummary)}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{
-                KeyValueLabel(
-                    title = stringResource(R.string.municipality),
-                    description = "Medicina",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
-                )
+            if(cantieri.get(0).isNotEmpty()){
+                item{
+                    GenericCard(
+                        leadingContent = {Icon(painterResource(R.drawable.brickwall), contentDescription = stringResource(R.string.construction_site))},
+                        text = stringResource(R.string.construction_site),
+                        trailingContent = {
+                            Icon(
+                                Icons.Filled.ChevronRight,
+                                contentDescription = stringResource(R.string.edit),
+                                modifier = Modifier.size(35.dp)
+                            )
+                        },
+                        onClick = {/*navController.navigate(NavigationRoute.SingleContructionSummary)*/}
+                    )
+                }
+                item{Spacer(Modifier.size(8.dp))}
             }
-            item{Spacer(Modifier.size(8.dp))}
-            item{
-                DoubleKeyValueLabel(
-                    firstTitle = stringResource(R.string.postal_code),
-                    firstDescription = "40059",
-                    secondTitle = stringResource(R.string.province),
-                    secondDescription = "BO"
-                )
-            }
-            item{Spacer(Modifier.size(8.dp))}
             item{
                 DoubleKeyValueLabel(
                     firstTitle = stringResource(R.string.price),
@@ -117,6 +127,15 @@ fun SingleJobSummaryActivity(
                     firstDescription = "09:00",
                     secondTitle = stringResource(R.string.end_time),
                     secondDescription = "12:00"
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
+            item{
+                KeyValueLabel(
+                    title = stringResource(R.string.people_number),
+                    description = "4",
+                    weightTitle = 1.0f,
+                    weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
