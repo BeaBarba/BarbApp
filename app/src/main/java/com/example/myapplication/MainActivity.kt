@@ -16,9 +16,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 val navController = rememberNavController()
-                //Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    NavGraph(navController, Modifier)
-                //}
+                NavGraph(navController, Modifier)
             }
         }
     }

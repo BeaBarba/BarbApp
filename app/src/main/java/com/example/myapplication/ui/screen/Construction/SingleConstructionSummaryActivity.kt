@@ -46,7 +46,7 @@ fun SingleConstructionSummaryActivity (
                 id = stringResource(R.string.construction_site),
                 trailingIcon = {
                     IconButton(
-                        onClick = {/*navController.navigate(NavigationRoute.ConstructionAdd)*/ },
+                        onClick = {navController.navigate(NavigationRoute.ConstructionAdd)},
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )

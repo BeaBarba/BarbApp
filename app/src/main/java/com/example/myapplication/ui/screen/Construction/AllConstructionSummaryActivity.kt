@@ -38,10 +38,10 @@ fun AllConstructionSummaryActivity(
         topBar = {
             TopAppBar(
                 id = stringResource(R.string.construction_sites),
-                navigationIcon = { BackButton { navController.navigateUp() } },
+                navigationIcon = {BackButton{navController.navigateUp()}},
             )
         },
-        floatingActionButton = { AddButton { } }
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.ConstructionAdd)}}
     ) { contentPadding ->
         var showItems by remember {mutableStateOf(false)}
         LazyColumn(

@@ -362,3 +362,11 @@ val listaCantieri = listOf(
         dataInizio = "20/06/2024"
     )
 )
+
+data class CardItem(
+    val name : String,
+    val type : String
+)
+
+var customersType = customers.map { item -> CardItem(name = item, type = "NONE") }
+var addressType = address.map {item -> CardItem(name = item, type = "NONE")}

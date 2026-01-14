@@ -31,7 +31,10 @@ import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 import androidx.compose.foundation.lazy.items
+import com.example.myapplication.debug.CardItem
 import com.example.myapplication.debug.address
+import com.example.myapplication.debug.addressType
+import com.example.myapplication.debug.customersType
 
 @Composable
 fun SelectActivity(
@@ -39,11 +42,11 @@ fun SelectActivity(
     entry : String,
     navController : NavHostController
 ) {
-    var items_list =
+    var items_list : List<CardItem> =
         when(entry){
-            "CustomerAdd" -> customers
-            "AddressAdd" -> address
-            else -> listOf("prova1", "prova2", "prova3")
+            "CustomerAdd" -> customersType
+            "AddressAdd" -> addressType
+            else -> listOf(CardItem("prova1", "NONE"), CardItem("prova2", "NONE"), CardItem("prova3", "NONE"))
         }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -78,10 +81,11 @@ fun SelectActivity(
             items(items_list) { item ->
                 var checked by remember {mutableStateOf(false)}
                 ListItemCheckbox(
-                    text = item,
+                    text = item.name,
                     checked = checked,
                     onCheckedChange = { checked = !checked },
-                    onClick = {}
+                    onClick = {},
+                    type = item.type
                 )
                 Spacer(Modifier.size(8.dp))
             }
