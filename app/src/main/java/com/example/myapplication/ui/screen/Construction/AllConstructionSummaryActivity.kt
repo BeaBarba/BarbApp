@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.debug.listaCantieri
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
@@ -61,7 +62,7 @@ fun AllConstructionSummaryActivity(
                 GenericCard(
                     text = item.indirizzo,
                     textDescription = item.dataInizio + " - " + item.dataFine,
-                    onClick = {}
+                    onClick = {navController.navigate(NavigationRoute.SingleConstructionSummary)}
                 )
                 Spacer(Modifier.size(8.dp))
             }
@@ -78,7 +79,7 @@ fun AllConstructionSummaryActivity(
                     GenericCard(
                         text = item.indirizzo,
                         textDescription = item.dataInizio + " - " + item.dataFine,
-                        onClick = {}
+                        onClick = {navController.navigate(NavigationRoute.SingleConstructionSummary)}
                     )
                     Spacer(Modifier.size(8.dp))
                 }

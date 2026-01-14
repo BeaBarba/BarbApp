@@ -89,7 +89,7 @@
     <string name="personal_details">Dati anagrafici</string>
     <string name="id">CF</string>
     <string name="last_name">Cognome</string>
-    <string name="date_collection">Data Riscossione</string>
+    <string name="date_collection">Data riscossione</string>
     <string name="intervention_number">Numero interventi</string>
     <string name="average_times">Tempi medi di riscossione</string>
     <string name="intervention_revenue">Ricavo interventi</string>
@@ -136,4 +136,6 @@
     <string name="people_number">Numero persone</string>
     <string name="construction_sites">Cantieri</string>
     <string name="in_progress">In corso</string>
+    <string name="date_start">Data inizio</string>
+    <string name="date_end">Data fine</string>
 </resources>

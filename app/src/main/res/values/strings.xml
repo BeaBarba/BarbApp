@@ -135,4 +135,6 @@
     <string name="people_number">Number of people</string>
     <string name="construction_sites">Construction sites</string>
     <string name="in_progress">In progress</string>
+    <string name="date_start">Start date</string>
+    <string name="date_end">End date</string>
 </resources>
