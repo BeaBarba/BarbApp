@@ -256,7 +256,8 @@ var provenienze = listOf(
     Provenienze(fornitore = "Global Export Ltd", quantita = "2 container", numeroBolla = "EXP-7712", fattura = "INV-2024-X1", data = "29/05/2024")
 )
 
-var fatture : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.fattura}.distinct()
+var fatture = provenienze.filter{ it.fattura != null }
+var listaFatture : List<CardItem> = fatture.map{ f -> CardItem( name = f.fattura.toString(), type = f.data)}.distinct()
 var bolle : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.numeroBolla}.distinct()
 
 data class Cliente(

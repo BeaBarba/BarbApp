@@ -126,7 +126,7 @@ fun HomeActivity(
                 HomeCard(
                     item = stringResource(R.string.invoices),
                     iconName = painterResource(R.drawable.description_24dp),
-                    onclick = {/*navController.navigate(NavigationRoute.)*/}
+                    onclick = {navController.navigate(NavigationRoute.AllInvoicesSummary)}
                 )
             }
             item{

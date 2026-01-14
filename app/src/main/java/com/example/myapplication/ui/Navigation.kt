@@ -40,6 +40,7 @@ import com.example.myapplication.ui.screen.Calendar.TodayCalendarActivity
 import com.example.myapplication.ui.screen.Construction.AllConstructionSummaryActivity
 import com.example.myapplication.ui.screen.Construction.ConstructionAddActivity
 import com.example.myapplication.ui.screen.Construction.SingleConstructionSummaryActivity
+import com.example.myapplication.ui.screen.Invoice.AllInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.Material.WarehouseActivity
 import kotlinx.serialization.Serializable
 
@@ -114,6 +115,8 @@ sealed interface NavigationRoute{
     data object SingleConstructionSummary : NavigationRoute
     @Serializable
     data object ConstructionAdd : NavigationRoute
+    @Serializable
+    data object AllInvoicesSummary : NavigationRoute
 }
 
 @Composable
@@ -231,6 +234,9 @@ fun NavGraph(
         }
         composable<NavigationRoute.ConstructionAdd> {
             ConstructionAddActivity(navController)
+        }
+        composable<NavigationRoute.AllInvoicesSummary> {
+            AllInvoicesSummaryActivity(navController)
         }
     }
 }
