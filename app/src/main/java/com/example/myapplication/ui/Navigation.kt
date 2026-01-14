@@ -41,6 +41,8 @@ import com.example.myapplication.ui.screen.Construction.AllConstructionSummaryAc
 import com.example.myapplication.ui.screen.Construction.ConstructionAddActivity
 import com.example.myapplication.ui.screen.Construction.SingleConstructionSummaryActivity
 import com.example.myapplication.ui.screen.Invoice.AllInvoicesSummaryActivity
+import com.example.myapplication.ui.screen.Invoice.InvoiceAddActivity
+import com.example.myapplication.ui.screen.Invoice.SingleInvoiceSummaryActivity
 import com.example.myapplication.ui.screen.Material.WarehouseActivity
 import kotlinx.serialization.Serializable
 
@@ -117,6 +119,10 @@ sealed interface NavigationRoute{
     data object ConstructionAdd : NavigationRoute
     @Serializable
     data object AllInvoicesSummary : NavigationRoute
+    @Serializable
+    data object InvoiceAdd : NavigationRoute
+    @Serializable
+    data object SingleInvoiceSummary : NavigationRoute
 }
 
 @Composable
@@ -237,6 +243,12 @@ fun NavGraph(
         }
         composable<NavigationRoute.AllInvoicesSummary> {
             AllInvoicesSummaryActivity(navController)
+        }
+        composable<NavigationRoute.InvoiceAdd>{
+            InvoiceAddActivity(navController)
+        }
+        composable<NavigationRoute.SingleInvoiceSummary>{
+            SingleInvoiceSummaryActivity(navController)
         }
     }
 }

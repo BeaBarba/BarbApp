@@ -137,4 +137,5 @@
     <string name="in_progress">In progress</string>
     <string name="date_start">Start date</string>
     <string name="date_end">End date</string>
+    <string name="percentage">Percentage</string>
 </resources>
