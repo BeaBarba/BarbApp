@@ -50,8 +50,8 @@ fun TitleLabel(
 fun KeyValueLabel(
     title: String,
     description: String,
-    weightTitle: Float,
-    weighDescription: Float,
+    weightTitle: Float = 1.0f,
+    weighDescription: Float = 2.0f,
     onClick : () -> Unit = {}
 ){
     Row(

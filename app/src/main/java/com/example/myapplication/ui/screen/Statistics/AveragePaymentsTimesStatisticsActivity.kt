@@ -51,15 +51,13 @@ fun AveragePaymentsTimesStatisticsActivity(
             items(pagamenti) { item ->
                 var difference = 30 - item.data.substring(0,2).toInt()
                 val check : Boolean = (difference < 20)
+                val type = if(check){"NONE"}else{"ALA"}
                 GenericCard(
-                    type = if(check){"NONE"}else{"ALA"},
+                    type = type,
                     leadingContent = {
                         Avatar(
                             char = item.cliente.get(0),
-                            textColor = if(check){MaterialTheme.colorScheme.onPrimary}
-                                        else{MaterialTheme.colorScheme.onSecondary},
-                            backgroundColor = if(check){MaterialTheme.colorScheme.primary}
-                                              else{MaterialTheme.colorScheme.secondary}
+                            type = type
                         )
                     },
                     text = item.cliente,

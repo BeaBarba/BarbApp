@@ -106,7 +106,7 @@ fun SingleJobSummaryActivity(
                                 modifier = Modifier.size(35.dp)
                             )
                         },
-                        onClick = {/*navController.navigate(NavigationRoute.SingleContructionSummary)*/}
+                        onClick = {navController.navigate(NavigationRoute.SingleConstructionSummary)}
                     )
                 }
                 item{Spacer(Modifier.size(8.dp))}
@@ -132,18 +132,14 @@ fun SingleJobSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.people_number),
-                    description = "4",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
+                    description = "4"
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.type),
-                    description = "Elettrico",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
+                    description = "Elettrico"
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -161,8 +157,7 @@ fun SingleJobSummaryActivity(
                     leadingContent = {
                         Avatar(
                             char = item.tipo[0],
-                            textColor = checkColorAvatar(type = item.tipo, primary = true),
-                            backgroundColor = checkColorAvatar(type = item.tipo, onPrimary = true)
+                            type = item.tipo
                         )
                     },
                     text = item.nome,

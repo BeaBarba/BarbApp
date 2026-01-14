@@ -36,8 +36,7 @@ fun ListItemCheckbox(
             if(char != null) {
                 Avatar(
                     char = char,
-                    textColor = checkColorAvatar(type.toString(), primary = true),
-                    backgroundColor = checkColorAvatar(type.toString(), onPrimary = true)
+                    type = type.toString()
                 )
             }else{null}
         },
@@ -80,8 +79,7 @@ fun CardItemAvatar(itemID : String, onclick : () -> Unit){
             Column(modifier = Modifier.padding(top = 5.dp, start = 4.dp)) {
                 Avatar(
                     itemID.get(0),
-                    size = 30.dp,
-                    backgroundColor = MaterialTheme.colorScheme.primary
+                    size = 30.dp
                 )
             }
         },
@@ -101,11 +99,10 @@ fun CustomersCardsList(
     ){
         items(letters){letter ->
             Column(){
-                Avatar(letter,
-                    backgroundColor = checkColor(type = "NONE", primaryContainer = true),
-                    textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                Avatar(
+                    char = letter,
                     modifierBox = Modifier.padding(8.dp),
-                    size = 40.dp
+                    size = 40.dp,
                 )
                 Column{
                     Spacer(Modifier.size(4.dp))

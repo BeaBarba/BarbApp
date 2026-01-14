@@ -58,8 +58,7 @@ fun WarehouseActivity(
                     leadingContent = {
                         Avatar(
                             char = item.tipo.get(0),
-                            textColor = checkColorAvatar(item.tipo, primary = true),
-                            backgroundColor = checkColorAvatar(item.tipo, onPrimary = true)
+                            type = item.tipo
                         )
                     },
                     text = item.nome,

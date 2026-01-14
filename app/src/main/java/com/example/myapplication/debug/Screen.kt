@@ -111,7 +111,19 @@ fun Screen(modifier : Modifier){
             item{Spacer(Modifier.size(8.dp))}
             item{KeyValueLabel("CAP", "40133", weightTitle = 0.5f, weighDescription = 1.0f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{SuggestionTextField(title = "Cognome", leadingIcon = {Icon(Icons.Outlined.Search, "Search")}, isAutocompleteMode = true, suggestions = suggerimenti)}
+            item{
+                SuggestionTextField(
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = "Search"
+                        )
+                    },
+                    title = "Cognome",
+                    isAutocompleteMode = true,
+                    suggestions = suggerimenti
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField("Nome")}
             item{Spacer(Modifier.size(8.dp))}
@@ -127,9 +139,16 @@ fun Screen(modifier : Modifier){
             item{Spacer(Modifier.size(8.dp))}
             //item{SplitButtonMenu(items = itemsList, content = "Venditori")}
             item{Spacer(Modifier.size(8.dp))}
-            item{GenericCard(prodotti.get(1).nome, textDescription = "Vimar", leadingContent = {
-                Avatar('E', textColor = MaterialTheme.colorScheme.tertiary, backgroundColor = MaterialTheme.colorScheme.onTertiary)
-            }, type = "ELE" )}
+            item{
+                GenericCard(
+                    type = "ELE",
+                    leadingContent = {
+                        Avatar(char = 'E', type= "ELE")
+                    },
+                    text = prodotti.get(1).nome,
+                    textDescription = "Vimar",
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{LargeCard(
                 type = "ALA",

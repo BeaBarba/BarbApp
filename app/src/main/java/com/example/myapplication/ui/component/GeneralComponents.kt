@@ -42,21 +42,22 @@ import com.example.myapplication.R
 fun Avatar(
     char: Char,
     modifierBox: Modifier = Modifier,
-    textColor : Color =  MaterialTheme.colorScheme.onPrimary,
     size : Dp = 35.dp,
     shape: Shape = CircleShape,
-    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    type : String? = "NONE"
 ){
+    val TEXT_COLOR = checkColorAvatar(type = type.toString(), primary = true)
+    val BACKGROUND_COLOR = checkColorAvatar(type = type.toString(), onPrimary = true)
     Box(
         modifier = modifierBox
             .size(size)
             .clip(shape)
-            .background(backgroundColor),
+            .background(BACKGROUND_COLOR),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = char.toString(),
-            color = textColor,
+            color = TEXT_COLOR,
             fontSize = MaterialTheme.typography.bodyLarge.fontSize
         )
     }

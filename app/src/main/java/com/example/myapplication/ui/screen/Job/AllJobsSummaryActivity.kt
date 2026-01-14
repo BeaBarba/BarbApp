@@ -63,9 +63,8 @@ fun AllJobsSummaryActivity(
                     textDescription = item.cognomeNome,
                     leadingContent = {
                         Avatar(
-                            item.tipo[0],
-                            textColor = checkColorAvatar(item.tipo, primary = true),
-                            backgroundColor = checkColorAvatar(item.tipo, onPrimary = true)
+                            char = item.tipo[0],
+                            type = item.tipo
                         )
                     },
                     onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}
@@ -82,9 +81,8 @@ fun AllJobsSummaryActivity(
                     textDescription = item.cognomeNome,
                     leadingContent = {
                         Avatar(
-                            item.tipo[0],
-                            textColor = checkColorAvatar(item.tipo, primary = true),
-                            backgroundColor = checkColorAvatar(item.tipo, onPrimary = true)
+                            char = item.tipo[0],
+                            type = item.tipo
                         )
                     },
                     onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}

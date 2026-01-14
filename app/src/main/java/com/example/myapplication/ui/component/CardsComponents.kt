@@ -268,10 +268,9 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
             horizontalArrangement = Arrangement.Center
         ) {
             Avatar(
-                type.get(0),
-                textColor = checkColorAvatar(type, primary = true),
-                size = 40.dp,
-                backgroundColor = checkColorAvatar(type, onPrimary = true)
+                char = type.get(0),
+                type = type,
+                size = 40.dp
             )
             Spacer(Modifier.size(8.dp))
             Column() {
@@ -340,8 +339,7 @@ fun CartCard(item: Prodotto, onClick: () -> Unit){
         leadingContent = {
             Avatar(
                 char = item.tipo.get(0),
-                textColor = checkColorAvatar(item.tipo, primary = true),
-                backgroundColor = checkColorAvatar(item.tipo, onPrimary = true)
+                type = item.tipo
             )
         },
         trailingContent = {

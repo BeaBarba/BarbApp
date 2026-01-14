@@ -75,36 +75,28 @@ fun SingleMaterialSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.name),
-                    weightTitle = 1.0f,
-                    description = "Interruttore",
-                    weighDescription = 2.0f
+                    description = "Interruttore"
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.brand),
-                    weightTitle = 1.0f,
-                    description = "Vimar",
-                    weighDescription = 2.0f
+                    description = "Vimar"
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.model),
-                    weightTitle = 1.0f,
-                    description = "Plana",
-                    weighDescription = 2.0f
+                    description = "Plana"
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.total_q),
-                    weightTitle = 1.0f,
-                    description = somma.toString(),
-                    weighDescription = 2.0f
+                    description = somma.toString()
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -114,33 +106,25 @@ fun SingleMaterialSummaryActivity(
             items(provenienze){ item ->
                 KeyValueLabel(
                     title = stringResource(R.string.seller),
-                    weightTitle = 1.0f,
-                    description = item.fornitore,
-                    weighDescription = 2.0f
+                    description = item.fornitore
                 )
                 Spacer(Modifier.size(8.dp))
                 KeyValueLabel(
                     title = stringResource(R.string.quantity),
-                    weightTitle = 1.0f,
-                    description = item.quantita,
-                    weighDescription = 2.0f
+                    description = item.quantita
                 )
                 Spacer(Modifier.size(8.dp))
                 if(!item.numeroBolla.isNullOrEmpty()) {
                     KeyValueLabel(
                         title = stringResource(R.string.bubble),
-                        weightTitle = 1.0f,
-                        description = item.numeroBolla,
-                        weighDescription = 2.0f
+                        description = item.numeroBolla
                     )
                     Spacer(Modifier.size(8.dp))
                 }
                 if(!item.fattura.isNullOrEmpty()){
                     KeyValueLabel(
                         title = stringResource(R.string.invoice),
-                        weightTitle = 1.0f,
-                        description = item.fattura,
-                        weighDescription = 2.0f
+                        description = item.fattura
                     )
                     Spacer(Modifier.size(8.dp))
                 }

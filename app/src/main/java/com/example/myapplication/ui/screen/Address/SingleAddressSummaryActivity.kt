@@ -63,8 +63,6 @@ fun SingleAddressSummaryActivity(
                 KeyValueLabel(
                     title = stringResource(R.string.address),
                     description = "Via Pasquale Orlandi 21",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f,
                     onClick = {
                         val location = Uri.parse("geo: 44.1391, 12.24315")
                         // Viene settato l'intent implicito con la proprietà
@@ -80,8 +78,6 @@ fun SingleAddressSummaryActivity(
                 KeyValueLabel(
                     title = stringResource(R.string.municipality),
                     description = "Medicina",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -89,8 +85,6 @@ fun SingleAddressSummaryActivity(
                 KeyValueLabel(
                     title = stringResource(R.string.city),
                     description = "Bologna",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -119,8 +113,6 @@ fun SingleAddressSummaryActivity(
                 KeyValueLabel(
                     title = stringResource(R.string.interior),
                     description = "A",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -129,7 +121,6 @@ fun SingleAddressSummaryActivity(
                     title = stringResource(R.string.real_estate_units),
                     description = "4",
                     weightTitle = 2.0f,
-                    weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -140,8 +131,6 @@ fun SingleAddressSummaryActivity(
                 KeyValueLabel(
                     title = stringResource(R.string.sheet),
                     description = "10",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -149,8 +138,6 @@ fun SingleAddressSummaryActivity(
                 KeyValueLabel(
                     title = stringResource(R.string.property_map),
                     description = "200",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -158,8 +145,6 @@ fun SingleAddressSummaryActivity(
                 KeyValueLabel(
                     title = stringResource(R.string.subordinate),
                     description = "45",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -167,8 +152,6 @@ fun SingleAddressSummaryActivity(
                 KeyValueLabel(
                     title = stringResource(R.string.usable_area),
                     description = "122 mq",
-                    weightTitle = 1.0f,
-                    weighDescription = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -177,7 +160,6 @@ fun SingleAddressSummaryActivity(
                     title = stringResource(R.string.year_construction),
                     description = "1900",
                     weightTitle = 2.0f,
-                    weighDescription = 2.0f
                 )
             }
         }
