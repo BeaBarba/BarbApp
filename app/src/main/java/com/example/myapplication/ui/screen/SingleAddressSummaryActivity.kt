@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.screen
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -13,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -46,6 +49,7 @@ fun SingleAddressSummaryActivity(
             )
         }
     ) { contentPadding ->
+        val ctx = LocalContext.current
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -60,7 +64,15 @@ fun SingleAddressSummaryActivity(
                     title = stringResource(R.string.address),
                     description = "Via Pasquale Orlandi 21",
                     weightTitle = 1.0f,
-                    weighDescription = 2.0f
+                    weighDescription = 2.0f,
+                    onClick = {
+                        val location = Uri.parse("geo: 44.1391, 12.24315")
+                        // Viene settato l'intent implicito con la proprietà
+                        val intent = Intent(Intent.ACTION_VIEW).apply { data = location }
+                        if(intent.resolveActivity(ctx.packageManager)!= null) {
+                            ctx.startActivity(intent)
+                        }
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

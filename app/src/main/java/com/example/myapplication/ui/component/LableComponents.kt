@@ -2,6 +2,7 @@ package com.example.myapplication.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,7 +51,8 @@ fun KeyValueLabel(
     title: String,
     description: String,
     weightTitle: Float,
-    weighDescription: Float
+    weighDescription: Float,
+    onClick : () -> Unit = {}
 ){
     Row(
         modifier = Modifier
@@ -76,6 +78,7 @@ fun KeyValueLabel(
                 .fillMaxHeight()
                 .clip(RoundedCornerShape(10.dp))
                 .background(MaterialTheme.colorScheme.primaryContainer)
+                .clickable(onClick = onClick)
                 .padding(horizontal = 10.dp),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             alignment = Alignment.CenterStart
