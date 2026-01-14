@@ -58,7 +58,7 @@ fun AllPaymentsSummaryActivity(
                 ListItemCheckbox(
                     char = item.cliente.get(0),
                     text = item.cliente,
-                    textDescription = item.indirizzo,
+                    textDescription = item.fattura,
                     trailingText = item.prezzo,
                     checked = checked,
                     onCheckedChange = {checked = !checked},

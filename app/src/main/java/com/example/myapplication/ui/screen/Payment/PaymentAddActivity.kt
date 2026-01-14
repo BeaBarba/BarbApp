@@ -29,6 +29,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.debug.interventi
+import com.example.myapplication.debug.listaFatture
 import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
@@ -38,6 +39,8 @@ import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.NavigationRoute
+import com.example.myapplication.ui.component.DoubleKeyValueLabel
+import com.example.myapplication.ui.component.KeyValueLabel
 import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -81,43 +84,28 @@ fun PaymentAddActivity(
         ) {
             item{
                 GenericCard(
-                    leadingContent = {
-                        Avatar(char = pagamenti[0].cliente.get(0))
-                    },
-                    text = pagamenti[0].cliente,
+                    text = stringResource(R.string.invoices),
                     trailingContent = {
                         Icon(Icons.Filled.ChevronRight, contentDescription = stringResource(R.string.edit))
                     },
-                    onClick = {navController.navigate(NavigationRoute.CustomerAdd)}
-            )}
-            item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.price))}
-            item{Spacer(Modifier.size(8.dp))}
-            item{DatePickerFieldToModal(stringResource(R.string.date_collection))}
-            item{Spacer(Modifier.size(8.dp))}
-            item{
-                SplitButtonList(
-                    text = stringResource(R.string.interventions),
-                    showItems = showItems,
-                    onClick = {showItems = !showItems}
+                    onClick = {navController.navigate(NavigationRoute.Select("Fattura", "InvoiceAdd"))}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            if(showItems) {
-                items(interventi){ item ->
-                    var checked by remember { mutableStateOf(false) }
-                    ListItemCheckbox(
-                        char = item.tipo.get(0),
-                        text = item.indirizzo + ", " + item.comune,
-                        textDescription = item.data,
-                        checked = checked,
-                        onCheckedChange = {checked = !checked},
-                        type = item.tipo,
-                        onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}
-                    )
-                    Spacer(Modifier.size(8.dp))
-                }
+            item{
+                DoubleKeyValueLabel(
+                    firstTitle = stringResource(R.string.price),
+                    firstDescription = "1.00,00€",
+                    secondTitle = stringResource(R.string.date),
+                    secondDescription = listaFatture.get(0).type,
+                )
             }
+            item{Spacer(Modifier.size(8.dp))}
+            item{CustomOutlineTextField(stringResource(R.string.amount))}
+            item{Spacer(Modifier.size(8.dp))}
+            item{DatePickerFieldToModal(stringResource(R.string.date_collection))}
+            item{Spacer(Modifier.size(8.dp))}
+            item{CustomOutlineTextField(stringResource(R.string.percentage))}
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SinglePaymentSummary>() == true) {
                 item {
@@ -126,7 +114,7 @@ fun PaymentAddActivity(
                         navController.navigate(NavigationRoute.AllPaymentsSummary)
                     }
                 }
-                item { Spacer(Modifier.size(8.dp)) }
+                item {Spacer(Modifier.size(8.dp))}
             }
         }
     }

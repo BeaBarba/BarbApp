@@ -26,11 +26,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.debug.interventi
+import com.example.myapplication.debug.listaFatture
 import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.DoubleKeyValueLabel
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
+import com.example.myapplication.ui.component.KeyValueLabel
 import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
@@ -80,41 +82,40 @@ fun SinglePaymentSummaryActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
-                DoubleKeyValueLabel(
-                    firstTitle = stringResource(R.string.price),
-                    firstDescription = pagamenti[0].prezzo,
-                    secondTitle = stringResource(R.string.date),
-                    secondDescription = pagamenti[0].data
+                GenericCard(
+                    text = listaFatture.get(0).name,
+                    onClick = {navController.navigate(NavigationRoute.SingleInvoiceSummary)}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
-                SplitButtonList(
-                    text = stringResource(R.string.interventions),
-                    showItems = showItems,
-                    onClick = {showItems = !showItems}
+                DoubleKeyValueLabel(
+                    firstTitle = stringResource(R.string.price),
+                    firstDescription = "1.00,00€",
+                    secondTitle = stringResource(R.string.amount),
+                    secondDescription = pagamenti[0].prezzo
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            if(showItems) {
-                items(interventi){ item ->
-                    GenericCard(
-                        type = item.tipo,
-                        leadingContent = {
-                            Avatar(
-                                char = item.tipo.get(0),
-                                type = item.tipo
-                            )
-                        },
-                        text = item.indirizzo + ", " + item.comune,
-                        textDescription = item.data,
-                        trailingContent = {
-                            Text(text = item.prezzo.toString())
-                        },
-                        onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}
-                    )
-                    Spacer(Modifier.size(8.dp))
-                }
+            item{
+                KeyValueLabel(
+                    title = stringResource(R.string.date_issue),
+                    description = listaFatture.get(0).type
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
+            item{
+                KeyValueLabel(
+                    title = stringResource(R.string.date_collection),
+                    description = pagamenti[0].data
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
+            item{
+                KeyValueLabel(
+                    title = stringResource(R.string.percentage),
+                    description = "12 %"
+                )
             }
         }
     }

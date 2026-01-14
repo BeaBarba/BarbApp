@@ -145,30 +145,31 @@ data class Pagamenti(
     val cliente: String,
     val indirizzo: String,
     val prezzo: String,
-    val data: String
+    val data: String,
+    val fattura: String
 )
 
 var pagamenti = listOf(
-    Pagamenti("Mario Rossi", "Via Roma 1, Milano", "€120.00", "05/02/2025"),
-    Pagamenti("Giulia Bianchi", "Corso Garibaldi 12, Torino", "€85.50", "12/03/2025"),
-    Pagamenti("Luca Verdi", "Piazza Duomo 3, Milano", "€200.00", "20/01/2025"),
-    Pagamenti("Sara Neri", "Via Dante 7, Firenze", "€45.00", "08/04/2025"),
-    Pagamenti("Paolo Romano", "Viale Europa 20, Napoli", "€99.99", "17/02/2025"),
-    Pagamenti("Elena Russo", "Via Giulia 5, Roma", "€60.00", "01/01/2025"),
-    Pagamenti("Andrea Ferri", "Via Manzoni 10, Bologna", "€150.00", "23/05/2025"),
-    Pagamenti("Francesca Sala", "Via Po 18, Torino", "€30.00", "14/06/2025"),
-    Pagamenti("Matteo Longo", "Corso Venezia 25, Milano", "€250.00", "30/03/2025"),
-    Pagamenti("Valentina Greco", "Via San Marco 8, Venezia", "€75.00", "09/07/2025"),
-    Pagamenti("Roberto Fontana", "Viale Mazzini 2, Genova", "€1.100.00", "28/02/2025"),
-    Pagamenti("Chiara Conte", "Piazza San Carlo 4, Torino", "€40.00", "06/08/2025"),
-    Pagamenti("Stefano Moretti", "Via Cavour 14, Roma", "€95.00", "11/09/2025"),
-    Pagamenti("Marta De Luca", "Via S. Lucia 9, Napoli", "€55.00", "19/10/2025"),
-    Pagamenti("Giorgio Martini", "Corso Italia 6, Firenze", "€180.00", "04/11/2025"),
-    Pagamenti("Laura Rinaldi", "Via Nettuno 11, Bari", "€65.00", "15/12/2025"),
-    Pagamenti("Nicola Caputo", "Piazza Maggiore 1, Bologna", "€130.00", "02/05/2025"),
-    Pagamenti("Elisa Romano", "Via Verdi 22, Parma", "€49.90", "21/06/2025"),
-    Pagamenti("Alessio Galli", "Via Larga 16, Milano", "€210.00", "27/07/2025"),
-    Pagamenti("Federica Pini", "Viale Regina Margherita 30, Roma", "€70.00", "13/08/2025")
+    Pagamenti("Mario Rossi", "Via Roma 1, Milano", "€120.00", "05/02/2025", fattura = "1"),
+    Pagamenti("Giulia Bianchi", "Corso Garibaldi 12, Torino", "€85.50", "12/03/2025", fattura = "2"),
+    Pagamenti("Luca Verdi", "Piazza Duomo 3, Milano", "€200.00", "20/01/2025", fattura = "3"),
+    Pagamenti("Sara Neri", "Via Dante 7, Firenze", "€45.00", "08/04/2025", fattura = "4"),
+    Pagamenti("Paolo Romano", "Viale Europa 20, Napoli", "€99.99", "17/02/2025", fattura = "5"),
+    Pagamenti("Elena Russo", "Via Giulia 5, Roma", "€60.00", "01/01/2025", fattura = "6"),
+    Pagamenti("Andrea Ferri", "Via Manzoni 10, Bologna", "€150.00", "23/05/2025", fattura = "7"),
+    Pagamenti("Francesca Sala", "Via Po 18, Torino", "€30.00", "14/06/2025", fattura = "8"),
+    Pagamenti("Matteo Longo", "Corso Venezia 25, Milano", "€250.00", "30/03/2025", fattura = "9"),
+    Pagamenti("Valentina Greco", "Via San Marco 8, Venezia", "€75.00", "09/07/2025", fattura = "10"),
+    Pagamenti("Roberto Fontana", "Viale Mazzini 2, Genova", "€1.100.00", "28/02/2025", fattura = "11"),
+    Pagamenti("Chiara Conte", "Piazza San Carlo 4, Torino", "€40.00", "06/08/2025", fattura = "12"),
+    Pagamenti("Stefano Moretti", "Via Cavour 14, Roma", "€95.00", "11/09/2025", fattura = "13"),
+    Pagamenti("Marta De Luca", "Via S. Lucia 9, Napoli", "€55.00", "19/10/2025", fattura = "14"),
+    Pagamenti("Giorgio Martini", "Corso Italia 6, Firenze", "€180.00", "04/11/2025", fattura = "15"),
+    Pagamenti("Laura Rinaldi", "Via Nettuno 11, Bari", "€65.00", "15/12/2025", fattura = "16"),
+    Pagamenti("Nicola Caputo", "Piazza Maggiore 1, Bologna", "€130.00", "02/05/2025", fattura = "17"),
+    Pagamenti("Elisa Romano", "Via Verdi 22, Parma", "€49.90", "21/06/2025", fattura = "18"),
+    Pagamenti("Alessio Galli", "Via Larga 16, Milano", "€210.00", "27/07/2025", fattura = "19"),
+    Pagamenti("Federica Pini", "Viale Regina Margherita 30, Roma", "€70.00", "13/08/2025", fattura = "20")
 )
 
 data class Appuntamento(
@@ -371,3 +372,4 @@ data class CardItem(
 
 var customersType = customers.map { item -> CardItem(name = item, type = "NONE") }
 var addressType = address.map {item -> CardItem(name = item, type = "NONE")}
+var invoicesType = fatture.map{item -> CardItem(name = item.fattura.toString(), type = "NONE")}
