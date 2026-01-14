@@ -82,9 +82,23 @@ fun HomeActivity(
             }
             item{
                 HomeCard(
+                    item = stringResource(R.string.warehouse),
+                    painterResource(R.drawable.warehouse_magazzino),
+                    onclick = {navController.navigate(NavigationRoute.Warehouse)}
+                )
+            }
+            item{
+                HomeCard(
                     item = stringResource(R.string.cleaning_all),
                     iconName = painterResource(R.drawable.vacuum_pulizie),
                     onclick = {navController.navigate(NavigationRoute.AllCleaningSummary)}
+                )
+            }
+            item{
+                HomeCard(
+                    item = stringResource(R.string.construction_sites),
+                    painterResource(R.drawable.brickwall),
+                    onclick = {navController.navigate(NavigationRoute.AllConstructionSummary)}
                 )
             }
             item{
@@ -103,20 +117,6 @@ fun HomeActivity(
             }
             item{
                 HomeCard(
-                    item = stringResource(R.string.warehouse),
-                    painterResource(R.drawable.warehouse_magazzino),
-                    onclick = {navController.navigate(NavigationRoute.Warehouse)}
-                )
-            }
-            item{
-                HomeCard(
-                    item = stringResource(R.string.statistics),
-                    iconName = painterResource(R.drawable.monitor_statistiche),
-                    onclick = {navController.navigate(NavigationRoute.AllStatistics)}
-                )
-            }
-            item{
-                HomeCard(
                     item = stringResource(R.string.bubbles),
                     iconName = painterResource(R.drawable.receipt_bolle),
                     onclick = {navController.navigate(NavigationRoute.AllBubblesSummary)}
@@ -127,6 +127,13 @@ fun HomeActivity(
                     item = stringResource(R.string.invoices),
                     iconName = painterResource(R.drawable.description_24dp),
                     onclick = {/*navController.navigate(NavigationRoute.)*/}
+                )
+            }
+            item{
+                HomeCard(
+                    item = stringResource(R.string.statistics),
+                    iconName = painterResource(R.drawable.monitor_statistiche),
+                    onclick = {navController.navigate(NavigationRoute.AllStatistics)}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

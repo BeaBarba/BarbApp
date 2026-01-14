@@ -4,6 +4,30 @@ import com.example.myapplication.data.modules.CustomerType
 import com.example.myapplication.ui.component.MenuItem
 
 /* --------------------------------------------- Variabili Globali ------------------------------------------*/
+val textDescription = """Sto facendo il refactoring del file dei componenti (era 1570 righe di codice tra codice puro e gli import) in:
+- Utilities --> Dove metto le funzioni tipo per stabilire di che colore devono essere i componenti in base al loro tipo (Ele, CDZ o ALLARME) 
+- Cards --> Dove vanno i componenti cliccabili che poi mostrano tutti i dati 
+- Lists --> Dove metto tutte le liste di altri componenti che ho creato perchè ce ne sono diverse . Ad esempio quella che abbiamo fatto insieme, 
+non so se ti ricordi, che metteva la lettera iniziale dei cognomi, poi tutti i clienti con quella lettera e poi di nuovo un altra lettera dentro un 
+cerchio per dividere in ordine alfabetico i clienti 
+- Buttons --> Dove metto tutti i vari bottoni
+- DropDownMenu --> Dove metto tutti i menu a tendina
+- Tables --> Dove metto la tabella
+- GeneralComponent --> Tutti i componenti rimasti, quindi gli avatar (sono i cerchi con la lettera dentro), la TopAppBar (la barra sopra che indica 
+in che sezione si è e quali impostazioni si possono cambiare per quella schermata), le Label (Sono solo 2 e sono quelle che nel video c'è la parte verde 
+che indica la specifica e la parte verde chiaro che indica tipo il cognome), l'AlertDialog (il menu a comparsa tipo popup)
+"""
+
+var itemsList = List<String>(10, {item -> "item $item"})
+
+var item_num = listOf<Pair<String,Int>>(
+    Pair<String,Int>("item", 10),
+    Pair<String,Int>("item", 5),
+    Pair<String,Int>("item", 3),
+    Pair<String,Int>("item", 4),
+    Pair<String,Int>("item", 1),
+)
+
 var customers = listOf(
     "Alessandro", "Andrea", "Anna", "Alessia", "Amelia", "Antonio",
     "Barbara", "Bruno", "Beatrice", "Bianca", "Benedetto", "Bernardo",
@@ -35,16 +59,6 @@ var customers = listOf(
 
 val letters = customers.map { it.get(0) }.distinct()
 
-var itemsList = List<String>(10, {item -> "item $item"})
-
-var item_num = listOf<Pair<String,Int>>(
-    Pair<String,Int>("item", 10),
-    Pair<String,Int>("item", 5),
-    Pair<String,Int>("item", 3),
-    Pair<String,Int>("item", 4),
-    Pair<String,Int>("item", 1),
-)
-
 data class Prodotto(
     val nome: String,
     val modello: String,
@@ -54,6 +68,7 @@ data class Prodotto(
     val unitaMisura: String,
     val tipo : String
 )
+
 var prodotti = listOf<Prodotto>(
     Prodotto("Interruttore", "Bticino", 10, 20.0, 22, "u", "ELE"),
     Prodotto("Interruttore", "Vimar", 50, 20.0, 10, "u","ELE"),
@@ -93,20 +108,6 @@ var prodotti = listOf<Prodotto>(
     Prodotto("Ventola Raffreddamento PC", "Cooler Max", 100, 22.00, 22, "Pz", "CDZ"),
     Prodotto("Hard Disk Esterno 2TB", "StoreSafe", 140, 75.90, 22, "Pz","CDZ"),
 )
-
-val textDescription = """Sto facendo il refactoring del file dei componenti (era 1570 righe di codice tra codice puro e gli import) in:
-- Utilities --> Dove metto le funzioni tipo per stabilire di che colore devono essere i componenti in base al loro tipo (Ele, CDZ o ALLARME) 
-- Cards --> Dove vanno i componenti cliccabili che poi mostrano tutti i dati 
-- Lists --> Dove metto tutte le liste di altri componenti che ho creato perchè ce ne sono diverse . Ad esempio quella che abbiamo fatto insieme, 
-non so se ti ricordi, che metteva la lettera iniziale dei cognomi, poi tutti i clienti con quella lettera e poi di nuovo un altra lettera dentro un 
-cerchio per dividere in ordine alfabetico i clienti 
-- Buttons --> Dove metto tutti i vari bottoni
-- DropDownMenu --> Dove metto tutti i menu a tendina
-- Tables --> Dove metto la tabella
-- GeneralComponent --> Tutti i componenti rimasti, quindi gli avatar (sono i cerchi con la lettera dentro), la TopAppBar (la barra sopra che indica 
-in che sezione si è e quali impostazioni si possono cambiare per quella schermata), le Label (Sono solo 2 e sono quelle che nel video c'è la parte verde 
-che indica la specifica e la parte verde chiaro che indica tipo il cognome), l'AlertDialog (il menu a comparsa tipo popup)
-"""
 
 var materialList: List<String> = prodotti.map { prodotto -> prodotto.nome}
 
@@ -224,8 +225,6 @@ var scadenze = listOf(
     Scadenze("Fornitore Packaging", "fornitore", 77.80f, "30/04/2024")
 )
 
-var category =  listOf("cat1" , "cat2" , "cat3")
-
 data class Provenienze(
     val fornitore: String,
     val quantita: String,
@@ -256,9 +255,9 @@ var provenienze = listOf(
     // Caso 4: Fornitore estero (misto)
     Provenienze(fornitore = "Global Export Ltd", quantita = "2 container", numeroBolla = "EXP-7712", fattura = "INV-2024-X1", data = "29/05/2024")
 )
+
 var fatture : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.fattura}.distinct()
 var bolle : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.numeroBolla}.distinct()
-
 
 data class Cliente(
     val tipo : String, // P o A (privato o azienda)
@@ -325,6 +324,41 @@ val listaClienti = listOf(
 )
 
 var address = appuntamenti.map{a -> a.indirizzo}
+
 var tipi_menu = tipi.map{tipo -> MenuItem(tipo, {})}
+
 var cantieri = List<String>(10, {item -> "Cantiere $item"})
+
 var cantieri_menu = cantieri.map { c -> MenuItem(c, {}) }
+
+data class Cantiere(
+    val indirizzo : String,
+    val dataInizio : String,
+    val dataFine : String? = "/"
+)
+
+val listaCantieri = listOf(
+    Cantiere(
+        indirizzo = "Via Roma 10, Roma",
+        dataInizio = "01/01/2024",
+        dataFine = "30/06/2024"
+    ),
+    Cantiere(
+        indirizzo = "Corso Vittorio Emanuele 50, Milano",
+        dataInizio = "15/02/2024",
+        dataFine = "15/12/2024"
+    ),
+    Cantiere(
+        indirizzo = "Via Garibaldi 5, Torino",
+        dataInizio = "10/03/2024",
+    ),
+    Cantiere(
+        indirizzo = "Piazza Grande 1, Bologna",
+        dataInizio = "01/05/2024",
+        dataFine = "01/11/2024"
+    ),
+    Cantiere(
+        indirizzo = "Via Dante 12, Firenze",
+        dataInizio = "20/06/2024"
+    )
+)

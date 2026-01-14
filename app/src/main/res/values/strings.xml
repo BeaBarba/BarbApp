@@ -133,4 +133,6 @@
     <string name="add">Add</string>
     <string name="construction_site">Construction site</string>
     <string name="people_number">Number of people</string>
+    <string name="construction_sites">Construction sites</string>
+    <string name="in_progress">In progress</string>
 </resources>
