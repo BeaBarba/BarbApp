@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -21,12 +22,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.materialList
 import com.example.myapplication.debug.prodotti
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.MaterialTable
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.SearchAppBar
+import com.example.myapplication.ui.component.SuggestionTextField
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -63,7 +66,12 @@ fun BubbleMaterialsActivity(
                 )
                 .fillMaxSize()
         ) {
-            SearchAppBar(stringResource(R.string.material))
+            //SearchAppBar(stringResource(R.string.material))
+            SuggestionTextField(
+                title = stringResource(R.string.material),
+                leadingIcon = {Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.search))},
+                suggestions = materialList
+            )
             MaterialTable(
                 contentPadding = contentPadding,
                 listData = prodotti
