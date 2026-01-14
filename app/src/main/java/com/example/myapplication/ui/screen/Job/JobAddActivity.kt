@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen
+package com.example.myapplication.ui.screen.Job
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -27,12 +27,8 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.debug.cantieri_menu
-import com.example.myapplication.debug.customers
 import com.example.myapplication.debug.interventi
-import com.example.myapplication.debug.letters
-import com.example.myapplication.debug.tipi
 import com.example.myapplication.debug.tipi_menu
-import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.CustomTimePicker

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen
+package com.example.myapplication.ui.screen.Statistics
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

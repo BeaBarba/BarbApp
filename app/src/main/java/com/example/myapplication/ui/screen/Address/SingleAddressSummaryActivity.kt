@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen
+package com.example.myapplication.ui.screen.Address
 
 import android.content.Intent
 import android.net.Uri
