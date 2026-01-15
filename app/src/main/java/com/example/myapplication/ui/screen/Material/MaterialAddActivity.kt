@@ -10,12 +10,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -23,13 +28,19 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.categorie_menu
 import com.example.myapplication.debug.prodotti
+import com.example.myapplication.debug.tipi_menu
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
+import com.example.myapplication.ui.component.MenuDivider
+import com.example.myapplication.ui.component.MenuItem
+import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
+import com.example.myapplication.ui.component.checkboxColors
 
 @Composable
 fun MaterialAddActivity(
@@ -58,6 +69,12 @@ fun MaterialAddActivity(
             )
         }
     ) { contentPadding ->
+        var type by remember { mutableStateOf("")}
+        var tipi = tipi_menu.map{item -> MenuItem(name = item.name, {type = item.name})}
+        var category by remember { mutableStateOf("")}
+        var categorie = categorie_menu.map{item -> MenuItem(name = item.name, {category = item.name})}
+        var checked by remember {mutableStateOf("")}
+        var machine_type = listOf(MenuItem(name = "Interna", {checked = "Interna"}), MenuItem(name = "Esterna", {checked = "Esterna"}))
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -68,33 +85,24 @@ fun MaterialAddActivity(
                 )
                 .fillMaxSize()
         ) {
-            item{CustomOutlineTextField(stringResource(R.string.name))}
+            item{
+                SplitButtonMenu(
+                    content = if(type.isNotEmpty()){type}else{stringResource(R.string.type)},
+                    items = tipi
+                )
+            }
+            item{
+                SplitButtonMenu(
+                    content = if(category.isNotEmpty()){category}else{stringResource(R.string.category)},
+                    items = categorie
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField(stringResource(R.string.brand))}
             item{Spacer(Modifier.size(8.dp))}
             item{CustomOutlineTextField(stringResource(R.string.model))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.quantity))}
-            item{Spacer(Modifier.size(8.dp))}
-            if(previousBackStackEntry?.destination?.hasRoute<NavigationRoute.JobMaterials>() == false) {
-                item { CustomOutlineTextField(stringResource(R.string.unit_price)) }
-                item { Spacer(Modifier.size(8.dp)) }
-                /*val v_size = if(venditori.size < 5){
-                    venditori.size}else{5}
-                item{SplitButtonMenu(content = stringResource(R.string.seller), venditori, heightMenu = (v_size * 55).dp)}
-                item{Spacer(Modifier.size(8.dp))}
-                val b_size = if(bolle.size < 5){
-                    bolle.size}else{5}
-                item{SplitButtonMenu(content = stringResource(R.string.bubble), bolle, heightMenu = (b_size * 55).dp)}
-                item{Spacer(Modifier.size(8.dp))}
-                val f_size = if(fatture.size < 5){
-                    fatture.size}else{5}
-                item{SplitButtonMenu(content = stringResource(R.string.invoice), fatture, heightMenu =  (f_size * 55).dp)}
-                item{Spacer(Modifier.size(8.dp))}
-                item{Images()}
-                item{Spacer(Modifier.size(8.dp))}
-                */
-            }else{
+            if(previousBackStackEntry?.destination?.hasRoute<NavigationRoute.JobMaterials>() == true) {
                 item{
                     GenericCard(
                         text = stringResource(R.string.customer),
@@ -106,6 +114,29 @@ fun MaterialAddActivity(
                         },
                         onClick = {navController.navigate(NavigationRoute.Select("Cliente", "CustomerAdd"))}
                     )
+                }
+                item{Spacer(Modifier.size(8.dp))}
+            }
+            if(type.equals("CDZ")){
+                item{CustomOutlineTextField(stringResource(R.string.serial_number))}
+                item{Spacer(Modifier.size(8.dp))}
+                item{CustomOutlineTextField(stringResource(R.string.btu))}
+                item{Spacer(Modifier.size(8.dp))}
+                item{CustomOutlineTextField(stringResource(R.string.year_installation))}
+                item{Spacer(Modifier.size(8.dp))}
+                item{
+                    SplitButtonMenu(
+                        content = if(checked.isNotEmpty()){checked}else{stringResource(R.string.machine_type)},
+                        items = machine_type
+                    )
+                }
+                if(checked.equals("Esterna")){
+                    item{CustomOutlineTextField(stringResource(R.string.split_number))}
+                    item{Spacer(Modifier.size(8.dp))}
+                    item{CustomOutlineTextField(stringResource(R.string.gas_quantity))}
+                    item{Spacer(Modifier.size(8.dp))}
+                    item{CustomOutlineTextField(stringResource(R.string.gas_type))}
+                    item{Spacer(Modifier.size(8.dp))}
                 }
             }
             if(previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleMaterialSummary>() == true) {

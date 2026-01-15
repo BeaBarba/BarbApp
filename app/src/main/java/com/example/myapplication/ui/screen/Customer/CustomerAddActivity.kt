@@ -159,7 +159,10 @@ fun CustomerAddActivity(
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleCustomerSummary>() == true) {
                 item {
                     DeleteButton{
-                        navController.navigate(NavigationRoute.AllCustomersSummary)
+                        navController.navigate(NavigationRoute.AllCustomersSummary){
+                            popUpTo(NavigationRoute.AllCustomersSummary){inclusive = true}
+                            launchSingleTop = true
+                        }
                     }
                 }
                 item{Spacer(Modifier.size(8.dp))}

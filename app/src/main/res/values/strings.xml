@@ -139,4 +139,11 @@
     <string name="date_end">End date</string>
     <string name="percentage">Percentage</string>
     <string name="collected">Collected</string>
+    <string name="serial_number">Serial number</string>
+    <string name="split_number">Split number</string>
+    <string name="machine_type">Machine type</string>
+    <string name="btu">BTU</string>
+    <string name="year_installation">Year of installation</string>
+    <string name="gas_quantity">Gas q.</string>
+    <string name="gas_type">Gas type</string>
 </resources>

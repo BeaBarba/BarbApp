@@ -328,6 +328,7 @@ val listaClienti = listOf(
 var address = appuntamenti.map{a -> a.indirizzo}
 
 var tipi_menu = tipi.map{tipo -> MenuItem(tipo, {})}
+var categorie_menu = prodotti.map{cat -> MenuItem(cat.nome, {})}
 
 var cantieri = List<String>(10, {item -> "Cantiere $item"})
 
