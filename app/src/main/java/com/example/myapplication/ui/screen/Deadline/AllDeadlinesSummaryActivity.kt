@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.categorie
+import com.example.myapplication.debug.categorie_fatture
 import com.example.myapplication.debug.scadenze
 import com.example.myapplication.debug.venditori
 import com.example.myapplication.ui.component.AddButton
@@ -42,7 +42,7 @@ fun AllDeadlinesSummaryActivity(
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
                 id = stringResource(R.string.deadline),
-                trailingIcon = {DropDownMenuDeadlines(categorie, venditori)}
+                trailingIcon = {DropDownMenuDeadlines(categorie_fatture, venditori)}
             )
         },
         floatingActionButton = {AddButton{navController.navigate(NavigationRoute.DeadlineAdd)}}

@@ -192,7 +192,7 @@ var appuntamenti = listOf(
     Appuntamento("Via Sant'Angelo 6, Bari",  "Conti Laura",  "ALA",  "Montaggio antenna per ricezione digitale")
 )
 
-val categorie = listOf("Ristorante","Fornitore","Macchina")
+val categorie_fatture = listOf("Ristorante","Fornitore","Macchina")
 
 val venditori = listOf("Venditore1", "Venditore2", "Venditore3" )
 
@@ -329,6 +329,8 @@ var address = appuntamenti.map{a -> a.indirizzo}
 
 var tipi_menu = tipi.map{tipo -> MenuItem(tipo, {})}
 var categorie_menu = prodotti.map{cat -> MenuItem(cat.nome, {})}
+
+var categorie_prodotti = prodotti.map{cat -> cat.nome}
 
 var cantieri = List<String>(10, {item -> "Cantiere $item"})
 

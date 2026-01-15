@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.prodotti
 import com.example.myapplication.debug.provenienze
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
@@ -55,6 +56,16 @@ fun SingleMaterialSummaryActivity(
             )
         }
     ) { contentPadding ->
+        var somma = 0
+        provenienze.forEach{ p->
+            val numero = p.quantita.filter { it.isDigit() }
+            if(numero.isNotEmpty()){
+                somma += numero.toInt()
+            }
+        }
+        var year_installation : String? = null
+        var type_machine = "Esterna"
+        var type_prodoct = "ELE"
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -65,16 +76,16 @@ fun SingleMaterialSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            var somma = 0
-            provenienze.forEach{ p->
-                val numero = p.quantita.filter { it.isDigit() }
-                if(numero.isNotEmpty()){
-                    somma += numero.toInt()
-                }
-            }
             item{
                 KeyValueLabel(
-                    title = stringResource(R.string.name),
+                    title = stringResource(R.string.type),
+                    description = prodotti.get(0).tipo
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
+            item{
+                KeyValueLabel(
+                    title = stringResource(R.string.category),
                     description = "Interruttore"
                 )
             }
@@ -99,11 +110,67 @@ fun SingleMaterialSummaryActivity(
                     description = somma.toString()
                 )
             }
-            item{Spacer(Modifier.size(8.dp))}
+            if(type_prodoct.equals("CDZ")){
+                item{CustomDivider()}
+                item{TitleLabel(stringResource(R.string.specifications))}
+                item{Spacer(Modifier.size(8.dp))}
+                item{
+                    KeyValueLabel(
+                        title = stringResource(R.string.serial_number),
+                        description = "NM21ZP10UABC"
+                    )
+                }
+                item{Spacer(Modifier.size(8.dp))}
+                if(!year_installation.isNullOrEmpty()) {
+                    item {
+                        KeyValueLabel(
+                            title = stringResource(R.string.year_installation),
+                            description = "2010"
+                        )
+                    }
+                    item { Spacer(Modifier.size(8.dp)) }
+                }
+                item{
+                    KeyValueLabel(
+                        title = stringResource(R.string.btu),
+                        description = "9.000"
+                    )
+                }
+                item{Spacer(Modifier.size(8.dp))}
+                item{
+                    KeyValueLabel(
+                        title = stringResource(R.string.machine_type),
+                        description = type_machine
+                    )
+                }
+                item{Spacer(Modifier.size(8.dp))}
+                if(type_machine.equals("Esterna")){
+                    item{
+                        KeyValueLabel(
+                            title = stringResource(R.string.split_number),
+                            description = "3"
+                        )
+                    }
+                    item{Spacer(Modifier.size(8.dp))}
+                    item{
+                        KeyValueLabel(
+                            title = stringResource(R.string.gas_quantity),
+                            description = "1.5 kg"
+                        )
+                    }
+                    item{Spacer(Modifier.size(8.dp))}
+                    item{
+                        KeyValueLabel(
+                            title = stringResource(R.string.gas_type),
+                            description = "R410"
+                        )
+                    }
+                }
+            }
             item{CustomDivider()}
             item{TitleLabel(stringResource(R.string.origin))}
             item{Spacer(Modifier.size(8.dp))}
-            items(provenienze){ item ->
+            items(provenienze.subList(0,2)){ item ->
                 KeyValueLabel(
                     title = stringResource(R.string.seller),
                     description = item.fornitore
@@ -119,15 +186,14 @@ fun SingleMaterialSummaryActivity(
                         title = stringResource(R.string.bubble),
                         description = item.numeroBolla
                     )
-                    Spacer(Modifier.size(8.dp))
                 }
                 if(!item.fattura.isNullOrEmpty()){
                     KeyValueLabel(
                         title = stringResource(R.string.invoice),
                         description = item.fattura
                     )
-                    Spacer(Modifier.size(8.dp))
                 }
+                Spacer(Modifier.size(8.dp))
                 CustomDivider()
             }
             item{Images()}

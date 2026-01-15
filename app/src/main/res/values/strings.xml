@@ -146,4 +146,5 @@
     <string name="year_installation">Year of installation</string>
     <string name="gas_quantity">Gas q.</string>
     <string name="gas_type">Gas type</string>
+    <string name="specifications">Specifications</string>
 </resources>

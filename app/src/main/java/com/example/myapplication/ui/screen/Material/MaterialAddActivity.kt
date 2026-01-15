@@ -29,6 +29,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.debug.categorie_menu
+import com.example.myapplication.debug.categorie_prodotti
 import com.example.myapplication.debug.prodotti
 import com.example.myapplication.debug.tipi_menu
 import com.example.myapplication.ui.component.BackButton
@@ -39,6 +40,7 @@ import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.MenuDivider
 import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
+import com.example.myapplication.ui.component.SuggestionTextField
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkboxColors
 
@@ -92,9 +94,16 @@ fun MaterialAddActivity(
                 )
             }
             item{
+                /*
                 SplitButtonMenu(
                     content = if(category.isNotEmpty()){category}else{stringResource(R.string.category)},
                     items = categorie
+                )
+                */
+                SuggestionTextField(
+                    title = stringResource(R.string.category),
+                    isAutocompleteMode = true,
+                    suggestions = categorie_prodotti
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

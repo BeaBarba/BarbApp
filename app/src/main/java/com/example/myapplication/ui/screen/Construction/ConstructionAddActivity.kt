@@ -147,7 +147,10 @@ fun ConstructionAddActivity(
                 item {
                     DeleteButton {
                         cantieri = cantieri.subList(1, cantieri.size)
-                        navController.navigate(NavigationRoute.AllConstructionSummary)
+                        navController.navigate(NavigationRoute.AllConstructionSummary){
+                            popUpTo(NavigationRoute.AllConstructionSummary){inclusive=true}
+                            launchSingleTop = true
+                        }
                     }
                 }
                 item { Spacer(Modifier.size(8.dp)) }
