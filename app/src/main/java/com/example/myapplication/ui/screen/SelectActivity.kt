@@ -36,6 +36,7 @@ import com.example.myapplication.debug.address
 import com.example.myapplication.debug.addressType
 import com.example.myapplication.debug.customersType
 import com.example.myapplication.debug.invoicesType
+import com.example.myapplication.debug.materialsType
 
 @Composable
 fun SelectActivity(
@@ -48,6 +49,7 @@ fun SelectActivity(
             "CustomerAdd" -> customersType
             "AddressAdd" -> addressType
             "InvoiceAdd" -> invoicesType
+            "Materials" -> materialsType
             else -> listOf(CardItem("prova1", "NONE"), CardItem("prova2", "NONE"), CardItem("prova3", "NONE"))
         }
     Scaffold(

@@ -376,3 +376,4 @@ data class CardItem(
 var customersType = customers.map { item -> CardItem(name = item, type = "NONE") }
 var addressType = address.map {item -> CardItem(name = item, type = "NONE")}
 var invoicesType = fatture.map{item -> CardItem(name = item.fattura.toString(), type = "NONE")}
+var materialsType = prodotti.map{item -> CardItem(name = item.nome, type = item.tipo)}

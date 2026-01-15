@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
@@ -16,6 +18,10 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -24,12 +30,18 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.debug.bolle
+import com.example.myapplication.debug.prodotti
+import com.example.myapplication.debug.venditori
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
+import com.example.myapplication.ui.component.CustomDivider
+import com.example.myapplication.ui.component.MenuItem
+import com.example.myapplication.ui.component.SplitButtonMenu
+import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -60,6 +72,9 @@ fun BubbleAddActivity(
             )
         }
     ) { contentPadding ->
+        var selected by remember { mutableStateOf("")}
+        var venditori_menu : MutableList<MenuItem> = mutableListOf(MenuItem(name = "Nuovo",{selected = "Nuovo"}))
+            venditori_menu.addAll(venditori.map{item ->MenuItem(name = item, {selected = item})})
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -70,12 +85,21 @@ fun BubbleAddActivity(
                 )
                 .fillMaxSize()
         ) {
-            item { CustomOutlineTextField(stringResource(R.string.bubble)) }
-            item { Spacer(Modifier.size(8.dp)) }
-            item { DatePickerFieldToModal(stringResource(R.string.date_issue)) }
-            item { Spacer(Modifier.size(8.dp)) }
-            //item { SplitButtonMenu(stringResource(R.string.seller), venditori) }
-            item { Spacer(Modifier.size(8.dp)) }
+            item{CustomOutlineTextField(stringResource(R.string.number))}
+            item{DatePickerFieldToModal(stringResource(R.string.date_issue))}
+            item{Spacer(Modifier.size(8.dp))}
+            item{
+                SplitButtonMenu(
+                    content = if(selected.equals("Nuovo") || selected.equals("")){stringResource(R.string.seller)}else{selected},
+                    items = venditori_menu,
+                    heightMenu = (venditori_menu.size * 55).dp
+                )
+            }
+            if(selected.equals("Nuovo")){
+                item{CustomOutlineTextField(stringResource(R.string.name))}
+                item{Spacer(Modifier.size(8.dp))}
+            }
+            item{CustomDivider()}
             item {
                 GenericCard(
                     text = stringResource(R.string.material),
@@ -86,16 +110,29 @@ fun BubbleAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = { navController.navigate(NavigationRoute.BubbleMaterials) }
+                    onClick = { navController.navigate(NavigationRoute.Select("Materiale", "Materials")) }
                 )
             }
-            item { Spacer(Modifier.size(8.dp)) }
+            item {Spacer(Modifier.size(8.dp))}
+            itemsIndexed(prodotti.subList(0,6)){index, item ->
+                TitleLabel(item.nome)
+                CustomOutlineTextField(stringResource(R.string.quantity))
+                CustomOutlineTextField(stringResource(R.string.unit_price))
+                CustomOutlineTextField(stringResource(R.string.vat))
+                if(index < 5/*prodotti.size*/) {
+                    CustomDivider()
+                }
+            }
+            item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleBubbleSummary>() == true) {
                 item {
 
                     DeleteButton {
                         bolle = bolle.subList(1, bolle.size)
-                        navController.navigate(NavigationRoute.AllBubblesSummary)
+                        navController.navigate(NavigationRoute.AllBubblesSummary){
+                            popUpTo(NavigationRoute.AllBubblesSummary){inclusive = true}
+                            launchSingleTop = true
+                        }
                     }
                 }
                 item { Spacer(Modifier.size(8.dp)) }

@@ -144,7 +144,7 @@
     <string name="machine_type">Machine type</string>
     <string name="btu">BTU</string>
     <string name="year_installation">Year of installation</string>
-    <string name="gas_quantity">Gas q.</string>
+    <string name="gas_quantity">Gas qty</string>
     <string name="gas_type">Gas type</string>
     <string name="specifications">Specifications</string>
 </resources>

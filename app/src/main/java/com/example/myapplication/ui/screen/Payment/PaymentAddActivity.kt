@@ -111,7 +111,7 @@ fun PaymentAddActivity(
                     DeleteButton {
                         pagamenti = pagamenti.subList(1, pagamenti.size)
                         navController.navigate(NavigationRoute.AllPaymentsSummary){
-                            popUpTo(NavigationRoute.AllPaymentsSummary){inclusive=true}
+                            popUpTo(NavigationRoute.AllPaymentsSummary){inclusive = true}
                             launchSingleTop = true
                         }
                     }
