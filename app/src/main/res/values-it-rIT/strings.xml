@@ -139,4 +139,5 @@
     <string name="date_start">Data inizio</string>
     <string name="date_end">Data fine</string>
     <string name="percentage">Percentuale</string>
+    <string name="collected">Riscossi</string>
 </resources>

@@ -25,7 +25,9 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuPayments
 import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.NavigationRoute
+import com.example.myapplication.ui.component.CustomDivider
 import com.example.myapplication.ui.component.SearchAppBar
+import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -43,6 +45,7 @@ fun AllPaymentsSummaryActivity(
         },
         floatingActionButton = {AddButton{navController.navigate(NavigationRoute.PaymentAdd)}}
     ) {contentPadding ->
+        var showItems by remember {mutableStateOf(false)}
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -66,7 +69,30 @@ fun AllPaymentsSummaryActivity(
                 )
                 Spacer(Modifier.size(8.dp))
             }
-            item{Spacer(Modifier.size(80.dp))}
+            item{CustomDivider()}
+            item{
+                SplitButtonList(
+                    text = stringResource(R.string.collected),
+                    showItems = showItems,
+                    onClick = {showItems = !showItems}
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
+            if(showItems) {
+                items(pagamenti.subList(0, 5)) { item ->
+                    var checked by remember { mutableStateOf(true) }
+                    ListItemCheckbox(
+                        char = item.cliente.get(0),
+                        text = item.cliente,
+                        textDescription = item.fattura,
+                        trailingText = item.prezzo,
+                        checked = checked,
+                        onCheckedChange = { checked = !checked },
+                        onClick = { navController.navigate(NavigationRoute.SinglePaymentSummary) }
+                    )
+                    Spacer(Modifier.size(8.dp))
+                }
+            }
         }
     }
 }

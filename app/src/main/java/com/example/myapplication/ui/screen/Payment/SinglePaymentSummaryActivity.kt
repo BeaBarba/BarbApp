@@ -63,7 +63,6 @@ fun SinglePaymentSummaryActivity(
             )
         }
     ){ contentPadding ->
-        var showItems by remember{mutableStateOf(false)}
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -83,6 +82,13 @@ fun SinglePaymentSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
+                    leadingContent = {
+                        Icon(
+                            painter = painterResource(R.drawable.description_24dp),
+                            contentDescription = stringResource(R.string.invoice),
+                            modifier = Modifier.size(35.dp)
+                        )
+                    },
                     text = listaFatture.get(0).name,
                     onClick = {navController.navigate(NavigationRoute.SingleInvoiceSummary)}
                 )
