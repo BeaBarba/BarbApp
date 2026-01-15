@@ -22,7 +22,7 @@ import com.example.myapplication.ui.screen.Calendar.DayCalendarActivity
 import com.example.myapplication.ui.screen.Deadline.DeadlineAddActivity
 import com.example.myapplication.ui.screen.HomeActivity
 import com.example.myapplication.ui.screen.Job.JobAddActivity
-import com.example.myapplication.ui.screen.JobMaterialsActivity
+import com.example.myapplication.ui.screen.Job.JobMaterialsActivity
 import com.example.myapplication.ui.screen.Statistics.JobStatisticsActivity
 import com.example.myapplication.ui.screen.Material.MaterialAddActivity
 import com.example.myapplication.ui.screen.Payment.PaymentAddActivity

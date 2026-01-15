@@ -112,7 +112,10 @@ fun MaterialAddActivity(
                 item {
                     DeleteButton {
                         prodotti = prodotti.subList(1, prodotti.size)
-                        navController.navigate(NavigationRoute.Warehouse)
+                        navController.navigate(NavigationRoute.Warehouse){
+                            popUpTo(NavigationRoute.Warehouse){inclusive = true}
+                            launchSingleTop = true
+                        }
                     }
                 }
                 item { Spacer(Modifier.size(8.dp)) }
