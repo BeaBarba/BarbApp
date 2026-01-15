@@ -71,11 +71,12 @@ fun BubbleMaterialsActivity(
                 title = stringResource(R.string.material),
                 leadingIcon = {Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.search))},
                 suggestions = materialList
-            )
+            )/*
             MaterialTable(
                 contentPadding = contentPadding,
                 listData = prodotti
             )
+            */
             Spacer(Modifier.size(80.dp))
         }
     }

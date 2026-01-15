@@ -27,8 +27,9 @@ import com.example.myapplication.ui.theme.TableStyleDefaults
 import com.example.myapplication.ui.theme.TableColumn
 
 @Composable
-fun MaterialTable(contentPadding: PaddingValues,
-                  listData: List<Prodotto>,
+fun MaterialTable(
+    padding : PaddingValues,
+    listData: List<Prodotto>,
 ){
     val headerColumns = listOf(
         TableColumn(title = stringResource(R.string.name).uppercase(), 3.0f),
@@ -39,11 +40,7 @@ fun MaterialTable(contentPadding: PaddingValues,
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(
-                start = contentPadding.calculateRightPadding(LayoutDirection.Ltr) + 8.dp,
-                end = contentPadding.calculateLeftPadding(LayoutDirection.Ltr) + 8.dp,
-                bottom = contentPadding.calculateBottomPadding() + 40.dp
-            )
+            .padding(padding)
             .border(TableStyleDefaults.measures().borderWidth, TableStyleDefaults.colors().border),
     ){
         LazyColumn() {

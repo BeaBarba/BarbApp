@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.screen.Bubble
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -31,6 +33,8 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.KeyValueLabel
 import com.example.myapplication.ui.NavigationRoute
+import com.example.myapplication.ui.component.CustomDivider
+import com.example.myapplication.ui.component.MaterialTable
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColorAvatar
@@ -63,7 +67,7 @@ fun SingleBubbleSummaryActivity(
             )
         }
     ) { contentPadding ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .padding(
                     top = contentPadding.calculateTopPadding() + 8.dp,
@@ -73,64 +77,48 @@ fun SingleBubbleSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            item{KeyValueLabel(
+            KeyValueLabel(
                 title = stringResource(R.string.seller),
                 description = provenienze.get(0).fornitore,
                 weightTitle = 1.0f,
                 weighDescription = 2.0f
-            )}
-            item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(
+            )
+            Spacer(Modifier.size(8.dp))
+            KeyValueLabel(
                 title = stringResource(R.string.number),
                 description = provenienze.get(0).numeroBolla.toString(),
                 weightTitle = 1.0f,
                 weighDescription = 2.0f
-            )}
-            item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(
+            )
+            Spacer(Modifier.size(8.dp))
+            KeyValueLabel(
                 title = stringResource(R.string.date_issue),
                 description = provenienze.get(0).data,
                 weightTitle = 1.0f,
                 weighDescription = 2.0f
-            )}
-            item{Spacer(Modifier.size(8.dp))}
+            )
+            Spacer(Modifier.size(8.dp))
             if(!provenienze.get(1).fattura.isNullOrEmpty()){
-                item{
-                    GenericCard(
-                        text = stringResource(R.string.invoice) + ": " + provenienze.get(1).fattura.toString(),
-                        trailingContent = {
-                            Icon(Icons.Filled.ChevronRight, contentDescription = stringResource(R.string.show_items))
-                        },
-                        textSpace = 0.9f,
-                        onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)}
-                    )
-                }
-                item{Spacer(Modifier.size(8.dp))}
-            }
-            item{
-                TitleLabel(title = stringResource(R.string.material))
-            }
-            item{Spacer(Modifier.size(8.dp))}
-            items(prodotti){ item ->
                 GenericCard(
-                    type = item.tipo,
-                    leadingContent = {
-                        Avatar(
-                            char = item.tipo.get(0),
-                            type = item.tipo
-                        )
-                    },
-                    text = item.nome,
-                    textDescription = item.modello,
+                    text = stringResource(R.string.invoice) + ": " + provenienze.get(1).fattura.toString(),
                     trailingContent = {
-                        Text(
-                           text = item.quantita.toString() + " " + item.unitaMisura
-                        )
+                        Icon(Icons.Filled.ChevronRight, contentDescription = stringResource(R.string.show_items))
                     },
-                    onClick = {navController.navigate(NavigationRoute.SingleMaterialSummary)}
+                    textSpace = 0.9f,
+                    onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)}
                 )
-                Spacer(Modifier.size(8.dp))
             }
+            CustomDivider()
+            TitleLabel(title = stringResource(R.string.material))
+            MaterialTable(
+                padding = PaddingValues(
+                    start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
+                    end = contentPadding.calculateLeftPadding(LayoutDirection.Ltr) + 8.dp,
+                    top = 8.dp,
+                    bottom = 8.dp
+                ),
+                listData = prodotti
+            )
         }
     }
 }
