@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Invoice
+package com.example.myapplication.ui.screen.PurchaseInvoice
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -21,43 +21,46 @@ import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
+import com.example.myapplication.ui.component.DropDownMenuBubbles
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
-fun AllInvoicesSummaryActivity(
+fun AllPurchaseInvoicesSummaryActivity(
     navController : NavHostController
 ){
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                navigationIcon = {BackButton{navController.navigateUp()}},
-                id = stringResource(R.string.invoices)
+                navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
+                id = stringResource(R.string.invoices_purchase),
+                trailingIcon = {DropDownMenuBubbles()}
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.InvoiceAdd)}}
-
+        floatingActionButton = { AddButton{/*navController.navigate(NavigationRoute.)*/} }
     ) { contentPadding ->
         LazyColumn(
             modifier = Modifier
                 .padding(
+                    top = contentPadding.calculateTopPadding() + 8.dp,
                     start = contentPadding.calculateStartPadding(LayoutDirection.Ltr) + 8.dp,
                     end = contentPadding.calculateEndPadding(LayoutDirection.Ltr) + 8.dp,
-                    top = contentPadding.calculateTopPadding() + 8.dp,
                     bottom = contentPadding.calculateBottomPadding()
                 )
+                .fillMaxSize()
         ) {
-            item{ SearchAppBar(stringResource(R.string.invoice))}
-            items(pagamenti){ item ->
+            item{ SearchAppBar(stringResource(R.string.invoice)) }
+            items(listaFatture){ item ->
                 GenericCard(
-                    text = item.fattura + " - " + item.cliente,
-                    textDescription = item.data,
-                    onClick = {navController.navigate(NavigationRoute.SingleInvoiceSummary)}
+                    text = item.name,
+                    textDescription = item.type,
+                    onClick = {/*navController.navigate(NavigationRoute.SingleBubbleSummary)*/}
                 )
                 Spacer(Modifier.size(8.dp))
             }
+            item{ Spacer(Modifier.size(80.dp)) }
         }
     }
 }

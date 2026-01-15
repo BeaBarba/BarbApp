@@ -147,4 +147,6 @@
     <string name="gas_quantity">Gas qty</string>
     <string name="gas_type">Gas type</string>
     <string name="specifications">Specifications</string>
+    <string name="invoices_purchase">Purchase invoices</string>
+    <string name="invoice_purchase">Purchase invoice</string>
 </resources>

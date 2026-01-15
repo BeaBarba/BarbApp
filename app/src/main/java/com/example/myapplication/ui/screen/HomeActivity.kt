@@ -131,6 +131,13 @@ fun HomeActivity(
             }
             item{
                 HomeCard(
+                    item = stringResource(R.string.invoices_purchase),
+                    iconName = painterResource(R.drawable.description_24dp),
+                    onclick = {navController.navigate(NavigationRoute.AllPurchaseInvoicesSummary)}
+                )
+            }
+            item{
+                HomeCard(
                     item = stringResource(R.string.statistics),
                     iconName = painterResource(R.drawable.monitor_statistiche),
                     onclick = {navController.navigate(NavigationRoute.AllStatistics)}

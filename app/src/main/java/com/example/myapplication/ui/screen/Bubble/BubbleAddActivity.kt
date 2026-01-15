@@ -73,8 +73,10 @@ fun BubbleAddActivity(
         }
     ) { contentPadding ->
         var selected by remember { mutableStateOf("")}
-        var venditori_menu : MutableList<MenuItem> = mutableListOf(MenuItem(name = "Nuovo",{selected = "Nuovo"}))
-            venditori_menu.addAll(venditori.map{item ->MenuItem(name = item, {selected = item})})
+        var venditori_menu : MutableList<MenuItem> = (
+                listOf(MenuItem(name = "Nuovo",{selected = "Nuovo"})) +
+                venditori.map{item ->MenuItem(name = item, {selected = item})}
+                ).toMutableList()
         LazyColumn(
             modifier = Modifier
                 .padding(

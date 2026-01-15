@@ -148,4 +148,6 @@
     <string name="gas_quantity">QTÀ gas</string>
     <string name="gas_type">Tipo di gas</string>
     <string name="specifications">Specifiche</string>
+    <string name="invoices_purchase">Fatture di acquisto</string>
+    <string name="invoice_purchase">Fattura di acquisto</string>
 </resources>
