@@ -72,7 +72,6 @@ fun PaymentAddActivity(
             )
         }
     ){ contentPadding ->
-        var showItems by remember{ mutableStateOf(false) }
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -111,7 +110,10 @@ fun PaymentAddActivity(
                 item {
                     DeleteButton {
                         pagamenti = pagamenti.subList(1, pagamenti.size)
-                        navController.navigate(NavigationRoute.AllPaymentsSummary)
+                        navController.navigate(NavigationRoute.AllPaymentsSummary){
+                            popUpTo(NavigationRoute.AllPaymentsSummary){inclusive=true}
+                            launchSingleTop = true
+                        }
                     }
                 }
                 item {Spacer(Modifier.size(8.dp))}

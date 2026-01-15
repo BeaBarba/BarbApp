@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.debug.prodotti
+import com.example.myapplication.ui.NavigationRoute
+import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
@@ -61,7 +63,8 @@ fun JobMaterialsActivity(
                     }
                 }
             )
-        }
+        },
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.MaterialAdd)}}
     ) { contentPadding ->
         LazyColumn(
             modifier = Modifier
@@ -74,55 +77,57 @@ fun JobMaterialsActivity(
         ) {
             item{SearchAppBar(stringResource(R.string.material))}
             items(prodotti){ item ->
-                var quantita by remember{ mutableStateOf(item.quantita)}
-                if(quantita > 0) {
-                    GenericCard(
-                        type = item.tipo,
-                        leadingContent = {
-                            Avatar(
-                                char = item.tipo.get(0),
-                                type = item.tipo
-                            )
-                        },
-                        text = item.nome,
-                        textDescription = item.modello,
-                        textSpace = 0.6f,
-                        trailingContent = {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                IconButton(
-                                    onClick = { quantita = quantita.dec() },
-                                    colors = IconButtonDefaults.iconButtonColors(
-                                        contentColor = checkColor(
-                                            item.tipo,
-                                            onPrimaryContainer = true
-                                        )
+                var quantita by remember{ mutableStateOf(0)}
+                GenericCard(
+                    type = item.tipo,
+                    leadingContent = {
+                        Avatar(
+                            char = item.tipo.get(0),
+                            type = item.tipo
+                        )
+                    },
+                    text = item.nome,
+                    textDescription = item.modello,
+                    textSpace = 0.6f,
+                    trailingContent = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            IconButton(
+                                onClick = { quantita = quantita.dec() },
+                                colors = IconButtonDefaults.iconButtonColors(
+                                    contentColor = checkColor(
+                                        item.tipo,
+                                        onPrimaryContainer = true
                                     )
-                                ) {
-                                    Icon(Icons.Filled.Remove, contentDescription = stringResource(R.string.decrease))
-                                }
-                                Text(
-                                    text = quantita.toString() + " " + item.unitaMisura,
-                                    color = checkColor(item.tipo, onPrimaryContainer = true)
                                 )
-                                IconButton(
-                                    onClick = { quantita = quantita.inc() },
-                                    colors = IconButtonDefaults.iconButtonColors(
-                                        contentColor = checkColor(
-                                            item.tipo,
-                                            onPrimaryContainer = true
-                                        )
+                            ) {
+                                Icon(Icons.Filled.Remove, contentDescription = stringResource(R.string.decrease))
+                            }
+                            Text(
+                                text = quantita.toString() + " " + item.unitaMisura,
+                                color = checkColor(item.tipo, onPrimaryContainer = true)
+                            )
+                            IconButton(
+                                onClick = {
+                                    if(quantita < item.quantita) {
+                                        quantita = quantita.inc()
+                                    }
+                                },
+                                colors = IconButtonDefaults.iconButtonColors(
+                                    contentColor = checkColor(
+                                        item.tipo,
+                                        onPrimaryContainer = true
                                     )
-                                ) {
-                                    Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.increase))
-                                }
+                                )
+                            ) {
+                                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.increase))
                             }
                         }
-                    )
-                    Spacer(Modifier.size(8.dp))
-                }
+                    }
+                )
+                Spacer(Modifier.size(8.dp))
             }
         }
     }

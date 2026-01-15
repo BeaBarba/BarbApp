@@ -171,7 +171,10 @@ fun JobAddActivity(
                 item {
                     DeleteButton {
                         interventi = interventi.subList(1, interventi.size)
-                        navController.navigate(NavigationRoute.AllJobsSummary)
+                        navController.navigate(NavigationRoute.AllJobsSummary){
+                            popUpTo(NavigationRoute.AllJobsSummary){inclusive = true}
+                            launchSingleTop = true
+                        }
                     }
                 }
                 item { Spacer(Modifier.size(8.dp)) }
