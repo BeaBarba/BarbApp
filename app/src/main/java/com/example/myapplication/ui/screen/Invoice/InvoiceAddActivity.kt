@@ -126,7 +126,10 @@ fun InvoiceAddActivity(
                 item {
                     DeleteButton {
                         /* Delete item from list */
-                        navController.navigate(NavigationRoute.AllInvoicesSummary)
+                        navController.navigate(NavigationRoute.AllInvoicesSummary){
+                            popUpTo(NavigationRoute.AllInvoicesSummary){inclusive = true}
+                            launchSingleTop = true
+                        }
                     }
                 }
                 item {Spacer(Modifier.size(8.dp))}

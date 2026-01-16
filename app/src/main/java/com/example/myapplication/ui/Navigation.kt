@@ -45,6 +45,7 @@ import com.example.myapplication.ui.screen.Invoice.InvoiceAddActivity
 import com.example.myapplication.ui.screen.Invoice.SingleInvoiceSummaryActivity
 import com.example.myapplication.ui.screen.Material.WarehouseActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.AllPurchaseInvoicesSummaryActivity
+import com.example.myapplication.ui.screen.PurchaseInvoice.PurchaseInvoiceAddActivity
 import kotlinx.serialization.Serializable
 
 sealed interface NavigationRoute{
@@ -126,6 +127,8 @@ sealed interface NavigationRoute{
     data object SingleInvoiceSummary : NavigationRoute
     @Serializable
     data object AllPurchaseInvoicesSummary : NavigationRoute
+    @Serializable
+    data object PurchaseInvoiceAdd : NavigationRoute
 }
 
 @Composable
@@ -255,6 +258,9 @@ fun NavGraph(
         }
         composable<NavigationRoute.AllPurchaseInvoicesSummary>{
             AllPurchaseInvoicesSummaryActivity(navController)
+        }
+        composable<NavigationRoute.PurchaseInvoiceAdd>{
+            PurchaseInvoiceAddActivity(navController)
         }
     }
 }
