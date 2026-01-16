@@ -1,7 +1,93 @@
 package com.example.myapplication.debug
 
 import com.example.myapplication.data.modules.CustomerType
+import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.ui.component.MenuItem
+
+/* --------------------------------------------- Classi Globali ------------------------------------------*/
+data class Prodotto(
+    val nome: String,
+    val modello: String,
+    var quantita: Int,
+    val prezzo : Double,
+    val iva : Int,
+    val unitaMisura: String,
+    val tipo : String
+)
+
+data class Cantiere(
+    val indirizzo : String,
+    val dataInizio : String,
+    val dataFine : String? = "/"
+)
+
+data class Intervento(
+    val cognomeNome: String,
+    val indirizzo: String,
+    val comune: String,
+    val cap: String,
+    val provincia: String,
+    val prezzo: Float,
+    val data: String,
+    val oraI: String,
+    val oraF: String,
+    val tipo: String
+)
+
+data class Pagamenti(
+    val cliente: String,
+    val indirizzo: String,
+    val prezzo: String,
+    val data: String,
+    val fattura: String
+)
+
+data class Appuntamento(
+    val indirizzo: String,
+    val cliente: String,
+    val tipo: String,
+    val descrizione: String
+)
+
+data class Scadenze(
+    val fornitore: String,
+    val categoria: String,
+    val prezzo: Float,
+    val data: String
+)
+
+data class Provenienze(
+    val fornitore: String,
+    val quantita: String,
+    val numeroBolla: String?, // Nullable
+    val fattura: String?,     // Nullable
+    val data: String         // formato 10/10/1990
+)
+
+data class Cliente(
+    val tipo : String, // P o A (privato o azienda)
+    val nome : String,
+    val CF : String,
+    val cognome : String?,
+    val email : String,
+    val telefono : String,
+    val indirizzo : String,
+    val citta : String,
+    val comune : String,
+    val provincia : String,
+    val cap : String,
+    val riferimento : String,
+    val dataNascita : String?,
+    val luogoNascita : String?,
+    val codiceUnivoco : String?,
+    val ragioneSociale : String?,
+    val partitaIVA : String?,
+)
+
+data class CardItem(
+    val name : String,
+    val type : String
+)
 
 /* --------------------------------------------- Variabili Globali ------------------------------------------*/
 val textDescription = """Sto facendo il refactoring del file dei componenti (era 1570 righe di codice tra codice puro e gli import) in:
@@ -59,16 +145,6 @@ var customers = listOf(
 
 val letters = customers.map { it.get(0) }.distinct()
 
-data class Prodotto(
-    val nome: String,
-    val modello: String,
-    var quantita: Int,
-    val prezzo : Double,
-    val iva : Int,
-    val unitaMisura: String,
-    val tipo : String
-)
-
 var prodotti = listOf<Prodotto>(
     Prodotto("Interruttore", "Bticino", 10, 20.0, 22, "u", "ELE"),
     Prodotto("Interruttore", "Vimar", 50, 20.0, 10, "u","ELE"),
@@ -113,19 +189,6 @@ var materialList: List<String> = prodotti.map { prodotto -> prodotto.nome}
 
 var suggerimenti = listOf("Suggerimento 1", "Suggerimento 2", "Suggerimento 3", "Ciao")
 
-data class Intervento(
-    val cognomeNome: String,
-    val indirizzo: String,
-    val comune: String,
-    val cap: String,
-    val provincia: String,
-    val prezzo: Float,
-    val data: String,
-    val oraI: String,
-    val oraF: String,
-    val tipo: String
-)
-
 var interventi = listOf(
     Intervento("Rossi Mario",    "Via Garibaldi 12",      "Milano",  "20121", "MI",  85.50f, "14/12/2025", "09:00", "10:30", "ELE"),
     Intervento("Bianchi Anna",   "Piazza Duomo 3",       "Milano",  "20122", "MI", 120.00f, "15/12/2025", "11:00", "12:15", "ALA"),
@@ -139,15 +202,7 @@ var interventi = listOf(
     Intervento("Conti Laura",    "Via Sant'Angelo 6",    "Bari",    "70121", "BA", 130.00f, "23/12/2025", "16:00", "17:30", "ALA")
 )
 
-val tipi = interventi.map { intervento -> intervento.tipo }.distinct()
-
-data class Pagamenti(
-    val cliente: String,
-    val indirizzo: String,
-    val prezzo: String,
-    val data: String,
-    val fattura: String
-)
+val tipiInterventi = interventi.map { intervento -> intervento.tipo }.distinct()
 
 var pagamenti = listOf(
     Pagamenti("Mario Rossi", "Via Roma 1, Milano", "€120.00", "05/02/2025", fattura = "1"),
@@ -172,13 +227,6 @@ var pagamenti = listOf(
     Pagamenti("Federica Pini", "Viale Regina Margherita 30, Roma", "€70.00", "13/08/2025", fattura = "20")
 )
 
-data class Appuntamento(
-    val indirizzo: String,
-    val cliente: String,
-    val tipo: String,
-    val descrizione: String
-)
-
 var appuntamenti = listOf(
     Appuntamento("Via Garibaldi 12, Milano", "Rossi Mario", "ELE",  "Sostituzione contatore elettrico, controllo cablaggio"),
     Appuntamento("Piazza Duomo 3, Milano",   "Bianchi Anna", "ALA",  "Installazione antenna TV sul tetto"),
@@ -192,47 +240,34 @@ var appuntamenti = listOf(
     Appuntamento("Via Sant'Angelo 6, Bari",  "Conti Laura",  "ALA",  "Montaggio antenna per ricezione digitale")
 )
 
-val categorie_fatture = listOf("Ristorante","Fornitore","Macchina")
-
 val venditori = listOf("Venditore1", "Venditore2", "Venditore3" )
-
-data class Scadenze(
-    val fornitore: String,
-    val categoria: String,
-    val prezzo: Float,
-    val data: String
-)
 
 var scadenze = listOf(
     Scadenze("Pizzeria Bella", "Ristorante", 45.50f, "15/01/2024"),
-    Scadenze("Forniture S.p.A.", "fornitore", 120.00f, "20/01/2024"),
-    Scadenze("Autocarrozzeria Rossi", "macchina", 350.75f, "22/01/2024"),
+    Scadenze("Forniture S.p.A.", "Fornitore", 120.00f, "20/01/2024"),
+    Scadenze("Autocarrozzeria Rossi", "Facchina", 350.75f, "22/01/2024"),
     Scadenze("Trattoria Da Mario", "Ristorante", 80.00f, "05/02/2024"),
-    Scadenze("Fornitore Alimentare SRL", "fornitore", 210.30f, "10/02/2024"),
-    Scadenze("Lavaggio Auto Milano", "macchina", 60.00f, "12/02/2024"),
+    Scadenze("Fornitore Alimentare SRL", "Fornitore", 210.30f, "10/02/2024"),
+    Scadenze("Lavaggio Auto Milano", "Macchina", 60.00f, "12/02/2024"),
     Scadenze("Osteria del Porto", "Ristorante", 95.20f, "18/02/2024"),
-    Scadenze("Elettronica & Co.", "fornitore", 499.99f, "01/03/2024"),
-    Scadenze("Carrozzeria Latina", "macchina", 275.40f, "05/03/2024"),
+    Scadenze("Elettronica & Co.", "Fornitore", 499.99f, "01/03/2024"),
+    Scadenze("Carrozzeria Latina", "Macchina", 275.40f, "05/03/2024"),
     Scadenze("Ristorante Il Girasole", "Ristorante", 120.00f, "10/03/2024"),
-    Scadenze("Forniture Cucina SRL", "fornitore", 330.10f, "15/03/2024"),
-    Scadenze("Officina Meccanica Bianchi", "macchina", 420.00f, "20/03/2024"),
+    Scadenze("Forniture Cucina SRL", "Fornitore", 330.10f, "15/03/2024"),
+    Scadenze("Officina Meccanica Bianchi", "Macchina", 420.00f, "20/03/2024"),
     Scadenze("Trattoria La Nonna", "Ristorante", 68.75f, "25/03/2024"),
-    Scadenze("Fornitore Bevande SPA", "fornitore", 150.25f, "01/04/2024"),
-    Scadenze("Centro Revisioni Roma", "macchina", 89.90f, "05/04/2024"),
+    Scadenze("Fornitore Bevande SPA", "Fornitore", 150.25f, "01/04/2024"),
+    Scadenze("Centro Revisioni Roma", "Macchina", 89.90f, "05/04/2024"),
     Scadenze("Pasticceria Dolce Vita", "Ristorante", 34.60f, "10/04/2024"),
-    Scadenze("Forniture Gelato SRL", "fornitore", 245.00f, "15/04/2024"),
-    Scadenze("Gomme & Co.", "macchina", 210.50f, "20/04/2024"),
+    Scadenze("Forniture Gelato SRL", "Fornitore", 245.00f, "15/04/2024"),
+    Scadenze("Gomme & Co.", "Macchina", 210.50f, "20/04/2024"),
     Scadenze("Ristorante La Scala", "Ristorante", 132.40f, "25/04/2024"),
-    Scadenze("Fornitore Packaging", "fornitore", 77.80f, "30/04/2024")
+    Scadenze("Fornitore Packaging", "Fornitore", 77.80f, "30/04/2024")
 )
 
-data class Provenienze(
-    val fornitore: String,
-    val quantita: String,
-    val numeroBolla: String?, // Nullable
-    val fattura: String?,     // Nullable
-    val data: String         // formato 10/10/1990
-)
+val categorie_fatture = scadenze.map {scadenza -> scadenza.fornitore}.distinct()
+
+val categorie_s_menu : List<MenuItem> = scadenze.map{ f -> MenuItem( name = f.categoria, {})}.distinct()
 
 var provenienze = listOf(
     Provenienze(fornitore = "Acciai Italia", quantita = "2000 kg", numeroBolla = "BO-2024-001", fattura = null, data = "01/03/2024"),
@@ -258,29 +293,12 @@ var provenienze = listOf(
 )
 
 var fatture = provenienze.filter{ it.fattura != null }
-var listaFatture : List<CardItem> = fatture.map{ f -> CardItem( name = f.fattura.toString(), type = f.data)}.distinct()
-var bolle = provenienze.filter{ it.numeroBolla != null}
-var listaBolle : List<CardItem> = bolle.map{ b -> CardItem(name = b.numeroBolla.toString(), type = b.data)}.distinct()
 
-data class Cliente(
-    val tipo : String, // P o A (privato o azienda)
-    val nome : String,
-    val CF : String,
-    val cognome : String?,
-    val email : String,
-    val telefono : String,
-    val indirizzo : String,
-    val citta : String,
-    val comune : String,
-    val provincia : String,
-    val cap : String,
-    val riferimento : String,
-    val dataNascita : String?,
-    val luogoNascita : String?,
-    val codiceUnivoco : String?,
-    val ragioneSociale : String?,
-    val partitaIVA : String?,
-)
+var listaFatture : List<CardItem> = fatture.map{ f -> CardItem( name = f.fattura.toString(), type = f.data)}.distinct()
+
+var bolle = provenienze.filter{ it.numeroBolla != null}
+
+var listaBolle : List<CardItem> = bolle.map{ b -> CardItem(name = b.numeroBolla.toString(), type = b.data)}.distinct()
 
 val listaClienti = listOf(
     // Esempio Tipo P - Privato
@@ -328,7 +346,8 @@ val listaClienti = listOf(
 
 var address = appuntamenti.map{a -> a.indirizzo}
 
-var tipi_menu = tipi.map{tipo -> MenuItem(tipo, {})}
+var tipi_menu = tipiInterventi.map{tipo -> MenuItem(tipo, {})}
+
 var categorie_menu = prodotti.map{cat -> MenuItem(cat.nome, {})}
 
 var categorie_prodotti = prodotti.map{cat -> cat.nome}
@@ -336,12 +355,6 @@ var categorie_prodotti = prodotti.map{cat -> cat.nome}
 var cantieri = List<String>(10, {item -> "Cantiere $item"})
 
 var cantieri_menu = cantieri.map { c -> MenuItem(c, {}) }
-
-data class Cantiere(
-    val indirizzo : String,
-    val dataInizio : String,
-    val dataFine : String? = "/"
-)
 
 val listaCantieri = listOf(
     Cantiere(
@@ -369,13 +382,10 @@ val listaCantieri = listOf(
     )
 )
 
-data class CardItem(
-    val name : String,
-    val type : String
-)
-
 var customersType = customers.map { item -> CardItem(name = item, type = "NONE") }
 var addressType = address.map {item -> CardItem(name = item, type = "NONE")}
 var invoicesType = fatture.map{item -> CardItem(name = item.fattura.toString(), type = "NONE")}
 var materialsType = prodotti.map{item -> CardItem(name = item.nome, type = item.tipo)}
 var bubblesType = bolle.map{item -> CardItem(name = item.numeroBolla.toString(), type = "NONE")}
+
+

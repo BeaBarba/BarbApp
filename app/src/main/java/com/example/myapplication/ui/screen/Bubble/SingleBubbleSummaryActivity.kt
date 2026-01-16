@@ -111,7 +111,7 @@ fun SingleBubbleSummaryActivity(
                             Icon(Icons.Filled.ChevronRight, contentDescription = stringResource(R.string.show_items))
                         },
                         textSpace = 0.9f,
-                        onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)}
+                        onClick = {navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary)}
                     )
                 }
             }

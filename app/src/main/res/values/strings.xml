@@ -149,4 +149,6 @@
     <string name="specifications">Specifications</string>
     <string name="invoices_purchase">Purchase invoices</string>
     <string name="invoice_purchase">Purchase invoice</string>
+    <string name="frequency">Frequency</string>
+    <string name="date_deadline">Deadline date</string>
 </resources>
