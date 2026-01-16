@@ -259,7 +259,8 @@ var provenienze = listOf(
 
 var fatture = provenienze.filter{ it.fattura != null }
 var listaFatture : List<CardItem> = fatture.map{ f -> CardItem( name = f.fattura.toString(), type = f.data)}.distinct()
-var bolle : List<String> = provenienze.mapNotNull{ provenienza -> provenienza.numeroBolla}.distinct()
+var bolle = provenienze.filter{ it.numeroBolla != null}
+var listaBolle : List<CardItem> = bolle.map{ b -> CardItem(name = b.numeroBolla.toString(), type = b.data)}.distinct()
 
 data class Cliente(
     val tipo : String, // P o A (privato o azienda)
@@ -377,4 +378,4 @@ var customersType = customers.map { item -> CardItem(name = item, type = "NONE")
 var addressType = address.map {item -> CardItem(name = item, type = "NONE")}
 var invoicesType = fatture.map{item -> CardItem(name = item.fattura.toString(), type = "NONE")}
 var materialsType = prodotti.map{item -> CardItem(name = item.nome, type = item.tipo)}
-var bubblesType = bolle.map{item -> CardItem(name = item, type = "NONE")}
+var bubblesType = bolle.map{item -> CardItem(name = item.numeroBolla.toString(), type = "NONE")}

@@ -58,9 +58,9 @@ fun PurchaseInvoiceAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            /*navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary) {
+                            navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary) {
                                 popUpTo(NavigationRoute.BubbleAdd) { inclusive = true }
-                            }*/
+                            }
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
@@ -149,8 +149,8 @@ fun PurchaseInvoiceAddActivity(
             }
             item{ Spacer(Modifier.size(8.dp)) }
 
-            /*if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SinglePurchaseInvoiceSummary>() == true) {
-               */item {
+            if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SinglePurchaseInvoiceSummary>() == true) {
+               item {
 
                     DeleteButton {
                         bolle = bolle.subList(1, bolle.size)
@@ -161,7 +161,7 @@ fun PurchaseInvoiceAddActivity(
                     }
                 }
                 item { Spacer(Modifier.size(8.dp)) }
-            //}
+            }
         }
     }
 }

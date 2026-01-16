@@ -3,9 +3,11 @@ package com.example.myapplication.ui.theme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.R
 
 data class TableColumn(
     val title: String,
@@ -26,6 +28,12 @@ data class TableMeasures(
     val borderWidth : Dp,
     val heightHeaderRow : Dp,
     val heightRow : Dp
+)
+
+data class TabelStyle(
+    val typography: TableTypography,
+    val colors: TableColors,
+    val measures: TableMeasures
 )
 
 object TableStyleDefaults {
@@ -49,4 +57,19 @@ object TableStyleDefaults {
             heightRow = 50.dp,
             heightHeaderRow = 60.dp
         )
+
+    @Composable
+    fun defaultStyle() = TabelStyle(
+        typography = typography(),
+        colors = colors(),
+        measures = measures()
+    )
+
+    @Composable
+    fun defaultColumns(): List<TableColumn> = listOf(
+        TableColumn(title = stringResource(R.string.name).uppercase(), 3.0f),
+        TableColumn(title = stringResource(R.string.short_quantity), 1.0f),
+        TableColumn(title = stringResource(R.string.price), 1.5f),
+        TableColumn(title = stringResource(R.string.vat), 1.0f)
+    )
 }

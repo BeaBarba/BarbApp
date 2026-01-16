@@ -167,7 +167,7 @@ fun JobAddActivity(
                 }
             )}
             item{Spacer(Modifier.size(8.dp))}
-            if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleJobSummary>() == true) {
+            if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.AllJobsSummary>() == false) {
                 item {
                     DeleteButton {
                         interventi = interventi.subList(1, interventi.size)

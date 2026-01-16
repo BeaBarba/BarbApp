@@ -39,7 +39,7 @@ fun AllPurchaseInvoicesSummaryActivity(
                 trailingIcon = {DropDownMenuBubbles()}
             )
         },
-        floatingActionButton = { AddButton{/*navController.navigate(NavigationRoute.)*/} }
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.PurchaseInvoiceAdd)} }
     ) { contentPadding ->
         LazyColumn(
             modifier = Modifier
@@ -56,7 +56,7 @@ fun AllPurchaseInvoicesSummaryActivity(
                 GenericCard(
                     text = item.name,
                     textDescription = item.type,
-                    onClick = {/*navController.navigate(NavigationRoute.SingleBubbleSummary)*/}
+                    onClick = {navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary)}
                 )
                 Spacer(Modifier.size(8.dp))
             }

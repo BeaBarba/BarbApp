@@ -1,7 +1,5 @@
-package com.example.myapplication.ui.screen.Bubble
+package com.example.myapplication.ui.screen.PurchaseInvoice
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -9,8 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -24,6 +21,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.listaBolle
 import com.example.myapplication.debug.prodotti
 import com.example.myapplication.debug.provenienze
 import com.example.myapplication.ui.component.BackButton
@@ -37,7 +35,7 @@ import com.example.myapplication.ui.component.materialTable
 import com.example.myapplication.ui.theme.TableStyleDefaults
 
 @Composable
-fun SingleBubbleSummaryActivity(
+fun SinglePurchaseInvoiceSummaryActivity(
     navController : NavHostController
 ){
     Scaffold(
@@ -45,12 +43,12 @@ fun SingleBubbleSummaryActivity(
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigateUp()}},
-                id = stringResource(R.string.bubble),
+                id = stringResource(R.string.invoice_purchase),
                 trailingIcon = {
                     IconButton(
                         onClick = {
                             navController.navigate(NavigationRoute.BubbleAdd)
-                                  },
+                        },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
@@ -102,21 +100,26 @@ fun SingleBubbleSummaryActivity(
                     weighDescription = 2.0f
                 )
             }
+            item{CustomDivider()}
+            item{TitleLabel(stringResource(R.string.bubbles))}
             item{Spacer(Modifier.size(8.dp))}
-            if(!provenienze.get(1).fattura.isNullOrEmpty()){
-                item{
-                    GenericCard(
-                        text = stringResource(R.string.invoice) + ": " + provenienze.get(1).fattura.toString(),
-                        trailingContent = {
-                            Icon(Icons.Filled.ChevronRight, contentDescription = stringResource(R.string.show_items))
-                        },
-                        textSpace = 0.9f,
-                        onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)}
-                    )
+            itemsIndexed(listaBolle.subList(0,3)){index, item ->
+                GenericCard(
+                    leadingContent = {
+                        Icon(
+                            painter = painterResource(R.drawable.receipt_bolle),
+                            contentDescription = stringResource(R.string.bubble)
+                        )
+                    },
+                    text = item.name,
+                    textDescription = item.type
+                )
+                if(index < 2) {
+                    Spacer(Modifier.size(8.dp))
                 }
             }
             item{CustomDivider()}
-            item{TitleLabel(title = stringResource(R.string.material))}
+            item{TitleLabel(stringResource(R.string.materials))}
             item{Spacer(Modifier.size(8.dp))}
             materialTable(prodotti, headerColumns, tableStyle)
             item{Spacer(Modifier.size(8.dp))}
