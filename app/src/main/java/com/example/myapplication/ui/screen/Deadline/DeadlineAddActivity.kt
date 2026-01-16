@@ -133,6 +133,7 @@ fun DeadlineAddActivity(
                     }
                 )
             }
+            item{DatePickerFieldToModal(stringResource(R.string.date_payment))}
             item{CustomOutlineTextField(stringResource(R.string.amount))}
             item{Spacer(Modifier.size(8.dp))}
             item{
