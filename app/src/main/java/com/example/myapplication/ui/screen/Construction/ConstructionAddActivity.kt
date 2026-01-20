@@ -134,9 +134,24 @@ fun ConstructionAddActivity(
                 )
             }
             if(showItems){
-                item{CustomOutlineTextField(stringResource(R.string.name))}
-                item{CustomOutlineTextField(stringResource(R.string.last_name))}
-                item{CustomOutlineTextField(stringResource(R.string.phone))}
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.name),
+                        onValueChange = {}
+                    )
+                }
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.last_name),
+                        onValueChange = {}
+                    )
+                }
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.phone),
+                        onValueChange = {}
+                    )
+                }
             }
             item{Spacer(Modifier.size(8.dp))}
             item{DatePickerFieldToModal(stringResource(R.string.date_start))}

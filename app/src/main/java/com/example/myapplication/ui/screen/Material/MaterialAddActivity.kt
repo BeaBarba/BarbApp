@@ -107,9 +107,19 @@ fun MaterialAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.brand))}
+            item{
+                CustomOutlineTextField(
+                    label =stringResource(R.string.brand),
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.model))}
+            item{
+                CustomOutlineTextField(
+                    label =stringResource(R.string.model),
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             if(previousBackStackEntry?.destination?.hasRoute<NavigationRoute.JobMaterials>() == true) {
                 item{
@@ -127,11 +137,26 @@ fun MaterialAddActivity(
                 item{Spacer(Modifier.size(8.dp))}
             }
             if(type.equals("CDZ")){
-                item{CustomOutlineTextField(stringResource(R.string.serial_number))}
+                item{
+                    CustomOutlineTextField(
+                        label =stringResource(R.string.serial_number),
+                        onValueChange = {}
+                    )
+                }
                 item{Spacer(Modifier.size(8.dp))}
-                item{CustomOutlineTextField(stringResource(R.string.btu))}
+                item{
+                    CustomOutlineTextField(
+                        label =stringResource(R.string.btu),
+                        onValueChange = {}
+                    )
+                }
                 item{Spacer(Modifier.size(8.dp))}
-                item{CustomOutlineTextField(stringResource(R.string.year_installation))}
+                item{
+                    CustomOutlineTextField(
+                        label =stringResource(R.string.year_installation),
+                        onValueChange = {}
+                    )
+                }
                 item{Spacer(Modifier.size(8.dp))}
                 item{
                     SplitButtonMenu(
@@ -140,11 +165,26 @@ fun MaterialAddActivity(
                     )
                 }
                 if(checked.equals("Esterna")){
-                    item{CustomOutlineTextField(stringResource(R.string.split_number))}
+                    item{
+                        CustomOutlineTextField(
+                            label =stringResource(R.string.split_number),
+                            onValueChange = {}
+                        )
+                    }
                     item{Spacer(Modifier.size(8.dp))}
-                    item{CustomOutlineTextField(stringResource(R.string.gas_quantity))}
+                    item{
+                        CustomOutlineTextField(
+                            label =stringResource(R.string.gas_quantity),
+                            onValueChange = {}
+                        )
+                    }
                     item{Spacer(Modifier.size(8.dp))}
-                    item{CustomOutlineTextField(stringResource(R.string.gas_type))}
+                    item{
+                        CustomOutlineTextField(
+                            label =stringResource(R.string.gas_type),
+                            onValueChange = {}
+                        )
+                    }
                     item{Spacer(Modifier.size(8.dp))}
                 }
             }

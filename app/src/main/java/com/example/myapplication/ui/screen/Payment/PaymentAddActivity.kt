@@ -100,11 +100,21 @@ fun PaymentAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.amount))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.amount),
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{DatePickerFieldToModal(stringResource(R.string.date_collection))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.percentage))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.percentage),
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SinglePaymentSummary>() == true) {
                 item {

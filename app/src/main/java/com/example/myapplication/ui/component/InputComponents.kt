@@ -71,20 +71,37 @@ fun outlinedTextFieldColor(): TextFieldColors {
 fun CustomOutlineTextField(
     label : String,
     leadingIcon : @Composable (() -> Unit)? = null,
-    value : String? = ""
+    value : String? = "",
+    onValueChange : (String) -> Unit
 ) {
     var content by remember { mutableStateOf(value) }
     OutlinedTextField(
-        value = content.toString(),
-        onValueChange = {newContent -> content = newContent},
+        value = value.toString(),
+        onValueChange = {newContent ->
+            content = newContent
+            onValueChange(newContent)
+        },
         leadingIcon = leadingIcon,
-        label = { Text(text = label, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
+        label = {
+            Text(
+                text = label,
+                fontSize = MaterialTheme.typography.titleMedium.fontSize
+            )
+        },
         trailingIcon = {
             IconButton(
-                onClick = { content = ""},
+                onClick = {
+                    content = ""
+                    onValueChange("")
+                },
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
-            ) { Icon(Icons.Outlined.Cancel, contentDescription = stringResource(R.string.delete)) }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Cancel,
+                    contentDescription = stringResource(R.string.delete)
+                )
+            }
         },
         modifier = Modifier
             .padding(4.dp)

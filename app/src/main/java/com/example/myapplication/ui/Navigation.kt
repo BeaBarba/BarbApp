@@ -1,7 +1,9 @@
 package com.example.myapplication.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,9 +29,10 @@ import com.example.myapplication.ui.screen.Statistics.JobStatisticsActivity
 import com.example.myapplication.ui.screen.Material.MaterialAddActivity
 import com.example.myapplication.ui.screen.Payment.PaymentAddActivity
 import com.example.myapplication.debug.Screen
-import com.example.myapplication.ui.screen.Address.AddressAddActivity
+import com.example.myapplication.ui.screen.Address.add.AddressAddActivity
 import com.example.myapplication.ui.screen.SelectActivity
 import com.example.myapplication.ui.screen.Address.SingleAddressSummaryActivity
+import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Bubble.SingleBubbleSummaryActivity
 import com.example.myapplication.ui.screen.Customer.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.SingleDeadlineSummaryActivity
@@ -48,6 +51,7 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.AllPurchaseInvoicesSu
 import com.example.myapplication.ui.screen.PurchaseInvoice.PurchaseInvoiceAddActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.SinglePurchaseInvoiceSummaryActivity
 import kotlinx.serialization.Serializable
+import org.koin.androidx.compose.koinViewModel
 
 sealed interface NavigationRoute{
     @Serializable
@@ -236,7 +240,9 @@ fun NavGraph(
             SelectActivity(route.textSearch, route.entry, navController)
         }
         composable<NavigationRoute.AddressAdd> {
-            AddressAddActivity(navController)
+            val addressAddVM = koinViewModel<AddressAddViewModel>()
+            val state by addressAddVM.state.collectAsStateWithLifecycle()
+            AddressAddActivity(state, addressAddVM.actions, navController)
         }
         composable<NavigationRoute.SingleAddressSummary> {
             SingleAddressSummaryActivity(navController)

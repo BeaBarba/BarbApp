@@ -92,11 +92,21 @@ fun InvoiceAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.number))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.number),
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{DatePickerFieldToModal(stringResource(R.string.date_issue))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.amount))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.amount),
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 SplitButtonList(

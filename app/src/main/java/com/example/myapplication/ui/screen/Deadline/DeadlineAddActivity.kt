@@ -123,7 +123,12 @@ fun DeadlineAddActivity(
                     heightMenu = (categorie_menu.size * 55).dp
                 )
             }
-            item{CustomOutlineTextField(stringResource(R.string.name))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.name),
+                    onValueChange = {}
+                )
+            }
             item{
                 DatePickerFieldToModal(
                     if(selectedType.equals(DeadlineType.Singola)) {
@@ -134,7 +139,12 @@ fun DeadlineAddActivity(
                 )
             }
             item{DatePickerFieldToModal(stringResource(R.string.date_payment))}
-            item{CustomOutlineTextField(stringResource(R.string.amount))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.amount),
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(

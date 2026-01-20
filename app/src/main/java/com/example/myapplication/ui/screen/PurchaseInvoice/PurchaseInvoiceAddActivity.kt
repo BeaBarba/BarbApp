@@ -98,9 +98,19 @@ fun PurchaseInvoiceAddActivity(
                 )
             }
             if(selected.equals("Nuovo")){
-                item{CustomOutlineTextField(stringResource(R.string.name))}
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.name),
+                        onValueChange = {}
+                    )
+                }
             }
-            item{CustomOutlineTextField(stringResource(R.string.number))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.number),
+                    onValueChange = {}
+                )
+            }
             item{DatePickerFieldToModal(stringResource(R.string.date_issue))}
             item{CustomDivider()}
             item{
@@ -140,9 +150,18 @@ fun PurchaseInvoiceAddActivity(
             /* Only for materials selected on the other page */
             itemsIndexed(prodotti.subList(0,6)){ index, item ->
                 TitleLabel(item.nome)
-                CustomOutlineTextField(stringResource(R.string.quantity))
-                CustomOutlineTextField(stringResource(R.string.unit_price))
-                CustomOutlineTextField(stringResource(R.string.vat))
+                CustomOutlineTextField(
+                    label = stringResource(R.string.quantity),
+                    onValueChange = {}
+                )
+                CustomOutlineTextField(
+                    label = stringResource(R.string.unit_price),
+                    onValueChange = {}
+                )
+                CustomOutlineTextField(
+                    label = stringResource(R.string.vat),
+                    onValueChange = {}
+                )
                 if(index < 5/*prodotti.size*/) {
                     CustomDivider()
                 }

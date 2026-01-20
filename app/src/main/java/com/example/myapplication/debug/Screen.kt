@@ -95,7 +95,7 @@ fun Screen(modifier : Modifier){
                 )
                 .fillMaxSize()
         ) {
-
+    /*
             item{SearchAppBar("Screen")}
             item{TitleLabel("Dati Anagrafici")}
             item{Spacer(Modifier.size(8.dp))}
@@ -174,7 +174,7 @@ fun Screen(modifier : Modifier){
             item{Spacer(Modifier.size(8.dp))}
             item{DeleteButton({})}
             item{Spacer(Modifier.size(80.dp))}
-
+*/
         }
         if (showDialog) {
             CustomAlertDialog(

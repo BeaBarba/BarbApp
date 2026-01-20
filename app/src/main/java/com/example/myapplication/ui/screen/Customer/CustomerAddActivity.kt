@@ -92,32 +92,82 @@ fun CustomerAddActivity(
                 .fillMaxSize()
         ) {
 
-            item {SplitButtonMenu(content = displayLabel, type, heightMenu = (2 * 55).dp)}
+            item{SplitButtonMenu(content = displayLabel, type, heightMenu = (2 * 55).dp)}
 
-            item {TitleLabel(stringResource(R.string.personal_details))}
-            item {CustomOutlineTextField(stringResource(R.string.id))}
-            item {CustomOutlineTextField(stringResource(R.string.name))}
+            item{TitleLabel(stringResource(R.string.personal_details))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.id),
+                    onValueChange = {}
+                )
+            }
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.name),
+                    onValueChange = {}
+                )
+            }
             if(typeSelected == CustomerType.Private.toString()){
-                item {CustomOutlineTextField(stringResource(R.string.last_name))}
-                item {CustomOutlineTextField(stringResource(R.string.place_birth))}
-                item {DatePickerFieldToModal(stringResource(R.string.date_birth))}
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.last_name),
+                        onValueChange = {}
+                    )
+                }
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.place_birth),
+                        onValueChange = {}
+                    )
+                }
+                item{DatePickerFieldToModal(stringResource(R.string.date_birth))}
             }
             if(typeSelected == CustomerType.Company.toString()){
-                item {CustomOutlineTextField(stringResource(R.string.company_name))}
-                item {CustomOutlineTextField(stringResource(R.string.unique_code))}
-                item {CustomOutlineTextField(stringResource(R.string.vat_number))}
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.company_name),
+                        onValueChange = {}
+                    )
+                }
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.unique_code),
+                        onValueChange = {}
+                    )
+                }
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.vat_number),
+                        onValueChange = {}
+                    )
+                }
             }
-            item {Spacer(Modifier.size(8.dp))}
+            item{Spacer(Modifier.size(8.dp))}
 
-            item {TitleLabel(stringResource(R.string.contact))}
-            item {CustomOutlineTextField(stringResource(R.string.email))}
-            item {CustomOutlineTextField(stringResource(R.string.phone))}
-            item {CustomOutlineTextField(stringResource(R.string.note_number))}
-            item {Spacer(Modifier.size(8.dp))}
+            item{TitleLabel(stringResource(R.string.contact))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.email),
+                    onValueChange = {}
+                )
+            }
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.phone),
+                    onValueChange = {}
+                )
+            }
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.note_number),
+                    onValueChange = {}
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
 
-            item {Spacer(Modifier.size(8.dp))}
-            item {TitleLabel(stringResource(R.string.residence))}
-            item {
+            item{Spacer(Modifier.size(8.dp))}
+            item{TitleLabel(stringResource(R.string.residence))}
+            item{
                 CustomOutlineTextField(
                     leadingIcon = {
                         /*IconButton(
@@ -126,17 +176,38 @@ fun CustomerAddActivity(
                             Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))
                         //}
                     },
-                    label = stringResource(R.string.address)
+                    label = stringResource(R.string.address),
+                    onValueChange = {}
                 )
             }
-            item {CustomOutlineTextField(stringResource(R.string.municipality))}
-            item {CustomOutlineTextField(stringResource(R.string.city))}
-            item {CustomOutlineTextField(stringResource(R.string.province))}
-            item {CustomOutlineTextField(stringResource(R.string.postal_code))}
-            item {Spacer(Modifier.size(8.dp))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.municipality),
+                    onValueChange = {}
+                )
+            }
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.city),
+                    onValueChange = {}
+                )
+            }
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.province),
+                    onValueChange = {}
+                )
+            }
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.postal_code),
+                    onValueChange = {}
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
 
-            item {TitleLabel(stringResource(R.string.reference))}
-            item {Spacer(Modifier.size(8.dp))}
+            item{TitleLabel(stringResource(R.string.reference))}
+            item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
                     text = stringResource(R.string.customer) + " " + stringResource(R.string.existing).lowercase(),
@@ -150,9 +221,24 @@ fun CustomerAddActivity(
                     onClick = {navController.navigate(NavigationRoute.Select("Clienti", "CustomerAdd"))}
                 )
             }
-            item {CustomOutlineTextField(stringResource(R.string.name))}
-            item {CustomOutlineTextField(stringResource(R.string.last_name))}
-            item {CustomOutlineTextField(stringResource(R.string.phone))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.name),
+                    onValueChange = {}
+                )
+            }
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.last_name),
+                    onValueChange = {}
+                )
+            }
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.phone),
+                    onValueChange = {}
+                )
+            }
 
 
             item {Spacer(Modifier.size(8.dp))}

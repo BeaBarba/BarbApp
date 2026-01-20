@@ -129,7 +129,12 @@ fun JobAddActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             item{SplitButtonMenu(content = stringResource(R.string.type), items = tipi_menu, heightMenu = (tipi_menu.size *55).dp)}
-            item{CustomOutlineTextField(stringResource(R.string.people_number))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.people_number),
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{DatePickerFieldToModal()}
             item{Spacer(Modifier.size(8.dp))}
@@ -137,9 +142,19 @@ fun JobAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{CustomTimePicker(stringResource(R.string.end_time))}
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.price))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.price),
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomOutlineTextField(stringResource(R.string.description))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.description),
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{SplitButtonMenu(content = stringResource(R.string.construction_site), items = cantieri_menu, heightMenu = (cantieri_menu.size *50).dp)}
             item{
