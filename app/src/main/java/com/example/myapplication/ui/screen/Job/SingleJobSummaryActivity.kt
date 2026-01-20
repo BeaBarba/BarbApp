@@ -81,7 +81,12 @@ fun SingleJobSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
-                    leadingContent = {Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))},
+                    leadingContent = {
+                        Icon(
+                            imageVector = Icons.Filled.LocationOn,
+                            contentDescription = stringResource(R.string.address)
+                        )
+                    },
                     text = stringResource(R.string.address),
                     trailingContent = {
                         Icon(
@@ -90,7 +95,7 @@ fun SingleJobSummaryActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.SingleAddressSummary)}
+                    onClick = {navController.navigate(NavigationRoute.SingleAddressSummary(-1))}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

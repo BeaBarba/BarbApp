@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Address
+package com.example.myapplication.ui.screen.Address.singleSummary
 
 import android.content.Intent
 import android.net.Uri
@@ -31,19 +31,29 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun SingleAddressSummaryActivity(
-    navController : NavHostController
+    addressId: Int?,
+    state: SingleAddressSummaryState,
+    actions: SingleAddressSummaryActions,
+    navController: NavHostController
 ){
+
+    actions.populateFromId(addressId)
     Scaffold(
         topBar = {
             TopAppBar(
-                navigationIcon = { BackButton { navController.navigateUp() }},
+                navigationIcon = {BackButton{navController.navigateUp()}},
                 id = stringResource(R.string.address),
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.AddressAdd)},
-                        colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
+                        onClick = {navController.navigate(NavigationRoute.AddressAdd(state.addressId))},
+                        colors = IconButtonDefaults.iconButtonColors(
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
                     ) {
-                        Icon(painterResource(R.drawable.edit_square_24dp), contentDescription = stringResource(R.string.edit))
+                        Icon(
+                            painter = painterResource(R.drawable.edit_square_24dp),
+                            contentDescription = stringResource(R.string.edit)
+                        )
                     }
                 }
             )
@@ -62,7 +72,7 @@ fun SingleAddressSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.address),
-                    description = "Via Pasquale Orlandi 21",
+                    description = state.address,
                     onClick = {
                         val location = Uri.parse("geo: 44.1391, 12.24315")
                         // Viene settato l'intent implicito con la proprietà
@@ -77,23 +87,23 @@ fun SingleAddressSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.municipality),
-                    description = "Medicina",
+                    description = state.municipality,
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.city),
-                    description = "Bologna",
+                    description = state.city,
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DoubleKeyValueLabel(
                     firstTitle = stringResource(R.string.province),
-                    firstDescription = "BO",
+                    firstDescription = state.province,
                     secondTitle = stringResource(R.string.postal_code),
-                    secondDescription = "40059"
+                    secondDescription = state.zip
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -103,62 +113,62 @@ fun SingleAddressSummaryActivity(
             item{
                 DoubleKeyValueLabel(
                     firstTitle = stringResource(R.string.floor),
-                    firstDescription = "P1",
+                    firstDescription = "P" + state.floor,
                     secondTitle = stringResource(R.string.staircase),
-                    secondDescription = "1"
+                    secondDescription = state.staircase
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.interior),
-                    description = "A",
+                    description = state.interior
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.real_estate_units),
-                    description = "4",
-                    weightTitle = 2.0f,
+                    description = state.units,
+                    weightTitle = 2.0f
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
 
-            item{ TitleLabel(stringResource(R.string.property_details))}
+            item{TitleLabel(stringResource(R.string.property_details))}
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.sheet),
-                    description = "10",
+                    description = state.sheet
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.property_map),
-                    description = "200",
+                    description = state.map
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.subordinate),
-                    description = "45",
+                    description = state.subordinate
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.usable_area),
-                    description = "122 mq",
+                    description = state.usableArea + " mq"
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.year_construction),
-                    description = "1900",
+                    description = state.yearOfConstruction,
                     weightTitle = 2.0f,
                 )
             }

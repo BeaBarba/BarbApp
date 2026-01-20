@@ -109,7 +109,7 @@ fun JobAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.AddressAdd)}
+                    onClick = {navController.navigate(NavigationRoute.AddressAdd(null))}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

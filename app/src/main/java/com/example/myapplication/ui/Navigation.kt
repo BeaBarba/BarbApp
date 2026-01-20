@@ -31,8 +31,9 @@ import com.example.myapplication.ui.screen.Payment.PaymentAddActivity
 import com.example.myapplication.debug.Screen
 import com.example.myapplication.ui.screen.Address.add.AddressAddActivity
 import com.example.myapplication.ui.screen.SelectActivity
-import com.example.myapplication.ui.screen.Address.SingleAddressSummaryActivity
+import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryActivity
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
+import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
 import com.example.myapplication.ui.screen.Bubble.SingleBubbleSummaryActivity
 import com.example.myapplication.ui.screen.Customer.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.SingleDeadlineSummaryActivity
@@ -111,14 +112,6 @@ sealed interface NavigationRoute{
     @Serializable
     data object Warehouse : NavigationRoute
     @Serializable
-    data class Select(val textSearch : String, val entry : String,) : NavigationRoute
-    @Serializable
-    data object AddressAdd : NavigationRoute
-    @Serializable
-    data object Screen : NavigationRoute
-    @Serializable
-    data object  SingleAddressSummary : NavigationRoute
-    @Serializable
     data object AllConstructionSummary : NavigationRoute
     @Serializable
     data object SingleConstructionSummary : NavigationRoute
@@ -136,6 +129,16 @@ sealed interface NavigationRoute{
     data object PurchaseInvoiceAdd : NavigationRoute
     @Serializable
     data object SinglePurchaseInvoiceSummary : NavigationRoute
+
+    @Serializable
+    data class Select(val textSearch : String, val entry : String,) : NavigationRoute
+    @Serializable
+    data class AddressAdd(val addressId: Int?) : NavigationRoute
+    @Serializable
+    data class SingleAddressSummary(val addressId: Int?)  : NavigationRoute
+
+    @Serializable
+    data object Screen : NavigationRoute
 }
 
 @Composable
@@ -239,13 +242,17 @@ fun NavGraph(
             val route = backStackEntry.toRoute<NavigationRoute.Select>()
             SelectActivity(route.textSearch, route.entry, navController)
         }
-        composable<NavigationRoute.AddressAdd> {
+        composable<NavigationRoute.AddressAdd> {backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.AddressAdd>()
             val addressAddVM = koinViewModel<AddressAddViewModel>()
             val state by addressAddVM.state.collectAsStateWithLifecycle()
-            AddressAddActivity(state, addressAddVM.actions, navController)
+            AddressAddActivity(route.addressId, state, addressAddVM.actions, navController)
         }
-        composable<NavigationRoute.SingleAddressSummary> {
-            SingleAddressSummaryActivity(navController)
+        composable<NavigationRoute.SingleAddressSummary> {backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.SingleAddressSummary>()
+            val singleAddressVM = koinViewModel<SingleAddressSummaryViewModel>()
+            val state by singleAddressVM.state.collectAsStateWithLifecycle()
+            SingleAddressSummaryActivity(route.addressId, state, singleAddressVM.actions, navController)
         }
         composable<NavigationRoute.AllConstructionSummary> {
             AllConstructionSummaryActivity(navController)

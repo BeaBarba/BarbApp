@@ -92,7 +92,7 @@ fun SingleConstructionSummaryActivity (
                         )
                     },
                     text = stringResource(R.string.address),
-                    onClick = {navController.navigate(NavigationRoute.SingleAddressSummary)}
+                    onClick = {navController.navigate(NavigationRoute.SingleAddressSummary(-1))}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

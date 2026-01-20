@@ -21,6 +21,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,7 +75,8 @@ fun CustomOutlineTextField(
     value : String? = "",
     onValueChange : (String) -> Unit
 ) {
-    var content by remember { mutableStateOf(value) }
+    var content by remember { mutableStateOf(value ?: "") }
+
     OutlinedTextField(
         value = value.toString(),
         onValueChange = {newContent ->

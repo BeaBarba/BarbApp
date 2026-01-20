@@ -20,7 +20,8 @@ data class AddressAddState(
     val map: String = "",
     val subordinate: String = "",
     val yearOfConstruction: String = "",
-    val usableArea: String = ""
+    val usableArea: String = "",
+    val addressId: Int? = null
 )
 
 interface AddressAddActions {
@@ -39,6 +40,7 @@ interface AddressAddActions {
     fun setYearOfConstruction(yearOfConstruction: String)
     fun setUsableArea(usableArea: String)
     fun saveAddress()
+    fun populateFromEdit(addressId: Int)
 }
 
 class AddressAddViewModel : ViewModel() {
@@ -126,6 +128,10 @@ class AddressAddViewModel : ViewModel() {
         override fun saveAddress() {
             println("Pressed Save Button, data to save: " + state.value)
         }
+
+        override fun populateFromEdit(addressId: Int) {
+            simulateData()
+        }
     }
 
     private fun checkIfStringIsInt(value: String): Boolean {
@@ -134,5 +140,23 @@ class AddressAddViewModel : ViewModel() {
 
     private fun checkIfStringIsDouble(value: String): Boolean {
         return value.toDoubleOrNull() != null || value == ""
+    }
+
+    private fun simulateData(): Unit {
+        _state.update { it.copy(address = "Via Pasquale Orlandi 21") }
+        _state.update { it.copy(municipality = "Medicina") }
+        _state.update { it.copy(city = "Bologna") }
+        _state.update { it.copy(province = "Bologna") }
+        _state.update { it.copy(zip = "40059") }
+        _state.update { it.copy(floor = "1") }
+        _state.update { it.copy(staircase = "1") }
+        _state.update { it.copy(interior = "1") }
+        _state.update { it.copy(units = "4") }
+        _state.update { it.copy(sheet = "10") }
+        _state.update { it.copy(map = "200") }
+        _state.update { it.copy(subordinate = "45") }
+        _state.update { it.copy(usableArea = "122") }
+        _state.update { it.copy(yearOfConstruction = "1900") }
+        _state.update { it.copy(addressId = -1) }
     }
 }

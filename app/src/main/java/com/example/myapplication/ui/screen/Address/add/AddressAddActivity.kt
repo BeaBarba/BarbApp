@@ -28,10 +28,12 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun AddressAddActivity(
+    addressId: Int?,
     state: AddressAddState,
     actions: AddressAddActions,
     navController : NavHostController
 ){
+    addressId?.let(actions::populateFromEdit)
     Scaffold(
         topBar = {
             TopAppBar(
