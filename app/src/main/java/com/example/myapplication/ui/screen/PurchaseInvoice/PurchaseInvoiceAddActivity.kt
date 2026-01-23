@@ -87,6 +87,7 @@ fun PurchaseInvoiceAddActivity(
                 )
                 .fillMaxSize()
         ) {
+            /*
             item{
                 SplitButtonMenu(
                     content =
@@ -181,6 +182,8 @@ fun PurchaseInvoiceAddActivity(
                 }
                 item { Spacer(Modifier.size(8.dp)) }
             }
+
+             */
         }
     }
 }

@@ -48,6 +48,7 @@ fun AveragePaymentsTimesStatisticsActivity(
                 )
                 .fillMaxSize()
         ) {
+            /*
             items(pagamenti) { item ->
                 var difference = 30 - item.data.substring(0,2).toInt()
                 val check : Boolean = (difference < 20)
@@ -70,7 +71,10 @@ fun AveragePaymentsTimesStatisticsActivity(
                     }
                 )
                 Spacer(Modifier.size(8.dp))
+
+
             }
+        */
         }
     }
 }

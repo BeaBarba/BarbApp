@@ -44,6 +44,7 @@ fun AllStatisticsActivity(
                 )
                 .fillMaxSize(),
         ) {
+            /*
             StatisticCard(
                 text = stringResource(R.string.material_price_history),
                 icon = painterResource(R.drawable.line_chart),
@@ -81,6 +82,7 @@ fun AllStatisticsActivity(
                 onClick = {/*navController.navigate(NavigationRoute.)*/}
             )
             Spacer(Modifier.size(15.dp))
+         */
         }
     }
 }

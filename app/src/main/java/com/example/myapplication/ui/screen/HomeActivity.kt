@@ -87,6 +87,7 @@ fun HomeActivity(
                     onclick = {navController.navigate(NavigationRoute.Warehouse)}
                 )
             }
+            /*
             item{
                 HomeCard(
                     item = stringResource(R.string.cleaning_all),
@@ -101,6 +102,7 @@ fun HomeActivity(
                     onclick = {navController.navigate(NavigationRoute.AllConstructionSummary)}
                 )
             }
+            */
             item{
                 HomeCard(
                     item = stringResource(R.string.payments),
@@ -115,6 +117,7 @@ fun HomeActivity(
                     onclick = {navController.navigate(NavigationRoute.AllDeadlinesSummary)}
                 )
             }
+            /*
             item{
                 HomeCard(
                     item = stringResource(R.string.bubbles),
@@ -122,6 +125,7 @@ fun HomeActivity(
                     onclick = {navController.navigate(NavigationRoute.AllBubblesSummary)}
                 )
             }
+             */
             item{
                 HomeCard(
                     item = stringResource(R.string.invoices),
@@ -129,6 +133,7 @@ fun HomeActivity(
                     onclick = {navController.navigate(NavigationRoute.AllInvoicesSummary)}
                 )
             }
+            /*
             item{
                 HomeCard(
                     item = stringResource(R.string.invoices_purchase),
@@ -143,6 +148,7 @@ fun HomeActivity(
                     onclick = {navController.navigate(NavigationRoute.AllStatistics)}
                 )
             }
+             */
             item{Spacer(Modifier.size(8.dp))}
         }
     }

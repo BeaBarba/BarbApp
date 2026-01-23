@@ -44,7 +44,7 @@ fun CartActivity(
                 navigationIcon = {BackButton {navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.BubbleAdd)}
+                        onClick = {/*navController.navigate(NavigationRoute.BubbleAdd)*/}
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.description_24dp),

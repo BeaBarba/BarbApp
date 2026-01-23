@@ -181,12 +181,15 @@ fun SingleMaterialSummaryActivity(
                     description = item.quantita
                 )
                 Spacer(Modifier.size(8.dp))
+                /*
                 if(!item.numeroBolla.isNullOrEmpty()) {
                     KeyValueLabel(
                         title = stringResource(R.string.bubble),
                         description = item.numeroBolla
                     )
                 }
+
+                 */
                 if(!item.fattura.isNullOrEmpty()){
                     KeyValueLabel(
                         title = stringResource(R.string.invoice),

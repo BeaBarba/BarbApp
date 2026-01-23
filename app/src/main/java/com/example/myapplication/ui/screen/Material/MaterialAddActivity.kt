@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -37,12 +36,10 @@ import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.MenuDivider
 import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.SuggestionTextField
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkboxColors
 
 @Composable
 fun MaterialAddActivity(
@@ -101,7 +98,7 @@ fun MaterialAddActivity(
                 )
                 */
                 SuggestionTextField(
-                    title = stringResource(R.string.category),
+                    title = stringResource(R.string.category ),
                     isAutocompleteMode = true,
                     suggestions = categorie_prodotti
                 )

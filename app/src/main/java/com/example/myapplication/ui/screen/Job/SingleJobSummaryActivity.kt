@@ -99,6 +99,7 @@ fun SingleJobSummaryActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
+            /*
             if(cantieri.get(0).isNotEmpty()){
                 item{
                     GenericCard(
@@ -116,6 +117,8 @@ fun SingleJobSummaryActivity(
                 }
                 item{Spacer(Modifier.size(8.dp))}
             }
+
+             */
             item{
                 DoubleKeyValueLabel(
                     firstTitle = stringResource(R.string.price),

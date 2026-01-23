@@ -74,6 +74,7 @@ fun SinglePurchaseInvoiceSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
+            /*
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.seller),
@@ -123,6 +124,8 @@ fun SinglePurchaseInvoiceSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             materialTable(prodotti, headerColumns, tableStyle)
             item{Spacer(Modifier.size(8.dp))}
+
+             */
         }
     }
 }

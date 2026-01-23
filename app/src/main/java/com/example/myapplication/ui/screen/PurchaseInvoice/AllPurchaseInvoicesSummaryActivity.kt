@@ -50,7 +50,7 @@ fun AllPurchaseInvoicesSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
                 .fillMaxSize()
-        ) {
+        ) {/*
             item{ SearchAppBar(stringResource(R.string.invoice)) }
             items(listaFatture){ item ->
                 GenericCard(
@@ -61,6 +61,7 @@ fun AllPurchaseInvoicesSummaryActivity(
                 Spacer(Modifier.size(8.dp))
             }
             item{ Spacer(Modifier.size(80.dp)) }
+            */
         }
     }
 }
