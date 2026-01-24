@@ -37,7 +37,6 @@ import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.Images
 import com.example.myapplication.ui.component.KeyValueLabel
 import com.example.myapplication.ui.component.LargeCard
-import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.SuggestionTextField
 import com.example.myapplication.ui.component.TitleLabel
 

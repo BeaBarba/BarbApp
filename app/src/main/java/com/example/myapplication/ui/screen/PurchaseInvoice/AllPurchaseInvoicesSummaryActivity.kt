@@ -23,7 +23,6 @@ import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuBubbles
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -51,7 +50,7 @@ fun AllPurchaseInvoicesSummaryActivity(
                 )
                 .fillMaxSize()
         ) {/*
-            item{ SearchAppBar(stringResource(R.string.invoice)) }
+            item{CustomSearchBar(stringResource(R.string.invoices_purchase), onValueChange={}) }
             items(listaFatture){ item ->
                 GenericCard(
                     text = item.name,

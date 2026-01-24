@@ -36,8 +36,8 @@ import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
+import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColor
 
@@ -74,7 +74,7 @@ fun JobMaterialsActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{SearchAppBar(stringResource(R.string.material))}
+            item{CustomSearchBar(stringResource(R.string.material), onValueChange = {})}
             items(prodotti){ item ->
                 var quantita by remember{ mutableStateOf(0)}
                 GenericCard(

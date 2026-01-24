@@ -28,7 +28,6 @@ import com.example.myapplication.R
 import com.example.myapplication.debug.customers
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.ListItemCheckbox
-import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 import androidx.compose.foundation.lazy.items
 import com.example.myapplication.debug.CardItem
@@ -38,6 +37,7 @@ import com.example.myapplication.debug.bubblesType
 import com.example.myapplication.debug.customersType
 import com.example.myapplication.debug.invoicesType
 import com.example.myapplication.debug.materialsType
+import com.example.myapplication.ui.component.CustomSearchBar
 
 @Composable
 fun SelectActivity(
@@ -83,7 +83,7 @@ fun SelectActivity(
                 )
                 .fillMaxSize()
         ) {
-            item { SearchAppBar(textSearch) }
+            item {CustomSearchBar(textSearch, onValueChange = {})}
             items(items_list) { item ->
                 var checked by remember {mutableStateOf(false)}
                 ListItemCheckbox(

@@ -28,7 +28,7 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuDeadlines
 import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.NavigationRoute
-import com.example.myapplication.ui.component.SearchAppBar
+import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -57,7 +57,7 @@ fun AllDeadlinesSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{SearchAppBar(stringResource(R.string.category))}
+            item{CustomSearchBar(stringResource(R.string.category), onValueChange = {})}
             items(scadenze.subList(0,5)){ item ->
                 var checked by remember {mutableStateOf(false)}
                 ListItemCheckbox(

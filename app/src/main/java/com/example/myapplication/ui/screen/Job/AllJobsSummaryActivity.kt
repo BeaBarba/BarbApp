@@ -24,10 +24,9 @@ import com.example.myapplication.ui.component.CustomDivider
 import com.example.myapplication.ui.component.DropDownMenuJobs
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
-import com.example.myapplication.ui.component.SearchAppBar
+import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkColorAvatar
 
 @Composable
 fun AllJobsSummaryActivity(
@@ -55,7 +54,7 @@ fun AllJobsSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            item {SearchAppBar(stringResource(R.string.intervention))}
+            item {CustomSearchBar(stringResource(R.string.intervention), onValueChange = {})}
             items(interventi){ item ->
                 GenericCard(
                     type = item.tipo,

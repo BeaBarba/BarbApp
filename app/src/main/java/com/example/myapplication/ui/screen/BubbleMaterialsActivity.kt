@@ -27,7 +27,6 @@ import com.example.myapplication.debug.prodotti
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.NavigationRoute
-import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.SuggestionTextField
 import com.example.myapplication.ui.component.TopAppBar
 

@@ -27,7 +27,7 @@ import com.example.myapplication.ui.component.CustomDivider
 import com.example.myapplication.ui.component.DropDownMenuCleaning
 import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.NavigationRoute
-import com.example.myapplication.ui.component.SearchAppBar
+import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -56,7 +56,7 @@ fun AllCleaningSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{SearchAppBar(stringResource(R.string.customers))}
+            item {CustomSearchBar(stringResource(R.string.customers), onValueChange = {})}
             items(customers.subList(0,5)){ item ->
                 var checked by remember {mutableStateOf(false)}
                 ListItemCheckbox(

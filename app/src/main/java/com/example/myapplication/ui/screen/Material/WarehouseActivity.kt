@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,10 +36,9 @@ import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
-import com.example.myapplication.ui.component.SearchAppBar
+import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColor
-import com.example.myapplication.ui.component.checkColorAvatar
 
 @Composable
 fun WarehouseActivity(
@@ -66,7 +64,7 @@ fun WarehouseActivity(
                 )
                 .fillMaxSize()
         ) {
-            item{ SearchAppBar(stringResource(R.string.material))}
+            item{CustomSearchBar(stringResource(R.string.material), onValueChange = {})}
             items(prodotti){ item ->
                 var quantity by remember {mutableStateOf(item.quantita)}
                 if(quantity > 0){

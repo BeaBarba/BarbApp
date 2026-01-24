@@ -16,13 +16,12 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.listaFatture
 import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
+import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.SearchAppBar
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -49,7 +48,7 @@ fun AllInvoicesSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{ SearchAppBar(stringResource(R.string.invoice))}
+            item{CustomSearchBar(stringResource(R.string.invoice), onValueChange = {})}
             items(pagamenti){ item ->
                 GenericCard(
                     text = item.fattura + " - " + item.cliente,

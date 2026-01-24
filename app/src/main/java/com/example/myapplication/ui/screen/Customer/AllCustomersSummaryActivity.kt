@@ -20,7 +20,7 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomersCardsList
 import com.example.myapplication.ui.component.DropDownMenuCustomers
 import com.example.myapplication.ui.NavigationRoute
-import com.example.myapplication.ui.component.SearchAppBar
+import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -48,7 +48,7 @@ fun AllCustomersSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            SearchAppBar(stringResource(R.string.customer))
+            CustomSearchBar(stringResource(R.string.customer),onValueChange = {})
             CustomersCardsList(letters, customers, navController)
         }
     }
