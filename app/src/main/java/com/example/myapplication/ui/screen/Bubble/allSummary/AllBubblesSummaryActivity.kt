@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Bubble
+package com.example.myapplication.ui.screen.Bubble.allSummary
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -26,8 +26,11 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun AllBubblesSummaryActivity(
+    state: AllBubblesSummaryState,
+    actions: AllBubblesSummaryActions,
     navController : NavHostController
 ){
+    actions.populate()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -49,7 +52,7 @@ fun AllBubblesSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            items(provenienze){ item ->
+            items(state.bubbles){ item ->
                 GenericCard(
                     text = item.fornitore,
                     textDescription = item.data,

@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.myapplication.ui.screen.Bubble.AllBubblesSummaryActivity
+import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryActivity
 import com.example.myapplication.ui.screen.Job.AllCleaningSummaryActivity
 import com.example.myapplication.ui.screen.Customer.AllCustomersSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.AllDeadlinesSummaryActivity
@@ -35,6 +35,7 @@ import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSu
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
 import com.example.myapplication.ui.screen.Bubble.SingleBubbleSummaryActivity
+import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.SingleDeadlineSummaryActivity
 import com.example.myapplication.ui.screen.Job.SingleJobSummaryActivity
@@ -155,7 +156,9 @@ fun NavGraph(
             Screen(modifier)
         }
         composable<NavigationRoute.AllBubblesSummary>{
-            AllBubblesSummaryActivity(navController)
+            val allBubblesSummaryVM = koinViewModel<AllBubblesSummaryViewModel>()
+            val state by allBubblesSummaryVM.state.collectAsStateWithLifecycle()
+            AllBubblesSummaryActivity(state, allBubblesSummaryVM.actions, navController)
         }
         composable<NavigationRoute.AllCleaningSummary>{
             AllCleaningSummaryActivity(navController)

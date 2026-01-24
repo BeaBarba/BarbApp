@@ -1,8 +1,10 @@
 package com.example.myapplication.ui.screen.Address.add
 
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlin.String
 
@@ -21,7 +23,8 @@ data class AddressAddState(
     val subordinate: String = "",
     val yearOfConstruction: String = "",
     val usableArea: String = "",
-    val addressId: Int? = null
+    val addressId: Int? = null,
+    val started: Boolean = false
 )
 
 interface AddressAddActions {
@@ -43,7 +46,9 @@ interface AddressAddActions {
     fun populateFromEdit(addressId: Int)
 }
 
-class AddressAddViewModel : ViewModel() {
+class AddressAddViewModel(
+    private val repository : Repository
+) : ViewModel() {
     private val _state = MutableStateFlow(AddressAddState())
 
     val state = _state.asStateFlow()
@@ -130,7 +135,10 @@ class AddressAddViewModel : ViewModel() {
         }
 
         override fun populateFromEdit(addressId: Int) {
-            simulateData()
+            if (!state.value.started) {
+                simulateData()
+                _state.update { it.copy(started = true) }
+            }
         }
     }
 
