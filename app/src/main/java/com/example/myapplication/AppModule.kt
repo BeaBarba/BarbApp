@@ -6,6 +6,7 @@ import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
 import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryViewModel
+import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -24,7 +25,13 @@ val appModule = module{
 
     single{Repository(get())}
 
+    /* Address */
     viewModel {AddressAddViewModel(get())}
-    viewModel {SingleAddressSummaryViewModel()}
+    viewModel {SingleAddressSummaryViewModel(get())}
+
+    /* Bubbles */
     viewModel {AllBubblesSummaryViewModel()}
+
+    /* Job */
+    viewModel {JobAddViewModel(get())}
 }

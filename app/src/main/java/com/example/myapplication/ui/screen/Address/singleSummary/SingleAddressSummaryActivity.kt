@@ -31,7 +31,7 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun SingleAddressSummaryActivity(
-    addressId: Int?,
+    addressId: Int,
     state: SingleAddressSummaryState,
     actions: SingleAddressSummaryActions,
     navController: NavHostController
@@ -72,7 +72,7 @@ fun SingleAddressSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.address),
-                    description = state.address,
+                    description = state.address + " " + state.houseNumber,
                     onClick = {
                         val location = Uri.parse("geo: 44.1391, 12.24315")
                         // Viene settato l'intent implicito con la proprietà

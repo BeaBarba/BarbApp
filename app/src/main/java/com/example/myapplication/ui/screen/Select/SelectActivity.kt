@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen
+package com.example.myapplication.ui.screen.Select
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -25,13 +25,11 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.customers
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.component.TopAppBar
 import androidx.compose.foundation.lazy.items
 import com.example.myapplication.debug.CardItem
-import com.example.myapplication.debug.address
 import com.example.myapplication.debug.addressType
 import com.example.myapplication.debug.bubblesType
 import com.example.myapplication.debug.customersType

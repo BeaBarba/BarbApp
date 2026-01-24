@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Job
+package com.example.myapplication.ui.screen.Job.singleSummary
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -95,7 +95,7 @@ fun SingleJobSummaryActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.SingleAddressSummary(-1))}
+                    onClick = {navController.navigate(NavigationRoute.SingleAddressSummary(17))}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

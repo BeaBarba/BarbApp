@@ -27,12 +27,12 @@ data class AddressAddState(
     val map: String = "",
     val subordinate: String = "",
     val yearOfConstruction: String = "",
-    val usableArea: String = "",
-    val started: Boolean = false
+    val usableArea: String = ""
 )
 
 interface AddressAddActions {
     fun setAddress(address: String)
+    fun setHouseNumber(houseNumber : String)
     fun setMunicipality(municipality: String)
     fun setCity(city: String)
     fun setProvince(province: String)
@@ -58,8 +58,13 @@ class AddressAddViewModel(
     val state = _state.asStateFlow()
 
     val actions = object : AddressAddActions {
+
         override fun setAddress(address: String) {
             _state.update { it.copy(address = address) }
+        }
+
+        override fun setHouseNumber(houseNumber: String) {
+            _state.update { it.copy(houseNumber = houseNumber) }
         }
 
         override fun setMunicipality(municipality: String) {
@@ -185,11 +190,6 @@ class AddressAddViewModel(
                     }
                 }
             }
-            /*
-            if (!state.value.started) {
-                simulateData()
-                _state.update { it.copy(started = true) }
-            }*/
         }
     }
 

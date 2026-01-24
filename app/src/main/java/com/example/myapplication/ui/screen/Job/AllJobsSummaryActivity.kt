@@ -55,6 +55,7 @@ fun AllJobsSummaryActivity(
                 .fillMaxSize()
         ) {
             item {CustomSearchBar(stringResource(R.string.intervention), onValueChange = {})}
+            item {Spacer(Modifier.size(8.dp))}
             items(interventi){ item ->
                 GenericCard(
                     type = item.tipo,

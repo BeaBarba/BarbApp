@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Job
+package com.example.myapplication.ui.screen.Job.add
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.cantieri_menu
 import com.example.myapplication.debug.interventi
 import com.example.myapplication.debug.tipi_menu
 import com.example.myapplication.ui.component.BackButton
@@ -41,6 +40,7 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun JobAddActivity(
+    state : JobAddState,
     navController : NavHostController
 ){
     val previousBackStackEntry = navController.previousBackStackEntry

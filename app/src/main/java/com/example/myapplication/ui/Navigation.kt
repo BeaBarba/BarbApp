@@ -23,14 +23,14 @@ import com.example.myapplication.ui.screen.Customer.CustomerAddActivity
 import com.example.myapplication.ui.screen.Calendar.DayCalendarActivity
 import com.example.myapplication.ui.screen.Deadline.DeadlineAddActivity
 import com.example.myapplication.ui.screen.HomeActivity
-import com.example.myapplication.ui.screen.Job.JobAddActivity
+import com.example.myapplication.ui.screen.Job.add.JobAddActivity
 import com.example.myapplication.ui.screen.Job.JobMaterialsActivity
 import com.example.myapplication.ui.screen.Statistics.JobStatisticsActivity
 import com.example.myapplication.ui.screen.Material.MaterialAddActivity
 import com.example.myapplication.ui.screen.Payment.PaymentAddActivity
 import com.example.myapplication.debug.Screen
 import com.example.myapplication.ui.screen.Address.add.AddressAddActivity
-import com.example.myapplication.ui.screen.SelectActivity
+import com.example.myapplication.ui.screen.Select.SelectActivity
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryActivity
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
@@ -38,7 +38,7 @@ import com.example.myapplication.ui.screen.Bubble.SingleBubbleSummaryActivity
 import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.SingleDeadlineSummaryActivity
-import com.example.myapplication.ui.screen.Job.SingleJobSummaryActivity
+import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryActivity
 import com.example.myapplication.ui.screen.Material.SingleMaterialSummaryActivity
 import com.example.myapplication.ui.screen.Payment.SinglePaymentSummaryActivity
 import com.example.myapplication.ui.screen.Calendar.TodayCalendarActivity
@@ -48,6 +48,7 @@ import com.example.myapplication.ui.screen.Construction.SingleConstructionSummar
 import com.example.myapplication.ui.screen.Invoice.AllInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.Invoice.InvoiceAddActivity
 import com.example.myapplication.ui.screen.Invoice.SingleInvoiceSummaryActivity
+import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Material.WarehouseActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.AllPurchaseInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.PurchaseInvoiceAddActivity
@@ -136,7 +137,7 @@ sealed interface NavigationRoute{
     @Serializable
     data class AddressAdd(val addressId: Int?) : NavigationRoute
     @Serializable
-    data class SingleAddressSummary(val addressId: Int?)  : NavigationRoute
+    data class SingleAddressSummary(val addressId: Int)  : NavigationRoute
 
     @Serializable
     data object Screen : NavigationRoute
@@ -203,7 +204,9 @@ fun NavGraph(
             HomeActivity(navController)
         }
         composable<NavigationRoute.JobAdd>{
-            JobAddActivity(navController)
+            val singleJobVM = koinViewModel<JobAddViewModel>()
+            val state by singleJobVM.state.collectAsStateWithLifecycle()
+            JobAddActivity(state, navController)
         }
         composable<NavigationRoute.JobMaterials>{
             JobMaterialsActivity(navController)

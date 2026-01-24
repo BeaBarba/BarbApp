@@ -14,6 +14,11 @@ interface appDAO{
     )
     fun getAddress(id : Int) : Flow<Address>
 
+    @Query("SELECT * " +
+            "FROM addresses"
+    )
+    fun getAllAddresses() : Flow<List<Address>>
+
     @Upsert
     suspend fun upsert(indirizzo : Address)
 
