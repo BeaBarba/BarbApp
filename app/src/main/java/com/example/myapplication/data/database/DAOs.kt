@@ -7,11 +7,12 @@ import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface barbAppDAO{
-    @Query("SELECT *" +
-            "FROM address"
+interface appDAO{
+    @Query("SELECT * " +
+            "FROM addresses " +
+            "WHERE id = :id"
     )
-    fun getAllAddress() : Flow<List<Address>>
+    fun getAddress(id : Int) : Flow<Address>
 
     @Upsert
     suspend fun upsert(indirizzo : Address)

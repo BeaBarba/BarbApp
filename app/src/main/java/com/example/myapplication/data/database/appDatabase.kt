@@ -4,6 +4,6 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(entities = [Address::class], version = 1)
-abstract class BarbAppDatabase : RoomDatabase(){
-    abstract fun barbAppDAO() : barbAppDAO
+abstract class appDatabase : RoomDatabase(){
+    abstract fun appDAO() : appDAO
 }

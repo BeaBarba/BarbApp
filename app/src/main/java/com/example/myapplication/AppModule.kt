@@ -1,7 +1,7 @@
 package com.example.myapplication
 
 import androidx.room.Room
-import com.example.myapplication.data.database.BarbAppDatabase
+import com.example.myapplication.data.database.appDatabase
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
@@ -15,12 +15,12 @@ val appModule = module{
     single{
         Room.databaseBuilder(
             get(),
-            BarbAppDatabase::class.java,
+            appDatabase::class.java,
             "database"
         ).build()
     }
 
-    single{get<BarbAppDatabase>().barbAppDAO()}
+    single{get<appDatabase>().appDAO()}
 
     single{Repository(get())}
 

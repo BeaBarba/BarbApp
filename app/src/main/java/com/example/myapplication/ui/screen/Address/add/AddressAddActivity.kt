@@ -86,6 +86,13 @@ fun AddressAddActivity(
             }
             item{
                 CustomOutlineTextField(
+                    label = stringResource(R.string.house_number),
+                    value = state.houseNumber,
+                    onValueChange = actions::setMunicipality
+                )
+            }
+            item{
+                CustomOutlineTextField(
                     label = stringResource(R.string.municipality),
                     value = state.municipality,
                     onValueChange = actions::setMunicipality

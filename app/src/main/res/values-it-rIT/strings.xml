@@ -153,4 +153,5 @@
     <string name="frequency">Frequenza</string>
     <string name="date_deadline">Data scadenza</string>
     <string name="date_payment">Data pagamento</string>
+    <string name="house_number">Civico</string>
 </resources>
