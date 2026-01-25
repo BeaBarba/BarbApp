@@ -136,7 +136,12 @@ fun JobAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{DatePickerFieldToModal()}
+            item{
+                DatePickerFieldToModal(
+                    value = "",
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{CustomTimePicker(stringResource(R.string.start_time))}
             item{Spacer(Modifier.size(8.dp))}

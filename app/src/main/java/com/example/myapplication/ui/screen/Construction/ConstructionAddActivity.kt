@@ -29,7 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.debug.addressType
 import com.example.myapplication.debug.cantieri
+import com.example.myapplication.debug.customersType
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
@@ -154,9 +156,21 @@ fun ConstructionAddActivity(
                 }
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{DatePickerFieldToModal(stringResource(R.string.date_start))}
+            item{
+                DatePickerFieldToModal(
+                    title = stringResource(R.string.date_start),
+                    onValueChange = {},
+                    value = ""
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
-            item{DatePickerFieldToModal(stringResource(R.string.date_end))}
+            item{
+                DatePickerFieldToModal(
+                    title = stringResource(R.string.date_end),
+                    onValueChange = {},
+                    value = ""
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleConstructionSummary>() == true) {
                 item {

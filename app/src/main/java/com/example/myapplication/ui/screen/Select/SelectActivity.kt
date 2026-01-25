@@ -35,6 +35,7 @@ import com.example.myapplication.debug.bubblesType
 import com.example.myapplication.debug.customersType
 import com.example.myapplication.debug.invoicesType
 import com.example.myapplication.debug.materialsType
+import com.example.myapplication.debug.selectedMaterialResult
 import com.example.myapplication.ui.component.CustomSearchBar
 
 @Composable
@@ -61,6 +62,9 @@ fun SelectActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
+                            println(items_list)
+                            if (entry == "Materials")
+                                selectedMaterialResult = items_list.filter { it.checked }.map { it.name }
                             navController.navigateUp()//{Save data}
                         },
                         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
@@ -83,11 +87,13 @@ fun SelectActivity(
         ) {
             item {CustomSearchBar(textSearch, onValueChange = {})}
             items(items_list) { item ->
-                var checked by remember {mutableStateOf(false)}
+                var checked by remember {mutableStateOf(item.checked)}
                 ListItemCheckbox(
                     text = item.name,
                     checked = checked,
-                    onCheckedChange = { checked = !checked },
+                    onCheckedChange = {
+                        checked = !checked
+                        item.checked = it },
                     onClick = {},
                     type = item.type
                 )

@@ -16,13 +16,13 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.provenienze
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuBubbles
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun AllBubblesSummaryActivity(
@@ -37,10 +37,17 @@ fun AllBubblesSummaryActivity(
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
                 id = stringResource(R.string.bubbles),
-                trailingIcon = {DropDownMenuBubbles()}
+                trailingIcon = {
+                    DropDownMenuBubbles(
+                        {actions.sellerSort()},
+                        {actions.dateSort()},
+                        {actions.ascendingSort()},
+                        {actions.descendingSort()}
+                    )
+                }
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.BubbleAdd)}}
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.BubbleAdd(null))}}
     ) { contentPadding ->
         LazyColumn(
             modifier = Modifier
@@ -55,8 +62,8 @@ fun AllBubblesSummaryActivity(
             items(state.bubbles){ item ->
                 GenericCard(
                     text = item.fornitore,
-                    textDescription = item.data,
-                    onClick = {navController.navigate(NavigationRoute.SingleBubbleSummary)}
+                    textDescription = item.data.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")),
+                    onClick = {navController.navigate(NavigationRoute.SingleBubbleSummary(bubbleId = 0))}
                 )
                 Spacer(Modifier.size(8.dp))
             }

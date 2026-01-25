@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.foundation.layout.android)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    //implementation(libs.androidx.runtime.livedata.v1101)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)

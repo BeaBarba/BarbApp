@@ -16,7 +16,6 @@ import com.example.myapplication.ui.screen.Job.AllJobsSummaryActivity
 import com.example.myapplication.ui.screen.Payment.AllPaymentsSummaryActivity
 import com.example.myapplication.ui.screen.Statistics.AllStatisticsActivity
 import com.example.myapplication.ui.screen.Statistics.AveragePaymentsTimesStatisticsActivity
-import com.example.myapplication.ui.screen.Bubble.BubbleAddActivity
 import com.example.myapplication.ui.screen.BubbleMaterialsActivity
 import com.example.myapplication.ui.screen.Material.CartActivity
 import com.example.myapplication.ui.screen.Customer.CustomerAddActivity
@@ -34,8 +33,11 @@ import com.example.myapplication.ui.screen.Select.SelectActivity
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryActivity
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
-import com.example.myapplication.ui.screen.Bubble.SingleBubbleSummaryActivity
+import com.example.myapplication.ui.screen.Bubble.singleSummary.SingleBubbleSummaryActivity
+import com.example.myapplication.ui.screen.Bubble.add.BubbleAddViewModel
 import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryViewModel
+import com.example.myapplication.ui.screen.Bubble.bubbleAddActivity.BubbleAddActivity
+import com.example.myapplication.ui.screen.Bubble.singleSummary.SingleBubbleSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.SingleDeadlineSummaryActivity
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryActivity
@@ -62,47 +64,57 @@ sealed interface NavigationRoute{
     @Serializable
     data object AllCleaningSummary : NavigationRoute
     @Serializable
+    data object AllConstructionSummary : NavigationRoute
+    @Serializable
     data object AllCustomersSummary : NavigationRoute
     @Serializable
     data object AllDeadlinesSummary : NavigationRoute
+    @Serializable
+    data object AllInvoicesSummary : NavigationRoute
     @Serializable
     data object AllJobsSummary : NavigationRoute
     @Serializable
     data object AllPaymentsSummary : NavigationRoute
     @Serializable
+    data object AllPurchaseInvoicesSummary : NavigationRoute
+    @Serializable
     data object AllStatistics : NavigationRoute
     @Serializable
     data object AveragePaymentsTimesStatistics : NavigationRoute
     @Serializable
-    data object BubbleAdd : NavigationRoute
-    @Serializable
-    data object BubbleMaterials : NavigationRoute
-    @Serializable
     data object Cart : NavigationRoute
-    @Serializable
-    data object CustomerAdd : NavigationRoute
     @Serializable
     data object DayCalendar : NavigationRoute
     @Serializable
-    data object DeadlineAdd : NavigationRoute
-    @Serializable
     data object Home : NavigationRoute
-    @Serializable
-    data object JobAdd : NavigationRoute
     @Serializable
     data object JobMaterials : NavigationRoute
     @Serializable
     data object JobStatistics : NavigationRoute
     @Serializable
+    data object ConstructionAdd : NavigationRoute
+    @Serializable
+    data object CustomerAdd : NavigationRoute
+    @Serializable
+    data object DeadlineAdd : NavigationRoute
+    @Serializable
+    data object InvoiceAdd : NavigationRoute
+    @Serializable
+    data object JobAdd : NavigationRoute
+    @Serializable
     data object MaterialAdd : NavigationRoute
     @Serializable
     data object PaymentAdd : NavigationRoute
     @Serializable
-    data object SingleBubbleSummary : NavigationRoute
+    data object PurchaseInvoiceAdd : NavigationRoute
+    @Serializable
+    data object SingleConstructionSummary : NavigationRoute
     @Serializable
     data object SingleCustomerSummary : NavigationRoute
     @Serializable
     data object SingleDeadlineSummary: NavigationRoute
+    @Serializable
+    data object SingleInvoiceSummary : NavigationRoute
     @Serializable
     data object SingleJobSummary : NavigationRoute
     @Serializable
@@ -110,37 +122,27 @@ sealed interface NavigationRoute{
     @Serializable
     data object SinglePaymentSummary : NavigationRoute
     @Serializable
+    data object SinglePurchaseInvoiceSummary : NavigationRoute
+    @Serializable
     data object TodayCalendar : NavigationRoute
     @Serializable
     data object Warehouse : NavigationRoute
-    @Serializable
-    data object AllConstructionSummary : NavigationRoute
-    @Serializable
-    data object SingleConstructionSummary : NavigationRoute
-    @Serializable
-    data object ConstructionAdd : NavigationRoute
-    @Serializable
-    data object AllInvoicesSummary : NavigationRoute
-    @Serializable
-    data object InvoiceAdd : NavigationRoute
-    @Serializable
-    data object SingleInvoiceSummary : NavigationRoute
-    @Serializable
-    data object AllPurchaseInvoicesSummary : NavigationRoute
-    @Serializable
-    data object PurchaseInvoiceAdd : NavigationRoute
-    @Serializable
-    data object SinglePurchaseInvoiceSummary : NavigationRoute
 
     @Serializable
-    data class Select(val textSearch : String, val entry : String,) : NavigationRoute
+    data class Select(val textSearch : String, val entry: String) : NavigationRoute
     @Serializable
     data class AddressAdd(val addressId: Int?) : NavigationRoute
     @Serializable
     data class SingleAddressSummary(val addressId: Int)  : NavigationRoute
+    @Serializable
+    data class BubbleAdd(val bubbleId: Int?) : NavigationRoute
+    @Serializable
+    data class SingleBubbleSummary(val bubbleId: Int) : NavigationRoute
 
     @Serializable
     data object Screen : NavigationRoute
+    @Serializable
+    data object BubbleMaterials : NavigationRoute
 }
 
 @Composable
@@ -182,8 +184,11 @@ fun NavGraph(
         composable<NavigationRoute.AveragePaymentsTimesStatistics>{
             AveragePaymentsTimesStatisticsActivity(navController)
         }
-        composable<NavigationRoute.BubbleAdd>{
-            BubbleAddActivity(navController)
+        composable<NavigationRoute.BubbleAdd>{backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.BubbleAdd>()
+            val bubbleAddVM = koinViewModel<BubbleAddViewModel>()
+            val state by bubbleAddVM.state.collectAsStateWithLifecycle()
+            BubbleAddActivity(route.bubbleId, state, bubbleAddVM.actions, navController)
         }
         composable<NavigationRoute.BubbleMaterials>{
             BubbleMaterialsActivity(navController)
@@ -220,8 +225,11 @@ fun NavGraph(
         composable<NavigationRoute.PaymentAdd>{
             PaymentAddActivity(navController)
         }
-        composable<NavigationRoute.SingleBubbleSummary>{
-            SingleBubbleSummaryActivity(navController)
+        composable<NavigationRoute.SingleBubbleSummary>{ backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.SingleBubbleSummary>()
+            val singleBubbleVM = koinViewModel<SingleBubbleSummaryViewModel>()
+            val state by singleBubbleVM.state.collectAsStateWithLifecycle()
+            SingleBubbleSummaryActivity(route.bubbleId, state, singleBubbleVM.actions, navController)
         }
         composable<NavigationRoute.SingleCustomerSummary>{
             SingleCustomerSummaryActivity(navController)

@@ -1,10 +1,12 @@
 package com.example.myapplication.debug
 
 import com.example.myapplication.data.modules.CustomerType
-import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.ui.component.MenuItem
+import kotlinx.serialization.Serializable
+import java.time.LocalDate
 
 /* --------------------------------------------- Classi Globali ------------------------------------------*/
+@Serializable
 data class Prodotto(
     val nome: String,
     val modello: String,
@@ -61,7 +63,7 @@ data class Provenienze(
     val quantita: String,
     val numeroBolla: String?, // Nullable
     val fattura: String?,     // Nullable
-    val data: String         // formato 10/10/1990
+    val data: LocalDate         // formato 10/10/1990
 )
 
 data class Cliente(
@@ -86,7 +88,8 @@ data class Cliente(
 
 data class CardItem(
     val name : String,
-    val type : String
+    val type : String,
+    var checked : Boolean = false
 )
 
 /* --------------------------------------------- Variabili Globali ------------------------------------------*/
@@ -270,35 +273,35 @@ val categorie_fatture = scadenze.map {scadenza -> scadenza.fornitore}.distinct()
 val categorie_s_menu : List<MenuItem> = scadenze.map{ f -> MenuItem( name = f.categoria, {})}.distinct()
 
 var provenienze = listOf(
-    Provenienze(fornitore = "Acciai Italia", quantita = "2000 kg", numeroBolla = "BO-2024-001", fattura = null, data = "01/03/2024"),
-    Provenienze(fornitore = "Elettronica 2000", quantita = "15 unità", numeroBolla = null, fattura = "FA-445566", data = "12/04/2024"),
-    Provenienze(fornitore = "Packaging Sud", quantita = "500 scatole", numeroBolla = "B-889", fattura = "F-990", data = "05/02/2024"),
+    Provenienze(fornitore = "Acciai Italia", quantita = "2000 kg", numeroBolla = "BO-2024-001", fattura = null, data = LocalDate.of(2024, 3, 1)),
+    Provenienze(fornitore = "Elettronica 2000", quantita = "15 unità", numeroBolla = null, fattura = "FA-445566", data = LocalDate.of(2024, 4, 12)),
+    Provenienze(fornitore = "Packaging Sud", quantita = "500 scatole", numeroBolla = "B-889", fattura = "F-990", data = LocalDate.of(2024, 2, 5)),
     // Caso 1: Solo Bolla presente
-    Provenienze(fornitore = "Mario Rossi S.r.l.", quantita = "150 kg", numeroBolla = "BO-2023-001", fattura = null, data = "20/11/2023"),
-    Provenienze(fornitore = "Logistica Nord", quantita = "12 bancali", numeroBolla = "BL-9928", fattura = null, data = "15/06/2024"),
-    Provenienze(fornitore = "Ferramenta Veneta", quantita = "500 viti", numeroBolla = "BOL-12/A", fattura = null, data = "02/01/2024"),
+    Provenienze(fornitore = "Mario Rossi S.r.l.", quantita = "150 kg", numeroBolla = "BO-2023-001", fattura = null, data = LocalDate.of(2023, 11, 20)),
+    Provenienze(fornitore = "Logistica Nord", quantita = "12 bancali", numeroBolla = "BL-9928", fattura = null, data = LocalDate.of(2024, 6, 15)),
+    Provenienze(fornitore = "Ferramenta Veneta", quantita = "500 viti", numeroBolla = "BOL-12/A", fattura = null, data = LocalDate.of(2024, 1, 2)),
 
     // Caso 2: Solo Fattura presente
-    Provenienze(fornitore = "Tech Solution SPA", quantita = "5 tablet", numeroBolla = null, fattura = "FT-2024-05", data = "10/05/2024"),
-    Provenienze(fornitore = "Energia Pura", quantita = "1200 kWh", numeroBolla = null, fattura = "FAT-88921", data = "30/09/2024"),
-    Provenienze(fornitore = "Consulenze IT", quantita = "40 ore", numeroBolla = null, fattura = "2023/450", data = "18/12/2023"),
+    Provenienze(fornitore = "Tech Solution SPA", quantita = "5 tablet", numeroBolla = null, fattura = "FT-2024-05", data = LocalDate.of(2024, 5, 10)),
+    Provenienze(fornitore = "Energia Pura", quantita = "1200 kWh", numeroBolla = null, fattura = "FAT-88921", data = LocalDate.of(2024, 9, 30)),
+    Provenienze(fornitore = "Consulenze IT", quantita = "40 ore", numeroBolla = null, fattura = "2023/450", data = LocalDate.of(2023, 12, 18)),
 
     // Caso 3: Entrambi presenti
-    Provenienze(fornitore = "Agricola Bio", quantita = "20 litri", numeroBolla = "B-772", fattura = "F-2024-B", data = "07/03/2024"),
-    Provenienze(fornitore = "Edilizia Moderna", quantita = "5 mc sabbia", numeroBolla = "BO-551", fattura = "FA-112", data = "22/08/2024"),
-    Provenienze(fornitore = "Packaging Italia", quantita = "1000 scatole", numeroBolla = "BL-009", fattura = "FT-990", data = "11/07/2024"),
+    Provenienze(fornitore = "Agricola Bio", quantita = "20 litri", numeroBolla = "B-772", fattura = "F-2024-B", data = LocalDate.of(2024, 3, 7)),
+    Provenienze(fornitore = "Edilizia Moderna", quantita = "5 mc sabbia", numeroBolla = "BO-551", fattura = "FA-112", data = LocalDate.of(2024, 8, 22)),
+    Provenienze(fornitore = "Packaging Italia", quantita = "1000 scatole", numeroBolla = "BL-009", fattura = "FT-990", data = LocalDate.of(2024, 7, 11)),
 
     // Caso 4: Fornitore estero (misto)
-    Provenienze(fornitore = "Global Export Ltd", quantita = "2 container", numeroBolla = "EXP-7712", fattura = "INV-2024-X1", data = "29/05/2024")
+    Provenienze(fornitore = "Global Export Ltd", quantita = "2 container", numeroBolla = "EXP-7712", fattura = "INV-2024-X1", data = LocalDate.of(2024, 5, 29))
 )
 
 var fatture = provenienze.filter{ it.fattura != null }
 
-var listaFatture : List<CardItem> = fatture.map{ f -> CardItem( name = f.fattura.toString(), type = f.data)}.distinct()
+var listaFatture : List<CardItem> = fatture.map{ f -> CardItem( name = f.fattura.toString(), type = f.data.toString()) }.distinct()
 
 var bolle = provenienze.filter{ it.numeroBolla != null}
 
-var listaBolle : List<CardItem> = bolle.map{ b -> CardItem(name = b.numeroBolla.toString(), type = b.data)}.distinct()
+var listaBolle : List<CardItem> = bolle.map{ b -> CardItem(name = b.numeroBolla.toString(), type = b.data.toString())}.distinct()
 
 val listaClienti = listOf(
     // Esempio Tipo P - Privato
@@ -388,4 +391,4 @@ var invoicesType = fatture.map{item -> CardItem(name = item.fattura.toString(), 
 var materialsType = prodotti.map{item -> CardItem(name = item.nome, type = item.tipo)}
 var bubblesType = bolle.map{item -> CardItem(name = item.numeroBolla.toString(), type = "NONE")}
 
-
+var selectedMaterialResult = listOf<String>()

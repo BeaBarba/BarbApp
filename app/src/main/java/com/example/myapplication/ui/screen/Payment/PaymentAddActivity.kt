@@ -29,6 +29,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.debug.interventi
+import com.example.myapplication.debug.invoicesType
 import com.example.myapplication.debug.listaFatture
 import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.component.Avatar
@@ -107,7 +108,13 @@ fun PaymentAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{DatePickerFieldToModal(stringResource(R.string.date_collection))}
+            item{
+                DatePickerFieldToModal(
+                    title = stringResource(R.string.date_collection),
+                    value = "",
+                    onValueChange = {}
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 CustomOutlineTextField(

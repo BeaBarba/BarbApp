@@ -1,7 +1,5 @@
-package com.example.myapplication.ui.screen.Bubble
+package com.example.myapplication.ui.screen.Bubble.singleSummary
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -24,7 +22,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.prodotti
 import com.example.myapplication.debug.provenienze
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
@@ -35,11 +32,17 @@ import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.materialTable
 import com.example.myapplication.ui.theme.TableStyleDefaults
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun SingleBubbleSummaryActivity(
-    navController : NavHostController
+    bubbleId: Int,
+    state: SingleBubbleSummaryState,
+    actions: SingleBubbleSummaryActions,
+    navController: NavHostController
 ){
+    actions.populateFromId(bubbleId)
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -49,7 +52,7 @@ fun SingleBubbleSummaryActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.BubbleAdd)
+                            navController.navigate(NavigationRoute.BubbleAdd(bubbleId = bubbleId))
                                   },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
@@ -79,7 +82,7 @@ fun SingleBubbleSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.seller),
-                    description = provenienze.get(0).fornitore,
+                    description = state.seller?.sellerName ?: "",
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
                 )
@@ -88,7 +91,7 @@ fun SingleBubbleSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.number),
-                    description = provenienze.get(0).numeroBolla.toString(),
+                    description = state.bubbleNumber,
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
                 )
@@ -97,7 +100,7 @@ fun SingleBubbleSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.date_issue),
-                    description = provenienze.get(0).data,
+                    description = state.bubbleDate.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")),
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
                 )
@@ -118,7 +121,7 @@ fun SingleBubbleSummaryActivity(
             item{CustomDivider()}
             item{TitleLabel(title = stringResource(R.string.material))}
             item{Spacer(Modifier.size(8.dp))}
-            materialTable(prodotti, headerColumns, tableStyle)
+            materialTable(state.materials, headerColumns, tableStyle)
             item{Spacer(Modifier.size(8.dp))}
         }
     }

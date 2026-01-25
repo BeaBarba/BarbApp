@@ -52,6 +52,10 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -118,21 +122,22 @@ fun DatePickerModal(
 
 @Composable
 fun DatePickerFieldToModal(
-    title : String = stringResource(R.string.date)
+    title : String = stringResource(R.string.date),
+    onValueChange : (String) -> Unit,
+    value : String = ""
 ) {
-    var selectedDate by remember {mutableStateOf<Long?>(null)}
     var showModal = remember {mutableStateOf(false)}
     val datePickerState = rememberDatePickerState()
 
     OutlinedTextField(
-        value = selectedDate?.let {convertMillisToDate(it)} ?: "",
-        onValueChange = {},
+        value = value,
+        onValueChange = onValueChange,
         readOnly = true,
-        placeholder = { Text("DD/MM/YYYY") },
+        placeholder = {Text("DD/MM/YYYY")},
         label = {Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize)},
         leadingIcon = {
             IconButton(
-                onClick = { showModal.value = true},
+                onClick = {showModal.value = true},
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
             ) {
@@ -141,7 +146,7 @@ fun DatePickerFieldToModal(
         },
         trailingIcon = {
             IconButton(
-                onClick = { selectedDate = null},
+                onClick = {onValueChange("")},
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
             ) {
@@ -159,7 +164,13 @@ fun DatePickerFieldToModal(
         DatePickerModal(
             datePickerState = datePickerState,
             openDialogState = showModal,
-            onDateSelected = { selectedDate = it },
+            onDateSelected = {dateSelected ->
+                onValueChange(
+                    dateSelected?.let{epochMilli -> Instant.ofEpochMilli(epochMilli)}?.atZone(ZoneId.of("Europe/Rome"))
+                        ?.format(
+                            DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: ""
+                )
+            },
             onDismiss = { showModal.value = false }
         )
     }

@@ -201,36 +201,36 @@ fun DropDownMenuHome(){
 }
 
 @Composable
-fun DropDownMenuBubbles(){
+fun DropDownMenuBubbles(
+    sellerOnClick : () -> Unit,
+    dateOnClick : () -> Unit,
+    ascendingOnClick: () -> Unit,
+    descendingOnClick: () -> Unit
+){
     var expanded by remember { mutableStateOf(false) }
     Box() {
-        IconButton(onClick = { expanded = !expanded }) {
+        IconButton(onClick = {expanded = !expanded}) {
             Icon(Icons.Filled.FilterAlt, contentDescription = stringResource(R.string.filters), tint = MaterialTheme.colorScheme.onPrimary)
         }
 
         CustomDropDownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
+            onDismissRequest = {expanded = false},
+            height = 250.dp
         ) {
             Column(
                 modifier = Modifier.padding(end = 20.dp, start = 20.dp),
             ) {
                 DropdownMenuItem(
-                    text = { MenuText(text = stringResource(R.string.all)) },
-                    onClick = { /* Query that select all bubbles */ }
+                    text = {MenuText(text = stringResource(R.string.seller))},
+                    onClick = {sellerOnClick()}
                 )
                 DropdownMenuItem(
-                    text = { MenuText(text = stringResource(R.string.seller)) },
-                    onClick = { /* Query that select all bubbles based on seller */ }
+                    text = {MenuText(text = stringResource(R.string.date))},
+                    onClick = {dateOnClick()}
                 )
-                DropdownMenuItem(
-                    text = { MenuText(text = stringResource(R.string.date)) },
-                    onClick = { /* Query that select all bubbles on date */ }
-                )
-
                 MenuDivider()
-
-                Order(onClickAscending = {}, onClickDescending = {})
+                Order(onClickAscending = {ascendingOnClick()}, onClickDescending = {descendingOnClick()})
             }
         }
     }

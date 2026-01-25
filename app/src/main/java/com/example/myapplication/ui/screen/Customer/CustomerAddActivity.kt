@@ -29,6 +29,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.modules.CustomerType
+import com.example.myapplication.debug.customersType
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DeleteButton
@@ -120,7 +121,13 @@ fun CustomerAddActivity(
                         onValueChange = {}
                     )
                 }
-                item{DatePickerFieldToModal(stringResource(R.string.date_birth))}
+                item{
+                    DatePickerFieldToModal(
+                        title = stringResource(R.string.date_birth),
+                        onValueChange = {},
+                        value = ""
+                    )
+                }
             }
             if(typeSelected == CustomerType.Company.toString()){
                 item{

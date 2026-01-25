@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.debug.listaFatture
-import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
+import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.DropDownMenuBubbles
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.TopAppBar
@@ -35,7 +35,7 @@ fun AllPurchaseInvoicesSummaryActivity(
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
                 id = stringResource(R.string.invoices_purchase),
-                trailingIcon = {DropDownMenuBubbles()}
+                trailingIcon = {DropDownMenuBubbles({},{},{},{})}
             )
         },
         floatingActionButton = {AddButton{navController.navigate(NavigationRoute.PurchaseInvoiceAdd)} }
@@ -49,7 +49,7 @@ fun AllPurchaseInvoicesSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
                 .fillMaxSize()
-        ) {/*
+        ) {
             item{CustomSearchBar(stringResource(R.string.invoices_purchase), onValueChange={}) }
             items(listaFatture){ item ->
                 GenericCard(
@@ -60,7 +60,6 @@ fun AllPurchaseInvoicesSummaryActivity(
                 Spacer(Modifier.size(8.dp))
             }
             item{ Spacer(Modifier.size(80.dp)) }
-            */
         }
     }
 }

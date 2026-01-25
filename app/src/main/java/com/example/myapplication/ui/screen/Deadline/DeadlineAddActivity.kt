@@ -31,6 +31,7 @@ import com.example.myapplication.data.modules.DeadlineType
 import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.debug.categorie_menu
 import com.example.myapplication.debug.categorie_s_menu
+import com.example.myapplication.debug.invoicesType
 import com.example.myapplication.debug.scadenze
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -131,14 +132,23 @@ fun DeadlineAddActivity(
             }
             item{
                 DatePickerFieldToModal(
-                    if(selectedType.equals(DeadlineType.Singola)) {
-                            stringResource(R.string.date_deadline)
-                    }else{
-                        stringResource(R.string.date_end)
-                    }
+                    title =
+                        if(selectedType.equals(DeadlineType.Singola)) {
+                                stringResource(R.string.date_deadline)
+                        }else{
+                            stringResource(R.string.date_end)
+                        },
+                    onValueChange = {},
+                    value = ""
                 )
             }
-            item{DatePickerFieldToModal(stringResource(R.string.date_payment))}
+            item{
+                DatePickerFieldToModal(
+                    title = stringResource(R.string.date_payment),
+                    onValueChange = {},
+                    value = ""
+                )
+            }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.amount),
