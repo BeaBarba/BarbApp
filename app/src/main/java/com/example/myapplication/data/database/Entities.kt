@@ -5,7 +5,46 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.example.myapplication.data.modules.JobType
+import com.example.myapplication.data.modules.MachineType
 import java.time.LocalDate
+
+@Entity(
+    tableName = "CONDIZIONATORI",
+    primaryKeys = ["Matricola", "Materiale"],
+    foreignKeys = [
+        ForeignKey(
+            entity = Material::class,
+            parentColumns = ["id"],
+            childColumns = ["Materiale"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
+data class AirConditioners(
+    @PrimaryKey
+    @ColumnInfo(name = "Matericola") val serialNumber : String,
+    @ColumnInfo(name = "Materiale") val material : Int,
+    @ColumnInfo(name = "TipoMacchina") val machineType : MachineType,
+    @ColumnInfo(name = "QuantitàGas") val gasQty : Float,
+    @ColumnInfo(name = "TipoGas") val gasType : String,
+    @ColumnInfo(name = "Btu") val btu : Int,
+    @ColumnInfo(name = "NumeroSplit") val splitNumber : Int? = null,
+    @ColumnInfo(name = "AnnoInstallazione") val yearInstallation : Int? = null
+)
+
+@Entity(
+    tableName = "MATERIALI",
+    primaryKeys = ["Modello", "Marca"]
+)
+data class Material(
+    @PrimaryKey(autoGenerate = true) val id : Int = 0,
+    @ColumnInfo(name = "Modello") val model : String,
+    @ColumnInfo(name = "Marca") val brand : String,
+    @ColumnInfo(name = "Tipologia") val type : JobType,
+    @ColumnInfo(name = "Categoria") val category : String,
+    @ColumnInfo(name = "Disponibilità") val availability : Float,
+)
 
 @Entity(
     tableName = "INDIRIZZI",

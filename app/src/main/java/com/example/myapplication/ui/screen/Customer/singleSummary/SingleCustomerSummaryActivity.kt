@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Customer
+package com.example.myapplication.ui.screen.Customer.singleSummary
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -34,12 +34,15 @@ import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.checkColor
-import com.example.myapplication.ui.component.checkColorAvatar
 
 @Composable
 fun SingleCustomerSummaryActivity(
+    customerId : String,
+    state : SingleCustomerSummaryState,
+    actions : SingleCustomerSummaryActions,
     navController : NavHostController
 ){
+    actions.populateCustomerData(customerId)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -72,51 +75,51 @@ fun SingleCustomerSummaryActivity(
         ){
             item{TitleLabel(stringResource(R.string.personal_details))}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(stringResource(R.string.id), listaClienti.get(1).CF, 1.2f)}
+            item{KeyValueLabel(stringResource(R.string.id), state.customerData.CF, 1.2f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(stringResource(R.string.name), listaClienti.get(1).nome, 1.2f)}
+            item{KeyValueLabel(stringResource(R.string.name), state.customerData.nome, 1.2f)}
             item{Spacer(Modifier.size(8.dp))}
-            if(listaClienti.get(1).tipo == CustomerType.Private.toString()) {
-                item{KeyValueLabel(stringResource(R.string.last_name),listaClienti.get(1).cognome.toString(),1.2f)}
+            if(state.customerData.tipo == CustomerType.Private.toString()) {
+                item{KeyValueLabel(stringResource(R.string.last_name), state.customerData.cognome.toString(),1.2f)}
                 item{Spacer(Modifier.size(8.dp))}
-                item{KeyValueLabel(stringResource(R.string.place_birth),listaClienti.get(1).luogoNascita.toString(),1.2f)}
+                item{KeyValueLabel(stringResource(R.string.place_birth), state.customerData.luogoNascita.toString(),1.2f)}
                 item{Spacer(Modifier.size(8.dp))}
-                item{KeyValueLabel(stringResource(R.string.date_birth),listaClienti.get(1).dataNascita.toString(),1.2f)}
+                item{KeyValueLabel(stringResource(R.string.date_birth), state.customerData.dataNascita.toString(),1.2f)}
             }
-            if(listaClienti.get(1).tipo == CustomerType.Company.toString()){
-                item{KeyValueLabel(stringResource(R.string.company_name),listaClienti.get(1).ragioneSociale.toString(),1.2f)}
+            if(state.customerData.tipo == CustomerType.Company.toString()){
+                item{KeyValueLabel(stringResource(R.string.company_name), state.customerData.ragioneSociale.toString(),1.2f)}
                 item{Spacer(Modifier.size(8.dp))}
-                item{KeyValueLabel(stringResource(R.string.unique_code),listaClienti.get(1).codiceUnivoco.toString(),1.2f)}
+                item{KeyValueLabel(stringResource(R.string.unique_code), state.customerData.codiceUnivoco.toString(),1.2f)}
                 item{Spacer(Modifier.size(8.dp))}
-                item{KeyValueLabel(stringResource(R.string.vat_number),listaClienti.get(1).partitaIVA.toString(),1.2f)}
+                item{KeyValueLabel(stringResource(R.string.vat_number), state.customerData.partitaIVA.toString(),1.2f)}
             }
 
             item{CustomDivider()}
             item{TitleLabel(stringResource(R.string.contact))}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(stringResource(R.string.email), listaClienti.get(1).email, 1.2f)}
+            item{KeyValueLabel(stringResource(R.string.email), state.customerData.email, 1.2f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(stringResource(R.string.phone), listaClienti.get(1).telefono, 1.2f)}
+            item{KeyValueLabel(stringResource(R.string.phone), state.customerData.telefono, 1.2f)}
 
             item{CustomDivider()}
             item{
                 TitleLabel(
                     title =
-                    if(listaClienti.get(1).tipo == CustomerType.Private.toString()){
+                    if(state.customerData.tipo == CustomerType.Private.toString()){
                         stringResource(R.string.residence)
                     }else{stringResource(R.string.address)}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(stringResource(R.string.address), listaClienti.get(1).indirizzo, 1.2f)}
+            item{KeyValueLabel(stringResource(R.string.address), state.customerData.indirizzo, 1.2f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(stringResource(R.string.municipality), listaClienti.get(1).comune, 1.2f)}
+            item{KeyValueLabel(stringResource(R.string.municipality), state.customerData.comune, 1.2f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(stringResource(R.string.city), listaClienti.get(1).citta, 1.2f)}
+            item{KeyValueLabel(stringResource(R.string.city), state.customerData.citta, 1.2f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(stringResource(R.string.province), listaClienti.get(1).provincia, 1.2f)}
+            item{KeyValueLabel(stringResource(R.string.province), state.customerData.provincia, 1.2f)}
             item{Spacer(Modifier.size(8.dp))}
-            item{KeyValueLabel(stringResource(R.string.postal_code), listaClienti.get(1).cap, 1.2f)}
+            item{KeyValueLabel(stringResource(R.string.postal_code), state.customerData.cap, 1.2f)}
 
             item{CustomDivider()}
             item{TitleLabel(stringResource(R.string.interventions))}

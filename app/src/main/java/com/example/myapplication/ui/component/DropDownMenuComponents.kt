@@ -330,10 +330,18 @@ fun DropDownMenuJobs(){
 }
 
 @Composable
-fun DropDownMenuCustomers(){
+fun DropDownMenuCustomers(
+    onClickAscending : () -> Unit,
+    onClickDescending : () -> Unit,
+    onClickAllCustomer : () -> Unit,
+    onClickReference : () -> Unit,
+    onClickAirCondition : () -> Unit,
+    onClickElectric : () -> Unit,
+    onClickAlarm : () -> Unit
+){
     var expanded by remember { mutableStateOf(false) }
 
-    Box( ){
+    Box(){
         IconButton( onClick = {expanded = !expanded} ) {
             Icon(Icons.Filled.FilterAlt, stringResource(R.string.filters), tint = MaterialTheme.colorScheme.onPrimary)
         }
@@ -346,11 +354,11 @@ fun DropDownMenuCustomers(){
             Column(modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
                 DropdownMenuItem(
                     text = { MenuText(text = stringResource(R.string.all)) },
-                    onClick = { /* Query that select all custumers */}
+                    onClick = onClickAllCustomer
                 )
                 DropdownMenuItem(
                     text = { MenuText(text = stringResource(R.string.reference)) },
-                    onClick = { /* Query tghat groups custumers by reference */ }
+                    onClick = onClickReference
                 )
 
                 MenuDivider()
@@ -365,7 +373,7 @@ fun DropDownMenuCustomers(){
                         )
                     },
                     text = { MenuText(text = stringResource(R.string.air_conditioning)) },
-                    onClick = { /* Query that groups and filter custumers by air conditioning */ }
+                    onClick = onClickAirCondition
                 )
                 DropdownMenuItem(
                     leadingIcon = {
@@ -376,7 +384,7 @@ fun DropDownMenuCustomers(){
                         )
                     },
                     text = { MenuText(text = stringResource(R.string.eletric)) },
-                    onClick = { /*Query that group and filter custumers by eletric */ }
+                    onClick = onClickElectric
                 )
                 DropdownMenuItem(
                     leadingIcon = {
@@ -387,12 +395,12 @@ fun DropDownMenuCustomers(){
                         )
                     },
                     text = { MenuText(stringResource(R.string.alarm)) },
-                    onClick = { /* Query that groups and filter custumers by alarm */ }
+                    onClick = onClickAlarm
                 )
 
                 MenuDivider()
 
-                Order(onClickAscending = {}, onClickDescending = {})
+                Order(onClickAscending = onClickAscending, onClickDescending = onClickDescending)
             }
         }
     }

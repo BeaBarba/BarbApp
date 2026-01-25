@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Calendar
+package com.example.myapplication.ui.screen.Calendar.day
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -35,12 +35,23 @@ import com.example.myapplication.ui.component.DatePickerModal
 import com.example.myapplication.ui.component.LargeCard
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.Instant
+import java.time.ZoneId
 
 @Composable
 fun DayCalendarActivity(
+    date : Long,
+    state : DayCalendarState,
+    actions: DayCalendarActions,
     navController : NavHostController
 ){
-    var selectedDate by remember {mutableStateOf<Long?>(null)}
+    if (!state.started) {
+        actions.populateCalendar(
+            Instant.ofEpochMilli(date)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+        )
+    }
     val openPicker = remember {mutableStateOf(false)}
     val datePickerState = rememberDatePickerState()
     Scaffold(
@@ -63,7 +74,6 @@ fun DayCalendarActivity(
                         datePickerState = datePickerState,
                         openDialogState = openPicker,
                         onDateSelected = { millis ->
-                            selectedDate = millis
                             if(millis != null){
                                 navController.navigate(NavigationRoute.DayCalendar)
                             }
@@ -82,7 +92,7 @@ fun DayCalendarActivity(
                 bottom = contentPadding.calculateBottomPadding()
             )
         ) {
-            items(appuntamenti.subList(7, appuntamenti.size)){ item ->
+            items(state.calendar){ item ->
                 LargeCard(
                     type = item.tipo,
                     title = item.indirizzo,

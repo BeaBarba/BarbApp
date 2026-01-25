@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryActivity
 import com.example.myapplication.ui.screen.Job.AllCleaningSummaryActivity
-import com.example.myapplication.ui.screen.Customer.AllCustomersSummaryActivity
+import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.AllDeadlinesSummaryActivity
 import com.example.myapplication.ui.screen.Job.AllJobsSummaryActivity
 import com.example.myapplication.ui.screen.Payment.AllPaymentsSummaryActivity
@@ -19,7 +19,7 @@ import com.example.myapplication.ui.screen.Statistics.AveragePaymentsTimesStatis
 import com.example.myapplication.ui.screen.BubbleMaterialsActivity
 import com.example.myapplication.ui.screen.Material.CartActivity
 import com.example.myapplication.ui.screen.Customer.CustomerAddActivity
-import com.example.myapplication.ui.screen.Calendar.DayCalendarActivity
+import com.example.myapplication.ui.screen.Calendar.day.DayCalendarActivity
 import com.example.myapplication.ui.screen.Deadline.DeadlineAddActivity
 import com.example.myapplication.ui.screen.HomeActivity
 import com.example.myapplication.ui.screen.Job.add.JobAddActivity
@@ -38,15 +38,19 @@ import com.example.myapplication.ui.screen.Bubble.add.BubbleAddViewModel
 import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryViewModel
 import com.example.myapplication.ui.screen.Bubble.bubbleAddActivity.BubbleAddActivity
 import com.example.myapplication.ui.screen.Bubble.singleSummary.SingleBubbleSummaryViewModel
-import com.example.myapplication.ui.screen.Customer.SingleCustomerSummaryActivity
+import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.SingleDeadlineSummaryActivity
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryActivity
 import com.example.myapplication.ui.screen.Material.SingleMaterialSummaryActivity
 import com.example.myapplication.ui.screen.Payment.SinglePaymentSummaryActivity
-import com.example.myapplication.ui.screen.Calendar.TodayCalendarActivity
+import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarActivity
+import com.example.myapplication.ui.screen.Calendar.day.DayCalendarViewModel
+import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
 import com.example.myapplication.ui.screen.Construction.AllConstructionSummaryActivity
 import com.example.myapplication.ui.screen.Construction.ConstructionAddActivity
 import com.example.myapplication.ui.screen.Construction.SingleConstructionSummaryActivity
+import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
+import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
 import com.example.myapplication.ui.screen.Invoice.AllInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.Invoice.InvoiceAddActivity
 import com.example.myapplication.ui.screen.Invoice.SingleInvoiceSummaryActivity
@@ -84,8 +88,6 @@ sealed interface NavigationRoute{
     @Serializable
     data object Cart : NavigationRoute
     @Serializable
-    data object DayCalendar : NavigationRoute
-    @Serializable
     data object Home : NavigationRoute
     @Serializable
     data object JobMaterials : NavigationRoute
@@ -109,8 +111,6 @@ sealed interface NavigationRoute{
     data object PurchaseInvoiceAdd : NavigationRoute
     @Serializable
     data object SingleConstructionSummary : NavigationRoute
-    @Serializable
-    data object SingleCustomerSummary : NavigationRoute
     @Serializable
     data object SingleDeadlineSummary: NavigationRoute
     @Serializable
@@ -138,6 +138,10 @@ sealed interface NavigationRoute{
     data class BubbleAdd(val bubbleId: Int?) : NavigationRoute
     @Serializable
     data class SingleBubbleSummary(val bubbleId: Int) : NavigationRoute
+    @Serializable
+    data class SingleCustomerSummary (val customerId : String) : NavigationRoute
+    @Serializable
+    data class DayCalendar (val date : Long) : NavigationRoute
 
     @Serializable
     data object Screen : NavigationRoute
@@ -167,7 +171,9 @@ fun NavGraph(
             AllCleaningSummaryActivity(navController)
         }
         composable<NavigationRoute.AllCustomersSummary>{
-            AllCustomersSummaryActivity(navController)
+            val allCustomersSummaryVM = koinViewModel<AllCustomersSummaryViewModel>()
+            val state by allCustomersSummaryVM.state.collectAsStateWithLifecycle()
+            AllCustomersSummaryActivity(state, allCustomersSummaryVM.actions, navController)
         }
         composable<NavigationRoute.AllDeadlinesSummary>{
             AllDeadlinesSummaryActivity(navController)
@@ -199,8 +205,12 @@ fun NavGraph(
         composable<NavigationRoute.CustomerAdd>{
             CustomerAddActivity(navController)
         }
-        composable<NavigationRoute.DayCalendar>{
-            DayCalendarActivity(navController)
+        composable<NavigationRoute.DayCalendar>{backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.DayCalendar>()
+            val dayCalendarVM = koinViewModel<DayCalendarViewModel>()
+            val state by dayCalendarVM.state.collectAsStateWithLifecycle()
+            DayCalendarActivity(route.date, state, dayCalendarVM.actions, navController)
+
         }
         composable<NavigationRoute.DeadlineAdd>{
             DeadlineAddActivity(navController)
@@ -225,14 +235,17 @@ fun NavGraph(
         composable<NavigationRoute.PaymentAdd>{
             PaymentAddActivity(navController)
         }
-        composable<NavigationRoute.SingleBubbleSummary>{ backStackEntry ->
+        composable<NavigationRoute.SingleBubbleSummary>{backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.SingleBubbleSummary>()
             val singleBubbleVM = koinViewModel<SingleBubbleSummaryViewModel>()
             val state by singleBubbleVM.state.collectAsStateWithLifecycle()
             SingleBubbleSummaryActivity(route.bubbleId, state, singleBubbleVM.actions, navController)
         }
-        composable<NavigationRoute.SingleCustomerSummary>{
-            SingleCustomerSummaryActivity(navController)
+        composable<NavigationRoute.SingleCustomerSummary>{backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.SingleCustomerSummary>()
+            val singleCustomerSummaryVM = koinViewModel<SingleCustomerSummaryViewModel>()
+            val state by singleCustomerSummaryVM.state.collectAsStateWithLifecycle()
+            SingleCustomerSummaryActivity(route.customerId, state, singleCustomerSummaryVM.actions, navController)
         }
         composable<NavigationRoute.SingleDeadlineSummary>{
             SingleDeadlineSummaryActivity(navController)
@@ -247,7 +260,9 @@ fun NavGraph(
             SinglePaymentSummaryActivity(navController)
         }
         composable<NavigationRoute.TodayCalendar>{
-            TodayCalendarActivity(navController)
+            val todayCalendarVM = koinViewModel<TodayCalendarViewModel>()
+            val state by todayCalendarVM.state.collectAsStateWithLifecycle()
+            TodayCalendarActivity(state, todayCalendarVM.actions, navController)
         }
         composable<NavigationRoute.Warehouse> {
             WarehouseActivity(navController)

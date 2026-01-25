@@ -56,7 +56,7 @@ fun Screen(modifier : Modifier){
                     BackButton(){/*val intent = Intent(ctx, CustomerAddActivity ::class.java)
                         ctx.startActivity(intent)*/}
                 },
-                trailingIcon = { DropDownMenuCustomers() }
+                //trailingIcon = { DropDownMenuCustomers() }
             )
         },
         floatingActionButton = {

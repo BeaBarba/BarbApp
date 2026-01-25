@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Customer
+package com.example.myapplication.ui.screen.Customer.allSummary
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -13,8 +13,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.customers
-import com.example.myapplication.debug.letters
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomersCardsList
@@ -25,15 +23,28 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun AllCustomersSummaryActivity(
+    state : AllCustomersSummaryState,
+    actions: AllCustomersSummaryActions,
     navController : NavHostController
 ){
+    actions.populateCustomers()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 id = stringResource(R.string.customers),
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
-                trailingIcon = {DropDownMenuCustomers()}
+                trailingIcon = {
+                    DropDownMenuCustomers(
+                        onClickAscending = actions::setAscendingSort,
+                        onClickDescending = actions::setDescendingSort,
+                        onClickAllCustomer = actions::setAllCustomerFilter,
+                        onClickReference = actions::setReferenceFilter,
+                        onClickAirCondition = actions::setAirConditionerFilter,
+                        onClickElectric = actions::setElectricFilter,
+                        onClickAlarm = actions::setAlarmFilter
+                    )
+                }
             )
         },
         floatingActionButton = {AddButton{navController.navigate(NavigationRoute.CustomerAdd)}}
@@ -48,8 +59,12 @@ fun AllCustomersSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            CustomSearchBar(stringResource(R.string.customer),onValueChange = {})
-            CustomersCardsList(letters, customers, navController)
+            CustomSearchBar(stringResource(R.string.customer),onValueChange = actions::setSearchString)
+            CustomersCardsList(
+                letters = state.startingChar,
+                customers = state.customers.map {  if (it.cognome != null) (it.cognome + " " + it.nome) else it.nome},
+                navController = navController
+            )
         }
     }
 }

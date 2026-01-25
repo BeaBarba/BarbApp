@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Calendar
+package com.example.myapplication.ui.screen.Calendar.today
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -39,13 +39,14 @@ import com.example.myapplication.ui.component.LargeCard
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkColorAvatar
 
 @Composable
 fun TodayCalendarActivity(
+    state : TodayCalendarState,
+    actions: TodayCalendarActions,
     navController: NavHostController
 ){
-    var selectedDate by remember {mutableStateOf<Long?>(null)}
+    actions.populateTodayCalendar()
     val openPicker = remember {mutableStateOf(false)}
     val datePickerState = rememberDatePickerState()
     Scaffold(
@@ -68,9 +69,8 @@ fun TodayCalendarActivity(
                         datePickerState = datePickerState,
                         openDialogState = openPicker,
                         onDateSelected = { millis ->
-                            selectedDate = millis
                             if(millis != null){
-                                navController.navigate(NavigationRoute.DayCalendar)
+                                navController.navigate(NavigationRoute.DayCalendar(millis))
                             }
                         }
                     )
@@ -87,7 +87,7 @@ fun TodayCalendarActivity(
                 bottom = contentPadding.calculateBottomPadding()
             )
         ) {
-            items(appuntamenti){ item ->
+            items(state.todayCalendar){ item ->
                 LargeCard(
                     type = item.tipo,
                     title = item.indirizzo,
@@ -103,7 +103,7 @@ fun TodayCalendarActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{TitleLabel(stringResource(R.string.schedule))}
             item{Spacer(Modifier.size(8.dp))}
-            items(appuntamenti){ item ->
+            items(state.toScheduleCalendar){ item ->
                 GenericCard(
                     type = item.tipo,
                     leadingContent = {

@@ -108,7 +108,7 @@ fun CustomersCardsList(
                     Spacer(Modifier.size(4.dp))
                     customers.filter{ it[0] == letter }.forEach{ contact ->
                         CardItemAvatar(contact){
-                            navController.navigate(NavigationRoute.SingleCustomerSummary)
+                            navController.navigate(NavigationRoute.SingleCustomerSummary(contact))
                         }
                         Spacer(Modifier.size(4.dp))
                     }
