@@ -51,15 +51,15 @@ class SingleAddressSummaryViewModel(
                             city = addressEntity.city,
                             province = addressEntity.province,
                             zip = addressEntity.zip,
-                            sheet = addressEntity.sheet,
-                            map = addressEntity.map,
-                            subordinate = addressEntity.subordinate,
-                            staircase = addressEntity.staircase,
-                            floor = addressEntity.floor,
-                            interior = addressEntity.interior,
-                            yearOfConstruction = addressEntity.yearOfConstruction,
-                            usableArea = addressEntity.usableArea,
-                            units = addressEntity.units
+                            sheet = addressEntity.sheet?:"",
+                            map = addressEntity.map?:"",
+                            subordinate = addressEntity.subordinate?:"",
+                            staircase = addressEntity.staircase?:"",
+                            floor = addressEntity.floor?:"",
+                            interior = addressEntity.interior?:"",
+                            yearOfConstruction = addressEntity.yearOfConstruction?:"",
+                            usableArea = addressEntity.usableArea?:"",
+                            units = addressEntity.units?:""
                         )
                     }
                 }

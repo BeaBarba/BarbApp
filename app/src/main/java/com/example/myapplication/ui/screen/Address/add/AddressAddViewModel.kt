@@ -19,15 +19,15 @@ data class AddressAddState(
     val city: String = "",
     val province: String = "",
     val zip: String = "",
-    val staircase: String = "",
-    val floor: String = "",
-    val interior: String = "",
-    val units: String = "",
-    val sheet: String = "",
-    val map: String = "",
-    val subordinate: String = "",
-    val yearOfConstruction: String = "",
-    val usableArea: String = ""
+    val staircase: String? = "",
+    val floor: String? = "",
+    val interior: String? = "",
+    val units: String? = "",
+    val sheet: String? = "",
+    val map: String? = "",
+    val subordinate: String? = "",
+    val yearOfConstruction: String? = "",
+    val usableArea: String? = ""
 )
 
 interface AddressAddActions {

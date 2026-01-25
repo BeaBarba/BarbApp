@@ -1,17 +1,24 @@
 package com.example.myapplication.data.repository
 
 import com.example.myapplication.data.database.Address
-import com.example.myapplication.data.database.appDAO
+import com.example.myapplication.data.database.dao.AddressDAO
+import com.example.myapplication.data.database.dao.BubbleDAO
+import com.example.myapplication.data.database.dao.PurchaseInvoiceDAO
+import com.example.myapplication.data.database.dao.SellerDAO
 import kotlinx.coroutines.flow.Flow
 
 class Repository (
-    private val dao: appDAO
+    private val daoAddress: AddressDAO,
+    private val daoBubble : BubbleDAO,
+    private val daoSeller : SellerDAO,
+    private val daoPurchaseInvoice : PurchaseInvoiceDAO
+
 ){
-    val addresses = dao.getAllAddresses()
+    val addresses = daoAddress.getAllAddresses()
 
-    fun getAddressById(id: Int) : Flow<Address> = dao.getAddress(id)
+    fun getAddressById(id: Int) : Flow<Address> = daoAddress.getAddress(id)
 
-    suspend fun upsert(indirizzo : Address) = dao.upsert(indirizzo)
+    suspend fun upsert(address : Address) = daoAddress.upsertAddress(address)
 
-    suspend fun delete(indirizzo : Address) = dao.delete(indirizzo)
+    suspend fun delete(address : Address) = daoAddress.deleteAddress(address)
 }

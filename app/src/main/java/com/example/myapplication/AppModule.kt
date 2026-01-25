@@ -18,12 +18,18 @@ val appModule = module{
             get(),
             appDatabase::class.java,
             "database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
-    single{get<appDatabase>().appDAO()}
+    /* DAO */
+    single{get<appDatabase>().addressDAO()}
+    single{get<appDatabase>().bubbleDAO()}
+    single{get<appDatabase>().sellerDAO()}
+    single{get<appDatabase>().purchaseInvoiceDAO()}
 
-    single{Repository(get())}
+    single{Repository(get(), get(), get(), get())}
 
     /* Address */
     viewModel {AddressAddViewModel(get())}

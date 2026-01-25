@@ -1,27 +1,28 @@
-package com.example.myapplication.data.database
+package com.example.myapplication.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
+import com.example.myapplication.data.database.Address
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface appDAO{
+interface AddressDAO{
     @Query("SELECT * " +
-            "FROM addresses " +
+            "FROM INDIRIZZI " +
             "WHERE id = :id"
     )
     fun getAddress(id : Int) : Flow<Address>
 
     @Query("SELECT * " +
-            "FROM addresses"
+            "FROM INDIRIZZI"
     )
     fun getAllAddresses() : Flow<List<Address>>
 
     @Upsert
-    suspend fun upsert(indirizzo : Address)
+    suspend fun upsertAddress(address : Address)
 
     @Delete
-    suspend fun  delete(indirizzo: Address)
+    suspend fun  deleteAddress(address: Address)
 }
