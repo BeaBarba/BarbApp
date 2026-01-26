@@ -15,8 +15,16 @@ import com.example.myapplication.data.database.dao.SellerDAO
         PurchaseInvoice::class,
         Bubble::class
     ],
-    version = 3)
-@TypeConverters(DateConverters::class, MachineTypeConverters::class, JobTypeConverters::class)
+    version = 4
+)
+@TypeConverters(
+    DateConverters::class,
+    MachineTypeConverters::class,
+    SplitNumberConverters::class,
+    FrequencyTypeConverters::class,
+    JobTypeConverters::class,
+    TimeConverters::class
+)
 abstract class appDatabase : RoomDatabase(){
     abstract fun addressDAO() : AddressDAO
     abstract fun bubbleDAO() : BubbleDAO

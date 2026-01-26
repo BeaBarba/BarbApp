@@ -1,9 +1,12 @@
 package com.example.myapplication.data.database
 
 import androidx.room.TypeConverter
+import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.modules.MachineType
+import com.example.myapplication.data.modules.SplitNumber
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class DateConverters{
@@ -30,6 +33,30 @@ class MachineTypeConverters{
     }
 }
 
+class SplitNumberConverters{
+    @TypeConverter
+    fun numberFromString(string: String) : SplitNumber {
+        return SplitNumber.valueOf(string)
+    }
+
+    @TypeConverter
+    fun numberFromMachineType(type: SplitNumber) : String{
+        return type.toString()
+    }
+}
+
+class FrequencyTypeConverters{
+    @TypeConverter
+    fun frequencyFromString(string: String) : FrequencyType {
+        return FrequencyType.valueOf(string)
+    }
+
+    @TypeConverter
+    fun frequencyFromFrequencyType(type: FrequencyType) : String{
+        return type.toString()
+    }
+}
+
 class JobTypeConverters{
     @TypeConverter
     fun typeFromString(string: String) : JobType {
@@ -39,5 +66,21 @@ class JobTypeConverters{
     @TypeConverter
     fun typeFromJobType(type: JobType) : String{
         return type.toString()
+    }
+}
+
+class TimeConverters {
+    private val formatter = DateTimeFormatter.ISO_LOCAL_TIME
+
+    @TypeConverter
+    fun fromString(value: String?): LocalTime? {
+        return value?.let {
+            LocalTime.parse(it, formatter)
+        }
+    }
+
+    @TypeConverter
+    fun timeToString(time: LocalTime?): String? {
+        return time?.format(formatter)
     }
 }
