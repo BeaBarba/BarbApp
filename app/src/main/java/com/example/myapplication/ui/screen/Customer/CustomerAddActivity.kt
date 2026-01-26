@@ -50,14 +50,14 @@ fun CustomerAddActivity(
         stringResource(R.string.type)
     } else {
         when (typeSelected){
-            CustomerType.Company.toString() -> stringResource(R.string.company)
-            CustomerType.Private.toString() -> stringResource(R.string.private_customer)
+            CustomerType.Azienda.toString() -> stringResource(R.string.company)
+            CustomerType.Privato.toString() -> stringResource(R.string.private_customer)
             else -> {""}
         }
     }
     var type = listOf(
-        MenuItem(stringResource(R.string.company), {typeSelected = CustomerType.Company.toString()}),
-        MenuItem(stringResource(R.string.private_customer),{typeSelected = CustomerType.Private.toString()})
+        MenuItem(stringResource(R.string.company), {typeSelected = CustomerType.Azienda.toString()}),
+        MenuItem(stringResource(R.string.private_customer),{typeSelected = CustomerType.Privato.toString()})
     )
 
     val previousBackStackEntry = navController.previousBackStackEntry
@@ -70,7 +70,7 @@ fun CustomerAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.SingleCustomerSummary){
+                            navController.navigate(NavigationRoute.SingleCustomerSummary("cliente")){
                                 popUpTo(NavigationRoute.CustomerAdd){inclusive = true}
                             }
                         },
@@ -108,7 +108,7 @@ fun CustomerAddActivity(
                     onValueChange = {}
                 )
             }
-            if(typeSelected == CustomerType.Private.toString()){
+            if(typeSelected == CustomerType.Privato.toString()){
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.last_name),
@@ -129,7 +129,7 @@ fun CustomerAddActivity(
                     )
                 }
             }
-            if(typeSelected == CustomerType.Company.toString()){
+            if(typeSelected == CustomerType.Azienda.toString()){
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.company_name),

@@ -19,6 +19,7 @@ foundationLayoutAndroid = "1.8.1"
 ksp = "2.0.0-1.0.24"
 room = "2.6.1"
 runtimeLivedataVersion = "1.10.1"
+roomCommonJvm = "2.8.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,6 +50,7 @@ androidx-foundation-layout-android = { group = "androidx.compose.foundation", na
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

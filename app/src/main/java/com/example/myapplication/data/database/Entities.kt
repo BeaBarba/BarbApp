@@ -24,7 +24,7 @@ import java.time.LocalTime
         )
     ]
 )
-data class AirConditioners(
+data class AirConditioner(
     @ColumnInfo(name = "Matricola") val serialNumber : String,
     @ColumnInfo(name = "Materiale") val material : Int,
     @ColumnInfo(name = "TipoMacchina") val machineType : MachineType,
@@ -152,7 +152,7 @@ data class Bubble(
         )
     ]
 )
-data class Deliveries(
+data class Delivery(
     @ColumnInfo(name = "Bolla") val bubble : Int,
     @ColumnInfo(name = "Materiale") val material : Int,
     @ColumnInfo(name = "Quantità") val quantity : Float,
@@ -631,7 +631,7 @@ data class MaterialUsage(
     tableName = "RICAVI",
     indices = [Index(value = ["Fattura", "DataEmissione"], unique = true)]
 )
-data class Revenues(
+data class Revenue(
     @PrimaryKey(autoGenerate = true) val id : Int = 0,
     @ColumnInfo(name = "Fattura") val invoice : Int,
     @ColumnInfo(name = "DataEmissione") val issueDate : LocalDate,
@@ -645,7 +645,7 @@ data class Revenues(
     primaryKeys = ["Ricavo"],
     foreignKeys = [
         ForeignKey(
-            entity = Revenues::class,
+            entity = Revenue::class,
             parentColumns = ["id"],
             childColumns = ["Ricavo"],
             onDelete = ForeignKey.CASCADE
@@ -668,7 +668,7 @@ data class WorkSiteRevenue(
     primaryKeys = ["Ricavo"],
     foreignKeys = [
         ForeignKey(
-            entity = Revenues::class,
+            entity = Revenue::class,
             parentColumns = ["id"],
             childColumns = ["Ricavo"],
             onDelete = ForeignKey.CASCADE

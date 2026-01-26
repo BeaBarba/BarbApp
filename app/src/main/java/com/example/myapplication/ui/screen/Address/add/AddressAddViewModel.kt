@@ -6,7 +6,6 @@ import com.example.myapplication.data.database.Address
 import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.String
@@ -48,6 +47,7 @@ interface AddressAddActions {
     fun setUsableArea(usableArea: String)
     fun saveAddress()
     fun populateFromEdit(addressId: Int)
+    fun deleteAddress()
 }
 
 class AddressAddViewModel(
@@ -160,7 +160,7 @@ class AddressAddViewModel(
                 units = stateNow.units
             )
             viewModelScope.launch {
-                repository.upsert(newAddress)
+                repository.upsertAddress(newAddress)
             }
             println("Pressed Save Button, data to save: " + state.value)
         }
@@ -168,27 +168,54 @@ class AddressAddViewModel(
         override fun populateFromEdit(addressId: Int) {
             viewModelScope.launch {
                 repository.getAddressById(addressId).collect{ addressEntity ->
-                    _state.update {
-                        it.copy(
-                            addressId = addressEntity.id,
-                            address = addressEntity.address,
-                            houseNumber = addressEntity.houseNumber,
-                            municipality = addressEntity.municipality,
-                            city = addressEntity.city,
-                            province = addressEntity.province,
-                            zip = addressEntity.zip,
-                            sheet = addressEntity.sheet,
-                            map = addressEntity.map,
-                            subordinate = addressEntity.subordinate,
-                            staircase = addressEntity.staircase,
-                            floor = addressEntity.floor,
-                            interior = addressEntity.interior,
-                            yearOfConstruction = addressEntity.yearOfConstruction,
-                            usableArea = addressEntity.usableArea,
-                            units = addressEntity.units
-                        )
+                    if(addressEntity != null) {
+                        _state.update {
+                            it.copy(
+                                addressId = addressEntity.id,
+                                address = addressEntity.address,
+                                houseNumber = addressEntity.houseNumber,
+                                municipality = addressEntity.municipality,
+                                city = addressEntity.city,
+                                province = addressEntity.province,
+                                zip = addressEntity.zip,
+                                sheet = addressEntity.sheet,
+                                map = addressEntity.map,
+                                subordinate = addressEntity.subordinate,
+                                staircase = addressEntity.staircase,
+                                floor = addressEntity.floor,
+                                interior = addressEntity.interior,
+                                yearOfConstruction = addressEntity.yearOfConstruction,
+                                usableArea = addressEntity.usableArea,
+                                units = addressEntity.units
+                            )
+                        }
                     }
                 }
+            }
+        }
+
+        override fun deleteAddress() {
+            val stateNow = _state.value
+            val address = Address(
+                id = 0,
+                address = stateNow.address,
+                houseNumber = stateNow.houseNumber,
+                municipality = stateNow.municipality,
+                city = stateNow.city,
+                province = stateNow.province,
+                zip = stateNow.zip,
+                sheet = stateNow.sheet,
+                map = stateNow.map,
+                subordinate = stateNow.subordinate,
+                staircase = stateNow.staircase,
+                floor = stateNow.floor,
+                interior = stateNow.interior,
+                yearOfConstruction = stateNow.yearOfConstruction,
+                usableArea = stateNow.usableArea,
+                units = stateNow.units
+            )
+            viewModelScope.launch {
+                repository.deleteAddress(address)
             }
         }
     }

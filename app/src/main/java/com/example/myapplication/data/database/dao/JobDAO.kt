@@ -4,25 +4,26 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
-import com.example.myapplication.data.database.Bubble
+import com.example.myapplication.data.database.Job
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface BubbleDAO{
+interface JobDAO{
+
     @Query("SELECT * " +
-            "FROM BOLLE " +
+            "FROM INTERVENTI " +
             "WHERE id = :id"
     )
-    fun getBubble(id : Int) : Flow<Bubble?>
+    fun getJob(id : Int) : Flow<Job?>
 
     @Query("SELECT * " +
-            "FROM BOLLE"
+            "FROM INTERVENTI"
     )
-    fun getAllBubbles() : Flow<List<Bubble>>
+    fun getAllJobs() : Flow<List<Job>>
 
     @Upsert
-    suspend fun upsertBubble(bubble : Bubble)
+    suspend fun upsertJob(job : Job)
 
     @Delete
-    suspend fun deleteBubble(bubble: Bubble)
+    suspend fun deleteJob(job : Job)
 }

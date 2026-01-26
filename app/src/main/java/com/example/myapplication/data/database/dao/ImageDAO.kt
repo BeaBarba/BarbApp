@@ -4,25 +4,26 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
-import com.example.myapplication.data.database.Bubble
+import com.example.myapplication.data.database.Image
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface BubbleDAO{
+interface ImageDAO{
+
     @Query("SELECT * " +
-            "FROM BOLLE " +
+            "FROM FOTO " +
             "WHERE id = :id"
     )
-    fun getBubble(id : Int) : Flow<Bubble?>
+    fun getImage(id : Int) : Flow<Image?>
 
     @Query("SELECT * " +
-            "FROM BOLLE"
+            "FROM FOTO"
     )
-    fun getAllBubbles() : Flow<List<Bubble>>
+    fun getAllImages() : Flow<List<Image>>
 
     @Upsert
-    suspend fun upsertBubble(bubble : Bubble)
+    suspend fun upsertImage(image : Image)
 
     @Delete
-    suspend fun deleteBubble(bubble: Bubble)
+    suspend fun deleteImage(image : Image)
 }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 data class SingleCustomerSummaryState(
     val started : Boolean = false,
     val customerData : Cliente = Cliente(
-        tipo = CustomerType.Private.toString(),
+        tipo = CustomerType.Privato.toString(),
         nome = "",
         CF = "",
         cognome = "",

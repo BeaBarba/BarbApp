@@ -1,10 +1,9 @@
 package com.example.myapplication.data.modules
 
-import kotlinx.serialization.Serializable
 
 enum class Theme { Light, Dark, System }
 
-enum class CustomerType{ Pivato, Azienda }
+enum class CustomerType{ Privato, Azienda }
 
 enum class FrequencyType { Anno, Mese, Settimana, Nessuna }
 

@@ -13,7 +13,7 @@ interface PurchaseInvoiceDAO{
             "FROM FATTURE_ACQUISTO " +
             "WHERE id = :id"
     )
-    fun getPurchaseInvoice(id : Int) : Flow<PurchaseInvoice>
+    fun getPurchaseInvoice(id : Int) : Flow<PurchaseInvoice?>
 
     @Query("SELECT * " +
             "FROM FATTURE_ACQUISTO"

@@ -13,7 +13,7 @@ interface SellerDAO{
             "FROM VENDITORI " +
             "WHERE id = :id"
     )
-    fun getSeller(id : Int) : Flow<Seller>
+    fun getSeller(id : Int) : Flow<Seller?>
 
     @Query("SELECT * " +
             "FROM VENDITORI"

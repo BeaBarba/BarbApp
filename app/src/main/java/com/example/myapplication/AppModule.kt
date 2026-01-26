@@ -25,17 +25,50 @@ val appModule = module{
             appDatabase::class.java,
             "database"
         )
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 
     /* DAO */
-    single{get<appDatabase>().addressDAO()}
-    single{get<appDatabase>().bubbleDAO()}
+    single{get<appDatabase>().airConditionerDAO()}
+    single{get<appDatabase>().materialDAO()}
     single{get<appDatabase>().sellerDAO()}
     single{get<appDatabase>().purchaseInvoiceDAO()}
+    single{get<appDatabase>().purchaseDAO()}
+    single{get<appDatabase>().bubbleDAO()}
+    single{get<appDatabase>().deliveriesDAO()}
+    single{get<appDatabase>().categoryPurchaseInvoiceDAO()}
+    single{get<appDatabase>().singleExpenseDAO()}
+    single{get<appDatabase>().recurringExpenseDAO()}
+    single{get<appDatabase>().paymentDAO()}
+    single{get<appDatabase>().recurringPaymentDAO()}
+    single{get<appDatabase>().imageDAO()}
+    single{get<appDatabase>().materialPhotoDAO()}
+    single{get<appDatabase>().jobPhotoDAO()}
+    single{get<appDatabase>().customerProvisionDAO()}
+    single{get<appDatabase>().customerDAO()}
+    single{get<appDatabase>().privateDAO()}
+    single{get<appDatabase>().companyDAO()}
+    single{get<appDatabase>().referenceDAO()}
+    single{get<appDatabase>().referralDAO()}
+    single{get<appDatabase>().phoneNumberDAO()}
+    single{get<appDatabase>().propertyOwnershipDAO()}
+    single{get<appDatabase>().addressDAO()}
+    single{get<appDatabase>().workSiteDAO()}
+    single{get<appDatabase>().jobDAO()}
+    single{get<appDatabase>().jobMaterialDAO()}
+    single{get<appDatabase>().materialUsageDAO()}
+    single{get<appDatabase>().revenuesDAO()}
+    single{get<appDatabase>().workSiteRevenueDAO()}
+    single{get<appDatabase>().jobRevenueDAO()}
+    single{get<appDatabase>().customerFullDetailsDAO()}
 
-    single{Repository(get(), get(), get(), get())}
+    single{Repository(get(), get(), get(), get(), get(), get (),
+                get(), get(), get(), get(), get(), get(), get(), get(),
+                get(), get (), get(), get(), get(), get(), get(), get(),
+                get(), get(), get(), get (), get(), get(), get(), get(),
+                get(), get()
+    )}
 
     /* Address */
     viewModel {AddressAddViewModel(get())}

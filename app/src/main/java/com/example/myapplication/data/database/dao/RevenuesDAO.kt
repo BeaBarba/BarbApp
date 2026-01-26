@@ -1,0 +1,30 @@
+package com.example.myapplication.data.database.dao
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Query
+import androidx.room.Upsert
+import com.example.myapplication.data.database.Revenue
+import kotlinx.coroutines.flow.Flow
+
+
+@Dao
+interface RevenueDAO{
+
+    @Query("SELECT * " +
+            "FROM RICAVI " +
+            "WHERE id = :id"
+    )
+    fun getRevenue(id : Int) : Flow<Revenue?>
+
+    @Query("SELECT * " +
+            "FROM RICAVI"
+    )
+    fun getAllRevenues() : Flow<List<Revenue>>
+
+    @Upsert
+    suspend fun upsertRevenue(revenue: Revenue)
+
+    @Delete
+    suspend fun deleteRevenue(revenue: Revenue)
+}

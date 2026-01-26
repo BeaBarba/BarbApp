@@ -42,25 +42,27 @@ class SingleAddressSummaryViewModel(
         override fun populateFromId(addressId: Int) {
             viewModelScope.launch {
                 repository.getAddressById(addressId).collect { addressEntity ->
-                    _state.update {
-                        it.copy(
-                            addressId = addressEntity.id,
-                            address = addressEntity.address,
-                            houseNumber = addressEntity.houseNumber,
-                            municipality = addressEntity.municipality,
-                            city = addressEntity.city,
-                            province = addressEntity.province,
-                            zip = addressEntity.zip,
-                            sheet = addressEntity.sheet?:"",
-                            map = addressEntity.map?:"",
-                            subordinate = addressEntity.subordinate?:"",
-                            staircase = addressEntity.staircase?:"",
-                            floor = addressEntity.floor?:"",
-                            interior = addressEntity.interior?:"",
-                            yearOfConstruction = addressEntity.yearOfConstruction?:"",
-                            usableArea = addressEntity.usableArea?:"",
-                            units = addressEntity.units?:""
-                        )
+                    if(addressEntity != null) {
+                        _state.update {
+                            it.copy(
+                                addressId = addressEntity.id,
+                                address = addressEntity.address,
+                                houseNumber = addressEntity.houseNumber,
+                                municipality = addressEntity.municipality,
+                                city = addressEntity.city,
+                                province = addressEntity.province,
+                                zip = addressEntity.zip,
+                                sheet = addressEntity.sheet ?: "",
+                                map = addressEntity.map ?: "",
+                                subordinate = addressEntity.subordinate ?: "",
+                                staircase = addressEntity.staircase ?: "",
+                                floor = addressEntity.floor ?: "",
+                                interior = addressEntity.interior ?: "",
+                                yearOfConstruction = addressEntity.yearOfConstruction ?: "",
+                                usableArea = addressEntity.usableArea ?: "",
+                                units = addressEntity.units ?: ""
+                            )
+                        }
                     }
                 }
             }

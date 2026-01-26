@@ -13,7 +13,7 @@ interface AddressDAO{
             "FROM INDIRIZZI " +
             "WHERE id = :id"
     )
-    fun getAddress(id : Int) : Flow<Address>
+    fun getAddress(id : Int) : Flow<Address?>
 
     @Query("SELECT * " +
             "FROM INDIRIZZI"

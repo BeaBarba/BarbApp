@@ -306,7 +306,7 @@ var listaBolle : List<CardItem> = bolle.map{ b -> CardItem(name = b.numeroBolla.
 val listaClienti = listOf(
     // Esempio Tipo P - Privato
     Cliente(
-        tipo = CustomerType.Private.toString(),
+        tipo = CustomerType.Privato.toString(),
         nome = "Mario",
         cognome = "Rossi", // Obbligatorio per P
         CF = "RSSMRA80A01H501U",
@@ -327,7 +327,7 @@ val listaClienti = listOf(
 
     // Esempio Tipo A - Azienda
     Cliente(
-        tipo = CustomerType.Company.toString(),
+        tipo = CustomerType.Azienda.toString(),
         nome = "Luca", // Rappresentante o referente
         cognome = null,
         CF = "01234567890", // Spesso coincide con la P.IVA

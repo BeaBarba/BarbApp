@@ -79,14 +79,14 @@ fun SingleCustomerSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{KeyValueLabel(stringResource(R.string.name), state.customerData.nome, 1.2f)}
             item{Spacer(Modifier.size(8.dp))}
-            if(state.customerData.tipo == CustomerType.Private.toString()) {
+            if(state.customerData.tipo == CustomerType.Privato.toString()) {
                 item{KeyValueLabel(stringResource(R.string.last_name), state.customerData.cognome.toString(),1.2f)}
                 item{Spacer(Modifier.size(8.dp))}
                 item{KeyValueLabel(stringResource(R.string.place_birth), state.customerData.luogoNascita.toString(),1.2f)}
                 item{Spacer(Modifier.size(8.dp))}
                 item{KeyValueLabel(stringResource(R.string.date_birth), state.customerData.dataNascita.toString(),1.2f)}
             }
-            if(state.customerData.tipo == CustomerType.Company.toString()){
+            if(state.customerData.tipo == CustomerType.Azienda.toString()){
                 item{KeyValueLabel(stringResource(R.string.company_name), state.customerData.ragioneSociale.toString(),1.2f)}
                 item{Spacer(Modifier.size(8.dp))}
                 item{KeyValueLabel(stringResource(R.string.unique_code), state.customerData.codiceUnivoco.toString(),1.2f)}
@@ -105,7 +105,7 @@ fun SingleCustomerSummaryActivity(
             item{
                 TitleLabel(
                     title =
-                    if(state.customerData.tipo == CustomerType.Private.toString()){
+                    if(state.customerData.tipo == CustomerType.Privato.toString()){
                         stringResource(R.string.residence)
                     }else{stringResource(R.string.address)}
                 )
