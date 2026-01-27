@@ -127,7 +127,7 @@ data class Purchase(
     ]
 )
 data class Bubble(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) var id: Int = 0,
     @ColumnInfo(name = "NumeroIdentificativo") val number : String = "",
     @ColumnInfo(name = "Data") val date : LocalDate = LocalDate.now(),
     @ColumnInfo(name = "Venditore") val seller : Int,

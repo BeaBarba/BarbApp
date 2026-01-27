@@ -51,7 +51,7 @@ fun SingleCustomerSummaryActivity(
                 navigationIcon = {BackButton{navController.navigateUp()} },
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.CustomerAdd)}
+                        onClick = {navController.navigate(NavigationRoute.CustomerAdd(null))}
                     ){
                         Icon(
                             painterResource(R.drawable.edit_square_24dp),

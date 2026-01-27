@@ -75,6 +75,7 @@ fun JobMaterialsActivity(
                 )
         ) {
             item{CustomSearchBar(stringResource(R.string.material), onValueChange = {})}
+            item{Spacer(Modifier.size(8.dp))}
             items(prodotti){ item ->
                 var quantita by remember{ mutableStateOf(0)}
                 GenericCard(

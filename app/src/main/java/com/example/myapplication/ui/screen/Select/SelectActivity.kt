@@ -40,32 +40,24 @@ import com.example.myapplication.ui.component.CustomSearchBar
 
 @Composable
 fun SelectActivity(
-    textSearch : String,
-    entry : String,
+    state : SelectState,
+    actions: SelectActions,
     navController : NavHostController
 ) {
-    var items_list : List<CardItem> =
-        when(entry){
-            "CustomerAdd" -> customersType
-            "AddressAdd" -> addressType
-            "InvoiceAdd" -> invoicesType
-            "Materials" -> materialsType
-            "Bubbles" -> bubblesType
-            else -> listOf(CardItem("prova1", "NONE"), CardItem("prova2", "NONE"), CardItem("prova3", "NONE"))
-        }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                navigationIcon = { BackButton{navController.navigateUp()} },
+                navigationIcon = {BackButton{navController.navigateUp()}},
                 id = stringResource(R.string.select),
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            println(items_list)
-                            if (entry == "Materials")
-                                selectedMaterialResult = items_list.filter { it.checked }.map { it.name }
-                            navController.navigateUp()//{Save data}
+                            val selectedIds = state.itemsList.filter { it.checked }.map{it.name}
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("selectedIds", selectedIds)
+                            navController.popBackStack()
                         },
                         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
                     ) {
@@ -85,17 +77,19 @@ fun SelectActivity(
                 )
                 .fillMaxSize()
         ) {
-            item {CustomSearchBar(textSearch, onValueChange = {})}
-            items(items_list) { item ->
+            item {CustomSearchBar(state.searchText, onValueChange = {})}
+            item{Spacer(Modifier.size(8.dp))}
+            items(state.itemsList) { item ->
                 var checked by remember {mutableStateOf(item.checked)}
                 ListItemCheckbox(
                     text = item.name,
                     checked = checked,
                     onCheckedChange = {
                         checked = !checked
-                        item.checked = it },
+                        item.checked = it
+                    },
                     onClick = {},
-                    type = item.type
+                    type = item.type.toString()
                 )
                 Spacer(Modifier.size(8.dp))
             }

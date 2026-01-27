@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Customer
+package com.example.myapplication.ui.screen.Customer.add
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -17,19 +17,20 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.modules.CustomerType
-import com.example.myapplication.debug.customersType
+import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DeleteButton
@@ -40,27 +41,46 @@ import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun CustomerAddActivity(
+    customerId : String?,
+    state : CustomerAddState,
+    actions: CustomerAddActions,
     navController : NavHostController
 ){
-    var typeSelected by remember{ mutableStateOf("") }
-    val displayLabel = if (typeSelected.isEmpty()) {
-        stringResource(R.string.type)
-    } else {
-        when (typeSelected){
-            CustomerType.Azienda.toString() -> stringResource(R.string.company)
-            CustomerType.Privato.toString() -> stringResource(R.string.private_customer)
-            else -> {""}
-        }
+    customerId?.let(actions::populateFromEdit)
+    val displayLabel =
+        when (state.customerType){
+            CustomerType.Azienda -> stringResource(R.string.company)
+            CustomerType.Privato -> stringResource(R.string.private_customer)
     }
     var type = listOf(
-        MenuItem(stringResource(R.string.company), {typeSelected = CustomerType.Azienda.toString()}),
-        MenuItem(stringResource(R.string.private_customer),{typeSelected = CustomerType.Privato.toString()})
+        MenuItem(stringResource(R.string.company), {actions.setCustomerType(CustomerType.Azienda)}),
+        MenuItem(stringResource(R.string.private_customer),{actions.setCustomerType(CustomerType.Privato)})
     )
 
     val previousBackStackEntry = navController.previousBackStackEntry
+
+    val selectSearchText = stringResource(R.string.customer)
+
+    val currentBackStackEntry = navController.currentBackStackEntry
+    val selectedItems by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
+        ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
+
+    LaunchedEffect(selectedItems) {
+        selectedItems?.let{ ids ->
+            if(ids.isNotEmpty()) {
+                println("println " + ids.size)
+                //actions.setReferral(ids)
+            }
+        }
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -70,7 +90,7 @@ fun CustomerAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.SingleCustomerSummary("cliente")){
+                            navController.navigate(NavigationRoute.SingleCustomerSummary(state.id)){
                                 popUpTo(NavigationRoute.CustomerAdd){inclusive = true}
                             }
                         },
@@ -99,53 +119,64 @@ fun CustomerAddActivity(
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.id),
-                    onValueChange = {}
+                    value = state.id,
+                    onValueChange = actions::setCustomerId
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.name),
-                    onValueChange = {}
+                    value = state.name,
+                    onValueChange = actions::setCustomerName
                 )
             }
-            if(typeSelected == CustomerType.Privato.toString()){
+            if(state.customerType == CustomerType.Privato){
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.last_name),
-                        onValueChange = {}
+                        value = state.privateLastName,
+                        onValueChange = actions::setPrivateLastName,
                     )
                 }
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.place_birth),
-                        onValueChange = {}
+                        value = state.privatePlaceBirth,
+                        onValueChange = actions::setPrivatePlaceBirth,
                     )
                 }
                 item{
                     DatePickerFieldToModal(
                         title = stringResource(R.string.date_birth),
-                        onValueChange = {},
-                        value = ""
+                        value = state.privateDateBirth.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        onValueChange = {
+                            actions.setPrivateDateBirth(
+                                LocalDate.parse(it, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                            )
+                        }
                     )
                 }
             }
-            if(typeSelected == CustomerType.Azienda.toString()){
+            if(state.customerType == CustomerType.Azienda){
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.company_name),
-                        onValueChange = {}
+                        value = state.companyName,
+                        onValueChange = actions::setCompanyName,
                     )
                 }
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.unique_code),
-                        onValueChange = {}
+                        value = state.companyUniqueCode,
+                        onValueChange = actions::setCompanyUniqueCode
                     )
                 }
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.vat_number),
-                        onValueChange = {}
+                        value = state.companyVatNumber,
+                        onValueChange = actions::setCompanyVat
                     )
                 }
             }
@@ -155,19 +186,22 @@ fun CustomerAddActivity(
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.email),
-                    onValueChange = {}
+                    value = state.email,
+                    onValueChange = actions::setEmail
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.phone),
-                    onValueChange = {}
+                    value = state.phoneNumber,
+                    onValueChange = actions::setPhoneNumber
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.note_number),
-                    onValueChange = {}
+                    value = state.notePhoneNumber,
+                    onValueChange = actions::setPhoneNote
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -184,31 +218,36 @@ fun CustomerAddActivity(
                         //}
                     },
                     label = stringResource(R.string.address),
-                    onValueChange = {}
+                    value = state.address,
+                    onValueChange = actions::setAddress
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.municipality),
-                    onValueChange = {}
+                    value = state.municipality,
+                    onValueChange = actions::setMunicipality
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.city),
-                    onValueChange = {}
+                    value = state.city,
+                    onValueChange = actions::setCity
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.province),
-                    onValueChange = {}
+                    value = state.province,
+                    onValueChange = actions::setProvince
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.postal_code),
-                    onValueChange = {}
+                    value = state.zip,
+                    onValueChange = actions::setZip,
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -225,28 +264,30 @@ fun CustomerAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select("Clienti", "CustomerAdd"))}
+                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllCustomers))}
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.name),
-                    onValueChange = {}
+                    value  = state.referenceName,
+                    onValueChange = actions::setReferenceName
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.last_name),
-                    onValueChange = {}
+                    value = state.referenceLastName,
+                    onValueChange = actions::setReferenceLastName
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.phone),
-                    onValueChange = {}
+                    value = state.referencePhoneNumber,
+                    onValueChange = actions::setReferencePhoneNumber
                 )
             }
-
 
             item {Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleCustomerSummary>() == true) {

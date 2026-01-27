@@ -1,6 +1,5 @@
 package com.example.myapplication.data.modules
 
-
 enum class Theme { Light, Dark, System }
 
 enum class CustomerType{ Privato, Azienda }
@@ -13,6 +12,8 @@ enum class FilterKey { ASC_DATE, DESC_DATE, ASC_SELLER, DESC_SELLER }
 
 enum class SplitNumber{ Mono, Dual, Trial, Quadri, Penta }
 
-enum class JobType { ELE, ALA, CDZ }
+enum class JobType { ELE, ALA, CDZ, NONE }
 
 enum class MachineType { Esterna, Interna }
+
+enum class SelectKey { AllMaterials, AllAddresses, AllInvoices, AllBubbles, AllCustomers, AllReferences, AllPurchaseInvoices }

@@ -47,7 +47,7 @@ fun AllCustomersSummaryActivity(
                 }
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.CustomerAdd)}}
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.CustomerAdd(null))}}
     ) { contentPadding ->
         Column(
             modifier = Modifier

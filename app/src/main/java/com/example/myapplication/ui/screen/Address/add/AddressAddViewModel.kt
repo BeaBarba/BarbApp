@@ -47,7 +47,6 @@ interface AddressAddActions {
     fun setUsableArea(usableArea: String)
     fun saveAddress()
     fun populateFromEdit(addressId: Int)
-    fun deleteAddress()
 }
 
 class AddressAddViewModel(
@@ -191,31 +190,6 @@ class AddressAddViewModel(
                         }
                     }
                 }
-            }
-        }
-
-        override fun deleteAddress() {
-            val stateNow = _state.value
-            val address = Address(
-                id = 0,
-                address = stateNow.address,
-                houseNumber = stateNow.houseNumber,
-                municipality = stateNow.municipality,
-                city = stateNow.city,
-                province = stateNow.province,
-                zip = stateNow.zip,
-                sheet = stateNow.sheet,
-                map = stateNow.map,
-                subordinate = stateNow.subordinate,
-                staircase = stateNow.staircase,
-                floor = stateNow.floor,
-                interior = stateNow.interior,
-                yearOfConstruction = stateNow.yearOfConstruction,
-                usableArea = stateNow.usableArea,
-                units = stateNow.units
-            )
-            viewModelScope.launch {
-                repository.deleteAddress(address)
             }
         }
     }

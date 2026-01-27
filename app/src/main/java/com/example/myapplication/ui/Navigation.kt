@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryActivity
 import com.example.myapplication.ui.screen.Job.AllCleaningSummaryActivity
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryActivity
@@ -18,7 +19,7 @@ import com.example.myapplication.ui.screen.Statistics.AllStatisticsActivity
 import com.example.myapplication.ui.screen.Statistics.AveragePaymentsTimesStatisticsActivity
 import com.example.myapplication.ui.screen.BubbleMaterialsActivity
 import com.example.myapplication.ui.screen.Material.CartActivity
-import com.example.myapplication.ui.screen.Customer.CustomerAddActivity
+import com.example.myapplication.ui.screen.Customer.add.CustomerAddActivity
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarActivity
 import com.example.myapplication.ui.screen.Deadline.DeadlineAddActivity
 import com.example.myapplication.ui.screen.HomeActivity
@@ -49,6 +50,7 @@ import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
 import com.example.myapplication.ui.screen.Construction.AllConstructionSummaryActivity
 import com.example.myapplication.ui.screen.Construction.ConstructionAddActivity
 import com.example.myapplication.ui.screen.Construction.SingleConstructionSummaryActivity
+import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
 import com.example.myapplication.ui.screen.Invoice.AllInvoicesSummaryActivity
@@ -59,6 +61,7 @@ import com.example.myapplication.ui.screen.Material.WarehouseActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.AllPurchaseInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.PurchaseInvoiceAddActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.SinglePurchaseInvoiceSummaryActivity
+import com.example.myapplication.ui.screen.Select.SelectViewModel
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -96,8 +99,6 @@ sealed interface NavigationRoute{
     @Serializable
     data object ConstructionAdd : NavigationRoute
     @Serializable
-    data object CustomerAdd : NavigationRoute
-    @Serializable
     data object DeadlineAdd : NavigationRoute
     @Serializable
     data object InvoiceAdd : NavigationRoute
@@ -129,7 +130,7 @@ sealed interface NavigationRoute{
     data object Warehouse : NavigationRoute
 
     @Serializable
-    data class Select(val textSearch : String, val entry: String) : NavigationRoute
+    data class Select(val textSearch: String, val items: SelectKey) : NavigationRoute
     @Serializable
     data class AddressAdd(val addressId: Int?) : NavigationRoute
     @Serializable
@@ -142,6 +143,8 @@ sealed interface NavigationRoute{
     data class SingleCustomerSummary (val customerId : String) : NavigationRoute
     @Serializable
     data class DayCalendar (val date : Long) : NavigationRoute
+    @Serializable
+    data class CustomerAdd(val customerId: String?) : NavigationRoute
 
     @Serializable
     data object Screen : NavigationRoute
@@ -202,15 +205,17 @@ fun NavGraph(
         composable<NavigationRoute.Cart>{
             CartActivity(navController)
         }
-        composable<NavigationRoute.CustomerAdd>{
-            CustomerAddActivity(navController)
+        composable<NavigationRoute.CustomerAdd>{ backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.CustomerAdd>()
+            val customerAddVM = koinViewModel<CustomerAddViewModel>()
+            val state by customerAddVM.state.collectAsStateWithLifecycle()
+            CustomerAddActivity(route.customerId, state, customerAddVM.actions, navController)
         }
         composable<NavigationRoute.DayCalendar>{backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.DayCalendar>()
             val dayCalendarVM = koinViewModel<DayCalendarViewModel>()
             val state by dayCalendarVM.state.collectAsStateWithLifecycle()
             DayCalendarActivity(route.date, state, dayCalendarVM.actions, navController)
-
         }
         composable<NavigationRoute.DeadlineAdd>{
             DeadlineAddActivity(navController)
@@ -269,7 +274,10 @@ fun NavGraph(
         }
         composable<NavigationRoute.Select> { backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.Select>()
-            SelectActivity(route.textSearch, route.entry, navController)
+            val selectVm = koinViewModel<SelectViewModel>()
+            val state by selectVm.state.collectAsStateWithLifecycle()
+            selectVm.actions.populateUI(route.textSearch, route.items)
+            SelectActivity(state, selectVm.actions, navController)
         }
         composable<NavigationRoute.AddressAdd> {backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.AddressAdd>()

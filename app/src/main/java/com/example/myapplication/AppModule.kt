@@ -10,9 +10,11 @@ import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryVi
 import com.example.myapplication.ui.screen.Bubble.singleSummary.SingleBubbleSummaryViewModel
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarViewModel
 import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
+import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
+import com.example.myapplication.ui.screen.Select.SelectViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -69,6 +71,8 @@ val appModule = module{
                 get(), get(), get(), get (), get(), get(), get(), get(),
                 get(), get()
     )}
+    /* Select */
+    viewModel {SelectViewModel(get())}
 
     /* Address */
     viewModel {AddressAddViewModel(get())}
@@ -81,10 +85,11 @@ val appModule = module{
     /* Customer */
     viewModel {AllCustomersSummaryViewModel()}
     viewModel {SingleCustomerSummaryViewModel()}
+    viewModel {CustomerAddViewModel(get())}
 
     /* Bubbles */
     viewModel {AllBubblesSummaryViewModel()}
-    viewModel {BubbleAddViewModel()}
+    viewModel {BubbleAddViewModel(get())}
     viewModel {SingleBubbleSummaryViewModel()}
 
     /* Job */

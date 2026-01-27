@@ -17,15 +17,20 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.debug.bolle
-import com.example.myapplication.debug.selectedMaterialResult
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
@@ -50,16 +55,26 @@ fun BubbleAddActivity(
     actions: BubbleAddActions,
     navController : NavHostController
 ){
-    if (!state.started) {
-        actions.populateSellers()
-        bubbleId?.let(actions::populateFromEdit)
+    actions.populateView(bubbleId)
+
+    val previousBackStackEntry = navController.previousBackStackEntry
+
+    val selectSearchText = stringResource(R.string.materials)
+
+    val currentBackStackEntry = navController.currentBackStackEntry
+    val selectedItems by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
+        ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
+
+    LaunchedEffect(selectedItems) {
+        selectedItems?.let{ ids ->
+            if(ids.isNotEmpty()) {
+                actions.setMaterials(ids)
+            }
+        }
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
     }
 
-    if (selectedMaterialResult.isNotEmpty()) {
-        actions.setMaterials(selectedMaterialResult)
-        selectedMaterialResult = listOf()
-    }
-    val previousBackStackEntry = navController.previousBackStackEntry
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -70,7 +85,7 @@ fun BubbleAddActivity(
                     IconButton(
                         onClick = {
                             actions.saveBubble()
-                            navController.navigate(NavigationRoute.SingleBubbleSummary(bubbleId = 0))
+                            navController.navigate(NavigationRoute.SingleBubbleSummary(state.bubbleId ?: 0))
                             {
                                 popUpTo(NavigationRoute.BubbleAdd(null)){inclusive = true}
                             }
@@ -98,28 +113,31 @@ fun BubbleAddActivity(
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.number),
-                    onValueChange = actions::setBubbleNumber,
-                    value = state.bubbleNumber
+                    value = state.bubbleNumber,
+                    onValueChange = actions::setBubbleNumber
                 )
             }
-            item{DatePickerFieldToModal(stringResource(R.string.date_issue),
-                onValueChange = {actions.setBubbleDate( LocalDate.parse(it, DateTimeFormatter.ofPattern("dd/MM/yyyy"))) },
-                value = state.bubbleDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-            )}
+            item{
+                DatePickerFieldToModal(
+                    title = stringResource(R.string.date_issue),
+                    value = state.bubbleDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    onValueChange = {actions.setBubbleDate(LocalDate.parse(it, DateTimeFormatter.ofPattern("dd/MM/yyyy")))},
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 SplitButtonMenu(
-                    content = state.selectedSeller?.sellerName ?: "New",
-                    items = state.seller.map{item ->MenuItem(name = item.sellerName, actions::setSeller)},
-                    heightMenu = (state.seller.size * 55).dp
+                    content = state.selectedSeller?.name ?: "New",
+                    items = state.sellers.map{ item -> MenuItem(name = item.name, actions::setSeller)},
+                    heightMenu = (state.sellers.size * 55).dp
                 )
             }
-            if(state.selectedSeller?.sellerName.equals("New")){
+            if(state.selectedSeller?.name.equals("New")){
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.name),
                         onValueChange = actions::setNewSeller,
-                        value = state.newSeller?.sellerName
+                        value = state.newSeller?.name
                     )
                 }
                 item{Spacer(Modifier.size(8.dp))}
@@ -135,12 +153,21 @@ fun BubbleAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = { navController.navigate(NavigationRoute.Select("Materiale", "Materials")) }
+                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllMaterials))}
                 )
             }
-            item {Spacer(Modifier.size(8.dp))}
+            if(state.materials.isNotEmpty()){
+                item{CustomDivider()}
+            }else {
+                item{Spacer(Modifier.size(8.dp))}
+            }
+
+            if(!selectedItems.isNullOrEmpty()){
+                actions.setMaterials(selectedItems!!)
+            }
             itemsIndexed(state.materials){index, item ->
-                TitleLabel(item.nome)
+                TitleLabel(item.material.category)
+                /*
                 CustomOutlineTextField(
                     label = stringResource(R.string.quantity),
                     onValueChange = { value -> actions.setQuantityMaterial(item, value)},
@@ -153,14 +180,11 @@ fun BubbleAddActivity(
                         DecimalFormat("#.00").format(it)
                     }
                 )
-                CustomOutlineTextField(
-                    label = stringResource(R.string.vat),
-                    onValueChange = { value -> actions.setVatMaterial(item, value)},
-                    value = state.materials.firstOrNull { it.nome == item.nome }?.iva.toString()
-                )
-                if(index < 5/*prodotti.size*/) {
+                if(index < state.materials.size - 1) {
                     CustomDivider()
                 }
+                
+                 */
             }
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleBubbleSummary>() == true) {
@@ -174,7 +198,7 @@ fun BubbleAddActivity(
                         }
                     }
                 }
-                item { Spacer(Modifier.size(8.dp)) }
+                item{Spacer(Modifier.size(8.dp))}
             }
         }
     }

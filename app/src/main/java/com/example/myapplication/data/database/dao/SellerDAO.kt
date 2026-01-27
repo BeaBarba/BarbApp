@@ -21,7 +21,7 @@ interface SellerDAO{
     fun getAllSeller() : Flow<List<Seller>>
 
     @Upsert
-    suspend fun upsertSeller(seller : Seller)
+    suspend fun upsertSeller(seller : Seller) : Long
 
     @Delete
     suspend fun  deleteSeller(seller: Seller)

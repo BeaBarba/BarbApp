@@ -16,6 +16,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,11 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.modules.DeadlineType
 import com.example.myapplication.data.modules.FrequencyType
+import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.debug.categorie_menu
 import com.example.myapplication.debug.categorie_s_menu
 import com.example.myapplication.debug.invoicesType
@@ -48,6 +51,24 @@ fun DeadlineAddActivity(
     navController: NavHostController
 ) {
     val previousBackStackEntry = navController.previousBackStackEntry
+
+    val selectSearchText = stringResource(R.string.invoice_purchase)
+
+    val currentBackStackEntry = navController.currentBackStackEntry
+    val selectedItems by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
+        ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
+
+    LaunchedEffect(selectedItems) {
+        selectedItems?.let{ ids ->
+            if(ids.isNotEmpty()) {
+                println("println " + ids.size)
+                //actions.setPurchaseInvoices(ids)
+            }
+        }
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -166,7 +187,7 @@ fun DeadlineAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select("Fatture", "InvoiceAdd"))}
+                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllPurchaseInvoices))}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

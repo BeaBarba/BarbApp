@@ -3,6 +3,7 @@ package com.example.myapplication.data.repository
 import com.example.myapplication.data.database.Address
 import com.example.myapplication.data.database.AirConditioner
 import com.example.myapplication.data.database.Bubble
+import com.example.myapplication.data.database.BubbleFullDetails
 import com.example.myapplication.data.database.CategoryPurchaseInvoice
 import com.example.myapplication.data.database.Company
 import com.example.myapplication.data.database.Customer
@@ -123,7 +124,7 @@ class Repository (
 
     fun getSellerById(id : Int) : Flow<Seller?> = daoSeller.getSeller(id)
 
-    suspend fun upsertSeller(seller: Seller) = daoSeller.upsertSeller(seller)
+    suspend fun upsertSeller(seller: Seller) : Long = daoSeller.upsertSeller(seller)
 
     suspend fun deleteSeller(seller: Seller) = daoSeller.deleteSeller(seller)
 
@@ -150,9 +151,11 @@ class Repository (
 
     fun getBubbleById(id: Int) : Flow<Bubble?> = daoBubble.getBubble(id)
 
-    suspend fun upsertBubble(bubble : Bubble) = daoBubble.upsertBubble(bubble)
+    suspend fun upsertBubble(bubble : Bubble) : Long = daoBubble.upsertBubble(bubble)
 
     suspend fun deleteBubble(bubble : Bubble) = daoBubble.deleteBubble(bubble)
+
+    suspend fun getBubbleFullDetails(bubble : Int) : Flow<BubbleFullDetails> = daoBubble.getBubbleFullDetails(bubble)
 
     /* Delivery */
     val deliveries = daoDelivery.getAllDeliveries()

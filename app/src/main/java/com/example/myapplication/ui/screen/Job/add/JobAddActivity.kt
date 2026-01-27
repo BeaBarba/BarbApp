@@ -19,13 +19,19 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.debug.interventi
 import com.example.myapplication.debug.tipi_menu
 import com.example.myapplication.ui.component.BackButton
@@ -44,6 +50,25 @@ fun JobAddActivity(
     navController : NavHostController
 ){
     val previousBackStackEntry = navController.previousBackStackEntry
+
+    val selectSearchTextCustomer = stringResource(R.string.customer)
+    val selectSearchTextAddress = stringResource(R.string.address)
+
+    val currentBackStackEntry = navController.currentBackStackEntry
+    val selectedItems by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
+        ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList()) }
+
+    LaunchedEffect(selectedItems) {
+        selectedItems?.let{ ids ->
+            if(ids.isNotEmpty()) {
+                println("Println " + ids.size)
+                //actions.setMaterials(ids)
+            }
+        }
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -94,7 +119,7 @@ fun JobAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select("Cliente", "CustomerAdd"))}
+                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchTextCustomer, SelectKey.AllCustomers))}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -124,7 +149,7 @@ fun JobAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select("Indirizzo", "AddressAdd"))}
+                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchTextAddress, SelectKey.AllAddresses))}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

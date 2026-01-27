@@ -82,7 +82,7 @@ fun SingleBubbleSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.seller),
-                    description = state.seller?.sellerName ?: "",
+                    description = state.seller?.name ?: "",
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
                 )

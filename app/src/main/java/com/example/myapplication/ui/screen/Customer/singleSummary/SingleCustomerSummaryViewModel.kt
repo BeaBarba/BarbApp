@@ -45,7 +45,7 @@ class SingleCustomerSummaryViewModel() : ViewModel()  {
             if (!state.value.started) {
                 _state.update { it.copy(
                     started = true,
-                    customerData = listaClienti.get(2)
+                    customerData = listaClienti.get(0)
                 )  }
             }
         }

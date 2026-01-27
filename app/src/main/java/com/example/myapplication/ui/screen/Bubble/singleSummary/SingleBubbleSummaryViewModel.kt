@@ -1,9 +1,9 @@
 package com.example.myapplication.ui.screen.Bubble.singleSummary
 
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.data.database.Seller
 import com.example.myapplication.debug.Prodotto
 import com.example.myapplication.debug.prodotti
-import com.example.myapplication.ui.screen.Bubble.add.Seller
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
