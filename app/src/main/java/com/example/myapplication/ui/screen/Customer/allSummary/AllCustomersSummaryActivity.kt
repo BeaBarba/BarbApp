@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -28,6 +29,7 @@ fun AllCustomersSummaryActivity(
     navController : NavHostController
 ){
     actions.populateCustomers()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -62,7 +64,15 @@ fun AllCustomersSummaryActivity(
             CustomSearchBar(stringResource(R.string.customer),onValueChange = actions::setSearchString)
             CustomersCardsList(
                 letters = state.startingChar,
-                customers = state.customers.map {  if (it.cognome != null) (it.cognome + " " + it.nome) else it.nome},
+                customers = state.customers.map{
+                    Pair(it.customer.cf,
+                        if (it.privateCustomer != null) {
+                            (it.privateCustomer.lastName + " " + it.customer.name)
+                        }else {
+                            it.customer.name
+                        }
+                    )
+                },
                 navController = navController
             )
         }

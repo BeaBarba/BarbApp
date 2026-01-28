@@ -26,14 +26,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.modules.CustomerType
 import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
-import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.GenericCard
@@ -51,31 +49,33 @@ fun CustomerAddActivity(
     actions: CustomerAddActions,
     navController : NavHostController
 ){
-    customerId?.let(actions::populateFromEdit)
+    LaunchedEffect(customerId){
+        customerId?.let(actions::populateFromEdit)
+    }
+
     val displayLabel =
         when (state.customerType){
             CustomerType.Azienda -> stringResource(R.string.company)
             CustomerType.Privato -> stringResource(R.string.private_customer)
-    }
+        }
+
     var type = listOf(
         MenuItem(stringResource(R.string.company), {actions.setCustomerType(CustomerType.Azienda)}),
         MenuItem(stringResource(R.string.private_customer),{actions.setCustomerType(CustomerType.Privato)})
     )
 
-    val previousBackStackEntry = navController.previousBackStackEntry
-
     val selectSearchText = stringResource(R.string.customer)
 
     val currentBackStackEntry = navController.currentBackStackEntry
+
     val selectedItems by currentBackStackEntry?.savedStateHandle
         ?.getStateFlow<List<String>?>("selectedIds", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
-
     LaunchedEffect(selectedItems) {
         selectedItems?.let{ ids ->
             if(ids.isNotEmpty()) {
                 println("println " + ids.size)
-                //actions.setReferral(ids)
+                actions.setReferral(ids.first())
             }
         }
         currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
@@ -90,8 +90,9 @@ fun CustomerAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
+                            actions.save()
                             navController.navigate(NavigationRoute.SingleCustomerSummary(state.id)){
-                                popUpTo(NavigationRoute.CustomerAdd){inclusive = true}
+                                popUpTo(NavigationRoute.AllCustomersSummary){inclusive = false}
                             }
                         },
                         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
@@ -112,9 +113,7 @@ fun CustomerAddActivity(
                 )
                 .fillMaxSize()
         ) {
-
             item{SplitButtonMenu(content = displayLabel, type, heightMenu = (2 * 55).dp)}
-
             item{TitleLabel(stringResource(R.string.personal_details))}
             item{
                 CustomOutlineTextField(
@@ -181,7 +180,6 @@ fun CustomerAddActivity(
                 }
             }
             item{Spacer(Modifier.size(8.dp))}
-
             item{TitleLabel(stringResource(R.string.contact))}
             item{
                 CustomOutlineTextField(
@@ -205,7 +203,6 @@ fun CustomerAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-
             item{Spacer(Modifier.size(8.dp))}
             item{TitleLabel(stringResource(R.string.residence))}
             item{
@@ -220,6 +217,13 @@ fun CustomerAddActivity(
                     label = stringResource(R.string.address),
                     value = state.address,
                     onValueChange = actions::setAddress
+                )
+            }
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.house_number),
+                    value = state.houseNumber,
+                    onValueChange = actions::setHouseNumber
                 )
             }
             item{
@@ -251,7 +255,6 @@ fun CustomerAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-
             item{TitleLabel(stringResource(R.string.reference))}
             item{Spacer(Modifier.size(8.dp))}
             item{
@@ -259,7 +262,7 @@ fun CustomerAddActivity(
                     text = stringResource(R.string.customer) + " " + stringResource(R.string.existing).lowercase(),
                     trailingContent = {
                         Icon(
-                            Icons.Filled.ChevronRight,
+                            imageVector = Icons.Filled.ChevronRight,
                             contentDescription = stringResource(R.string.edit),
                             modifier = Modifier.size(35.dp)
                         )
@@ -270,7 +273,7 @@ fun CustomerAddActivity(
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.name),
-                    value  = state.referenceName,
+                    value = state.referenceName,
                     onValueChange = actions::setReferenceName
                 )
             }
@@ -288,19 +291,7 @@ fun CustomerAddActivity(
                     onValueChange = actions::setReferencePhoneNumber
                 )
             }
-
             item {Spacer(Modifier.size(8.dp))}
-            if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleCustomerSummary>() == true) {
-                item {
-                    DeleteButton{
-                        navController.navigate(NavigationRoute.AllCustomersSummary){
-                            popUpTo(NavigationRoute.AllCustomersSummary){inclusive = true}
-                            launchSingleTop = true
-                        }
-                    }
-                }
-                item{Spacer(Modifier.size(8.dp))}
-            }
         }
     }
 }

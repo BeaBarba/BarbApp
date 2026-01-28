@@ -9,7 +9,6 @@ import com.example.myapplication.data.database.dao.BubbleDAO
 import com.example.myapplication.data.database.dao.CategoryPurchaseInvoiceDAO
 import com.example.myapplication.data.database.dao.CompanyDAO
 import com.example.myapplication.data.database.dao.CustomerDAO
-import com.example.myapplication.data.database.dao.CustomerFullDetailsDAO
 import com.example.myapplication.data.database.dao.CustomerProvisionDAO
 import com.example.myapplication.data.database.dao.DeliveryDAO
 import com.example.myapplication.data.database.dao.ImageDAO
@@ -112,5 +111,4 @@ abstract class appDatabase : RoomDatabase(){
     abstract fun revenuesDAO() : RevenueDAO
     abstract fun workSiteRevenueDAO() : WorkSiteRevenueDAO
     abstract fun jobRevenueDAO() : JobRevenueDAO
-    abstract fun customerFullDetailsDAO() : CustomerFullDetailsDAO
 }

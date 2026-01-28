@@ -7,7 +7,6 @@ import androidx.room.Upsert
 import com.example.myapplication.data.database.Revenue
 import kotlinx.coroutines.flow.Flow
 
-
 @Dao
 interface RevenueDAO{
 

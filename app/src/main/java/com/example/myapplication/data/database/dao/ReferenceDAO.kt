@@ -22,7 +22,7 @@ interface ReferenceDAO{
     fun getAllReferences() : Flow<List<Reference>>
 
     @Upsert
-    suspend fun upsertReference(reference: Reference)
+    suspend fun upsertReference(reference: Reference) : Long
 
     @Delete
     suspend fun deleteReference(reference: Reference)

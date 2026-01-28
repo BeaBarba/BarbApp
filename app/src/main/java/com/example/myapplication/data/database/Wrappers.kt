@@ -35,7 +35,7 @@ data class CustomerFullDetails(
         parentColumn = "CF",
         entityColumn = "Cliente"
     )
-    val phoneNumber: PhoneNumber,
+    val phoneNumber: PhoneNumber?,
 
     @Relation(
         parentColumn = "CF",

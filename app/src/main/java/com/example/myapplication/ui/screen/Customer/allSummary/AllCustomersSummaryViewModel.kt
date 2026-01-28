@@ -1,19 +1,24 @@
 package com.example.myapplication.ui.screen.Customer.allSummary
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.database.CustomerFullDetails
+import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.debug.Cliente
 import com.example.myapplication.debug.listaClienti
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.util.Locale.getDefault
 
 data class AllCustomersSummaryState(
     val started : Boolean = false,
-    val customers : List<Cliente> = listOf(),
+    val customers : List<CustomerFullDetails> = listOf(),
     val startingChar : List<Char> = listOf(),
     val searchString : String = "",
-    val customersToView : List<Cliente> = listOf(),
+    val customersToView : List<CustomerFullDetails> = listOf(),
     val sortingFunction: (List<Char>) -> List<Char> = {it.sorted()}
 )
 
@@ -29,26 +34,41 @@ interface AllCustomersSummaryActions {
     fun setElectricFilter()
 }
 
-class AllCustomersSummaryViewModel() : ViewModel()  {
+class AllCustomersSummaryViewModel(
+    private val repository : Repository
+) : ViewModel()  {
     private val _state = MutableStateFlow(AllCustomersSummaryState())
 
     val state = _state.asStateFlow()
 
     val actions = object : AllCustomersSummaryActions {
         override fun populateCustomers() {
-            if (!state.value.started) {
-                _state.update { it.copy(customers = listaClienti, started = true, customersToView = listaClienti) }
-                _state.update { it.copy(startingChar = getStartingChar(state.value.customers).sorted()) }
+            viewModelScope.launch {
+                val customers = repository.customers.first().map { customer ->
+                    repository.getCustomerFullDetailsById(customer.cf).first()!!
+                }
+                if (!state.value.started) {
+                    _state.update {
+                        it.copy(
+                            customers = customers,
+                            started = true,
+                            customersToView = customers
+                        )
+                    }
+                    _state.update { it.copy(startingChar = getStartingChar(state.value.customers).sorted()) }
+                }
             }
         }
 
         override fun setSearchString(searchString: String) {
             _state.update { it.copy(
-                searchString = searchString,
-                customersToView = state.value.customers.filter {
-                    it.cognome?.lowercase()?.startsWith(searchString.lowercase(getDefault()))?:false ||
-                            it.nome.lowercase().startsWith(searchString.lowercase(getDefault()))  },
-            ) }
+                    searchString = searchString,
+                    customersToView = state.value.customers.filter {
+                        it.privateCustomer?.lastName?.lowercase()?.startsWith(searchString.lowercase(getDefault())) ?:false ||
+                        it.customer.name.lowercase().startsWith(searchString.lowercase(getDefault()))
+                    },
+                )
+            }
             _state.update {it.copy(startingChar = state.value.sortingFunction(getStartingChar(state.value.customersToView)))}
         }
 
@@ -81,10 +101,15 @@ class AllCustomersSummaryViewModel() : ViewModel()  {
         override fun setElectricFilter() {
 
         }
-
     }
 
-    private fun getStartingChar(customersList : List<Cliente>) : List<Char> {
-        return customersList.map {  it.cognome?.get(0)?:it.nome.get(0)  }.distinct()
+    private fun getStartingChar(customersList : List<CustomerFullDetails>) : List<Char> {
+        return customersList.map {
+            if (it.privateCustomer != null) {
+                it.privateCustomer.lastName.get(0)
+            } else {
+                it.customer.name.get(0)
+            }
+        }.distinct()
     }
 }

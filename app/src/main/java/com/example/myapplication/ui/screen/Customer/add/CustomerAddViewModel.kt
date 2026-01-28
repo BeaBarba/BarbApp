@@ -2,6 +2,13 @@ package com.example.myapplication.ui.screen.Customer.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.database.Address
+import com.example.myapplication.data.database.Company
+import com.example.myapplication.data.database.Customer
+import com.example.myapplication.data.database.PhoneNumber
+import com.example.myapplication.data.database.Private
+import com.example.myapplication.data.database.Reference
+import com.example.myapplication.data.database.Referral
 import com.example.myapplication.data.modules.CustomerType
 import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,44 +21,56 @@ data class CustomerAddState (
     val id : String = "",
     val name : String = "",
     val email : String = "",
+    val averageCollectionTime : Float = 0.0F,
+    val collectionCount : Int = 0,
+    val referralId : String? = null,
+    val addressId : Int = 0,
+
+    val customerType: CustomerType = CustomerType.Privato,
+
     val phoneNumber : String = "",
     val notePhoneNumber : String = "",
-    val addressId : Int = 0,
+
     val address : String = "",
+    val houseNumber : String = "",
     val municipality : String = "",
     val city : String = "",
     val province : String = "",
     val zip : String = "",
-    val referralId : String? = null,
+
     val referenceId : Int = 0,
     val referenceName : String = "",
     val referenceLastName : String = "",
     val referencePhoneNumber : String = "",
+
     val privateLastName : String = "",
     val privateDateBirth: LocalDate = LocalDate.now(),
     val privatePlaceBirth : String = "",
+
     val companyName : String = "",
     val companyUniqueCode : String = "",
     val companyVatNumber : String = "",
-    val customerType: CustomerType = CustomerType.Privato,
+
     val started : Boolean = false
 )
 
 interface CustomerAddActions {
     fun populateFromEdit(customerId : String)
     fun setCustomerType(customerType : CustomerType)
+    fun save()
     fun setCustomerId(id : String)
     fun setCustomerName(name : String)
     fun setPrivateLastName(lastName : String)
-    fun setPrivatePlaceBirth(place : String)
-    fun setPrivateDateBirth(date : LocalDate)
+    fun setPrivatePlaceBirth(placeBirth : String)
+    fun setPrivateDateBirth(dateBirth : LocalDate)
     fun setCompanyName(name : String)
-    fun setCompanyUniqueCode(unique : String)
+    fun setCompanyUniqueCode(uniqueCode : String)
     fun setCompanyVat(vat : String)
     fun setEmail(email: String)
     fun setPhoneNumber(number : String)
     fun setPhoneNote(note : String)
     fun setAddress(address: String)
+    fun setHouseNumber(houseNumber: String)
     fun setMunicipality(municipality: String)
     fun setCity(city: String)
     fun setProvince(province: String)
@@ -65,13 +84,15 @@ interface CustomerAddActions {
 class CustomerAddViewModel(
     private val repository : Repository
 ) : ViewModel() {
+
     private val _state = MutableStateFlow(CustomerAddState())
 
     val state = _state.asStateFlow()
 
     val actions = object : CustomerAddActions {
+
         override fun populateFromEdit(customerId: String) {
-            if (!state.value.started)
+            if (!state.value.started) {
                 viewModelScope.launch {
                     repository.getCustomerFullDetailsById(customerId).collect { customerEntity ->
                         if (customerEntity != null) {
@@ -80,8 +101,8 @@ class CustomerAddViewModel(
                                     id = customerEntity.customer.cf,
                                     name = customerEntity.customer.name,
                                     email = customerEntity.customer.mail,
-                                    phoneNumber = customerEntity.phoneNumber.number,
-                                    notePhoneNumber = customerEntity.phoneNumber.text,
+                                    phoneNumber = customerEntity.phoneNumber?.number ?: "",
+                                    notePhoneNumber = customerEntity.phoneNumber?.text ?: "",
                                     addressId = customerEntity.address.id,
                                     address = customerEntity.address.address,
                                     municipality = customerEntity.address.municipality,
@@ -92,24 +113,102 @@ class CustomerAddViewModel(
                                     referenceId = customerEntity.reference?.id ?: 0,
                                     referenceName = customerEntity.reference?.name ?: "",
                                     referenceLastName = customerEntity.reference?.lastName ?: "",
-                                    referencePhoneNumber = customerEntity.reference?.phoneNumber ?: "",
-                                    privateLastName = customerEntity.privateCustomer?.lastName ?: "",
+                                    referencePhoneNumber = customerEntity.reference?.phoneNumber?: "",
+                                    privateLastName = customerEntity.privateCustomer?.lastName?: "",
                                     privateDateBirth = customerEntity.privateCustomer?.dateBirth?: LocalDate.now(),
-                                    privatePlaceBirth = customerEntity.privateCustomer?.placeBirth?:"",
-                                    companyName = customerEntity.companyCustomer?.companyName?:"",
-                                    companyVatNumber = customerEntity.companyCustomer?.vatNumber?:"",
-                                    companyUniqueCode = customerEntity.companyCustomer?.uniqueCode?:"",
-                                    customerType = if (customerEntity.companyCustomer == null)
-                                        CustomerType.Privato else CustomerType.Azienda
+                                    privatePlaceBirth = customerEntity.privateCustomer?.placeBirth?: "",
+                                    companyName = customerEntity.companyCustomer?.companyName ?: "",
+                                    companyVatNumber = customerEntity.companyCustomer?.vatNumber?: "",
+                                    companyUniqueCode = customerEntity.companyCustomer?.uniqueCode?: "",
+                                    customerType =
+                                    if (customerEntity.companyCustomer == null) {
+                                        CustomerType.Privato
+                                    } else {
+                                        CustomerType.Azienda
+                                    },
+                                    collectionCount = customerEntity.customer.collectionCount,
+                                    averageCollectionTime = customerEntity.customer.avarageCollectionTime
                                 )
                             }
                         }
                     }
                 }
+            }
         }
 
         override fun setCustomerType(customerType: CustomerType) {
             _state.update { it.copy(customerType = customerType) }
+        }
+
+        override fun save() {
+            viewModelScope.launch {
+                val addressId = repository.upsertAddress(
+                    Address(
+                        state.value.addressId,
+                        state.value.address,
+                        state.value.houseNumber,
+                        state.value.municipality,
+                        state.value.city,
+                        state.value.province,
+                        state.value.zip
+                    )
+                ).toInt()
+                val referenceId = if (state.value.referenceName != "") {
+                    repository.upsertReference(
+                        Reference(
+                            state.value.referenceId,
+                            state.value.referenceName,
+                            state.value.referenceLastName,
+                            state.value.referencePhoneNumber
+                        )
+                    ).toInt()
+                } else null
+                repository.upsertCustomer(
+                    Customer(
+                        state.value.id,
+                        state.value.name,
+                        state.value.email,
+                        state.value.averageCollectionTime,
+                        state.value.collectionCount,
+                        addressId,
+                        referenceId
+                    )
+                )
+                repository.upsertPhoneNumber(
+                    PhoneNumber(
+                        state.value.phoneNumber,
+                        state.value.notePhoneNumber,
+                        state.value.id
+                    )
+                )
+                if (state.value.customerType == CustomerType.Privato) {
+                    repository.upsertPrivate(
+                        Private(
+                            state.value.id,
+                            state.value.privateLastName,
+                            state.value.privateDateBirth,
+                            state.value.privatePlaceBirth
+                        )
+                    )
+                } else {
+                    repository.upsertCompany(
+                        Company(
+                            state.value.companyUniqueCode,
+                            state.value.companyName,
+                            state.value.companyVatNumber,
+                            state.value.id
+                        )
+                    )
+                }
+                if (state.value.referralId != null) {
+                    repository.upsertReferral(
+                        Referral(
+                            state.value.id,
+                            state.value.referralId!!
+                        )
+                    )
+                }
+            }
         }
 
         override fun setCustomerId(id: String) {
@@ -124,20 +223,20 @@ class CustomerAddViewModel(
             _state.update { it.copy(privateLastName = lastName) }
         }
 
-        override fun setPrivatePlaceBirth(place: String) {
-            _state.update { it.copy(privatePlaceBirth = place) }
+        override fun setPrivatePlaceBirth(placeBirth: String) {
+            _state.update { it.copy(privatePlaceBirth = placeBirth) }
         }
 
-        override fun setPrivateDateBirth(date: LocalDate) {
-            _state.update { it.copy(privateDateBirth = date) }
+        override fun setPrivateDateBirth(dateBirth: LocalDate) {
+            _state.update { it.copy(privateDateBirth = dateBirth) }
         }
 
         override fun setCompanyName(name: String) {
             _state.update { it.copy(companyName = name) }
         }
 
-        override fun setCompanyUniqueCode(unique: String) {
-            _state.update { it.copy(companyUniqueCode = unique) }
+        override fun setCompanyUniqueCode(uniqueCode: String) {
+            _state.update { it.copy(companyUniqueCode = uniqueCode) }
         }
 
         override fun setCompanyVat(vat: String) {
@@ -158,6 +257,10 @@ class CustomerAddViewModel(
 
         override fun setAddress(address: String) {
             _state.update { it.copy(address = address) }
+        }
+
+        override fun setHouseNumber(houseNumber: String) {
+            _state.update { it.copy(houseNumber = houseNumber) }
         }
 
         override fun setMunicipality(municipality: String) {
@@ -191,14 +294,5 @@ class CustomerAddViewModel(
         override fun setReferencePhoneNumber(referencePhoneNumber: String) {
             _state.update { it.copy(referencePhoneNumber = referencePhoneNumber) }
         }
-
-    }
-
-    private fun checkIfStringIsInt(value: String): Boolean {
-        return value.all { char -> char.isDigit() }
-    }
-
-    private fun checkIfStringIsDouble(value: String): Boolean {
-        return value.toDoubleOrNull() != null || value == ""
     }
 }

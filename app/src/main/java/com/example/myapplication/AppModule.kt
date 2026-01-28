@@ -63,14 +63,14 @@ val appModule = module{
     single{get<appDatabase>().revenuesDAO()}
     single{get<appDatabase>().workSiteRevenueDAO()}
     single{get<appDatabase>().jobRevenueDAO()}
-    single{get<appDatabase>().customerFullDetailsDAO()}
 
-    single{Repository(get(), get(), get(), get(), get(), get (),
-                get(), get(), get(), get(), get(), get(), get(), get(),
-                get(), get (), get(), get(), get(), get(), get(), get(),
-                get(), get(), get(), get (), get(), get(), get(), get(),
-                get(), get()
+    single{Repository(
+        get(), get(), get(), get(), get(), get(), get(), get(),
+        get(), get (), get(), get(), get(), get(), get(), get(),
+        get(), get(), get(), get (), get(), get(), get(), get(),
+        get(), get(), get(), get(), get(), get (), get(),
     )}
+
     /* Select */
     viewModel {SelectViewModel(get())}
 
@@ -83,8 +83,8 @@ val appModule = module{
     viewModel {DayCalendarViewModel()}
 
     /* Customer */
-    viewModel {AllCustomersSummaryViewModel()}
-    viewModel {SingleCustomerSummaryViewModel()}
+    viewModel {AllCustomersSummaryViewModel(get())}
+    viewModel {SingleCustomerSummaryViewModel(get())}
     viewModel {CustomerAddViewModel(get())}
 
     /* Bubbles */

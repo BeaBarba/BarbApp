@@ -21,7 +21,7 @@ interface AddressDAO{
     fun getAllAddresses() : Flow<List<Address>>
 
     @Upsert
-    suspend fun upsertAddress(address : Address)
+    suspend fun upsertAddress(address : Address) : Long
 
     @Delete
     suspend fun  deleteAddress(address: Address)

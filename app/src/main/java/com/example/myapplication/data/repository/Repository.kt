@@ -39,7 +39,6 @@ import com.example.myapplication.data.database.dao.BubbleDAO
 import com.example.myapplication.data.database.dao.CategoryPurchaseInvoiceDAO
 import com.example.myapplication.data.database.dao.CompanyDAO
 import com.example.myapplication.data.database.dao.CustomerDAO
-import com.example.myapplication.data.database.dao.CustomerFullDetailsDAO
 import com.example.myapplication.data.database.dao.CustomerProvisionDAO
 import com.example.myapplication.data.database.dao.DeliveryDAO
 import com.example.myapplication.data.database.dao.ImageDAO
@@ -98,9 +97,9 @@ class Repository (
     private val daoMaterialUsage : MaterialUsageDAO,
     private val daoRevenue : RevenueDAO,
     private val daoWorkSiteRevenue : WorkSiteRevenueDAO,
-    private val daoJobRevenue : JobRevenueDAO,
-    private val daoCustomerFullDetails: CustomerFullDetailsDAO
+    private val daoJobRevenue : JobRevenueDAO
 ){
+
     /* AirConditioner */
     val airConditioners = daoAirConditioner.getAllAirConditioners()
 
@@ -254,28 +253,26 @@ class Repository (
 
     suspend fun upsertCustomer(customer: Customer) = daoCustomer.upsertCustomer(customer)
 
-    suspend fun deleteCustomer(customer: Customer) = daoCustomer.deleteCustomer(customer)
+    fun getCustomerFullDetailsById(cf : String) : Flow<CustomerFullDetails?> = daoCustomer.getCustomerFullDetails(cf)
+
+    suspend fun customerFullDetails() =  daoCustomer.getAllCustomersFullDetails()
 
     /* Private */
     fun getPrivateById(cf : String) : Flow<Private?> = daoPrivate.getPrivate(cf)
 
     suspend fun upsertPrivate(privateCustomer: Private) = daoPrivate.upsertPrivate(privateCustomer)
 
-    suspend fun deletePrivate(privateCustomer: Private) = daoPrivate.deletePrivate(privateCustomer)
-
     /* Company */
     fun getCompanyById(uniqueCode : String) : Flow<Company?> = daoCompany.getCompany(uniqueCode)
 
     suspend fun upsertCompany(company: Company) = daoCompany.upsertCompany(company)
-
-    suspend fun deleteCompany(company: Company) = daoCompany.deleteCompany(company)
 
     /* Reference */
     val reference = daoReference.getAllReferences()
 
     fun getReferenceById(id : Int) : Flow<Reference?> = daoReference.getReference(id)
 
-    suspend fun upsertReference(reference: Reference) = daoReference.upsertReference(reference)
+    suspend fun upsertReference(reference: Reference) : Long = daoReference.upsertReference(reference)
 
     suspend fun deleteReference(reference: Reference) = daoReference.deleteReference(reference)
 
@@ -310,7 +307,7 @@ class Repository (
 
     fun getAddressById(id: Int) : Flow<Address?> = daoAddress.getAddress(id)
 
-    suspend fun upsertAddress(address : Address) = daoAddress.upsertAddress(address)
+    suspend fun upsertAddress(address : Address) : Long = daoAddress.upsertAddress(address)
 
     suspend fun deleteAddress(address : Address) = daoAddress.deleteAddress(address)
 
@@ -377,6 +374,4 @@ class Repository (
 
     suspend fun deleteJobRevenue(jobRevenue: JobRevenue) = daoJobRevenue.deleteJobRevenue(jobRevenue)
 
-    /* CustomeFullDetails */
-    suspend fun getCustomerFullDetailsById(cf : String) : Flow<CustomerFullDetails?> = daoCustomerFullDetails.getCustomerFullDetails(cf)
 }
