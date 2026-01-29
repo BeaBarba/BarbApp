@@ -47,7 +47,7 @@ fun SinglePurchaseInvoiceSummaryActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.BubbleAdd)
+                            navController.navigate(NavigationRoute.BubbleAdd(null))
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
@@ -74,7 +74,7 @@ fun SinglePurchaseInvoiceSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            /*
+
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.seller),
@@ -96,7 +96,7 @@ fun SinglePurchaseInvoiceSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.date_issue),
-                    description = provenienze.get(0).data,
+                    description = provenienze.get(0).data.toString(),
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
                 )
@@ -124,8 +124,6 @@ fun SinglePurchaseInvoiceSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             materialTable(prodotti, headerColumns, tableStyle)
             item{Spacer(Modifier.size(8.dp))}
-
-             */
         }
     }
 }

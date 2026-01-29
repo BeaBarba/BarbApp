@@ -65,15 +65,19 @@ fun AllCustomersSummaryActivity(
             CustomersCardsList(
                 letters = state.startingChar,
                 customers = state.customers.map{
-                    Pair(it.customer.cf,
+                    Triple(
+                        first = it.customer.cf,
+                        second =
                         if (it.privateCustomer != null) {
                             (it.privateCustomer.lastName + " " + it.customer.name)
                         }else {
                             it.customer.name
+                        },
+                        third = {
+                            navController.navigate(NavigationRoute.SingleCustomerSummary(it.customer.cf))
                         }
                     )
                 },
-                navController = navController
             )
         }
     }

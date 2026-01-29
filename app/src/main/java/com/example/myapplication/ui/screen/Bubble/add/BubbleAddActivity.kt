@@ -156,35 +156,33 @@ fun BubbleAddActivity(
                     onClick = {navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllMaterials))}
                 )
             }
-            if(state.materials.isNotEmpty()){
+            if(state.materialsSelected.isNotEmpty()){
                 item{CustomDivider()}
             }else {
                 item{Spacer(Modifier.size(8.dp))}
             }
 
-            if(!selectedItems.isNullOrEmpty()){
-                actions.setMaterials(selectedItems!!)
-            }
-            itemsIndexed(state.materials){index, item ->
+            itemsIndexed(state.materialsSelected){index, item ->
                 TitleLabel(item.material.category)
-                /*
+
                 CustomOutlineTextField(
                     label = stringResource(R.string.quantity),
-                    onValueChange = { value -> actions.setQuantityMaterial(item, value)},
-                    value = state.materials.firstOrNull { it.nome == item.nome }?.quantita.toString()
+                    value = item.quantity.toString(),
+                    onValueChange = { value ->
+                        actions.setQuantityMaterial(item.material, value)
+                    },
                 )
                 CustomOutlineTextField(
                     label = stringResource(R.string.unit_price),
-                    onValueChange = { value -> actions.setUnitPriceMaterial(item, value)},
-                    value = state.materials.firstOrNull { it.nome == item.nome }?.prezzo.let {
+                    value = item.unitPrice.let {
                         DecimalFormat("#.00").format(it)
-                    }
+                    },
+                    onValueChange = { value -> actions.setUnitPriceMaterial(item.material, value)},
+
                 )
-                if(index < state.materials.size - 1) {
+                if(index < state.materialsSelected.size - 1) {
                     CustomDivider()
                 }
-                
-                 */
             }
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleBubbleSummary>() == true) {

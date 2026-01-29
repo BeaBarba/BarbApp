@@ -4,27 +4,27 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
-import com.example.myapplication.data.database.JobMaterial
+import com.example.myapplication.data.database.FutureJobMaterial
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface JobMaterialDAO{
+interface FutureJobMaterialDAO{
 
     @Query("SELECT * " +
             "FROM PRENOTAZIONI " +
             "WHERE Materiale = :material " +
             "AND Intervento = :job"
     )
-    fun getJobMaterial(material : Int, job: Int) : Flow<JobMaterial?>
+    fun getFutureJobMaterial(material : Int, job: Int) : Flow<FutureJobMaterial?>
 
     @Query("SELECT * " +
             "FROM PRENOTAZIONI"
     )
-    fun getAllJobMaterials() : Flow<List<JobMaterial>>
+    fun getAllFutureJobMaterials() : Flow<List<FutureJobMaterial>>
 
     @Upsert
-    suspend fun upsertJobMaterial(jobMaterial: JobMaterial)
+    suspend fun upsertFutureJobMaterial(futureJobMaterial: FutureJobMaterial)
 
     @Delete
-    suspend fun deleteJobMaterial(jobMaterial: JobMaterial)
+    suspend fun deleteFutureJobMaterial(futureJobMaterial: FutureJobMaterial)
 }

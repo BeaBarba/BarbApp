@@ -12,14 +12,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CustomerDAO{
 
-    @Query("SELECT * " +
-            "FROM CLIENTI " +
-            "WHERE CF = :cf"
+    @Query(
+        "SELECT * " +
+        "FROM CLIENTI " +
+        "WHERE CF = :cf"
     )
     fun getCustomer(cf : String) : Flow<Customer?>
 
-    @Query("SELECT * " +
-            "FROM CLIENTI"
+    @Query(
+        "SELECT * " +
+        "FROM CLIENTI"
     )
     fun getAllCustomers() : Flow<List<Customer>>
 
@@ -30,9 +32,10 @@ interface CustomerDAO{
     suspend fun deleteCustomer(customer: Customer)
 
     @Transaction
-    @Query("SELECT * " +
-            "FROM CLIENTI " +
-            "WHERE CF = :cf"
+    @Query(
+        "SELECT * " +
+        "FROM CLIENTI " +
+        "WHERE CF = :cf"
     )
     fun getCustomerFullDetails(cf: String) : Flow<CustomerFullDetails?>
 

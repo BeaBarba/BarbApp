@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.debug.bolle
 import com.example.myapplication.debug.prodotti
 import com.example.myapplication.debug.venditori
@@ -87,7 +88,6 @@ fun PurchaseInvoiceAddActivity(
                 )
                 .fillMaxSize()
         ) {
-            /*
             item{
                 SplitButtonMenu(
                     content =
@@ -112,7 +112,7 @@ fun PurchaseInvoiceAddActivity(
                     onValueChange = {}
                 )
             }
-            item{DatePickerFieldToModal(stringResource(R.string.date_issue))}
+            item{DatePickerFieldToModal(stringResource(R.string.date_issue), {}, "")}
             item{CustomDivider()}
             item{
                 GenericCard(
@@ -130,7 +130,7 @@ fun PurchaseInvoiceAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select("Bolle", "Bubbles"))}
+                    onClick = {navController.navigate(NavigationRoute.Select("Bolle", SelectKey.AllBubbles))}
                 )
             }
             item{CustomDivider()}
@@ -144,7 +144,7 @@ fun PurchaseInvoiceAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = { navController.navigate(NavigationRoute.Select("Materiale", "Materials")) }
+                    onClick = { navController.navigate(NavigationRoute.Select("Materiale", SelectKey.AllMaterials)) }
                 )
             }
             item {Spacer(Modifier.size(8.dp))}
@@ -182,8 +182,6 @@ fun PurchaseInvoiceAddActivity(
                 }
                 item { Spacer(Modifier.size(8.dp)) }
             }
-
-             */
         }
     }
 }

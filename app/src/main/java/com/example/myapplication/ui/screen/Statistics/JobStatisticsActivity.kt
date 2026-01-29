@@ -45,7 +45,7 @@ fun JobStatisticsActivity(
                 )
                 .fillMaxSize()
         ) {
-            /*
+
             item {
                 var selectedStartDate by remember { mutableStateOf<Long?>(null) }
                 var selectedEndDate by remember { mutableStateOf<Long?>(null) }
@@ -62,8 +62,6 @@ fun JobStatisticsActivity(
                     }
                 )
             }
-
-             */
         }
     }
 }

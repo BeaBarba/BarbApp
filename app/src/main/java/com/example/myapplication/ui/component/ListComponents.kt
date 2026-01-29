@@ -90,8 +90,8 @@ fun CardItemAvatar(itemID : String, onclick : () -> Unit){
 @Composable
 fun CustomersCardsList(
     letters : List<Char>,
-    customers : List<Pair<String,String>>,
-    navController : NavHostController
+    customers : List<Triple<String,String, () -> Unit>>,
+    //navController : NavHostController
 ){
     LazyColumn (
         modifier = Modifier.fillMaxSize(),
@@ -107,9 +107,10 @@ fun CustomersCardsList(
                 Column{
                     Spacer(Modifier.size(4.dp))
                     customers.filter{it.second[0] == letter}.forEach{ contact ->
-                        CardItemAvatar(contact.second){
-                            navController.navigate(NavigationRoute.SingleCustomerSummary(contact.first))
-                        }
+                        CardItemAvatar(
+                            contact.second,
+                            onclick = contact.third
+                        )
                         Spacer(Modifier.size(4.dp))
                     }
                 }

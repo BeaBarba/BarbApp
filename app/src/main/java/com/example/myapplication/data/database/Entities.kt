@@ -597,7 +597,7 @@ data class Job(
         )
     ]
 )
-data class JobMaterial(
+data class FutureJobMaterial(
     @ColumnInfo(name = "Materiale") val material : Int,
     @ColumnInfo(name = "Intervento") val job : Int,
     @ColumnInfo(name = "Quantità") val quantity : Float
@@ -611,13 +611,13 @@ data class JobMaterial(
             entity = Material::class,
             parentColumns = ["id"],
             childColumns = ["Materiale"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = Job::class,
             parentColumns = ["id"],
             childColumns = ["Intervento"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.CASCADE
         ),
     ]
 )

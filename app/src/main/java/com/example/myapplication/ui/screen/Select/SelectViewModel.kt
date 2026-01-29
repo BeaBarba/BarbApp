@@ -7,6 +7,7 @@ import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.debug.addressType
 import com.example.myapplication.debug.bubblesType
+import com.example.myapplication.debug.customersType
 import com.example.myapplication.debug.invoicesType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +25,8 @@ data class CardItem(
 
 data class SelectState(
     val searchText : String = "",
-    val itemsList : List<CardItem> = emptyList()
+    val itemsList : List<CardItem> = emptyList(),
+    val idsList : List<String> = emptyList()
 )
 
 interface SelectActions{
@@ -93,7 +95,7 @@ class SelectViewModel(
 
                 SelectKey.AllCustomers -> {
                     viewModelScope.launch(Dispatchers.IO) {
-                        val customersCardList = repository.customerFullDetails()
+                        val customersCardList = repository.getAllCustomersFullDetails()
                             .map { customer ->
                                 CardItem(
                                     id = customer.customer.cf,
@@ -117,7 +119,15 @@ class SelectViewModel(
                     }
                 }
 
-                SelectKey.AllReferences -> {}
+                SelectKey.AllReferences -> {
+                    val customersCardList = customersType.map{item -> CardItem(id = "0", name = item.name, description = "ciao", type = JobType.valueOf(item.type), checked = item.checked)}
+                    _state.update {
+                        it.copy(
+                            searchText = searchText,
+                            itemsList = customersCardList
+                        )
+                    }
+                }
                 SelectKey.AllPurchaseInvoices -> {}
             }
         }

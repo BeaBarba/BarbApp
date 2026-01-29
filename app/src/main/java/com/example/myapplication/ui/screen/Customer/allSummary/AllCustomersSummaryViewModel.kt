@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.CustomerFullDetails
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.debug.Cliente
-import com.example.myapplication.debug.listaClienti
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -42,8 +40,7 @@ class AllCustomersSummaryViewModel(
     val state = _state.asStateFlow()
 
     val actions = object : AllCustomersSummaryActions {
-        override fun populateCustomers() {
-            viewModelScope.launch {
+        override fun populateCustomers() {viewModelScope.launch {
                 val customers = repository.customers.first().map { customer ->
                     repository.getCustomerFullDetailsById(customer.cf).first()!!
                 }
@@ -105,11 +102,23 @@ class AllCustomersSummaryViewModel(
 
     private fun getStartingChar(customersList : List<CustomerFullDetails>) : List<Char> {
         return customersList.map {
-            if (it.privateCustomer != null) {
+            if (it.privateCustomer != null && it.customer.name !="") {
                 it.privateCustomer.lastName.get(0)
             } else {
                 it.customer.name.get(0)
             }
         }.distinct()
+    }
+
+    private fun customerToPairToView(customer : CustomerFullDetails) : Pair<String,String>{
+        return Pair<String, String>(
+            first = customer.customer.cf,
+            second =
+            if (customer.privateCustomer != null) {
+                (customer.privateCustomer.lastName + " " + customer.customer.name)
+            }else {
+                customer.customer.name
+            }
+        )
     }
 }

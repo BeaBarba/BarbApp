@@ -13,7 +13,7 @@ import com.example.myapplication.data.database.dao.CustomerProvisionDAO
 import com.example.myapplication.data.database.dao.DeliveryDAO
 import com.example.myapplication.data.database.dao.ImageDAO
 import com.example.myapplication.data.database.dao.JobDAO
-import com.example.myapplication.data.database.dao.JobMaterialDAO
+import com.example.myapplication.data.database.dao.FutureJobMaterialDAO
 import com.example.myapplication.data.database.dao.JobPhotoDAO
 import com.example.myapplication.data.database.dao.JobRevenueDAO
 import com.example.myapplication.data.database.dao.MaterialDAO
@@ -63,7 +63,7 @@ import com.example.myapplication.data.database.dao.WorkSiteRevenueDAO
         Address::class,
         WorkSite::class,
         Job::class,
-        JobMaterial::class,
+        FutureJobMaterial::class,
         MaterialUsage::class,
         Revenue::class,
         WorkSiteRevenue::class,
@@ -106,7 +106,7 @@ abstract class appDatabase : RoomDatabase(){
     abstract fun addressDAO() : AddressDAO
     abstract fun workSiteDAO() : WorkSiteDAO
     abstract fun jobDAO() : JobDAO
-    abstract fun jobMaterialDAO() : JobMaterialDAO
+    abstract fun jobMaterialDAO() : FutureJobMaterialDAO
     abstract fun materialUsageDAO() : MaterialUsageDAO
     abstract fun revenuesDAO() : RevenueDAO
     abstract fun workSiteRevenueDAO() : WorkSiteRevenueDAO

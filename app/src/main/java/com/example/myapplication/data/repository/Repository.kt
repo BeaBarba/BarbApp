@@ -12,26 +12,34 @@ import com.example.myapplication.data.database.CustomerProvision
 import com.example.myapplication.data.database.Delivery
 import com.example.myapplication.data.database.Image
 import com.example.myapplication.data.database.Job
-import com.example.myapplication.data.database.JobMaterial
+import com.example.myapplication.data.database.JobAssignmentDetails
+import com.example.myapplication.data.database.FutureJobMaterial
+import com.example.myapplication.data.database.JobFullDetails
+import com.example.myapplication.data.database.JobMaterialFullDetails
 import com.example.myapplication.data.database.JobPhoto
 import com.example.myapplication.data.database.JobRevenue
 import com.example.myapplication.data.database.Material
+import com.example.myapplication.data.database.MaterialFullDetails
 import com.example.myapplication.data.database.MaterialPhoto
 import com.example.myapplication.data.database.MaterialUsage
+import com.example.myapplication.data.database.MaterialWithAirConditional
 import com.example.myapplication.data.database.Payment
 import com.example.myapplication.data.database.PhoneNumber
 import com.example.myapplication.data.database.Private
 import com.example.myapplication.data.database.PropertyOwnership
 import com.example.myapplication.data.database.Purchase
 import com.example.myapplication.data.database.PurchaseInvoice
+import com.example.myapplication.data.database.PurchaseInvoiceFullDetails
 import com.example.myapplication.data.database.RecurringExpense
 import com.example.myapplication.data.database.RecurringPayment
 import com.example.myapplication.data.database.Reference
 import com.example.myapplication.data.database.Referral
 import com.example.myapplication.data.database.Revenue
+import com.example.myapplication.data.database.RevenueFullDetails
 import com.example.myapplication.data.database.Seller
 import com.example.myapplication.data.database.SingleExpense
 import com.example.myapplication.data.database.WorkSite
+import com.example.myapplication.data.database.WorkSiteFullDetails
 import com.example.myapplication.data.database.WorkSiteRevenue
 import com.example.myapplication.data.database.dao.AddressDAO
 import com.example.myapplication.data.database.dao.AirConditionerDAO
@@ -43,7 +51,7 @@ import com.example.myapplication.data.database.dao.CustomerProvisionDAO
 import com.example.myapplication.data.database.dao.DeliveryDAO
 import com.example.myapplication.data.database.dao.ImageDAO
 import com.example.myapplication.data.database.dao.JobDAO
-import com.example.myapplication.data.database.dao.JobMaterialDAO
+import com.example.myapplication.data.database.dao.FutureJobMaterialDAO
 import com.example.myapplication.data.database.dao.JobPhotoDAO
 import com.example.myapplication.data.database.dao.JobRevenueDAO
 import com.example.myapplication.data.database.dao.MaterialDAO
@@ -93,7 +101,7 @@ class Repository (
     private val daoAddress: AddressDAO,
     private val daoWorkSite : WorkSiteDAO,
     private val daoJob : JobDAO,
-    private val daoJobMaterial : JobMaterialDAO,
+    private val daoJobMaterial : FutureJobMaterialDAO,
     private val daoMaterialUsage : MaterialUsageDAO,
     private val daoRevenue : RevenueDAO,
     private val daoWorkSiteRevenue : WorkSiteRevenueDAO,
@@ -116,7 +124,13 @@ class Repository (
 
     suspend fun upsertMaterial(material : Material) = daoMaterial.upsertMaterial(material)
 
-    suspend fun deleteMateril(material: Material) = daoMaterial.deleteMaterial(material)
+    suspend fun deleteMaterial(material: Material) = daoMaterial.deleteMaterial(material)
+
+    suspend fun getAllMaterialsWithAirConditional() : List<MaterialWithAirConditional> = daoMaterial.getAllMaterialsWithAirConditionalDetails()
+
+    fun getMaterialFullDetailsById(id : Int) : Flow<MaterialFullDetails> = daoMaterial.getMaterialFullDetails(id)
+
+    suspend fun getAllMaterialsFullDetails() : List<MaterialFullDetails> = daoMaterial.getAllMaterialsFullDetails()
 
     /* Seller */
     val sellers = daoSeller.getAllSeller()
@@ -135,6 +149,8 @@ class Repository (
     suspend fun upsertPurchaseInvoice(purchaseInvoice : PurchaseInvoice) = daoPurchaseInvoice.upsertPurchaseInvoice(purchaseInvoice)
 
     suspend fun deletePurchaseInvoice(purchaseInvoice: PurchaseInvoice) = daoPurchaseInvoice.deletePurchaseInvoice(purchaseInvoice)
+
+    fun getPurchaseInvoiceFullDetailsById(id : Int) : Flow<PurchaseInvoiceFullDetails> = daoPurchaseInvoice.getPurchaseInvoiceFullDetails(id)
 
     /* Purchase */
     val purchases = daoPurchase.getAllPurchases()
@@ -255,7 +271,7 @@ class Repository (
 
     fun getCustomerFullDetailsById(cf : String) : Flow<CustomerFullDetails?> = daoCustomer.getCustomerFullDetails(cf)
 
-    suspend fun customerFullDetails() =  daoCustomer.getAllCustomersFullDetails()
+    suspend fun getAllCustomersFullDetails() : List<CustomerFullDetails> =  daoCustomer.getAllCustomersFullDetails()
 
     /* Private */
     fun getPrivateById(cf : String) : Flow<Private?> = daoPrivate.getPrivate(cf)
@@ -320,6 +336,8 @@ class Repository (
 
     suspend fun deleteWorkSite(workSite: WorkSite) = daoWorkSite.deleteWorkSite(workSite)
 
+    fun getWorkSiteFullDetailsById(id : Int) : Flow<WorkSiteFullDetails> = daoWorkSite.getWorkSiteFullDetails(id)
+
     /* Job */
     val jobs = daoJob.getAllJobs()
 
@@ -329,14 +347,24 @@ class Repository (
 
     suspend fun deleteJob(job : Job) = daoJob.deleteJob(job)
 
-    /* JobMaterial */
-    val jobMaterials = daoJobMaterial.getAllJobMaterials()
+    fun getJobDoneSummaryById(id : Int) : Flow<JobMaterialFullDetails> = daoJob.getJobMaterialFullDetails(id)
 
-    fun getJobMaterialById(material : Int, job : Int) : Flow<JobMaterial?> = daoJobMaterial.getJobMaterial(material, job)
+    fun getJobAssignmentDetails(id : Int) : Flow<JobAssignmentDetails> = daoJob.getJobAssignmentDetails(id)
 
-    suspend fun upsertJobMaterial(jobMaterial: JobMaterial) = daoJobMaterial.upsertJobMaterial(jobMaterial)
+    suspend fun getAllJobsAssignmentDetails() :  List<JobAssignmentDetails> = daoJob.getAllJobsAssignmentDetails()
 
-    suspend fun deleteJobMaterial(jobMaterial: JobMaterial) = daoJobMaterial.deleteJobMaterial(jobMaterial)
+    fun getJobFullDetails(id : Int) : Flow<JobFullDetails> = daoJob.getJobFullDetails(id)
+
+    suspend fun getAllJobsFullDetails() :  List<JobFullDetails> = daoJob.getAllJobsFullDetails()
+
+    /* FutureJobMaterial */
+    val futureJobMaterials = daoJobMaterial.getAllFutureJobMaterials()
+
+    fun getFutureJobMaterialById(material : Int, job : Int) : Flow<FutureJobMaterial?> = daoJobMaterial.getFutureJobMaterial(material, job)
+
+    suspend fun upsertFutureJobMaterial(futureJobMaterial: FutureJobMaterial) = daoJobMaterial.upsertFutureJobMaterial(futureJobMaterial)
+
+    suspend fun deleteFutureJobMaterial(futureJobMaterial: FutureJobMaterial) = daoJobMaterial.deleteFutureJobMaterial(futureJobMaterial)
 
     /* MaterialUsage */
     val materialsUsage = daoMaterialUsage.getAllMaterialsUsage()
@@ -355,6 +383,8 @@ class Repository (
     suspend fun upsertRevenue(revenue: Revenue) = daoRevenue.upsertRevenue(revenue)
 
     suspend fun deleteRevenue(revenue: Revenue) = daoRevenue.deleteRevenue(revenue)
+
+    fun getRevenueFullDetailsById(id : Int) : Flow<RevenueFullDetails> = daoRevenue.getRevenueFullDetails(id)
 
     /* WorkSiteRevenue */
     val workSiteRevenue = daoWorkSiteRevenue.getAllWorkSiteRevenues()

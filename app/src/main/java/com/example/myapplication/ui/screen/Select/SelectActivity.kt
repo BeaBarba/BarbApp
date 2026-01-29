@@ -29,13 +29,6 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.component.TopAppBar
 import androidx.compose.foundation.lazy.items
-import com.example.myapplication.debug.CardItem
-import com.example.myapplication.debug.addressType
-import com.example.myapplication.debug.bubblesType
-import com.example.myapplication.debug.customersType
-import com.example.myapplication.debug.invoicesType
-import com.example.myapplication.debug.materialsType
-import com.example.myapplication.debug.selectedMaterialResult
 import com.example.myapplication.ui.component.CustomSearchBar
 
 @Composable
@@ -53,7 +46,7 @@ fun SelectActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            val selectedIds = state.itemsList.filter { it.checked }.map{it.name}
+                            val selectedIds = state.itemsList.filter { it.checked }.map{ it.id }
                             navController.previousBackStackEntry
                                 ?.savedStateHandle
                                 ?.set("selectedIds", selectedIds)

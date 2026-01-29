@@ -3,8 +3,11 @@ package com.example.myapplication.data.database.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import com.example.myapplication.data.database.PurchaseInvoice
+import com.example.myapplication.data.database.PurchaseInvoiceFullDetails
+import com.example.myapplication.data.database.WorkSiteFullDetails
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,4 +28,12 @@ interface PurchaseInvoiceDAO{
 
     @Delete
     suspend fun  deletePurchaseInvoice(seller: PurchaseInvoice)
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+        "FROM FATTURE_ACQUISTO " +
+        "WHERE id = :id"
+    )
+    fun getPurchaseInvoiceFullDetails(id : Int) : Flow<PurchaseInvoiceFullDetails>
 }

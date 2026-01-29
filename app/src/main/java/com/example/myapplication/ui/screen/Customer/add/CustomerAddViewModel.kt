@@ -142,45 +142,47 @@ class CustomerAddViewModel(
 
         override fun save() {
             viewModelScope.launch {
-                val addressId = repository.upsertAddress(
-                    Address(
-                        state.value.addressId,
-                        state.value.address,
-                        state.value.houseNumber,
-                        state.value.municipality,
-                        state.value.city,
-                        state.value.province,
-                        state.value.zip
-                    )
-                ).toInt()
-                val referenceId = if (state.value.referenceName != "") {
-                    repository.upsertReference(
-                        Reference(
-                            state.value.referenceId,
-                            state.value.referenceName,
-                            state.value.referenceLastName,
-                            state.value.referencePhoneNumber
+                if(state.value.address != "") {
+                    val addressId = repository.upsertAddress(
+                        Address(
+                            state.value.addressId,
+                            state.value.address,
+                            state.value.houseNumber,
+                            state.value.municipality,
+                            state.value.city,
+                            state.value.province,
+                            state.value.zip
                         )
                     ).toInt()
-                } else null
-                repository.upsertCustomer(
-                    Customer(
-                        state.value.id,
-                        state.value.name,
-                        state.value.email,
-                        state.value.averageCollectionTime,
-                        state.value.collectionCount,
-                        addressId,
-                        referenceId
+                    val referenceId = if (state.value.referenceName != "") {
+                        repository.upsertReference(
+                            Reference(
+                                state.value.referenceId,
+                                state.value.referenceName,
+                                state.value.referenceLastName,
+                                state.value.referencePhoneNumber
+                            )
+                        ).toInt()
+                    } else null
+                    repository.upsertCustomer(
+                        Customer(
+                            state.value.id,
+                            state.value.name,
+                            state.value.email,
+                            state.value.averageCollectionTime,
+                            state.value.collectionCount,
+                            addressId,
+                            referenceId
+                        )
                     )
-                )
-                repository.upsertPhoneNumber(
-                    PhoneNumber(
-                        state.value.phoneNumber,
-                        state.value.notePhoneNumber,
-                        state.value.id
+                    repository.upsertPhoneNumber(
+                        PhoneNumber(
+                            state.value.phoneNumber,
+                            state.value.notePhoneNumber,
+                            state.value.id
+                        )
                     )
-                )
+                }
                 if (state.value.customerType == CustomerType.Privato) {
                     repository.upsertPrivate(
                         Private(
