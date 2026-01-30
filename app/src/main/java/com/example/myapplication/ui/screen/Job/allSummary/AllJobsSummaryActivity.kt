@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Job
+package com.example.myapplication.ui.screen.Job.allSummary
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -27,11 +27,16 @@ import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.LocalTime
 
 @Composable
 fun AllJobsSummaryActivity(
+    state : AllJobsSummaryState,
+    actions: AllJobsSummaryActions,
     navController : NavHostController
 ){
+    actions.populateCustomers()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -54,35 +59,43 @@ fun AllJobsSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            item {CustomSearchBar(stringResource(R.string.intervention), onValueChange = {})}
-            item {Spacer(Modifier.size(8.dp))}
-            items(interventi){ item ->
+            item{CustomSearchBar(stringResource(R.string.intervention), onValueChange = {})}
+            item{Spacer(Modifier.size(8.dp))}
+            items(
+                state.jobs.filter {
+                    it.job.endTime == null || it.job.endTime.isAfter(LocalTime.now())
+                }
+            ){ item ->
                 GenericCard(
-                    type = item.tipo,
-                    text = item.indirizzo,
-                    textDescription = item.cognomeNome,
+                    type = actions.getTypeStringFromJob(item),
+                    text = item.address.address,
+                    textDescription = item.customer.name + item.privateCustomer?.lastName,
                     leadingContent = {
                         Avatar(
-                            char = item.tipo[0],
-                            type = item.tipo
+                            char = actions.getTypeStringFromJob(item).get(0),
+                            type = actions.getTypeStringFromJob(item)
                         )
                     },
                     onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}
                 )
                 Spacer(Modifier.size(8.dp))
             }
-            item {CustomDivider()}
-            item {TitleLabel(stringResource(R.string.j_completed))}
-            item {Spacer(Modifier.size(8.dp))}
-            items(interventi){ item ->
+            item{CustomDivider()}
+            item{TitleLabel(stringResource(R.string.j_completed))}
+            item{Spacer(Modifier.size(8.dp))}
+            items(
+                state.jobs.filter {
+                    it.job.endTime != null && it.job.endTime.isBefore(LocalTime.now())
+                }
+            ){ item ->
                 GenericCard(
-                    type = item.tipo,
-                    text = item.indirizzo,
-                    textDescription = item.cognomeNome,
+                    type = actions.getTypeStringFromJob(item),
+                    text = item.address.address,
+                    textDescription = item.customer.name + item.privateCustomer?.lastName,
                     leadingContent = {
                         Avatar(
-                            char = item.tipo[0],
-                            type = item.tipo
+                            char = actions.getTypeStringFromJob(item).get(0),
+                            type = actions.getTypeStringFromJob(item)
                         )
                     },
                     onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}

@@ -14,6 +14,9 @@ import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
+import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
+import com.example.myapplication.ui.screen.Select.SelectAddressViewModel
+import com.example.myapplication.ui.screen.Select.SelectCustomerViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -73,6 +76,8 @@ val appModule = module{
 
     /* Select */
     viewModel {SelectViewModel(get())}
+    viewModel {SelectCustomerViewModel(get())}
+    viewModel {SelectAddressViewModel(get())}
 
     /* Address */
     viewModel {AddressAddViewModel(get())}
@@ -93,5 +98,6 @@ val appModule = module{
     viewModel {SingleBubbleSummaryViewModel(get())}
 
     /* Job */
+    viewModel {AllJobsSummaryViewModel(get())}
     viewModel {JobAddViewModel(get())}
 }

@@ -1,32 +1,32 @@
 package com.example.myapplication.ui.screen.Job.add
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.myapplication.data.database.Address
 import com.example.myapplication.data.repository.Repository
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 data class JobAddState(
-    val addresses : List<Address>
+    val addressId : Int = 0,
+    val customerId : String = ""
 )
 
 interface JobAddActions{
-    //fun getAddresses()
+    fun handleCustomerSelection(ids : List<String>)
 }
 
 class JobAddViewModel(
     repository : Repository
 ) : ViewModel(){
 
-    val state = repository.addresses.map{ JobAddState(it) }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = JobAddState(addresses = emptyList())
-    )
+    private val _state = MutableStateFlow(JobAddState())
+
+    val state = _state.asStateFlow()
 
     val action = object : JobAddActions {
 
+        override fun handleCustomerSelection(ids: List<String>) {
+            _state.update { it.copy(customerId = ids.first()) }
+        }
     }
 }

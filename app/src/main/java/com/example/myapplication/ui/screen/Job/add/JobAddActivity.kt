@@ -31,7 +31,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.debug.interventi
 import com.example.myapplication.debug.tipi_menu
 import com.example.myapplication.ui.component.BackButton
@@ -47,6 +46,7 @@ import com.example.myapplication.ui.component.TopAppBar
 @Composable
 fun JobAddActivity(
     state : JobAddState,
+    actions: JobAddActions,
     navController : NavHostController
 ){
     val previousBackStackEntry = navController.previousBackStackEntry
@@ -55,18 +55,31 @@ fun JobAddActivity(
     val selectSearchTextAddress = stringResource(R.string.address)
 
     val currentBackStackEntry = navController.currentBackStackEntry
-    val selectedItems by currentBackStackEntry?.savedStateHandle
-        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
+    val selectedCustomersItems by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("selectedCustomersIds", emptyList())
+        ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList()) }
+    val selectedAddressItems by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("selectedAddressIds", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList()) }
 
-    LaunchedEffect(selectedItems) {
-        selectedItems?.let{ ids ->
+    LaunchedEffect(selectedCustomersItems) {
+        selectedCustomersItems?.let{ ids ->
             if(ids.isNotEmpty()) {
-                println("Println " + ids.size)
+                println(ids)
+                //actions.setCustomers(ids)
+            }
+        }
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedCustomersIds")
+    }
+
+    LaunchedEffect(selectedAddressItems) {
+        selectedAddressItems?.let{ ids ->
+            if(ids.isNotEmpty()) {
+                println(ids)
                 //actions.setMaterials(ids)
             }
         }
-        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedCustomersIds")
     }
 
     Scaffold(
@@ -106,7 +119,7 @@ fun JobAddActivity(
                 GenericCard(
                     leadingContent = {
                         IconButton(
-                            onClick = {navController.navigate(NavigationRoute.CustomerAdd)}
+                            onClick = {navController.navigate(NavigationRoute.CustomerAdd(null))}
                         ) {
                             Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_item))
                         }
@@ -119,7 +132,7 @@ fun JobAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchTextCustomer, SelectKey.AllCustomers))}
+                    onClick = {navController.navigate(NavigationRoute.SelectCustomer)}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -149,7 +162,7 @@ fun JobAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchTextAddress, SelectKey.AllAddresses))}
+                    onClick = {navController.navigate(NavigationRoute.SelectAddress)}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

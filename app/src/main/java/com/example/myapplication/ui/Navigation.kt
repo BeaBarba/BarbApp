@@ -13,7 +13,7 @@ import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryAc
 import com.example.myapplication.ui.screen.Job.AllCleaningSummaryActivity
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.AllDeadlinesSummaryActivity
-import com.example.myapplication.ui.screen.Job.AllJobsSummaryActivity
+import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryActivity
 import com.example.myapplication.ui.screen.Payment.AllPaymentsSummaryActivity
 import com.example.myapplication.ui.screen.Statistics.AllStatisticsActivity
 import com.example.myapplication.ui.screen.Statistics.AveragePaymentsTimesStatisticsActivity
@@ -57,10 +57,15 @@ import com.example.myapplication.ui.screen.Invoice.AllInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.Invoice.InvoiceAddActivity
 import com.example.myapplication.ui.screen.Invoice.SingleInvoiceSummaryActivity
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
+import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Material.WarehouseActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.AllPurchaseInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.PurchaseInvoiceAddActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.SinglePurchaseInvoiceSummaryActivity
+import com.example.myapplication.ui.screen.Select.SelectAddressActivity
+import com.example.myapplication.ui.screen.Select.SelectAddressViewModel
+import com.example.myapplication.ui.screen.Select.SelectCustomerActivity
+import com.example.myapplication.ui.screen.Select.SelectCustomerViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -92,6 +97,10 @@ sealed interface NavigationRoute{
     data object Cart : NavigationRoute
     @Serializable
     data object Home : NavigationRoute
+    @Serializable
+    data object SelectCustomer : NavigationRoute
+    @Serializable
+    data object SelectAddress : NavigationRoute
     @Serializable
     data object JobMaterials : NavigationRoute
     @Serializable
@@ -182,13 +191,22 @@ fun NavGraph(
             AllDeadlinesSummaryActivity(navController)
         }
         composable<NavigationRoute.AllJobsSummary>{
-            AllJobsSummaryActivity(navController)
+            val allJobsSummaryVM = koinViewModel<AllJobsSummaryViewModel>()
+            val state by allJobsSummaryVM.state.collectAsStateWithLifecycle()
+            AllJobsSummaryActivity(state, allJobsSummaryVM.actions, navController)
         }
         composable<NavigationRoute.AllPaymentsSummary>{
             AllPaymentsSummaryActivity(navController)
         }
         composable<NavigationRoute.AllStatistics>{
             AllStatisticsActivity(navController)
+        }
+
+        composable<NavigationRoute.AddressAdd> {backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.AddressAdd>()
+            val addressAddVM = koinViewModel<AddressAddViewModel>()
+            val state by addressAddVM.state.collectAsStateWithLifecycle()
+            AddressAddActivity(route.addressId, state, addressAddVM.actions, navController)
         }
         composable<NavigationRoute.AveragePaymentsTimesStatistics>{
             AveragePaymentsTimesStatisticsActivity(navController)
@@ -226,7 +244,7 @@ fun NavGraph(
         composable<NavigationRoute.JobAdd>{
             val singleJobVM = koinViewModel<JobAddViewModel>()
             val state by singleJobVM.state.collectAsStateWithLifecycle()
-            JobAddActivity(state, navController)
+            JobAddActivity(state, singleJobVM.action, navController)
         }
         composable<NavigationRoute.JobMaterials>{
             JobMaterialsActivity(navController)
@@ -239,6 +257,32 @@ fun NavGraph(
         }
         composable<NavigationRoute.PaymentAdd>{
             PaymentAddActivity(navController)
+        }
+        composable<NavigationRoute.Select> { backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.Select>()
+            val selectVm = koinViewModel<SelectViewModel>()
+            val state by selectVm.state.collectAsStateWithLifecycle()
+            selectVm.actions.populateUI(route.textSearch, route.items)
+            SelectActivity(state, selectVm.actions, navController)
+        }
+        composable<NavigationRoute.SelectCustomer> {
+            val selectVm = koinViewModel<SelectCustomerViewModel>()
+            val state by selectVm.state.collectAsStateWithLifecycle()
+            selectVm.actions.populateUI()
+            SelectCustomerActivity(state, selectVm.actions, navController)
+        }
+        composable<NavigationRoute.SelectAddress> {
+            val selectVm = koinViewModel<SelectAddressViewModel>()
+            val state by selectVm.state.collectAsStateWithLifecycle()
+            selectVm.actions.populateUI()
+            SelectAddressActivity(state, selectVm.actions, navController)
+        }
+
+        composable<NavigationRoute.SingleAddressSummary> {backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.SingleAddressSummary>()
+            val singleAddressVM = koinViewModel<SingleAddressSummaryViewModel>()
+            val state by singleAddressVM.state.collectAsStateWithLifecycle()
+            SingleAddressSummaryActivity(route.addressId, state, singleAddressVM.actions, navController)
         }
         composable<NavigationRoute.SingleBubbleSummary>{backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.SingleBubbleSummary>()
@@ -272,27 +316,12 @@ fun NavGraph(
         composable<NavigationRoute.Warehouse> {
             WarehouseActivity(navController)
         }
-        composable<NavigationRoute.Select> { backStackEntry ->
-            val route = backStackEntry.toRoute<NavigationRoute.Select>()
-            val selectVm = koinViewModel<SelectViewModel>()
-            val state by selectVm.state.collectAsStateWithLifecycle()
-            selectVm.actions.populateUI(route.textSearch, route.items)
-            SelectActivity(state, selectVm.actions, navController)
-        }
-        composable<NavigationRoute.AddressAdd> {backStackEntry ->
-            val route = backStackEntry.toRoute<NavigationRoute.AddressAdd>()
-            val addressAddVM = koinViewModel<AddressAddViewModel>()
-            val state by addressAddVM.state.collectAsStateWithLifecycle()
-            AddressAddActivity(route.addressId, state, addressAddVM.actions, navController)
-        }
-        composable<NavigationRoute.SingleAddressSummary> {backStackEntry ->
-            val route = backStackEntry.toRoute<NavigationRoute.SingleAddressSummary>()
-            val singleAddressVM = koinViewModel<SingleAddressSummaryViewModel>()
-            val state by singleAddressVM.state.collectAsStateWithLifecycle()
-            SingleAddressSummaryActivity(route.addressId, state, singleAddressVM.actions, navController)
-        }
+
         composable<NavigationRoute.AllConstructionSummary> {
             AllConstructionSummaryActivity(navController)
+        }
+        composable<NavigationRoute.AllInvoicesSummary> {
+            AllInvoicesSummaryActivity(navController)
         }
         composable<NavigationRoute.SingleConstructionSummary> {
             SingleConstructionSummaryActivity(navController)
@@ -300,9 +329,7 @@ fun NavGraph(
         composable<NavigationRoute.ConstructionAdd> {
             ConstructionAddActivity(navController)
         }
-        composable<NavigationRoute.AllInvoicesSummary> {
-            AllInvoicesSummaryActivity(navController)
-        }
+
         composable<NavigationRoute.InvoiceAdd>{
             InvoiceAddActivity(navController)
         }
