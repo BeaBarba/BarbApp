@@ -122,7 +122,7 @@ fun SinglePurchaseInvoiceSummaryActivity(
             item{CustomDivider()}
             item{TitleLabel(stringResource(R.string.materials))}
             item{Spacer(Modifier.size(8.dp))}
-            materialTable(prodotti, headerColumns, tableStyle)
+            //materialTable(prodotti, headerColumns, tableStyle)
             item{Spacer(Modifier.size(8.dp))}
         }
     }

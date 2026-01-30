@@ -42,7 +42,7 @@ interface MaterialDAO{
             "FROM MATERIALI " +
             "WHERE id = :id"
     )
-    fun getMaterialFullDetails(id : Int) : Flow<MaterialFullDetails>
+    fun getMaterialFullDetails(id : Int) : Flow<MaterialFullDetails?>
 
     @Transaction
     @Query("SELECT * " +

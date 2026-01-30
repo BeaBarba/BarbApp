@@ -105,6 +105,7 @@ class CustomerAddViewModel(
                                     notePhoneNumber = customerEntity.phoneNumber?.text ?: "",
                                     addressId = customerEntity.address.id,
                                     address = customerEntity.address.address,
+                                    houseNumber = customerEntity.address.houseNumber,
                                     municipality = customerEntity.address.municipality,
                                     city = customerEntity.address.city,
                                     province = customerEntity.address.province,

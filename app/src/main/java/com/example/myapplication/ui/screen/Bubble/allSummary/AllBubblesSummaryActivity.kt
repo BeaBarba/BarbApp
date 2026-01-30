@@ -30,7 +30,9 @@ fun AllBubblesSummaryActivity(
     actions: AllBubblesSummaryActions,
     navController : NavHostController
 ){
-    actions.populate()
+
+    actions.populateBubbles()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -39,10 +41,10 @@ fun AllBubblesSummaryActivity(
                 id = stringResource(R.string.bubbles),
                 trailingIcon = {
                     DropDownMenuBubbles(
-                        {actions.sellerSort()},
-                        {actions.dateSort()},
-                        {actions.ascendingSort()},
-                        {actions.descendingSort()}
+                        sellerOnClick = {actions.sellerSort()},
+                        dateOnClick = {actions.dateSort()},
+                        ascendingOnClick = {actions.ascendingSort()},
+                        descendingOnClick = {actions.descendingSort()}
                     )
                 }
             )
@@ -61,9 +63,9 @@ fun AllBubblesSummaryActivity(
         ) {
             items(state.bubbles){ item ->
                 GenericCard(
-                    text = item.fornitore,
-                    textDescription = item.data.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")),
-                    onClick = {navController.navigate(NavigationRoute.SingleBubbleSummary(bubbleId = 0))}
+                    text = item.seller.name,
+                    textDescription = item.bubble.date.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")),
+                    onClick = {navController.navigate(NavigationRoute.SingleBubbleSummary(bubbleId = item.bubble.id))}
                 )
                 Spacer(Modifier.size(8.dp))
             }

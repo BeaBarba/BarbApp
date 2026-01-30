@@ -85,9 +85,9 @@ fun BubbleAddActivity(
                     IconButton(
                         onClick = {
                             actions.saveBubble()
-                            navController.navigate(NavigationRoute.SingleBubbleSummary(state.bubbleId ?: 0))
+                            navController.navigate(NavigationRoute.SingleBubbleSummary(state.bubbleId))
                             {
-                                popUpTo(NavigationRoute.BubbleAdd(null)){inclusive = true}
+                                popUpTo(NavigationRoute.AllBubblesSummary) { inclusive = false }
                             }
                         },
                         colors = IconButtonDefaults.iconButtonColors(
@@ -156,6 +156,7 @@ fun BubbleAddActivity(
                     onClick = {navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllMaterials))}
                 )
             }
+
             if(state.materialsSelected.isNotEmpty()){
                 item{CustomDivider()}
             }else {
@@ -177,8 +178,16 @@ fun BubbleAddActivity(
                     value = item.unitPrice.let {
                         DecimalFormat("#.00").format(it)
                     },
-                    onValueChange = { value -> actions.setUnitPriceMaterial(item.material, value)},
-
+                    onValueChange = { value ->
+                        actions.setUnitPriceMaterial(item.material, value)
+                    },
+                )
+                CustomOutlineTextField(
+                    label = stringResource(R.string.vat_number),
+                    value = item.vatNumber.toString(),
+                    onValueChange = { value ->
+                        actions.setVatNumberMaterial(item.material, value)
+                    },
                 )
                 if(index < state.materialsSelected.size - 1) {
                     CustomDivider()
@@ -187,9 +196,8 @@ fun BubbleAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleBubbleSummary>() == true) {
                 item {
-
                     DeleteButton {
-                        bolle = bolle.subList(1, bolle.size)
+                        actions.delete()
                         navController.navigate(NavigationRoute.AllBubblesSummary){
                             popUpTo(NavigationRoute.AllBubblesSummary){inclusive = true}
                             launchSingleTop = true

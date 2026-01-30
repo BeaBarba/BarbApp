@@ -21,6 +21,7 @@ interface SingleCustomerSummaryActions {
 class SingleCustomerSummaryViewModel(
     private val repository : Repository
 ) : ViewModel()  {
+
     private val _state = MutableStateFlow(SingleCustomerSummaryState())
 
     val state = _state.asStateFlow()

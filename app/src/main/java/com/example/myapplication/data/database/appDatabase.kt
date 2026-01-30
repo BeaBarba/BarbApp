@@ -69,7 +69,7 @@ import com.example.myapplication.data.database.dao.WorkSiteRevenueDAO
         WorkSiteRevenue::class,
         JobRevenue::class
     ],
-    version = 5
+    version = 7
 )
 @TypeConverters(
     DateConverters::class,

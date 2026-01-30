@@ -20,11 +20,12 @@ data class MaterialBubble(
     val material: Material,
     val quantity : Float,
     val unitPrice: Float,
+    val vatNumber : Int,
     val delivery: Delivery? = null
 )
 
 data class BubbleAddState(
-    val bubbleId: Int? = null,
+    val bubbleId: Int = 0,
     val bubbleNumber: String = "",
     val bubbleDate: LocalDate = LocalDate.now(),
     val selectedSeller: Seller? = null,
@@ -48,13 +49,15 @@ interface BubbleAddActions {
     fun setMaterials(materials: List<String>)
     fun setQuantityMaterial(material: Material, quantity: String)
     fun setUnitPriceMaterial(material: Material, unitPrice: String)
+    fun setVatNumberMaterial(material : Material, vatNumber: String)
     fun setNewSeller(newSeller: String)
+    fun delete()
 }
 
 class BubbleAddViewModel(
     private val repository : Repository
 ) : ViewModel() {
-    private val _state = MutableStateFlow(BubbleAddState(null))
+    private val _state = MutableStateFlow(BubbleAddState())
 
     val state = _state.asStateFlow()
 
@@ -80,25 +83,27 @@ class BubbleAddViewModel(
             }
             _state.update { it.copy(sellers = state.value.sellers + Seller(-1, "New")) }
 
-            if (state.value.bubbleId == null)
+            if (state.value.bubbleId == 0)
                 setSeller("New")
             _state.update { it.copy(started = true) }
         }
 
         override fun populateFromEdit(bubbleId: Int) {
             viewModelScope.launch {
-                repository.getBubbleFullDetails(bubbleId).collect { fullDetails ->
+                repository.getBubbleFullDetailsById(bubbleId).collect { fullDetails ->
                     fullDetails.let { data ->
-                        _state.update {
-                            it.copy(
-                                bubbleId = data.bubble.id,
-                                bubbleNumber = data.bubble.number,
-                                bubbleDate = data.bubble.date,
-                                selectedSeller = data.seller,
-                                materialsBubble = data.deliveriesWithMaterials,
-                                newSeller = null,
-                                started = true
-                            )
+                        if(data != null) {
+                            _state.update {
+                                it.copy(
+                                    bubbleId = data.bubble.id,
+                                    bubbleNumber = data.bubble.number,
+                                    bubbleDate = data.bubble.date,
+                                    selectedSeller = data.seller,
+                                    materialsBubble = data.deliveriesWithMaterials,
+                                    newSeller = null,
+                                    started = true
+                                )
+                            }
                         }
                     }
                 }
@@ -113,6 +118,7 @@ class BubbleAddViewModel(
                         material = it.material,
                         quantity = 0.0f,
                         unitPrice = 0.0f,
+                        vatNumber = 0,
                         delivery = it.delivery
                     )
                 )
@@ -134,9 +140,9 @@ class BubbleAddViewModel(
                         println("Seller: " +_state.value.selectedSeller)
                 }
 
-                if (_state.value.bubbleId != null) {
+                if (_state.value.bubbleId != 0) {
                     val updateBubble = Bubble(
-                        id = _state.value.bubbleId!!,
+                        id = _state.value.bubbleId,
                         number = _state.value.bubbleNumber,
                         date = _state.value.bubbleDate,
                         seller = _state.value.selectedSeller!!.id,
@@ -152,14 +158,16 @@ class BubbleAddViewModel(
                         purchaseInvoice = null
                     )
                     newBubble.id = repository.upsertBubble(newBubble).toInt()
+                    _state.update { it.copy(bubbleId = newBubble.id) }
                 }
                 if(_state.value.materialsSelected.isNotEmpty()) {
                     _state.value.materialsSelected.forEach {
                         val delivery = Delivery(
-                            bubble = _state.value.bubbleId!!,
+                            bubble = _state.value.bubbleId,
                             material = it.material.id,
                             quantity = it.quantity,
-                            unitPrice = it.unitPrice
+                            unitPrice = it.unitPrice,
+                            vatNumber = it.vatNumber
                         )
                         repository.upsertDelivery(delivery)
                     }
@@ -198,7 +206,8 @@ class BubbleAddViewModel(
                         MaterialBubble(
                             material = material!!,
                             quantity = 0.0f,
-                            unitPrice = 0.0f
+                            unitPrice = 0.0f,
+                            vatNumber = 0
                         )
                     )
                 }
@@ -220,7 +229,8 @@ class BubbleAddViewModel(
                         }else{
                             it.quantity
                         },
-                        unitPrice = it.unitPrice
+                        unitPrice = it.unitPrice,
+                        vatNumber = it.vatNumber
                     )
                 }
                 _state.update { it.copy(materialsSelected = newMaterials) }
@@ -239,10 +249,45 @@ class BubbleAddViewModel(
                                 unitPriceToSet
                             }else{
                                 it.unitPrice
-                            }
+                            },
+                        vatNumber = it.vatNumber
                     )
                 }
                 _state.update { it.copy(materialsSelected = newMaterials) }
+            }
+        }
+
+        override fun setVatNumberMaterial(material : Material, vatNumber : String){
+            if(checkIfStringIsInt(vatNumber)){
+                val vatNumberToSet: Int = if (vatNumber == "") 0 else vatNumber.toInt()
+                val newMaterials = state.value.materialsSelected.map {
+                    MaterialBubble(
+                        material = it.material,
+                        quantity = it.quantity,
+                        unitPrice =it.unitPrice,
+                        vatNumber =
+                        if( material.id == it.material.id ) {
+                            vatNumberToSet
+                        }else {
+                            it.vatNumber
+                        }
+                    )
+                }
+                _state.update { it.copy(materialsSelected = newMaterials) }
+            }
+        }
+
+        override fun delete() {
+            viewModelScope.launch {
+                repository.deleteBubble(
+                    Bubble(
+                        id = state.value.bubbleId,
+                        number = state.value.bubbleNumber,
+                        date = state.value.bubbleDate,
+                        seller = state.value.selectedSeller?.id!!,
+                        purchaseInvoice = null
+                    )
+                )
             }
         }
     }

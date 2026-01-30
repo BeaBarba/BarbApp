@@ -128,7 +128,7 @@ class Repository (
 
     suspend fun getAllMaterialsWithAirConditional() : List<MaterialWithAirConditional> = daoMaterial.getAllMaterialsWithAirConditionalDetails()
 
-    fun getMaterialFullDetailsById(id : Int) : Flow<MaterialFullDetails> = daoMaterial.getMaterialFullDetails(id)
+    fun getMaterialFullDetailsById(id : Int) : Flow<MaterialFullDetails?> = daoMaterial.getMaterialFullDetails(id)
 
     suspend fun getAllMaterialsFullDetails() : List<MaterialFullDetails> = daoMaterial.getAllMaterialsFullDetails()
 
@@ -150,7 +150,9 @@ class Repository (
 
     suspend fun deletePurchaseInvoice(purchaseInvoice: PurchaseInvoice) = daoPurchaseInvoice.deletePurchaseInvoice(purchaseInvoice)
 
-    fun getPurchaseInvoiceFullDetailsById(id : Int) : Flow<PurchaseInvoiceFullDetails> = daoPurchaseInvoice.getPurchaseInvoiceFullDetails(id)
+    fun getPurchaseInvoiceFullDetailsById(id : Int) : Flow<PurchaseInvoiceFullDetails?> = daoPurchaseInvoice.getPurchaseInvoiceFullDetails(id)
+
+    suspend fun getAllPurchaseInvoicesFullDetails() : List<PurchaseInvoiceFullDetails> = daoPurchaseInvoice.getAllPurchaseInvoicesFullDetails()
 
     /* Purchase */
     val purchases = daoPurchase.getAllPurchases()
@@ -170,7 +172,9 @@ class Repository (
 
     suspend fun deleteBubble(bubble : Bubble) = daoBubble.deleteBubble(bubble)
 
-    suspend fun getBubbleFullDetails(bubble : Int) : Flow<BubbleFullDetails> = daoBubble.getBubbleFullDetails(bubble)
+    fun getBubbleFullDetailsById(bubble : Int) : Flow<BubbleFullDetails?> = daoBubble.getBubbleFullDetails(bubble)
+
+    suspend fun getAllBubblesFullDetails() : List<BubbleFullDetails> = daoBubble.getAllBubblesFullDetails()
 
     /* Delivery */
     val deliveries = daoDelivery.getAllDeliveries()
@@ -336,7 +340,9 @@ class Repository (
 
     suspend fun deleteWorkSite(workSite: WorkSite) = daoWorkSite.deleteWorkSite(workSite)
 
-    fun getWorkSiteFullDetailsById(id : Int) : Flow<WorkSiteFullDetails> = daoWorkSite.getWorkSiteFullDetails(id)
+    fun getWorkSiteFullDetailsById(id : Int) : Flow<WorkSiteFullDetails?> = daoWorkSite.getWorkSiteFullDetails(id)
+
+    suspend fun getAllWorkSiteFullDetails() : List<WorkSiteFullDetails> = daoWorkSite.getAllWorkSitesFullDetails()
 
     /* Job */
     val jobs = daoJob.getAllJobs()
@@ -347,13 +353,13 @@ class Repository (
 
     suspend fun deleteJob(job : Job) = daoJob.deleteJob(job)
 
-    fun getJobDoneSummaryById(id : Int) : Flow<JobMaterialFullDetails> = daoJob.getJobMaterialFullDetails(id)
+    fun getJobDoneSummaryById(id : Int) : Flow<JobMaterialFullDetails?> = daoJob.getJobMaterialFullDetails(id)
 
-    fun getJobAssignmentDetails(id : Int) : Flow<JobAssignmentDetails> = daoJob.getJobAssignmentDetails(id)
+    fun getJobAssignmentDetails(id : Int) : Flow<JobAssignmentDetails?> = daoJob.getJobAssignmentDetails(id)
 
     suspend fun getAllJobsAssignmentDetails() :  List<JobAssignmentDetails> = daoJob.getAllJobsAssignmentDetails()
 
-    fun getJobFullDetails(id : Int) : Flow<JobFullDetails> = daoJob.getJobFullDetails(id)
+    fun getJobFullDetails(id : Int) : Flow<JobFullDetails?> = daoJob.getJobFullDetails(id)
 
     suspend fun getAllJobsFullDetails() :  List<JobFullDetails> = daoJob.getAllJobsFullDetails()
 
@@ -384,7 +390,9 @@ class Repository (
 
     suspend fun deleteRevenue(revenue: Revenue) = daoRevenue.deleteRevenue(revenue)
 
-    fun getRevenueFullDetailsById(id : Int) : Flow<RevenueFullDetails> = daoRevenue.getRevenueFullDetails(id)
+    fun getRevenueFullDetailsById(id : Int) : Flow<RevenueFullDetails?> = daoRevenue.getRevenueFullDetails(id)
+
+    suspend fun getAllRevenuesFullDetails() : List<RevenueFullDetails> = daoRevenue.getAllRevenuesFullDetails()
 
     /* WorkSiteRevenue */
     val workSiteRevenue = daoWorkSiteRevenue.getAllWorkSiteRevenues()

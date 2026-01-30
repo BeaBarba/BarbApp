@@ -1,40 +1,41 @@
 package com.example.myapplication.ui.screen.Bubble.singleSummary
 
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.data.database.Seller
-import com.example.myapplication.debug.Prodotto
-import com.example.myapplication.debug.prodotti
+import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.database.BubbleFullDetails
+import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.time.LocalDate
+import kotlinx.coroutines.launch
 
 data class SingleBubbleSummaryState(
-    val bubbleId: Int = -1,
-    val bubbleNumber: String = "",
-    val bubbleDate: LocalDate = LocalDate.now(),
-    val seller: Seller? = null,
-    val materials: List<Prodotto> = emptyList(),
-    val started: Boolean = false
+    val started: Boolean = false,
+    val bubble : BubbleFullDetails? = null,
 )
 
 interface SingleBubbleSummaryActions {
-    fun populateFromId(bubbleId: Int)
+    fun populateBubbleData(bubbleId: Int)
 }
 
-class SingleBubbleSummaryViewModel : ViewModel() {
+class SingleBubbleSummaryViewModel(
+    private val repository : Repository
+) : ViewModel() {
+
     private val _state = MutableStateFlow(SingleBubbleSummaryState())
 
     val state = _state.asStateFlow()
 
     val actions = object : SingleBubbleSummaryActions {
-        override fun populateFromId(bubbleId: Int) {
-            if (!_state.value.started) {
-                _state.update { it.copy(bubbleNumber = "Prova123") }
-                _state.update { it.copy(seller = Seller(1, "Pippo")) }
-                _state.update { it.copy(materials = state.value.materials + prodotti.get(0)) }
-                _state.update { it.copy(materials = state.value.materials + prodotti.get(1)) }
+
+        override fun populateBubbleData(bubbleId: Int) {
+            if(state.value.started) return
+
+            viewModelScope.launch {
                 _state.update { it.copy(started = true) }
+                repository.getBubbleFullDetailsById(bubbleId).collect{ data ->
+                    _state.update { it.copy(bubble = data) }
+                }
             }
         }
     }

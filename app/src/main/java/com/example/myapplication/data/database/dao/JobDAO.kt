@@ -37,7 +37,7 @@ interface JobDAO{
         "FROM INTERVENTI " +
         "WHERE id = :id"
     )
-    fun getJobMaterialFullDetails(id : Int) : Flow<JobMaterialFullDetails>
+    fun getJobMaterialFullDetails(id : Int) : Flow<JobMaterialFullDetails?>
 
     @Transaction
     @Query(
@@ -45,7 +45,7 @@ interface JobDAO{
         "FROM INTERVENTI " +
         "WHERE id = :id"
     )
-    fun getJobAssignmentDetails(id : Int) : Flow<JobAssignmentDetails>
+    fun getJobAssignmentDetails(id : Int) : Flow<JobAssignmentDetails?>
 
     @Transaction
     @Query(
@@ -60,7 +60,7 @@ interface JobDAO{
         "FROM INTERVENTI " +
         "WHERE id = :id"
     )
-    fun getJobFullDetails(id : Int) : Flow<JobFullDetails>
+    fun getJobFullDetails(id : Int) : Flow<JobFullDetails?>
 
     @Transaction
     @Query(

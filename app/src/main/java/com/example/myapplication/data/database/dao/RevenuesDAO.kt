@@ -37,5 +37,12 @@ interface RevenueDAO{
         "FROM RICAVI " +
         "WHERE id = :id"
     )
-    fun getRevenueFullDetails(id : Int) : Flow<RevenueFullDetails>
+    fun getRevenueFullDetails(id : Int) : Flow<RevenueFullDetails?>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+        "FROM RICAVI "
+    )
+    fun getAllRevenuesFullDetails() : List<RevenueFullDetails>
 }

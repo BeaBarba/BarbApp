@@ -35,5 +35,12 @@ interface WorkSiteDAO{
         "FROM CANTIERI " +
         "WHERE id = :id"
     )
-    fun getWorkSiteFullDetails(id : Int) : Flow<WorkSiteFullDetails>
+    fun getWorkSiteFullDetails(id : Int) : Flow<WorkSiteFullDetails?>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+        "FROM CANTIERI "
+    )
+    fun getAllWorkSitesFullDetails() : List<WorkSiteFullDetails>
 }

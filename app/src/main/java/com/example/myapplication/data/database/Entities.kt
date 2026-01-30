@@ -54,6 +54,7 @@ data class Material(
     @ColumnInfo(name = "Tipologia") val type : JobType,
     @ColumnInfo(name = "Categoria") val category : String,
     @ColumnInfo(name = "Disponibilità") val availability : Float,
+    @ColumnInfo(name = "Unità di misura") val unitMeasurement: String
 )
 
 @Entity(
@@ -105,7 +106,8 @@ data class Purchase(
     @ColumnInfo(name = "Fattura") val purchaseInvoice : Int,
     @ColumnInfo(name = "Materiale") val material : Int,
     @ColumnInfo(name = "Quantità") val quantity : Float,
-    @ColumnInfo(name = "PrezzoUnitario") val unitPrice : Float
+    @ColumnInfo(name = "PrezzoUnitario") val unitPrice : Float,
+    @ColumnInfo(name = "IVA") val vatNumber: Int
 )
 
 @Entity(
@@ -142,13 +144,13 @@ data class Bubble(
             entity = Bubble::class,
             parentColumns = ["id"],
             childColumns = ["Bolla"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = Material::class,
             parentColumns = ["id"],
             childColumns = ["Materiale"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
@@ -156,7 +158,8 @@ data class Delivery(
     @ColumnInfo(name = "Bolla") val bubble : Int,
     @ColumnInfo(name = "Materiale") val material : Int,
     @ColumnInfo(name = "Quantità") val quantity : Float,
-    @ColumnInfo(name = "PrezzoUnitario") val unitPrice : Float
+    @ColumnInfo(name = "PrezzoUnitario") val unitPrice : Float,
+    @ColumnInfo(name = "IVA") val vatNumber: Int
 )
 
 @Entity(

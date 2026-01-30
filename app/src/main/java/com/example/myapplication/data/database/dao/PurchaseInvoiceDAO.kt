@@ -35,5 +35,12 @@ interface PurchaseInvoiceDAO{
         "FROM FATTURE_ACQUISTO " +
         "WHERE id = :id"
     )
-    fun getPurchaseInvoiceFullDetails(id : Int) : Flow<PurchaseInvoiceFullDetails>
+    fun getPurchaseInvoiceFullDetails(id : Int) : Flow<PurchaseInvoiceFullDetails?>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+        "FROM FATTURE_ACQUISTO "
+    )
+    fun getAllPurchaseInvoicesFullDetails() : List<PurchaseInvoiceFullDetails>
 }

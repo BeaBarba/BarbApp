@@ -40,7 +40,9 @@ class AllCustomersSummaryViewModel(
     val state = _state.asStateFlow()
 
     val actions = object : AllCustomersSummaryActions {
-        override fun populateCustomers() {viewModelScope.launch {
+
+        override fun populateCustomers() {
+            viewModelScope.launch {
                 val customers = repository.customers.first().map { customer ->
                     repository.getCustomerFullDetailsById(customer.cf).first()!!
                 }

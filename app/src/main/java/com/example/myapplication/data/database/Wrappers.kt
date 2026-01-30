@@ -74,7 +74,7 @@ data class BubbleFullDetails(
         parentColumn = "Fattura",
         entityColumn = "id"
     )
-    val purchaseInvoice: PurchaseInvoice,
+    val purchaseInvoice: PurchaseInvoice?,
 
     @Relation(
         entity = Delivery::class,

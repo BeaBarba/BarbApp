@@ -36,5 +36,12 @@ interface BubbleDAO{
         "FROM BOLLE " +
         "WHERE id = :bubble"
     )
-    fun getBubbleFullDetails(bubble : Int) : Flow<BubbleFullDetails>
+    fun getBubbleFullDetails(bubble : Int) : Flow<BubbleFullDetails?>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+        "FROM BOLLE "
+    )
+    suspend fun getAllBubblesFullDetails() : List<BubbleFullDetails>
 }

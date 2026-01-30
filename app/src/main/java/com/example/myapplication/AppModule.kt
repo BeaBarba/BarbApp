@@ -88,9 +88,9 @@ val appModule = module{
     viewModel {CustomerAddViewModel(get())}
 
     /* Bubbles */
-    viewModel {AllBubblesSummaryViewModel()}
+    viewModel {AllBubblesSummaryViewModel(get())}
     viewModel {BubbleAddViewModel(get())}
-    viewModel {SingleBubbleSummaryViewModel()}
+    viewModel {SingleBubbleSummaryViewModel(get())}
 
     /* Job */
     viewModel {JobAddViewModel(get())}

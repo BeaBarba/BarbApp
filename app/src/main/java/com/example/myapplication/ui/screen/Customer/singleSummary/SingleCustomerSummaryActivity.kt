@@ -185,6 +185,14 @@ fun SingleCustomerSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
+                    title = stringResource(R.string.house_number),
+                    description = state.customerData?.address?.houseNumber ?: "",
+                    weightTitle =  1.2f
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
+            item{
+                KeyValueLabel(
                     title = stringResource(R.string.municipality),
                     description = state.customerData?.address?.municipality ?: "",
                     weightTitle =  1.2f
