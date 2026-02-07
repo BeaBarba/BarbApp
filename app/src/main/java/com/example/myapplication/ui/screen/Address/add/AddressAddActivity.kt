@@ -179,14 +179,14 @@ fun AddressAddActivity(
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.year_construction),
-                    value = state.yearOfConstruction,
+                    value = state.yearOfConstruction.toString(),
                     onValueChange = actions::setYearOfConstruction
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.usable_area),
-                    value = state.usableArea,
+                    value = state.usableArea.toString(),
                     onValueChange = actions::setUsableArea
                 )
             }

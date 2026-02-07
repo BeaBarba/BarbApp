@@ -1,8 +1,11 @@
 package com.example.myapplication
 
+import android.content.Context
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.example.myapplication.data.database.appDatabase
 import com.example.myapplication.data.repository.Repository
+import com.example.myapplication.data.repository.ThemeRepository
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
 import com.example.myapplication.ui.screen.Bubble.add.BubbleAddViewModel
@@ -13,6 +16,7 @@ import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
+import com.example.myapplication.ui.screen.Home.HomeViewModel
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectAddressViewModel
@@ -21,8 +25,13 @@ import com.example.myapplication.ui.screen.Select.SelectViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
+val Context.dataStore by preferencesDataStore("themeToggle")
 
 val appModule = module{
+
+    single{get<Context>().dataStore}
+
+    single{ThemeRepository(get())}
 
     single{
         Room.databaseBuilder(
@@ -73,6 +82,9 @@ val appModule = module{
         get(), get(), get(), get (), get(), get(), get(), get(),
         get(), get(), get(), get(), get(), get (), get(),
     )}
+
+    /* Home */
+    viewModel {HomeViewModel(get())}
 
     /* Select */
     viewModel {SelectViewModel(get())}

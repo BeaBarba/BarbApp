@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen
+package com.example.myapplication.ui.screen.Home
 
 import com.example.myapplication.ui.component.*
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +17,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,11 +29,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.data.modules.Theme
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun HomeActivity(
+    state : HomeState,
+    actions : HomeActions,
     navController : NavHostController
 ) {
     Scaffold(
@@ -36,7 +44,15 @@ fun HomeActivity(
         topBar = {
             TopAppBar(
                 id = "Home",
-                navigationIcon = {DropDownMenuHome()},
+                navigationIcon = {
+                    DropDownMenuHome(
+                        onClickLightMode = {actions.changeThemeToLight()},
+                        onClickDarkMode = {actions.changeThemeToDark()},
+                        onClickSystemMode = {actions.changeThemeToSystem()},
+                        onClickImportDB = {},
+                        onClickExportDB = {}
+                    )
+                },
                 trailingIcon = {
                     IconButton(
                         onClick = {navController.navigate(NavigationRoute.Cart)}

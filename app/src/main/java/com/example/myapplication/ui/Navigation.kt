@@ -22,7 +22,7 @@ import com.example.myapplication.ui.screen.Material.CartActivity
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddActivity
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarActivity
 import com.example.myapplication.ui.screen.Deadline.DeadlineAddActivity
-import com.example.myapplication.ui.screen.HomeActivity
+import com.example.myapplication.ui.screen.Home.HomeActivity
 import com.example.myapplication.ui.screen.Job.add.JobAddActivity
 import com.example.myapplication.ui.screen.Job.JobMaterialsActivity
 import com.example.myapplication.ui.screen.Statistics.JobStatisticsActivity
@@ -53,6 +53,7 @@ import com.example.myapplication.ui.screen.Construction.SingleConstructionSummar
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
+import com.example.myapplication.ui.screen.Home.HomeViewModel
 import com.example.myapplication.ui.screen.Invoice.AllInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.Invoice.InvoiceAddActivity
 import com.example.myapplication.ui.screen.Invoice.SingleInvoiceSummaryActivity
@@ -239,7 +240,9 @@ fun NavGraph(
             DeadlineAddActivity(navController)
         }
         composable<NavigationRoute.Home>{
-            HomeActivity(navController)
+            val homeVM = koinViewModel<HomeViewModel>()
+            val state by homeVM.state.collectAsStateWithLifecycle()
+            HomeActivity(state, homeVM.actions, navController)
         }
         composable<NavigationRoute.JobAdd>{
             val singleJobVM = koinViewModel<JobAddViewModel>()

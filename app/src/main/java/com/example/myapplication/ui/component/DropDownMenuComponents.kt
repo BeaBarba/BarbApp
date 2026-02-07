@@ -124,7 +124,13 @@ fun Order(
 }
 
 @Composable
-fun DropDownMenuHome(){
+fun DropDownMenuHome(
+    onClickLightMode : () -> Unit,
+    onClickDarkMode : () -> Unit,
+    onClickSystemMode :() -> Unit,
+    onClickImportDB : () -> Unit,
+    onClickExportDB : () -> Unit
+){
     var expanded by remember { mutableStateOf(false) }
     Box() {
         IconButton(onClick = { expanded = !expanded }) {
@@ -145,7 +151,7 @@ fun DropDownMenuHome(){
                         )
                     },
                     text = {MenuText(text = stringResource(R.string.light_mode))},
-                    onClick = { /* Change color light */ },
+                    onClick = onClickLightMode
                 )
                 DropdownMenuItem(
                     leadingIcon = {
@@ -156,7 +162,7 @@ fun DropDownMenuHome(){
                         )
                     },
                     text = {MenuText(text = stringResource(R.string.dark_mode))},
-                    onClick = { /* Change color dark */ },
+                    onClick = onClickDarkMode
                 )
                 DropdownMenuItem(
                     leadingIcon = {
@@ -167,7 +173,7 @@ fun DropDownMenuHome(){
                         )
                     },
                     text = {MenuText(text = stringResource(R.string.system_mode))},
-                    onClick = { /* Change dependence of system color */ },
+                    onClick = onClickSystemMode
                 )
 
                 MenuDivider()
@@ -182,7 +188,7 @@ fun DropDownMenuHome(){
                         )
                     },
                     text = { MenuText(text = stringResource(R.string.import_DB)) },
-                    onClick = { /* Action to import database */ },
+                    onClick = onClickImportDB
                 )
                 DropdownMenuItem(
                     leadingIcon =  {
@@ -193,7 +199,7 @@ fun DropDownMenuHome(){
                         )
                     },
                     text = { MenuText(text = stringResource(R.string.export_DB)) },
-                    onClick = { /* Action to export database */ },
+                    onClick = onClickExportDB
                 )
             }
         }

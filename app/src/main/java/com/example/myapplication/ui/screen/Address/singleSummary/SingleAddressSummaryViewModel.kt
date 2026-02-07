@@ -23,8 +23,8 @@ data class SingleAddressSummaryState(
     val sheet: String = "",
     val map: String = "",
     val subordinate: String = "",
-    val yearOfConstruction: String = "",
-    val usableArea: String = ""
+    val yearOfConstruction: Int? = null,
+    val usableArea: Int? = null
 )
 
 interface SingleAddressSummaryActions {
@@ -58,8 +58,8 @@ class SingleAddressSummaryViewModel(
                                 staircase = addressEntity.staircase ?: "",
                                 floor = addressEntity.floor ?: "",
                                 interior = addressEntity.interior ?: "",
-                                yearOfConstruction = addressEntity.yearOfConstruction ?: "",
-                                usableArea = addressEntity.usableArea ?: "",
+                                yearOfConstruction = addressEntity.yearOfConstruction,
+                                usableArea = addressEntity.usableArea,
                                 units = addressEntity.units ?: ""
                             )
                         }
@@ -81,8 +81,8 @@ class SingleAddressSummaryViewModel(
             _state.update { it.copy(sheet = "10") }
             _state.update { it.copy(map = "200") }
             _state.update { it.copy(subordinate = "45") }
-            _state.update { it.copy(usableArea = "122") }
-            _state.update { it.copy(yearOfConstruction = "1900") }
+            _state.update { it.copy(usableArea = 122) }
+            _state.update { it.copy(yearOfConstruction = 1900) }
             _state.update { it.copy(addressId = -1) }
         }
     }

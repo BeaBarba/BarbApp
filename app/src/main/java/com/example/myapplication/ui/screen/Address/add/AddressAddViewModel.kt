@@ -25,8 +25,8 @@ data class AddressAddState(
     val sheet: String? = "",
     val map: String? = "",
     val subordinate: String? = "",
-    val yearOfConstruction: String? = "",
-    val usableArea: String? = ""
+    val yearOfConstruction: Int? = null,
+    val usableArea: Int? = null
 )
 
 interface AddressAddActions {
@@ -128,13 +128,13 @@ class AddressAddViewModel(
 
         override fun setYearOfConstruction(yearOfConstruction: String) {
             if (checkIfStringIsInt(yearOfConstruction)) {
-                _state.update { it.copy(yearOfConstruction = yearOfConstruction) }
+                _state.update { it.copy(yearOfConstruction = yearOfConstruction.toInt()) }
             }
         }
 
         override fun setUsableArea(usableArea: String) {
             if (checkIfStringIsDouble(usableArea)) {
-                _state.update { it.copy(usableArea = usableArea) }
+                _state.update { it.copy(usableArea = usableArea.toInt()) }
             }
         }
 
@@ -215,8 +215,8 @@ class AddressAddViewModel(
         _state.update { it.copy(sheet = "10") }
         _state.update { it.copy(map = "200") }
         _state.update { it.copy(subordinate = "45") }
-        _state.update { it.copy(usableArea = "122") }
-        _state.update { it.copy(yearOfConstruction = "1900") }
+        _state.update { it.copy(usableArea = 122) }
+        _state.update { it.copy(yearOfConstruction = 1900) }
         _state.update { it.copy(addressId = -1) }
     }
 }

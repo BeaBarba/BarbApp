@@ -414,7 +414,7 @@ data class Reference(
     @PrimaryKey(autoGenerate = true) val id : Int = 0,
     @ColumnInfo(name = "Nome") val name : String,
     @ColumnInfo(name = "Cognome") val lastName : String,
-    @ColumnInfo(name = "Telefono") val phoneNumber : String
+    @ColumnInfo(name = "Telefono") val phoneNumber : String?
 )
 
 @Entity(
@@ -483,14 +483,14 @@ data class PropertyOwnership(
 
 @Entity(
     tableName = "INDIRIZZI",
-    indices = [Index(value = ["Via", "Civico", "Citta"], unique = true)]
+    indices = [Index(value = ["Via", "Civico", "Città"], unique = true)]
 )
 data class Address(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "Via") val address: String = "",
     @ColumnInfo(name = "Civico") val houseNumber: String = "",
     @ColumnInfo(name = "Comune") val municipality: String = "",
-    @ColumnInfo(name = "Citta") val city: String = "",
+    @ColumnInfo(name = "Città") val city: String = "",
     @ColumnInfo(name = "Provincia") val province: String = "",
     @ColumnInfo(name = "CAP") val zip: String = "",
     @ColumnInfo(name = "Foglio") val sheet: String? = null,
@@ -499,9 +499,9 @@ data class Address(
     @ColumnInfo(name = "Scala") val staircase: String? = null,
     @ColumnInfo(name = "Piano") val floor: String? = null,
     @ColumnInfo(name = "Interno") val interior: String? = null,
-    @ColumnInfo(name = "AnnoCostruzione") val yearOfConstruction: String? = null,
-    @ColumnInfo(name = "SuperficieUtile") val usableArea: String? = null,
-    @ColumnInfo(name = "UnitaImmobiliari") val units: String? = null
+    @ColumnInfo(name = "AnnoCostruzione") val yearOfConstruction: Int? = null,
+    @ColumnInfo(name = "SuperficieUtile") val usableArea: Int? = null,
+    @ColumnInfo(name = "UnitàImmobiliari") val units: String? = null
 )
 
 @Entity(
@@ -534,7 +534,7 @@ data class WorkSite(
     @ColumnInfo(name = "Indirizzo") val address : Int,
     @ColumnInfo(name = "DataFine") val endDate : LocalDate? = null,
     @ColumnInfo(name = "Responsabile") val manager : Int?,
-    @ColumnInfo(name = "Cliente") val customer: String
+    @ColumnInfo(name = "Cliente") val customer: String?
 )
 
 @Entity(
@@ -565,7 +565,7 @@ data class Job(
     @PrimaryKey(autoGenerate = true) val id : Int = 0,
     @ColumnInfo(name = "Data") val date : LocalDate,
     @ColumnInfo(name = "OraInizio") val startTime : LocalTime,
-    @ColumnInfo(name = "Descrizione") val description : String,
+    @ColumnInfo(name = "Descrizione") val description : String?,
     @ColumnInfo(name = "NumeroPersone") val peopleNumber : Int,
     @ColumnInfo(name = "Indirizzo") val address : Int,
     @ColumnInfo(name = "OraFine") val endTime : LocalTime? = null,
