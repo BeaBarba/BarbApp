@@ -13,6 +13,20 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @Entity(
+    tableName = "MATERIALI",
+    indices = [Index(value = ["Modello", "Marca"], unique = true)],
+)
+data class Material(
+    @PrimaryKey(autoGenerate = true) val id : Int = 0,
+    @ColumnInfo(name = "Modello") val model : String,
+    @ColumnInfo(name = "Marca") val brand : String,
+    @ColumnInfo(name = "Tipologia") val type : JobType,
+    @ColumnInfo(name = "Categoria") val category : String,
+    @ColumnInfo(name = "Disponibilità") val availability : Float,
+    @ColumnInfo(name = "UnitàDiMisura") val unitMeasurement: String
+)
+
+@Entity(
     tableName = "CONDIZIONATORI",
     primaryKeys = ["Matricola", "Materiale"],
     foreignKeys = [
@@ -42,20 +56,6 @@ data class AirConditioner(
         }
     }
 }
-
-@Entity(
-    tableName = "MATERIALI",
-    indices = [Index(value = ["Modello", "Marca"], unique = true)],
-)
-data class Material(
-    @PrimaryKey(autoGenerate = true) val id : Int = 0,
-    @ColumnInfo(name = "Modello") val model : String,
-    @ColumnInfo(name = "Marca") val brand : String,
-    @ColumnInfo(name = "Tipologia") val type : JobType,
-    @ColumnInfo(name = "Categoria") val category : String,
-    @ColumnInfo(name = "Disponibilità") val availability : Float,
-    @ColumnInfo(name = "Unità di misura") val unitMeasurement: String
-)
 
 @Entity(
     tableName = "VENDITORI"
@@ -171,6 +171,15 @@ data class CategoryPurchaseInvoice(
 )
 
 @Entity(
+    tableName = "PAGAMENTI"
+)
+data class Payment(
+    @PrimaryKey(autoGenerate = true) val id : Int = 0,
+    @ColumnInfo(name = "DataEmissione") val issueDate : LocalDate,
+    @ColumnInfo(name = "DataPagamento") val paymentDate : LocalDate?
+)
+
+@Entity(
     tableName = "SPESE_SINGOLE",
     foreignKeys = [
         ForeignKey(
@@ -231,15 +240,6 @@ data class RecurringExpense(
 )
 
 @Entity(
-    tableName = "PAGAMENTI"
-)
-data class Payment(
-    @PrimaryKey(autoGenerate = true) val id : Int = 0,
-    @ColumnInfo(name = "DataEmissione") val issueDate : LocalDate,
-    @ColumnInfo(name = "DataPagamento") val paymentDate : LocalDate?
-)
-
-@Entity(
     tableName = "SALDI",
     primaryKeys = ["Pagamento"],
     foreignKeys = [
@@ -263,81 +263,36 @@ data class RecurringPayment(
 )
 
 @Entity(
-    tableName = "FOTO"
+    tableName = "INDIRIZZI",
+    indices = [Index(value = ["Via", "Civico", "Città"], unique = true)]
 )
-data class Image(
+data class Address(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @ColumnInfo(name = "Via") val address: String = "",
+    @ColumnInfo(name = "Civico") val houseNumber: String = "",
+    @ColumnInfo(name = "Comune") val municipality: String = "",
+    @ColumnInfo(name = "Città") val city: String = "",
+    @ColumnInfo(name = "Provincia") val province: String = "",
+    @ColumnInfo(name = "CAP") val zip: String = "",
+    @ColumnInfo(name = "Foglio") val sheet: String? = null,
+    @ColumnInfo(name = "Mappale") val map: String? = null,
+    @ColumnInfo(name = "Subalterno") val subordinate: String? = null,
+    @ColumnInfo(name = "Scala") val staircase: String? = null,
+    @ColumnInfo(name = "Piano") val floor: String? = null,
+    @ColumnInfo(name = "Interno") val interior: String? = null,
+    @ColumnInfo(name = "AnnoCostruzione") val yearOfConstruction: Int? = null,
+    @ColumnInfo(name = "SuperficieUtile") val usableArea: Int? = null,
+    @ColumnInfo(name = "UnitàImmobiliari") val units: String? = null
+)
+
+@Entity(
+    tableName = "RIFERIMENTI"
+)
+data class Reference(
     @PrimaryKey(autoGenerate = true) val id : Int = 0,
-    @ColumnInfo(name = "Percorso") val path : String
-)
-
-@Entity(
-    tableName = "RAFFIGURAZIONI",
-    primaryKeys = ["Foto"],
-    foreignKeys = [
-        ForeignKey(
-            entity = Image::class,
-            parentColumns = ["id"],
-            childColumns = ["Foto"],
-            onDelete = ForeignKey.NO_ACTION
-        ),
-        ForeignKey(
-            entity = Material::class,
-            parentColumns = ["id"],
-            childColumns = ["Materiale"],
-            onDelete = ForeignKey.NO_ACTION
-        )
-    ]
-)
-data class MaterialPhoto(
-    @ColumnInfo(name = "Foto") val photo : Int,
-    @ColumnInfo(name = "Materiale") val material : Int
-)
-
-@Entity(
-    tableName = "DIMOSTRAZIONI",
-    primaryKeys = ["Foto"],
-    foreignKeys = [
-        ForeignKey(
-            entity = Image::class,
-            parentColumns = ["id"],
-            childColumns = ["Foto"],
-            onDelete = ForeignKey.NO_ACTION
-        ),
-        ForeignKey(
-            entity = Job::class,
-            parentColumns = ["id"],
-            childColumns = ["Intervento"],
-            onDelete = ForeignKey.NO_ACTION
-        )
-    ]
-)
-data class JobPhoto(
-    @ColumnInfo(name = "Foto") val photo : Int,
-    @ColumnInfo(name = "Intervento") val job : Int
-)
-
-@Entity(
-    tableName = "FORNITURE",
-    primaryKeys = ["Materiale", "Cliente"],
-    foreignKeys = [
-        ForeignKey(
-            entity = Material::class,
-            parentColumns = ["id"],
-            childColumns = ["Materiale"],
-            onDelete = ForeignKey.NO_ACTION
-        ),
-        ForeignKey(
-            entity = Customer::class,
-            parentColumns = ["CF"],
-            childColumns = ["Cliente"],
-            onDelete = ForeignKey.NO_ACTION
-        )
-    ]
-)
-data class CustomerProvision(
-    @ColumnInfo(name = "Materiale") val material : Int,
-    @ColumnInfo(name = "Cliente") val customer : String,
-    @ColumnInfo(name = "Quantità") val quantity : Float
+    @ColumnInfo(name = "Nome") val name : String,
+    @ColumnInfo(name = "Cognome") val lastName : String,
+    @ColumnInfo(name = "Telefono") val phoneNumber : String?
 )
 
 @Entity(
@@ -408,16 +363,6 @@ data class Company(
 )
 
 @Entity(
-    tableName = "RIFERIMENTI"
-)
-data class Reference(
-    @PrimaryKey(autoGenerate = true) val id : Int = 0,
-    @ColumnInfo(name = "Nome") val name : String,
-    @ColumnInfo(name = "Cognome") val lastName : String,
-    @ColumnInfo(name = "Telefono") val phoneNumber : String?
-)
-
-@Entity(
     tableName = "PRESENTA",
     primaryKeys = ["Presentato"],
     foreignKeys = [
@@ -459,6 +404,30 @@ data class PhoneNumber(
 )
 
 @Entity(
+    tableName = "FORNITURE",
+    primaryKeys = ["Materiale", "Cliente"],
+    foreignKeys = [
+        ForeignKey(
+            entity = Material::class,
+            parentColumns = ["id"],
+            childColumns = ["Materiale"],
+            onDelete = ForeignKey.NO_ACTION
+        ),
+        ForeignKey(
+            entity = Customer::class,
+            parentColumns = ["CF"],
+            childColumns = ["Cliente"],
+            onDelete = ForeignKey.NO_ACTION
+        )
+    ]
+)
+data class CustomerProvision(
+    @ColumnInfo(name = "Materiale") val material : Int,
+    @ColumnInfo(name = "Cliente") val customer : String,
+    @ColumnInfo(name = "Quantità") val quantity : Float
+)
+
+@Entity(
     tableName = "POSSESSI",
     primaryKeys = ["Cliente", "Indirizzo"],
     foreignKeys = [
@@ -479,29 +448,6 @@ data class PhoneNumber(
 data class PropertyOwnership(
     @ColumnInfo(name = "Cliente") val customer : String,
     @ColumnInfo(name = "Indirizzo") val address : Int
-)
-
-@Entity(
-    tableName = "INDIRIZZI",
-    indices = [Index(value = ["Via", "Civico", "Città"], unique = true)]
-)
-data class Address(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "Via") val address: String = "",
-    @ColumnInfo(name = "Civico") val houseNumber: String = "",
-    @ColumnInfo(name = "Comune") val municipality: String = "",
-    @ColumnInfo(name = "Città") val city: String = "",
-    @ColumnInfo(name = "Provincia") val province: String = "",
-    @ColumnInfo(name = "CAP") val zip: String = "",
-    @ColumnInfo(name = "Foglio") val sheet: String? = null,
-    @ColumnInfo(name = "Mappale") val map: String? = null,
-    @ColumnInfo(name = "Subalterno") val subordinate: String? = null,
-    @ColumnInfo(name = "Scala") val staircase: String? = null,
-    @ColumnInfo(name = "Piano") val floor: String? = null,
-    @ColumnInfo(name = "Interno") val interior: String? = null,
-    @ColumnInfo(name = "AnnoCostruzione") val yearOfConstruction: Int? = null,
-    @ColumnInfo(name = "SuperficieUtile") val usableArea: Int? = null,
-    @ColumnInfo(name = "UnitàImmobiliari") val units: String? = null
 )
 
 @Entity(
@@ -583,6 +529,30 @@ data class Job(
 }
 
 @Entity(
+    tableName = "FOTO",
+    foreignKeys = [
+        ForeignKey(
+            entity = Material::class,
+            parentColumns = ["id"],
+            childColumns = ["Materiale"],
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Job::class,
+            parentColumns = ["id"],
+            childColumns = ["Intervento"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
+data class Image(
+    @PrimaryKey(autoGenerate = true) val id : Int = 0,
+    @ColumnInfo(name = "Percorso") val path : String,
+    @ColumnInfo(name = "Materiale") val material : Int?,
+    @ColumnInfo(name = "Intervento") val job : Int?
+)
+
+@Entity(
     tableName = "PRENOTAZIONI",
     primaryKeys = ["Materiale", "Intervento"],
     foreignKeys = [
@@ -590,13 +560,13 @@ data class Job(
             entity = Material::class,
             parentColumns = ["id"],
             childColumns = ["Materiale"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = Job::class,
             parentColumns = ["id"],
             childColumns = ["Intervento"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.SET_NULL
         )
     ]
 )
@@ -632,49 +602,13 @@ data class MaterialUsage(
 
 @Entity(
     tableName = "RICAVI",
-    indices = [Index(value = ["Fattura", "DataEmissione"], unique = true)]
-)
-data class Revenue(
-    @PrimaryKey(autoGenerate = true) val id : Int = 0,
-    @ColumnInfo(name = "Fattura") val invoice : Int,
-    @ColumnInfo(name = "DataEmissione") val issueDate : LocalDate,
-    @ColumnInfo(name = "Importo") val amount : Float,
-    @ColumnInfo(name = "Percentuale") val percent : Int,
-    @ColumnInfo(name = "DataRiscossione") val collectionDate : LocalDate? = null,
-)
-
-@Entity(
-    tableName = "GENERA",
-    primaryKeys = ["Ricavo"],
+    indices = [Index(value = ["Fattura", "DataEmissione"], unique = true)],
     foreignKeys = [
-        ForeignKey(
-            entity = Revenue::class,
-            parentColumns = ["id"],
-            childColumns = ["Ricavo"],
-            onDelete = ForeignKey.CASCADE
-        ),
         ForeignKey(
             entity = WorkSite::class,
             parentColumns = ["id"],
             childColumns = ["Cantiere"],
             onDelete = ForeignKey.NO_ACTION
-        )
-    ]
-)
-data class WorkSiteRevenue(
-    @ColumnInfo(name = "Ricavo") val revenue : Int,
-    @ColumnInfo(name = "Cantiere") val workSite : Int
-)
-
-@Entity(
-    tableName = "PRODUCE",
-    primaryKeys = ["Ricavo"],
-    foreignKeys = [
-        ForeignKey(
-            entity = Revenue::class,
-            parentColumns = ["id"],
-            childColumns = ["Ricavo"],
-            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = Job::class,
@@ -684,7 +618,13 @@ data class WorkSiteRevenue(
         )
     ]
 )
-data class JobRevenue(
-    @ColumnInfo(name = "Ricavo") val revenue : Int,
-    @ColumnInfo(name = "Intervento") val job : Int
+data class Revenue(
+    @PrimaryKey(autoGenerate = true) val id : Int = 0,
+    @ColumnInfo(name = "Fattura") val invoice : Int,
+    @ColumnInfo(name = "DataEmissione") val issueDate : LocalDate,
+    @ColumnInfo(name = "Importo") val amount : Float,
+    @ColumnInfo(name = "Percentuale") val percent : Int,
+    @ColumnInfo(name = "DataRiscossione") val collectionDate : LocalDate? = null,
+    @ColumnInfo(name = "Cantiere") val worksite : Int?,
+    @ColumnInfo(name = "Intervento") val job : Int?
 )

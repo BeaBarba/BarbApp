@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.example.myapplication.data.database.appDatabase
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.data.repository.ThemeRepository
+import com.example.myapplication.debug.seedDatabase
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
 import com.example.myapplication.ui.screen.Bubble.add.BubbleAddViewModel

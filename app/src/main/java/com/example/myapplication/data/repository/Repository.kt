@@ -113,9 +113,9 @@ class Repository (
 
     fun getAirConditionerById(serialNumber : String, material : Int) : Flow<AirConditioner?> = daoAirConditioner.getAirConditioner(serialNumber, material)
 
-    suspend fun upsertBubble(airConditioner : AirConditioner) = daoAirConditioner.upsertAirConditioner(airConditioner)
+    suspend fun upsertAirConditioner(airConditioner : AirConditioner) = daoAirConditioner.upsertAirConditioner(airConditioner)
 
-    suspend fun deleteBubble(airConditioner : AirConditioner) = daoAirConditioner.deleteAirConditioner(airConditioner)
+    suspend fun deleteAirConditioner(airConditioner : AirConditioner) = daoAirConditioner.deleteAirConditioner(airConditioner)
 
     /* Material */
     val materials = daoMaterial.getAllMaterials()
