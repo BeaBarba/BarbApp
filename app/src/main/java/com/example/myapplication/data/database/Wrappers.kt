@@ -106,16 +106,6 @@ data class DeliveryWithBubbleDetails(
     val bubble : Bubble
 )
 
-data class MaterialPhotoWithPhotoDetails(
-    @Embedded val materialPhoto: MaterialPhoto,
-
-    @Relation(
-        parentColumn = "Foto",
-        entityColumn = "id"
-    )
-    val image : Image
-)
-
 data class PurchaseWithPurchaseInvoiceDetails(
     @Embedded val purchase: Purchase,
 
@@ -144,11 +134,10 @@ data class MaterialFullDetails(
     val purchaseWithPurchaseInvoice : List<PurchaseWithPurchaseInvoiceDetails>,
 
     @Relation(
-        entity = MaterialPhoto::class,
         parentColumn = "id",
         entityColumn = "Materiale"
     )
-    val photos : List<MaterialPhotoWithPhotoDetails>
+    val photos : List<Image>
 )
 
 data class MaterialUsageWithMaterialDetails(
@@ -171,16 +160,6 @@ data class FutureJobMaterialWithMaterialDetails(
     val material : Material
 )
 
-data class JobPhotoWithPhotoDetails(
-    @Embedded val jobPhoto: JobPhoto,
-
-    @Relation(
-        parentColumn = "Foto",
-        entityColumn = "id"
-    )
-    val image : Image
-)
-
 data class JobMaterialFullDetails(
     @Embedded val job : Job,
 
@@ -199,27 +178,26 @@ data class JobMaterialFullDetails(
     val materialsFuture : List<FutureJobMaterialWithMaterialDetails>,
 
     @Relation(
-        entity = JobPhoto::class,
         parentColumn = "id",
         entityColumn = "Intervento"
     )
-    val photos : List<JobPhotoWithPhotoDetails>
+    val photos : List<Image>
 )
 
 data class JobAssignmentDetails(
     @Embedded val job : Job,
 
     @Relation(
-        parentColumn = "Cliente",
-        entityColumn = "CF"
-    )
-    val customer : Customer,
-
-    @Relation(
         parentColumn = "Indirizzo",
         entityColumn = "id"
     )
     val address : Address,
+
+    @Relation(
+        parentColumn = "Cliente",
+        entityColumn = "CF"
+    )
+    val customer : Customer?,
 
     @Relation(
         parentColumn = "Cliente",
@@ -234,10 +212,10 @@ data class JobAssignmentDetails(
     val companyCustomer: Company?
 
 
-){/*
-    val isPrivate : Boolean = if(privateCustomer != null){true} else{false}
-    val isCompany : Boolean = if(companyCustomer != null){true} else{false}
-*/}
+){
+    val isPrivate : Boolean get() = privateCustomer != null
+    val isCompany : Boolean get() = companyCustomer != null
+}
 
 data class JobFullDetails(
     @Embedded val jobDetails: JobAssignmentDetails,
@@ -257,11 +235,10 @@ data class JobFullDetails(
     val materialsFuture: List<FutureJobMaterialWithMaterialDetails>,
 
     @Relation(
-        entity = JobPhoto::class,
         parentColumn = "id",
         entityColumn = "Intervento"
     )
-    val photos : List<JobPhotoWithPhotoDetails>
+    val photos : List<Image>
 )
 
 data class WorkSiteFullDetails(
@@ -274,22 +251,22 @@ data class WorkSiteFullDetails(
     val address : Address,
 
     @Relation(
+        parentColumn = "id",
+        entityColumn = "Cantiere"
+    )
+    val jobs : List<Job>,
+
+    @Relation(
         parentColumn = "Responsabile",
         entityColumn = "id"
     )
-    val reference : Reference,
+    val reference : Reference?,
 
     @Relation(
         parentColumn = "Cliente",
         entityColumn = "CF"
     )
-    val customer : Customer,
-
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "Cantiere"
-    )
-    val jobs : List<Job>
+    val customer : Customer?
 )
 
 data class PurchaseWithMaterialDetails(
@@ -317,45 +294,22 @@ data class PurchaseInvoiceFullDetails(
         entityColumn = "Fattura"
     )
     val materials : List<PurchaseWithMaterialDetails>
-
-)
-
-data class WorkSiteRevenueWithWorkSiteDetails(
-    @Embedded val workSiteRevenue: WorkSiteRevenue,
-
-    @Relation(
-        parentColumn = "Cantiere",
-        entityColumn = "id"
-    )
-    val workSite: WorkSite
-)
-
-data class JobRevenueWithJobDetails(
-    @Embedded val jobRevenue: JobRevenue,
-
-    @Relation(
-        parentColumn = "Intervento",
-        entityColumn = "id"
-    )
-    val job : Job
 )
 
 data class RevenueFullDetails(
     @Embedded val revenue: Revenue,
 
     @Relation(
-        entity = WorkSiteRevenue::class,
-        parentColumn = "id",
-        entityColumn = "Ricavo"
+        parentColumn = "Cantiere",
+        entityColumn = "id"
     )
-    val workSite : WorkSiteRevenueWithWorkSiteDetails,
+    val workSite : WorkSite?,
 
     @Relation(
-        entity = JobRevenue::class,
-        parentColumn = "id",
-        entityColumn = "Ricavo"
+        parentColumn = "Intervento",
+        entityColumn = "id"
     )
-    val job : JobRevenueWithJobDetails
+    val job : Job?
 )
 
 

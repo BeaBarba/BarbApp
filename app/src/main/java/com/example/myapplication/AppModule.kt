@@ -3,10 +3,9 @@ package com.example.myapplication
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
-import com.example.myapplication.data.database.appDatabase
+import com.example.myapplication.data.database.AppDatabase
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.data.repository.ThemeRepository
-import com.example.myapplication.debug.seedDatabase
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
 import com.example.myapplication.ui.screen.Bubble.add.BubbleAddViewModel
@@ -37,7 +36,7 @@ val appModule = module{
     single{
         Room.databaseBuilder(
             get(),
-            appDatabase::class.java,
+            AppDatabase::class.java,
             "database"
         )
             .fallbackToDestructiveMigration(true)
@@ -45,44 +44,42 @@ val appModule = module{
     }
 
     /* DAO */
-    single{get<appDatabase>().airConditionerDAO()}
-    single{get<appDatabase>().materialDAO()}
-    single{get<appDatabase>().sellerDAO()}
-    single{get<appDatabase>().purchaseInvoiceDAO()}
-    single{get<appDatabase>().purchaseDAO()}
-    single{get<appDatabase>().bubbleDAO()}
-    single{get<appDatabase>().deliveriesDAO()}
-    single{get<appDatabase>().categoryPurchaseInvoiceDAO()}
-    single{get<appDatabase>().singleExpenseDAO()}
-    single{get<appDatabase>().recurringExpenseDAO()}
-    single{get<appDatabase>().paymentDAO()}
-    single{get<appDatabase>().recurringPaymentDAO()}
-    single{get<appDatabase>().imageDAO()}
-    single{get<appDatabase>().materialPhotoDAO()}
-    single{get<appDatabase>().jobPhotoDAO()}
-    single{get<appDatabase>().customerProvisionDAO()}
-    single{get<appDatabase>().customerDAO()}
-    single{get<appDatabase>().privateDAO()}
-    single{get<appDatabase>().companyDAO()}
-    single{get<appDatabase>().referenceDAO()}
-    single{get<appDatabase>().referralDAO()}
-    single{get<appDatabase>().phoneNumberDAO()}
-    single{get<appDatabase>().propertyOwnershipDAO()}
-    single{get<appDatabase>().addressDAO()}
-    single{get<appDatabase>().workSiteDAO()}
-    single{get<appDatabase>().jobDAO()}
-    single{get<appDatabase>().jobMaterialDAO()}
-    single{get<appDatabase>().materialUsageDAO()}
-    single{get<appDatabase>().revenuesDAO()}
-    single{get<appDatabase>().workSiteRevenueDAO()}
-    single{get<appDatabase>().jobRevenueDAO()}
+    single{get<AppDatabase>().airConditionerDAO()}
+    single{get<AppDatabase>().materialDAO()}
+    single{get<AppDatabase>().sellerDAO()}
+    single{get<AppDatabase>().purchaseInvoiceDAO()}
+    single{get<AppDatabase>().purchaseDAO()}
+    single{get<AppDatabase>().bubbleDAO()}
+    single{get<AppDatabase>().deliveriesDAO()}
+    single{get<AppDatabase>().categoryPurchaseInvoiceDAO()}
+    single{get<AppDatabase>().singleExpenseDAO()}
+    single{get<AppDatabase>().recurringExpenseDAO()}
+    single{get<AppDatabase>().paymentDAO()}
+    single{get<AppDatabase>().recurringPaymentDAO()}
+    single{get<AppDatabase>().imageDAO()}
+    single{get<AppDatabase>().customerProvisionDAO()}
+    single{get<AppDatabase>().customerDAO()}
+    single{get<AppDatabase>().privateDAO()}
+    single{get<AppDatabase>().companyDAO()}
+    single{get<AppDatabase>().referenceDAO()}
+    single{get<AppDatabase>().referralDAO()}
+    single{get<AppDatabase>().phoneNumberDAO()}
+    single{get<AppDatabase>().propertyOwnershipDAO()}
+    single{get<AppDatabase>().addressDAO()}
+    single{get<AppDatabase>().workSiteDAO()}
+    single{get<AppDatabase>().jobDAO()}
+    single{get<AppDatabase>().jobMaterialDAO()}
+    single{get<AppDatabase>().materialUsageDAO()}
+    single{get<AppDatabase>().revenuesDAO()}
 
-    single{Repository(
-        get(), get(), get(), get(), get(), get(), get(), get(),
-        get(), get (), get(), get(), get(), get(), get(), get(),
-        get(), get(), get(), get (), get(), get(), get(), get(),
-        get(), get(), get(), get(), get(), get (), get(),
-    )}
+    single{
+        Repository(
+            get(), get(), get(), get(), get(), get(), get(), get(),
+            get(), get (), get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get (), get(), get(), get(), get(),
+            get(), get(), get()
+        )
+    }
 
     /* Home */
     viewModel {HomeViewModel(get())}

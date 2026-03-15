@@ -14,10 +14,7 @@ import com.example.myapplication.data.database.dao.DeliveryDAO
 import com.example.myapplication.data.database.dao.ImageDAO
 import com.example.myapplication.data.database.dao.JobDAO
 import com.example.myapplication.data.database.dao.FutureJobMaterialDAO
-import com.example.myapplication.data.database.dao.JobPhotoDAO
-import com.example.myapplication.data.database.dao.JobRevenueDAO
 import com.example.myapplication.data.database.dao.MaterialDAO
-import com.example.myapplication.data.database.dao.MaterialPhotoDAO
 import com.example.myapplication.data.database.dao.MaterialUsageDAO
 import com.example.myapplication.data.database.dao.PaymentDAO
 import com.example.myapplication.data.database.dao.PhoneNumberDAO
@@ -33,7 +30,6 @@ import com.example.myapplication.data.database.dao.RevenueDAO
 import com.example.myapplication.data.database.dao.SellerDAO
 import com.example.myapplication.data.database.dao.SingleExpenseDAO
 import com.example.myapplication.data.database.dao.WorkSiteDAO
-import com.example.myapplication.data.database.dao.WorkSiteRevenueDAO
 
 @Database(
     entities = [
@@ -50,8 +46,6 @@ import com.example.myapplication.data.database.dao.WorkSiteRevenueDAO
         Payment::class,
         RecurringPayment::class,
         Image::class,
-        MaterialPhoto::class,
-        JobPhoto::class,
         CustomerProvision::class,
         Customer::class,
         Private::class,
@@ -65,9 +59,7 @@ import com.example.myapplication.data.database.dao.WorkSiteRevenueDAO
         Job::class,
         FutureJobMaterial::class,
         MaterialUsage::class,
-        Revenue::class,
-        WorkSiteRevenue::class,
-        JobRevenue::class
+        Revenue::class
     ],
     version = 10
 )
@@ -79,7 +71,7 @@ import com.example.myapplication.data.database.dao.WorkSiteRevenueDAO
     JobTypeConverters::class,
     TimeConverters::class
 )
-abstract class appDatabase : RoomDatabase(){
+abstract class AppDatabase : RoomDatabase(){
     abstract fun airConditionerDAO() : AirConditionerDAO
     abstract fun materialDAO() : MaterialDAO
     abstract fun sellerDAO() : SellerDAO
@@ -93,8 +85,6 @@ abstract class appDatabase : RoomDatabase(){
     abstract fun paymentDAO() : PaymentDAO
     abstract fun recurringPaymentDAO() : RecurringPaymentDAO
     abstract fun imageDAO() : ImageDAO
-    abstract fun materialPhotoDAO() : MaterialPhotoDAO
-    abstract fun jobPhotoDAO() : JobPhotoDAO
     abstract fun customerProvisionDAO() : CustomerProvisionDAO
     abstract fun customerDAO() : CustomerDAO
     abstract fun privateDAO() : PrivateDAO
@@ -109,6 +99,4 @@ abstract class appDatabase : RoomDatabase(){
     abstract fun jobMaterialDAO() : FutureJobMaterialDAO
     abstract fun materialUsageDAO() : MaterialUsageDAO
     abstract fun revenuesDAO() : RevenueDAO
-    abstract fun workSiteRevenueDAO() : WorkSiteRevenueDAO
-    abstract fun jobRevenueDAO() : JobRevenueDAO
 }

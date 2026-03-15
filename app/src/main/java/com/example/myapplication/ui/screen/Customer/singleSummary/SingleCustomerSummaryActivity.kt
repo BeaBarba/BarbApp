@@ -222,43 +222,45 @@ fun SingleCustomerSummaryActivity(
                     weightTitle =  1.2f
                 )
             }
-            item{CustomDivider()}
-            item{TitleLabel(stringResource(R.string.interventions))}
-            item{Spacer(Modifier.size(8.dp))}
-            items(state.customerData?.jobs ?: listOf<Job>()){ item ->
-                val typeJob =
-                    if (item.airConditioning) {
-                        JobType.CDZ.toString()
-                    } else if (item.alarm) {
-                        JobType.ALA.toString()
-                    } else {
-                        JobType.ELE.toString()
-                    }
-
-                GenericCard(
-                    type = typeJob,
-                    leadingContent = {
-                        Avatar(
-                            char = typeJob.get(0),
-                            type = typeJob
-                        )
-                    },
-                    text = "/*TO DO*/",
-                    textDescription = item.date.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")),
-                    trailingContent = {
-                        IconButton(
-                            onClick = {navController.navigate(NavigationRoute.JobAdd)}
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Mode,
-                                contentDescription = stringResource(R.string.edit),
-                                tint = checkColor(typeJob, onPrimaryContainer = true)
-                            )
+            if(state.customerData?.jobs?.isNotEmpty() == true){
+                item{CustomDivider()}
+                item{TitleLabel(stringResource(R.string.interventions))}
+                item{Spacer(Modifier.size(8.dp))}
+                items(state.customerData.jobs ?: listOf<Job>()) { item ->
+                    val typeJob =
+                        if (item?.airConditioning == true) {
+                            JobType.CDZ.toString()
+                        } else if (item?.alarm == true) {
+                            JobType.ALA.toString()
+                        } else {
+                            JobType.ELE.toString()
                         }
-                    },
-                    onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}
-                )
-                Spacer(Modifier.size(8.dp))
+
+                    GenericCard(
+                        type = typeJob,
+                        leadingContent = {
+                            Avatar(
+                                char = typeJob.get(0),
+                                type = typeJob
+                            )
+                        },
+                        text = "/*TO DO*/",
+                        textDescription = item?.date?.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")),
+                        trailingContent = {
+                            IconButton(
+                                onClick = { navController.navigate(NavigationRoute.JobAdd) }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Mode,
+                                    contentDescription = stringResource(R.string.edit),
+                                    tint = checkColor(typeJob, onPrimaryContainer = true)
+                                )
+                            }
+                        },
+                        onClick = { navController.navigate(NavigationRoute.SingleJobSummary) }
+                    )
+                    Spacer(Modifier.size(8.dp))
+                }
             }
         }
     }
