@@ -1,5 +1,6 @@
 package com.example.myapplication.data.database
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Relation
 
@@ -312,14 +313,27 @@ data class RevenueFullDetails(
     val job : Job?
 )
 
+data class FutureJobMaterialWithJobDetails(
+    @Embedded val futureJobMaterial : FutureJobMaterial,
 
+    @Relation(
+        entity = Job::class,
+        parentColumn = "Intervento",
+        entityColumn = "Id"
+    )
+    val jobAssignment : JobAssignmentDetails
+)
 
+data class CartDetails(
+    @Embedded val material : Material,
 
+    @ColumnInfo("Prenotati") val reservedItems : Float,
+    @ColumnInfo("Mancano") val missingItems : Float,
 
-
-
-
-
-
-
-
+    @Relation(
+        entity = FutureJobMaterial::class,
+        parentColumn = "Id",
+        entityColumn = "Materiale"
+    )
+    val futureJobMaterial : FutureJobMaterialWithJobDetails
+)

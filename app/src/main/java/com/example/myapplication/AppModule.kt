@@ -72,14 +72,9 @@ val appModule = module{
     single{get<AppDatabase>().materialUsageDAO()}
     single{get<AppDatabase>().revenuesDAO()}
 
-    single{
-        Repository(
-            get(), get(), get(), get(), get(), get(), get(), get(),
-            get(), get (), get(), get(), get(), get(), get(), get(),
-            get(), get(), get(), get (), get(), get(), get(), get(),
-            get(), get(), get()
-        )
-    }
+    single{get<AppDatabase>().cartDAO()}
+
+    single{Repository(get())}
 
     /* Home */
     viewModel {HomeViewModel(get())}

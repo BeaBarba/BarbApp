@@ -18,7 +18,7 @@ import com.example.myapplication.ui.screen.Payment.AllPaymentsSummaryActivity
 import com.example.myapplication.ui.screen.Statistics.AllStatisticsActivity
 import com.example.myapplication.ui.screen.Statistics.AveragePaymentsTimesStatisticsActivity
 import com.example.myapplication.ui.screen.BubbleMaterialsActivity
-import com.example.myapplication.ui.screen.Material.CartActivity
+import com.example.myapplication.ui.screen.Cart.CartActivity
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddActivity
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarActivity
 import com.example.myapplication.ui.screen.Deadline.DeadlineAddActivity

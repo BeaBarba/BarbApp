@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import com.example.myapplication.data.database.dao.AddressDAO
 import com.example.myapplication.data.database.dao.AirConditionerDAO
 import com.example.myapplication.data.database.dao.BubbleDAO
+import com.example.myapplication.data.database.dao.CartDAO
 import com.example.myapplication.data.database.dao.CategoryPurchaseInvoiceDAO
 import com.example.myapplication.data.database.dao.CompanyDAO
 import com.example.myapplication.data.database.dao.CustomerDAO
@@ -61,7 +62,8 @@ import com.example.myapplication.data.database.dao.WorkSiteDAO
         MaterialUsage::class,
         Revenue::class
     ],
-    version = 10
+    views = [CartView::class],
+    version = 11
 )
 @TypeConverters(
     DateConverters::class,
@@ -99,4 +101,5 @@ abstract class AppDatabase : RoomDatabase(){
     abstract fun jobMaterialDAO() : FutureJobMaterialDAO
     abstract fun materialUsageDAO() : MaterialUsageDAO
     abstract fun revenuesDAO() : RevenueDAO
+    abstract fun cartDAO() : CartDAO
 }

@@ -2,6 +2,7 @@ package com.example.myapplication.data.repository
 
 import com.example.myapplication.data.database.Address
 import com.example.myapplication.data.database.AirConditioner
+import com.example.myapplication.data.database.AppDatabase
 import com.example.myapplication.data.database.Bubble
 import com.example.myapplication.data.database.BubbleFullDetails
 import com.example.myapplication.data.database.CategoryPurchaseInvoice
@@ -40,6 +41,7 @@ import com.example.myapplication.data.database.WorkSiteFullDetails
 import com.example.myapplication.data.database.dao.AddressDAO
 import com.example.myapplication.data.database.dao.AirConditionerDAO
 import com.example.myapplication.data.database.dao.BubbleDAO
+import com.example.myapplication.data.database.dao.CartDAO
 import com.example.myapplication.data.database.dao.CategoryPurchaseInvoiceDAO
 import com.example.myapplication.data.database.dao.CompanyDAO
 import com.example.myapplication.data.database.dao.CustomerDAO
@@ -66,351 +68,326 @@ import com.example.myapplication.data.database.dao.SingleExpenseDAO
 import com.example.myapplication.data.database.dao.WorkSiteDAO
 import kotlinx.coroutines.flow.Flow
 
-class Repository (
-    private val daoAirConditioner : AirConditionerDAO,
-    private val daoMaterial : MaterialDAO,
-    private val daoSeller : SellerDAO,
-    private val daoPurchaseInvoice : PurchaseInvoiceDAO,
-    private val daoPurchase: PurchaseDAO,
-    private val daoBubble : BubbleDAO,
-    private val daoDelivery : DeliveryDAO,
-    private val daoCategoryPurchaseInvoice : CategoryPurchaseInvoiceDAO,
-    private val daoSingleExpense : SingleExpenseDAO,
-    private val daoRecurringExpense : RecurringExpenseDAO,
-    private val daoPayment : PaymentDAO,
-    private val daoRecurringPayment : RecurringPaymentDAO,
-    private val daoImage : ImageDAO,
-    private val daoCustomerProvision : CustomerProvisionDAO,
-    private val daoCustomer : CustomerDAO,
-    private val daoPrivate : PrivateDAO,
-    private val daoCompany : CompanyDAO,
-    private val daoReference: ReferenceDAO,
-    private val daoReferral : ReferralDAO,
-    private val daoPhoneNumber : PhoneNumberDAO,
-    private val daoPropertyOwnership : PropertyOwnershipDAO,
-    private val daoAddress: AddressDAO,
-    private val daoWorkSite : WorkSiteDAO,
-    private val daoJob : JobDAO,
-    private val daoJobMaterial : FutureJobMaterialDAO,
-    private val daoMaterialUsage : MaterialUsageDAO,
-    private val daoRevenue : RevenueDAO
-) {
+class Repository (private val db : AppDatabase) {
 
     /* AirConditioner */
-    val airConditioners = daoAirConditioner.getAllAirConditioners()
+    val airConditioners = db.airConditionerDAO().getAllAirConditioners()
 
     fun getAirConditionerById(serialNumber: String, material: Int): Flow<AirConditioner?> =
-        daoAirConditioner.getAirConditioner(serialNumber, material)
+        db.airConditionerDAO().getAirConditioner(serialNumber, material)
 
     suspend fun upsertAirConditioner(airConditioner: AirConditioner) =
-        daoAirConditioner.upsertAirConditioner(airConditioner)
+        db.airConditionerDAO().upsertAirConditioner(airConditioner)
 
     suspend fun deleteAirConditioner(airConditioner: AirConditioner) =
-        daoAirConditioner.deleteAirConditioner(airConditioner)
+        db.airConditionerDAO().deleteAirConditioner(airConditioner)
 
     /* Material */
-    val materials = daoMaterial.getAllMaterials()
+    val materials = db.materialDAO().getAllMaterials()
 
-    fun getMaterialById(id: Int): Flow<Material?> = daoMaterial.getMaterial(id)
+    fun getMaterialById(id: Int): Flow<Material?> = db.materialDAO().getMaterial(id)
 
-    suspend fun upsertMaterial(material: Material) = daoMaterial.upsertMaterial(material)
+    suspend fun upsertMaterial(material: Material) = db.materialDAO().upsertMaterial(material)
 
-    suspend fun deleteMaterial(material: Material) = daoMaterial.deleteMaterial(material)
+    suspend fun deleteMaterial(material: Material) = db.materialDAO().deleteMaterial(material)
 
     suspend fun getAllMaterialsWithAirConditional(): List<MaterialWithAirConditional> =
-        daoMaterial.getAllMaterialsWithAirConditionalDetails()
+        db.materialDAO().getAllMaterialsWithAirConditionalDetails()
 
     fun getMaterialFullDetailsById(id: Int): Flow<MaterialFullDetails?> =
-        daoMaterial.getMaterialFullDetails(id)
+        db.materialDAO().getMaterialFullDetails(id)
 
     suspend fun getAllMaterialsFullDetails(): List<MaterialFullDetails> =
-        daoMaterial.getAllMaterialsFullDetails()
+        db.materialDAO().getAllMaterialsFullDetails()
 
     /* Seller */
-    val sellers = daoSeller.getAllSeller()
+    val sellers = db.sellerDAO().getAllSeller()
 
-    fun getSellerById(id: Int): Flow<Seller?> = daoSeller.getSeller(id)
+    fun getSellerById(id: Int): Flow<Seller?> = db.sellerDAO().getSeller(id)
 
-    suspend fun upsertSeller(seller: Seller): Long = daoSeller.upsertSeller(seller)
+    suspend fun upsertSeller(seller: Seller): Long = db.sellerDAO().upsertSeller(seller)
 
-    suspend fun deleteSeller(seller: Seller) = daoSeller.deleteSeller(seller)
+    suspend fun deleteSeller(seller: Seller) = db.sellerDAO().deleteSeller(seller)
 
     /* Purchase Invoice */
-    val purchaseInvoices = daoPurchaseInvoice.getAllPurchaseInvoice()
+    val purchaseInvoices = db.purchaseInvoiceDAO().getAllPurchaseInvoice()
 
     fun getPurchaseInvoiceById(id: Int): Flow<PurchaseInvoice?> =
-        daoPurchaseInvoice.getPurchaseInvoice(id)
+        db.purchaseInvoiceDAO().getPurchaseInvoice(id)
 
     suspend fun upsertPurchaseInvoice(purchaseInvoice: PurchaseInvoice) =
-        daoPurchaseInvoice.upsertPurchaseInvoice(purchaseInvoice)
+        db.purchaseInvoiceDAO().upsertPurchaseInvoice(purchaseInvoice)
 
     suspend fun deletePurchaseInvoice(purchaseInvoice: PurchaseInvoice) =
-        daoPurchaseInvoice.deletePurchaseInvoice(purchaseInvoice)
+        db.purchaseInvoiceDAO().deletePurchaseInvoice(purchaseInvoice)
 
     fun getPurchaseInvoiceFullDetailsById(id: Int): Flow<PurchaseInvoiceFullDetails?> =
-        daoPurchaseInvoice.getPurchaseInvoiceFullDetails(id)
+        db.purchaseInvoiceDAO().getPurchaseInvoiceFullDetails(id)
 
     suspend fun getAllPurchaseInvoicesFullDetails(): List<PurchaseInvoiceFullDetails> =
-        daoPurchaseInvoice.getAllPurchaseInvoicesFullDetails()
+        db.purchaseInvoiceDAO().getAllPurchaseInvoicesFullDetails()
 
     /* Purchase */
-    val purchases = daoPurchase.getAllPurchases()
+    val purchases = db.purchaseDAO().getAllPurchases()
 
     fun getPurchaseById(purchaseInvoice: Int, material: Int): Flow<Purchase?> =
-        daoPurchase.getPurchase(purchaseInvoice, material)
+        db.purchaseDAO().getPurchase(purchaseInvoice, material)
 
-    suspend fun upsertPurchase(purchase: Purchase) = daoPurchase.upsertPurchase(purchase)
+    suspend fun upsertPurchase(purchase: Purchase) = db.purchaseDAO().upsertPurchase(purchase)
 
-    suspend fun deletePurchase(purchase: Purchase) = daoPurchase.deletePurchase(purchase)
+    suspend fun deletePurchase(purchase: Purchase) = db.purchaseDAO().deletePurchase(purchase)
 
     /* Bubbles */
-    val bubbles = daoBubble.getAllBubbles()
+    val bubbles = db.bubbleDAO().getAllBubbles()
 
-    fun getBubbleById(id: Int): Flow<Bubble?> = daoBubble.getBubble(id)
+    fun getBubbleById(id: Int): Flow<Bubble?> = db.bubbleDAO().getBubble(id)
 
-    suspend fun upsertBubble(bubble: Bubble): Long = daoBubble.upsertBubble(bubble)
+    suspend fun upsertBubble(bubble: Bubble): Long = db.bubbleDAO().upsertBubble(bubble)
 
-    suspend fun deleteBubble(bubble: Bubble) = daoBubble.deleteBubble(bubble)
+    suspend fun deleteBubble(bubble: Bubble) = db.bubbleDAO().deleteBubble(bubble)
 
     fun getBubbleFullDetailsById(bubble: Int): Flow<BubbleFullDetails?> =
-        daoBubble.getBubbleFullDetails(bubble)
+        db.bubbleDAO().getBubbleFullDetails(bubble)
 
     suspend fun getAllBubblesFullDetails(): List<BubbleFullDetails> =
-        daoBubble.getAllBubblesFullDetails()
+        db.bubbleDAO().getAllBubblesFullDetails()
 
     /* Delivery */
-    val deliveries = daoDelivery.getAllDeliveries()
+    val deliveries = db.deliveriesDAO().getAllDeliveries()
 
     fun getDeliveryById(bubble: Int, material: Int): Flow<Delivery?> =
-        daoDelivery.getDelivery(bubble, material)
+        db.deliveriesDAO().getDelivery(bubble, material)
 
-    suspend fun upsertDelivery(delivery: Delivery) = daoDelivery.upsertDelivery(delivery)
+    suspend fun upsertDelivery(delivery: Delivery) = db.deliveriesDAO().upsertDelivery(delivery)
 
-    suspend fun deleteDelivery(delivery: Delivery) = daoDelivery.deleteDelivery(delivery)
+    suspend fun deleteDelivery(delivery: Delivery) = db.deliveriesDAO().deleteDelivery(delivery)
 
     /* Category */
-    val categoryPurchaseInvoice = daoCategoryPurchaseInvoice.getAllCategoriesPurchaseInvoice()
+    val categoryPurchaseInvoice = db.categoryPurchaseInvoiceDAO().getAllCategoriesPurchaseInvoice()
 
     fun getCategoryPurchaseInvoiceById(id: Int): Flow<CategoryPurchaseInvoice?> =
-        daoCategoryPurchaseInvoice.getCategoryPurchaseInvoice(id)
+        db.categoryPurchaseInvoiceDAO().getCategoryPurchaseInvoice(id)
 
     suspend fun upsertCategoryPurchaseInvoice(category: CategoryPurchaseInvoice) =
-        daoCategoryPurchaseInvoice.upsertCategoryPurchaseInvoice(category)
+        db.categoryPurchaseInvoiceDAO().upsertCategoryPurchaseInvoice(category)
 
     suspend fun deleteCategoryPurchaseInvoice(category: CategoryPurchaseInvoice) =
-        daoCategoryPurchaseInvoice.deleteCategoryPurchaseInvoice(category)
+        db.categoryPurchaseInvoiceDAO().deleteCategoryPurchaseInvoice(category)
 
     /* SingleExpense */
-    val singleExpenses = daoSingleExpense.getAllSingleExpenses()
+    val singleExpenses = db.singleExpenseDAO().getAllSingleExpenses()
 
-    fun getSingleExpenseById(id: Int): Flow<SingleExpense?> = daoSingleExpense.getSingleExpense(id)
+    fun getSingleExpenseById(id: Int): Flow<SingleExpense?> = db.singleExpenseDAO().getSingleExpense(id)
 
     suspend fun upsertSingleExpense(singleExpense: SingleExpense) =
-        daoSingleExpense.upsertSingleExpense(singleExpense)
+        db.singleExpenseDAO().upsertSingleExpense(singleExpense)
 
     suspend fun deleteSingleExpense(singleExpense: SingleExpense) =
-        daoSingleExpense.deleteSingleExpense(singleExpense)
+        db.singleExpenseDAO().deleteSingleExpense(singleExpense)
 
     /* RecurringExpense */
-    val recurringExpenses = daoRecurringExpense.getAllRecurringExpenses()
+    val recurringExpenses = db.recurringExpenseDAO().getAllRecurringExpenses()
 
     fun getRecurringExpenseById(id: Int): Flow<RecurringExpense?> =
-        daoRecurringExpense.getRecurringExpense(id)
+        db.recurringExpenseDAO().getRecurringExpense(id)
 
     suspend fun upsertRecurringExpense(recurringExpense: RecurringExpense) =
-        daoRecurringExpense.upsertRecurringExpense(recurringExpense)
+        db.recurringExpenseDAO().upsertRecurringExpense(recurringExpense)
 
     suspend fun deleteRecurringExpense(recurringExpense: RecurringExpense) =
-        daoRecurringExpense.deleteRecurringExpense(recurringExpense)
+        db.recurringExpenseDAO().deleteRecurringExpense(recurringExpense)
 
     /* Payment */
-    val payments = daoPayment.getAllPayments()
+    val payments = db.paymentDAO().getAllPayments()
 
-    fun getPaymentById(id: Int): Flow<Payment?> = daoPayment.getPayment(id)
+    fun getPaymentById(id: Int): Flow<Payment?> = db.paymentDAO().getPayment(id)
 
-    suspend fun upsertPayment(payment: Payment) = daoPayment.upsertPayment(payment)
+    suspend fun upsertPayment(payment: Payment) = db.paymentDAO().upsertPayment(payment)
 
-    suspend fun deletePayment(payment: Payment) = daoPayment.deletePayment(payment)
+    suspend fun deletePayment(payment: Payment) = db.paymentDAO().deletePayment(payment)
 
     /* RecurringPayment */
-    val recurringPayments = daoRecurringPayment.getAllRecurringPayments()
+    val recurringPayments = db.recurringPaymentDAO().getAllRecurringPayments()
 
     fun getRecurringPaymentById(payment: Int): Flow<RecurringPayment?> =
-        daoRecurringPayment.getRecurringPayment(payment)
+        db.recurringPaymentDAO().getRecurringPayment(payment)
 
     suspend fun upsertRecurringPayment(recurringPayment: RecurringPayment) =
-        daoRecurringPayment.upsertRecurringPayment(recurringPayment)
+        db.recurringPaymentDAO().upsertRecurringPayment(recurringPayment)
 
     suspend fun deleteRecurringPayment(recurringPayment: RecurringPayment) =
-        daoRecurringPayment.deleteRecurringPayment(recurringPayment)
+        db.recurringPaymentDAO().deleteRecurringPayment(recurringPayment)
 
     /* Image */
-    val images = daoImage.getAllImages()
+    val images = db.imageDAO().getAllImages()
 
-    fun getImageById(id: Int): Flow<Image?> = daoImage.getImage(id)
+    fun getImageById(id: Int): Flow<Image?> = db.imageDAO().getImage(id)
 
-    suspend fun upsertImage(image: Image) = daoImage.upsertImage(image)
+    suspend fun upsertImage(image: Image) = db.imageDAO().upsertImage(image)
 
-    suspend fun deleteImage(image: Image) = daoImage.deleteImage(image)
+    suspend fun deleteImage(image: Image) = db.imageDAO().deleteImage(image)
 
     /* CustomerProvision */
-    val customerProvisions = daoCustomerProvision.getAllCustomerProvisions()
+    val customerProvisions = db.customerProvisionDAO().getAllCustomerProvisions()
 
     fun getCustomerProvisionById(material: Int, customer: String): Flow<CustomerProvision?> =
-        daoCustomerProvision.getCustomerProvision(material, customer)
+        db.customerProvisionDAO().getCustomerProvision(material, customer)
 
     suspend fun upsertCustomerProvision(customerProvision: CustomerProvision) =
-        daoCustomerProvision.upsertCustomerProvision(customerProvision)
+        db.customerProvisionDAO().upsertCustomerProvision(customerProvision)
 
     suspend fun deleteCustomerProvision(customerProvision: CustomerProvision) =
-        daoCustomerProvision.deleteCustomerProvision(customerProvision)
+        db.customerProvisionDAO().deleteCustomerProvision(customerProvision)
 
     /* Customer */
-    val customers = daoCustomer.getAllCustomers()
+    val customers = db.customerDAO().getAllCustomers()
 
-    fun getCustomerById(cf: String): Flow<Customer?> = daoCustomer.getCustomer(cf)
+    fun getCustomerById(cf: String): Flow<Customer?> = db.customerDAO().getCustomer(cf)
 
-    suspend fun upsertCustomer(customer: Customer) = daoCustomer.upsertCustomer(customer)
+    suspend fun upsertCustomer(customer: Customer) = db.customerDAO().upsertCustomer(customer)
 
     fun getCustomerFullDetailsById(cf: String): Flow<CustomerFullDetails?> =
-        daoCustomer.getCustomerFullDetails(cf)
+        db.customerDAO().getCustomerFullDetails(cf)
 
     suspend fun getAllCustomersFullDetails(): List<CustomerFullDetails> =
-        daoCustomer.getAllCustomersFullDetails()
+        db.customerDAO().getAllCustomersFullDetails()
 
     /* Private */
-    fun getPrivateById(cf: String): Flow<Private?> = daoPrivate.getPrivate(cf)
+    fun getPrivateById(cf: String): Flow<Private?> = db.privateDAO().getPrivate(cf)
 
-    suspend fun upsertPrivate(privateCustomer: Private) = daoPrivate.upsertPrivate(privateCustomer)
+    suspend fun upsertPrivate(privateCustomer: Private) = db.privateDAO().upsertPrivate(privateCustomer)
 
     /* Company */
-    fun getCompanyById(uniqueCode: String): Flow<Company?> = daoCompany.getCompany(uniqueCode)
+    fun getCompanyById(uniqueCode: String): Flow<Company?> = db.companyDAO().getCompany(uniqueCode)
 
-    suspend fun upsertCompany(company: Company) = daoCompany.upsertCompany(company)
+    suspend fun upsertCompany(company: Company) = db.companyDAO().upsertCompany(company)
 
     /* Reference */
-    val reference = daoReference.getAllReferences()
+    val reference = db.referenceDAO().getAllReferences()
 
-    fun getReferenceById(id: Int): Flow<Reference?> = daoReference.getReference(id)
+    fun getReferenceById(id: Int): Flow<Reference?> = db.referenceDAO().getReference(id)
 
     suspend fun upsertReference(reference: Reference): Long =
-        daoReference.upsertReference(reference)
+        db.referenceDAO().upsertReference(reference)
 
-    suspend fun deleteReference(reference: Reference) = daoReference.deleteReference(reference)
+    suspend fun deleteReference(reference: Reference) = db.referenceDAO().deleteReference(reference)
 
     /* Referral */
-    val refferals = daoReferral.getAllReferrals()
+    val referrals = db.referralDAO().getAllReferrals()
 
-    fun getReferralById(presented: String): Flow<Referral?> = daoReferral.getReferral(presented)
+    fun getReferralById(presented: String): Flow<Referral?> = db.referralDAO().getReferral(presented)
 
-    suspend fun upsertReferral(referral: Referral) = daoReferral.upsertReferral(referral)
+    suspend fun upsertReferral(referral: Referral) = db.referralDAO().upsertReferral(referral)
 
-    suspend fun deleteReferral(referral: Referral) = daoReferral.deleteReferral(referral)
+    suspend fun deleteReferral(referral: Referral) = db.referralDAO().deleteReferral(referral)
 
     /* PhoneNumber */
     fun getPhoneNumberById(number: String): Flow<PhoneNumber?> =
-        daoPhoneNumber.getPhoneNumber(number)
+        db.phoneNumberDAO().getPhoneNumber(number)
 
     suspend fun upsertPhoneNumber(phoneNumber: PhoneNumber) =
-        daoPhoneNumber.upsertPhoneNumber(phoneNumber)
+        db.phoneNumberDAO().upsertPhoneNumber(phoneNumber)
 
     suspend fun deletePhoneNumber(phoneNumber: PhoneNumber) =
-        daoPhoneNumber.deletePhoneNumber(phoneNumber)
+        db.phoneNumberDAO().deletePhoneNumber(phoneNumber)
 
     /* PropertyOwnership */
     fun getPropertyOwnershipById(
         customerId: String,
         addressId: Int
-    ): Flow<PropertyOwnership?> = daoPropertyOwnership.getPropertyOwnership(customerId, addressId)
+    ): Flow<PropertyOwnership?> = db.propertyOwnershipDAO().getPropertyOwnership(customerId, addressId)
 
     suspend fun upsertPropertyOwnership(propertyOwnership: PropertyOwnership) =
-        daoPropertyOwnership.upsertPropertyOwnership(propertyOwnership)
+        db.propertyOwnershipDAO().upsertPropertyOwnership(propertyOwnership)
 
     suspend fun deletePropertyOwnership(propertyOwnership: PropertyOwnership) =
-        daoPropertyOwnership.deletePropertyOwnership(propertyOwnership)
+        db.propertyOwnershipDAO().deletePropertyOwnership(propertyOwnership)
 
     /* Address */
-    val addresses = daoAddress.getAllAddresses()
+    val addresses = db.addressDAO().getAllAddresses()
 
-    fun getAddressById(id: Int): Flow<Address?> = daoAddress.getAddress(id)
+    fun getAddressById(id: Int): Flow<Address?> = db.addressDAO().getAddress(id)
 
-    suspend fun upsertAddress(address: Address): Long = daoAddress.upsertAddress(address)
+    suspend fun upsertAddress(address: Address): Long = db.addressDAO().upsertAddress(address)
 
-    suspend fun deleteAddress(address: Address) = daoAddress.deleteAddress(address)
+    suspend fun deleteAddress(address: Address) = db.addressDAO().deleteAddress(address)
 
     /* WorkSite */
-    val workSites = daoWorkSite.getAllWorkSites()
+    val workSites = db.workSiteDAO().getAllWorkSites()
 
-    fun getWorkSiteById(id: Int): Flow<WorkSite?> = daoWorkSite.getWorkSite(id)
+    fun getWorkSiteById(id: Int): Flow<WorkSite?> = db.workSiteDAO().getWorkSite(id)
 
-    suspend fun upsertWorkSite(workSite: WorkSite) = daoWorkSite.upsertWorkSite(workSite)
+    suspend fun upsertWorkSite(workSite: WorkSite) = db.workSiteDAO().upsertWorkSite(workSite)
 
-    suspend fun deleteWorkSite(workSite: WorkSite) = daoWorkSite.deleteWorkSite(workSite)
+    suspend fun deleteWorkSite(workSite: WorkSite) = db.workSiteDAO().deleteWorkSite(workSite)
 
     fun getWorkSiteFullDetailsById(id: Int): Flow<WorkSiteFullDetails?> =
-        daoWorkSite.getWorkSiteFullDetails(id)
+        db.workSiteDAO().getWorkSiteFullDetails(id)
 
     suspend fun getAllWorkSiteFullDetails(): List<WorkSiteFullDetails> =
-        daoWorkSite.getAllWorkSitesFullDetails()
+        db.workSiteDAO().getAllWorkSitesFullDetails()
 
     /* Job */
-    val jobs = daoJob.getAllJobs()
+    val jobs = db.jobDAO().getAllJobs()
 
-    fun getJobById(id: Int): Flow<Job?> = daoJob.getJob(id)
+    fun getJobById(id: Int): Flow<Job?> = db.jobDAO().getJob(id)
 
-    suspend fun upsertJob(job: Job) = daoJob.upsertJob(job)
+    suspend fun upsertJob(job: Job) = db.jobDAO().upsertJob(job)
 
-    suspend fun deleteJob(job: Job) = daoJob.deleteJob(job)
+    suspend fun deleteJob(job: Job) = db.jobDAO().deleteJob(job)
 
     fun getJobDoneSummaryById(id: Int): Flow<JobMaterialFullDetails?> =
-        daoJob.getJobMaterialFullDetails(id)
+        db.jobDAO().getJobMaterialFullDetails(id)
 
     fun getJobAssignmentDetails(id: Int): Flow<JobAssignmentDetails?> =
-        daoJob.getJobAssignmentDetails(id)
+        db.jobDAO().getJobAssignmentDetails(id)
 
     suspend fun getAllJobsAssignmentDetails(): List<JobAssignmentDetails> =
-        daoJob.getAllJobsAssignmentDetails()
+        db.jobDAO().getAllJobsAssignmentDetails()
 
-    fun getJobFullDetails(id: Int): Flow<JobFullDetails?> = daoJob.getJobFullDetails(id)
+    fun getJobFullDetails(id: Int): Flow<JobFullDetails?> = db.jobDAO().getJobFullDetails(id)
 
-    suspend fun getAllJobsFullDetails(): List<JobFullDetails> = daoJob.getAllJobsFullDetails()
+    suspend fun getAllJobsFullDetails(): List<JobFullDetails> = db.jobDAO().getAllJobsFullDetails()
 
     /* FutureJobMaterial */
-    val futureJobMaterials = daoJobMaterial.getAllFutureJobMaterials()
+    val futureJobMaterials = db.jobMaterialDAO().getAllFutureJobMaterials()
 
     fun getFutureJobMaterialById(material: Int, job: Int): Flow<FutureJobMaterial?> =
-        daoJobMaterial.getFutureJobMaterial(material, job)
+        db.jobMaterialDAO().getFutureJobMaterial(material, job)
 
     suspend fun upsertFutureJobMaterial(futureJobMaterial: FutureJobMaterial) =
-        daoJobMaterial.upsertFutureJobMaterial(futureJobMaterial)
+        db.jobMaterialDAO().upsertFutureJobMaterial(futureJobMaterial)
 
     suspend fun deleteFutureJobMaterial(futureJobMaterial: FutureJobMaterial) =
-        daoJobMaterial.deleteFutureJobMaterial(futureJobMaterial)
+        db.jobMaterialDAO().deleteFutureJobMaterial(futureJobMaterial)
 
     /* MaterialUsage */
-    val materialsUsage = daoMaterialUsage.getAllMaterialsUsage()
+    val materialsUsage = db.materialUsageDAO().getAllMaterialsUsage()
 
     fun getMaterialUsageById(material: Int, job: Int): Flow<MaterialUsage?> =
-        daoMaterialUsage.getMaterialUsage(material, job)
+        db.materialUsageDAO().getMaterialUsage(material, job)
 
     suspend fun upsertMaterialUsage(materialUsage: MaterialUsage) =
-        daoMaterialUsage.upsertMaterialUsage(materialUsage)
+        db.materialUsageDAO().upsertMaterialUsage(materialUsage)
 
     suspend fun deleteMaterialUsage(materialUsage: MaterialUsage) =
-        daoMaterialUsage.deleteMaterialUsage(materialUsage)
+        db.materialUsageDAO().deleteMaterialUsage(materialUsage)
 
     /* Revenue */
-    val revenues = daoRevenue.getAllRevenues()
+    val revenues = db.revenuesDAO().getAllRevenues()
 
-    fun getRevenueById(id: Int): Flow<Revenue?> = daoRevenue.getRevenue(id)
+    fun getRevenueById(id: Int): Flow<Revenue?> = db.revenuesDAO().getRevenue(id)
 
-    suspend fun upsertRevenue(revenue: Revenue) = daoRevenue.upsertRevenue(revenue)
+    suspend fun upsertRevenue(revenue: Revenue) = db.revenuesDAO().upsertRevenue(revenue)
 
-    suspend fun deleteRevenue(revenue: Revenue) = daoRevenue.deleteRevenue(revenue)
+    suspend fun deleteRevenue(revenue: Revenue) = db.revenuesDAO().deleteRevenue(revenue)
 
     fun getRevenueFullDetailsById(id: Int): Flow<RevenueFullDetails?> =
-        daoRevenue.getRevenueFullDetails(id)
+        db.revenuesDAO().getRevenueFullDetails(id)
 
     suspend fun getAllRevenuesFullDetails(): List<RevenueFullDetails> =
-        daoRevenue.getAllRevenuesFullDetails()
+        db.revenuesDAO().getAllRevenuesFullDetails()
+
+    /* Cart */
+    val cartItems = db.cartDAO().getCartItems()
 }
