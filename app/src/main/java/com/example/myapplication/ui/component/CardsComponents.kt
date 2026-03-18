@@ -45,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
+import com.example.myapplication.data.database.CartDetails
 import com.example.myapplication.debug.Prodotto
 import com.example.myapplication.debug.itemsList
 
@@ -328,18 +329,18 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
 }
 
 @Composable
-fun CartCard(item: Prodotto, onClick: () -> Unit){
+fun CartCard(item: CartDetails, onClick: () -> Unit){
     var checked by remember { mutableStateOf(false) }
     GenericCard(
-        text = item.nome,
-        textDescription = item.modello,
-        type = item.tipo,
+        text = item.material.category,
+        textDescription = item.material.model,
+        type = item.material.type.toString(),
         onClick = onClick,
         textSpace = 0.7f,
         leadingContent = {
             Avatar(
-                char = item.tipo.get(0),
-                type = item.tipo
+                char = item.material.type.toString()[0],
+                type = item.material.type.toString()
             )
         },
         trailingContent = {
@@ -354,12 +355,12 @@ fun CartCard(item: Prodotto, onClick: () -> Unit){
                 ) {
 
                     Text(
-                        text = item.quantita.toString(),
+                        text = item.missingItems.toString(),
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     )
                     Spacer(Modifier.size(4.dp))
                     Text(
-                        text = item.unitaMisura,
+                        text = item.material.unitMeasurement,
                         fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     )
                 }
@@ -369,7 +370,7 @@ fun CartCard(item: Prodotto, onClick: () -> Unit){
                     onCheckedChange = {checked = !checked},
                     interactionSource = remember { MutableInteractionSource() },
                     modifier = Modifier.weight(2.0f),
-                    colors = checkboxColors(item.tipo)
+                    colors = checkboxColors(item.material.type.toString())
                 )
             }
 

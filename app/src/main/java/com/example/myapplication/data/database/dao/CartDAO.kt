@@ -9,9 +9,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CartDAO{
     @Transaction
-    @Query("SELECT M.*, C.Prenotati, C.Mancano " +
-            "FROM MATERIALI AS M" +
-            "JOIN Carrello AS C ON (M.Id = C.Materiale)"
+    @Query("""SELECT M.*, C.Prenotati, C.Mancano
+              FROM MATERIALI AS M
+                JOIN Carrello AS C ON (M.Id = C.Materiale)
+           """
     )
     fun getCartItems() : Flow<List<CartDetails>>
 }

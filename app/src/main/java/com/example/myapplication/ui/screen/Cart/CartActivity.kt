@@ -35,8 +35,13 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun CartActivity(
+    state : CartState,
+    actions: CartActions,
     navController : NavHostController
 ){
+
+    actions.populateCart()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -44,7 +49,7 @@ fun CartActivity(
                 navigationIcon = {BackButton {navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
-                        onClick = {/*navController.navigate(NavigationRoute.BubbleAdd)*/}
+                        onClick = {navController.navigate(NavigationRoute.BubbleAdd(0))}
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.description_24dp),
@@ -67,7 +72,7 @@ fun CartActivity(
                 .fillMaxSize()
         ) {
             item{ Spacer(Modifier.size(10.dp))}
-            items(prodotti) { item ->
+            items(state.items) { item ->
                 var showDialog by remember { mutableStateOf(false) }
 
                 CartCard(item, {showDialog = true})
@@ -75,10 +80,25 @@ fun CartActivity(
                 if (showDialog) {
                     CustomAlertDialog(
                         onDismiss = { showDialog = false },
-                        title = item.nome,
-                        subtitle = item.modello,
-                        content = item_num,
-                        type = item.tipo
+                        title = item.material.category,
+                        subtitle = item.material.model + " " + item.material.brand,
+                        content = item.futureJobMaterial.map { job ->
+                            val label : String =
+                                if(job.jobAssignment.customer != null) {
+                                    if (job.jobAssignment.isCompany) {
+                                        "${job.jobAssignment.companyCustomer?.companyName}"
+                                    } else if (job.jobAssignment.isPrivate) {
+                                        "${job.jobAssignment.privateCustomer?.lastName} ${job.jobAssignment.customer.name}"
+                                    } else {
+                                        "Cliente Ignoto"
+                                    }
+                                } else{
+                                    "${job.jobAssignment.address.address} ${job.jobAssignment.address.houseNumber}"
+                                }
+
+                            Pair(label, job.futureJobMaterial.quantity)
+                        },
+                        type = item.material.type.toString()
                     )
                 }
             }

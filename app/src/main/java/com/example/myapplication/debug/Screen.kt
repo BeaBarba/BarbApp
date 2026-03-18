@@ -184,6 +184,7 @@ fun Screen(modifier : Modifier){
                 item_num
             )
         }
+
     }
 }
 

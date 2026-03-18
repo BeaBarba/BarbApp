@@ -116,11 +116,11 @@ class AllCustomersSummaryViewModel(
         return Pair<String, String>(
             first = customer.customer.cf,
             second =
-            if (customer.privateCustomer != null) {
-                (customer.privateCustomer.lastName + " " + customer.customer.name)
-            }else {
-                customer.customer.name
-            }
+                if (customer.privateCustomer != null) {
+                    (customer.privateCustomer.lastName + " " + customer.customer.name)
+                }else {
+                    customer.customer.name
+                }
         )
     }
 }

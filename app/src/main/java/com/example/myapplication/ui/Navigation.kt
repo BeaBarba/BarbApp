@@ -47,6 +47,7 @@ import com.example.myapplication.ui.screen.Payment.SinglePaymentSummaryActivity
 import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarActivity
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarViewModel
 import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
+import com.example.myapplication.ui.screen.Cart.CartViewModel
 import com.example.myapplication.ui.screen.Construction.AllConstructionSummaryActivity
 import com.example.myapplication.ui.screen.Construction.ConstructionAddActivity
 import com.example.myapplication.ui.screen.Construction.SingleConstructionSummaryActivity
@@ -222,7 +223,9 @@ fun NavGraph(
             BubbleMaterialsActivity(navController)
         }
         composable<NavigationRoute.Cart>{
-            CartActivity(navController)
+            val cartVM = koinViewModel<CartViewModel>()
+            val state by cartVM.state.collectAsStateWithLifecycle()
+            CartActivity(state, cartVM.actions, navController)
         }
         composable<NavigationRoute.CustomerAdd>{ backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.CustomerAdd>()

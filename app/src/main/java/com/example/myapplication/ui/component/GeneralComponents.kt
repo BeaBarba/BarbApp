@@ -103,7 +103,7 @@ fun CustomAlertDialog(
     onDismiss: ()-> Unit,
     title: String,
     subtitle: String,
-    content: List<Pair<String,Int>>,
+    content: List<Pair<String,Float>>,
     type: String = "NONE"
 ){
     val TITLE_TYPOGRAFY = MaterialTheme.typography.headlineMedium

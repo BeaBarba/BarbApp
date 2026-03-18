@@ -319,7 +319,7 @@ data class FutureJobMaterialWithJobDetails(
     @Relation(
         entity = Job::class,
         parentColumn = "Intervento",
-        entityColumn = "Id"
+        entityColumn = "id"
     )
     val jobAssignment : JobAssignmentDetails
 )
@@ -332,8 +332,8 @@ data class CartDetails(
 
     @Relation(
         entity = FutureJobMaterial::class,
-        parentColumn = "Id",
+        parentColumn = "id",
         entityColumn = "Materiale"
     )
-    val futureJobMaterial : FutureJobMaterialWithJobDetails
+    val futureJobMaterial : List<FutureJobMaterialWithJobDetails>
 )

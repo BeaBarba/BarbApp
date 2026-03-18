@@ -109,12 +109,12 @@ che indica la specifica e la parte verde chiaro che indica tipo il cognome), l'A
 
 var itemsList = List<String>(10, {item -> "item $item"})
 
-var item_num = listOf<Pair<String,Int>>(
-    Pair<String,Int>("item", 10),
-    Pair<String,Int>("item", 5),
-    Pair<String,Int>("item", 3),
-    Pair<String,Int>("item", 4),
-    Pair<String,Int>("item", 1),
+var item_num = listOf<Pair<String,Float>>(
+    Pair<String,Float>("item", 10.0f),
+    Pair<String,Float>("item", 5.0f),
+    Pair<String,Float>("item", 3.0f),
+    Pair<String,Float>("item", 4.0f),
+    Pair<String,Float>("item", 1.0f),
 )
 
 var customers = listOf(

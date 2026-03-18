@@ -13,7 +13,7 @@ import androidx.room.DatabaseView
             """
 )
 data class CartView(
-    val materialId : Int,
+    @ColumnInfo("Materiale") val materialId : Int,
     @ColumnInfo("Prenotati") val reservedItems : Float,
     @ColumnInfo("Mancano") val missingItems : Float
 )

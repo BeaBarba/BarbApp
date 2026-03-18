@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.example.myapplication.data.database.AppDatabase
+import com.example.myapplication.data.database.CartView
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.data.repository.ThemeRepository
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
@@ -13,6 +14,7 @@ import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryVi
 import com.example.myapplication.ui.screen.Bubble.singleSummary.SingleBubbleSummaryViewModel
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarViewModel
 import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
+import com.example.myapplication.ui.screen.Cart.CartViewModel
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
@@ -78,6 +80,9 @@ val appModule = module{
 
     /* Home */
     viewModel {HomeViewModel(get())}
+
+    /* Cart */
+    viewModel {CartViewModel(get())}
 
     /* Select */
     viewModel {SelectViewModel(get())}
