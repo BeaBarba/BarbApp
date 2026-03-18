@@ -7,6 +7,7 @@ import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -32,7 +33,7 @@ class SelectCustomerViewModel(
         override fun populateUI() {
             if (!state.value.started) {
                 viewModelScope.launch(Dispatchers.IO) {
-                    val customersCardList = repository.getAllCustomersFullDetails()
+                    val customersCardList = repository.getAllCustomersFullDetails().first()
                         .map { customer ->
                             CardItem(
                                 id = customer.customer.cf,

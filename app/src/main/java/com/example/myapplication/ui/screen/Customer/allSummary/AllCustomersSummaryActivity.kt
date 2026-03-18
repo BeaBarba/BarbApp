@@ -28,8 +28,6 @@ fun AllCustomersSummaryActivity(
     actions: AllCustomersSummaryActions,
     navController : NavHostController
 ){
-    actions.populateCustomers()
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {

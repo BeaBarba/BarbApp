@@ -21,7 +21,6 @@ data class AllCustomersSummaryState(
 )
 
 interface AllCustomersSummaryActions {
-    fun populateCustomers()
     fun setSearchString(searchString : String)
     fun setAscendingSort()
     fun setDescendingSort()
@@ -39,25 +38,30 @@ class AllCustomersSummaryViewModel(
 
     val state = _state.asStateFlow()
 
-    val actions = object : AllCustomersSummaryActions {
+    init{
+        populateCustomers()
+    }
 
-        override fun populateCustomers() {
-            viewModelScope.launch {
-                val customers = repository.customers.first().map { customer ->
-                    repository.getCustomerFullDetailsById(customer.cf).first()!!
-                }
-                if (!state.value.started) {
-                    _state.update {
-                        it.copy(
-                            customers = customers,
-                            started = true,
-                            customersToView = customers
-                        )
-                    }
-                    _state.update { it.copy(startingChar = getStartingChar(state.value.customers).sorted()) }
+    private fun populateCustomers() {
+        viewModelScope.launch {
+            repository.getAllCustomersFullDetails().collect { customerList ->
+                _state.update { currentState ->
+                    val filterList =
+                        if(currentState.searchString.isEmpty()) customerList
+                        else filter(currentState.searchString, customerList)
+
+                    currentState.copy(
+                        customers = customerList,
+                        customersToView = filterList,
+                        startingChar = getStartingChar(state.value.customers).sorted(),
+                        started = true
+                    )
                 }
             }
         }
+    }
+
+    val actions = object : AllCustomersSummaryActions {
 
         override fun setSearchString(searchString: String) {
             _state.update { it.copy(
@@ -110,6 +114,13 @@ class AllCustomersSummaryViewModel(
                 it.customer.name.get(0)
             }
         }.distinct()
+    }
+
+    private fun filter(searchString: String, customer: List<CustomerFullDetails>) : List<CustomerFullDetails>{
+        return customer.filter {
+            it.privateCustomer?.lastName?.lowercase()?.startsWith(searchString.lowercase()) ?:false ||
+            it.customer.name.lowercase().startsWith(searchString.lowercase())
+        }
     }
 
     private fun customerToPairToView(customer : CustomerFullDetails) : Pair<String,String>{

@@ -22,7 +22,7 @@ data class Material(
     @ColumnInfo(name = "Marca") val brand : String,
     @ColumnInfo(name = "Tipologia") val type : JobType,
     @ColumnInfo(name = "Categoria") val category : String,
-    @ColumnInfo(name = "Disponibilità") val availability : Float,
+    @ColumnInfo(name = "Disponibilità") var availability : Float,
     @ColumnInfo(name = "UnitàDiMisura") val unitMeasurement: String
 )
 

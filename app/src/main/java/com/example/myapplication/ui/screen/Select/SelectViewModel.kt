@@ -12,6 +12,7 @@ import com.example.myapplication.debug.invoicesType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -95,7 +96,7 @@ class SelectViewModel(
 
                 SelectKey.AllCustomers -> {
                     viewModelScope.launch(Dispatchers.IO) {
-                        val customersCardList = repository.getAllCustomersFullDetails()
+                        val customersCardList = repository.getAllCustomersFullDetails().first()
                             .map { customer ->
                                 CardItem(
                                     id = customer.customer.cf,

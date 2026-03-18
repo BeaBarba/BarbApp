@@ -39,9 +39,6 @@ fun CartActivity(
     actions: CartActions,
     navController : NavHostController
 ){
-
-    actions.populateCart()
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -75,7 +72,14 @@ fun CartActivity(
             items(state.items) { item ->
                 var showDialog by remember { mutableStateOf(false) }
 
-                CartCard(item, {showDialog = true})
+                CartCard(
+                    item = item,
+                    onClick = {showDialog = true},
+                    isChecked = false,
+                    onClickCheckbox = { checked ->
+                        actions.checkedItem(item.material.id, item.missingItems,checked)
+                    }
+                )
 
                 if (showDialog) {
                     CustomAlertDialog(

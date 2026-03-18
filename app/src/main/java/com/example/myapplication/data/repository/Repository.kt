@@ -249,7 +249,7 @@ class Repository (private val db : AppDatabase) {
     fun getCustomerFullDetailsById(cf: String): Flow<CustomerFullDetails?> =
         db.customerDAO().getCustomerFullDetails(cf)
 
-    suspend fun getAllCustomersFullDetails(): List<CustomerFullDetails> =
+    fun getAllCustomersFullDetails(): Flow<List<CustomerFullDetails>> =
         db.customerDAO().getAllCustomersFullDetails()
 
     /* Private */

@@ -43,5 +43,5 @@ interface CustomerDAO{
     @Query("SELECT * " +
             "FROM CLIENTI "
     )
-    suspend fun getAllCustomersFullDetails() : List<CustomerFullDetails>
+    fun getAllCustomersFullDetails() : Flow<List<CustomerFullDetails>>
 }

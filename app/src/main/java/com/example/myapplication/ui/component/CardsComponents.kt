@@ -329,8 +329,12 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
 }
 
 @Composable
-fun CartCard(item: CartDetails, onClick: () -> Unit){
-    var checked by remember { mutableStateOf(false) }
+fun CartCard(
+    item: CartDetails,
+    onClick: () -> Unit,
+    isChecked : Boolean,
+    onClickCheckbox : (Boolean) -> Unit
+){
     GenericCard(
         text = item.material.category,
         textDescription = item.material.model,
@@ -366,8 +370,10 @@ fun CartCard(item: CartDetails, onClick: () -> Unit){
                 }
                 Spacer(Modifier.size(10.dp))
                 Checkbox(
-                    checked = checked,
-                    onCheckedChange = {checked = !checked},
+                    checked = isChecked,
+                    onCheckedChange = { checked ->
+                        onClickCheckbox(checked)
+                    },
                     interactionSource = remember { MutableInteractionSource() },
                     modifier = Modifier.weight(2.0f),
                     colors = checkboxColors(item.material.type.toString())
