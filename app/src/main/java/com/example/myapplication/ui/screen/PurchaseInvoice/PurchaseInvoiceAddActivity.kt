@@ -75,8 +75,8 @@ fun PurchaseInvoiceAddActivity(
     ) { contentPadding ->
         var selected by remember { mutableStateOf("") }
         var venditori_menu : MutableList<MenuItem> = (
-                listOf(MenuItem(name = "Nuovo",{selected = "Nuovo"})) +
-                        venditori.map{ item -> MenuItem(name = item, {selected = item}) }
+                listOf(MenuItem(Pair(1,""),name = "Nuovo",{selected = "Nuovo"})) +
+                        venditori.map{ item -> MenuItem(Pair(1,""),name = item, {selected = item}) }
                 ).toMutableList()
         LazyColumn(
             modifier = Modifier

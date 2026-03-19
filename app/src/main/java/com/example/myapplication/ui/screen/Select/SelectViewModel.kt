@@ -52,7 +52,7 @@ class SelectViewModel(
                                     CardItem(
                                         id = material.id.toString(),
                                         name = material.category,
-                                        description = material.model,
+                                        description = material.model + " - " + material.brand,
                                         type = material.type
                                     )
                                 }

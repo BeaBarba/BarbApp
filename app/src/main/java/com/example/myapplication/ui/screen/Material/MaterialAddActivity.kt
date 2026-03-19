@@ -90,11 +90,11 @@ fun MaterialAddActivity(
         }
     ) { contentPadding ->
         var type by remember { mutableStateOf("")}
-        var tipi = tipi_menu.map{item -> MenuItem(name = item.name, {type = item.name})}
+        var tipi = tipi_menu.map{item -> MenuItem(Pair(1,""),name = item.name, {type = item.name})}
         var category by remember { mutableStateOf("")}
-        var categorie = categorie_menu.map{item -> MenuItem(name = item.name, {category = item.name})}
+        var categorie = categorie_menu.map{item -> MenuItem(Pair(1,""),name = item.name, {category = item.name})}
         var checked by remember {mutableStateOf("")}
-        var machine_type = listOf(MenuItem(name = "Interna", {checked = "Interna"}), MenuItem(name = "Esterna", {checked = "Esterna"}))
+        var machine_type = listOf(MenuItem(Pair(1,""),name = "Interna", {checked = "Interna"}), MenuItem(Pair(1,""),name = "Esterna", {checked = "Esterna"}))
         LazyColumn(
             modifier = Modifier
                 .padding(

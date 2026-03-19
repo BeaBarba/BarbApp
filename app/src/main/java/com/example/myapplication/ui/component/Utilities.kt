@@ -97,6 +97,7 @@ fun checkboxColors(
 }
 
 data class MenuItem(
+    val idValues : Pair<Int,String>,
     val name : String,
-    val onClick : (String) -> Unit
+    val onClick : (Pair<Int,String>) -> Unit
 )

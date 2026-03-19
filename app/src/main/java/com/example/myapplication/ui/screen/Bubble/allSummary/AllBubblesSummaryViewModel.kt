@@ -31,10 +31,21 @@ class AllBubblesSummaryViewModel(
 
     val state = _state.asStateFlow()
 
+    init{
+        populateBubbles()
+    }
+
+    private fun populateBubbles() {
+        viewModelScope.launch {
+            repository.getAllBubblesFullDetails().collect { updatedItems ->
+                _state.update { it.copy(bubbles = updatedItems) }
+            }
+        }
+    }
     val actions = object : AllBubblesSummaryActions {
 
         override fun populateBubbles() {
-            viewModelScope.launch{
+            /*viewModelScope.launch{
                 val bubbles = repository.getAllBubblesFullDetails()
                 if (!state.value.started) {
                     _state.update {
@@ -45,7 +56,7 @@ class AllBubblesSummaryViewModel(
                     }
                 }
             }
-            dateSort()
+            dateSort()*/
         }
 
         override fun dateSort() {

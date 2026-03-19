@@ -31,7 +31,7 @@ fun AllBubblesSummaryActivity(
     navController : NavHostController
 ){
 
-    actions.populateBubbles()
+    //actions.populateBubbles()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

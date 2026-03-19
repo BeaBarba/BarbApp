@@ -59,9 +59,9 @@ fun CustomerAddActivity(
             CustomerType.Privato -> stringResource(R.string.private_customer)
         }
 
-    var type = listOf(
-        MenuItem(stringResource(R.string.company), {actions.setCustomerType(CustomerType.Azienda)}),
-        MenuItem(stringResource(R.string.private_customer),{actions.setCustomerType(CustomerType.Privato)})
+    val type = listOf(
+        MenuItem(Pair(0,""),stringResource(R.string.company)) { actions.setCustomerType(CustomerType.Azienda) },
+        MenuItem(Pair(0,""),stringResource(R.string.private_customer)){actions.setCustomerType(CustomerType.Privato)}
     )
 
     val selectSearchText = stringResource(R.string.customer)

@@ -153,4 +153,5 @@
     <string name="date_deadline">Deadline date</string>
     <string name="date_payment">Payment date</string>
     <string name="house_number">House number</string>
+    <string name="new_item">New</string>
 </resources>

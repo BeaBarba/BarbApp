@@ -76,6 +76,7 @@ fun SelectActivity(
                 var checked by remember {mutableStateOf(item.checked)}
                 ListItemCheckbox(
                     text = item.name,
+                    textDescription = item.description,
                     checked = checked,
                     onCheckedChange = {
                         checked = !checked

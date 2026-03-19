@@ -37,7 +37,7 @@ import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSu
 import com.example.myapplication.ui.screen.Bubble.singleSummary.SingleBubbleSummaryActivity
 import com.example.myapplication.ui.screen.Bubble.add.BubbleAddViewModel
 import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryViewModel
-import com.example.myapplication.ui.screen.Bubble.bubbleAddActivity.BubbleAddActivity
+import com.example.myapplication.ui.screen.Bubble.add.BubbleAddActivity
 import com.example.myapplication.ui.screen.Bubble.singleSummary.SingleBubbleSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.SingleDeadlineSummaryActivity

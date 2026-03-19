@@ -53,7 +53,7 @@ fun AddButton(onClick: () -> Unit){
         modifier = Modifier.size(60.dp).fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
-        interactionSource = remember { MutableInteractionSource() } // Per le interazioni
+        interactionSource = remember { MutableInteractionSource() }
     ) {
         Icon(Icons.Filled.Add, stringResource(R.string.add_item))
     }
@@ -61,15 +61,15 @@ fun AddButton(onClick: () -> Unit){
 
 @Composable
 fun DeleteButton(onclick: () -> Unit){
-    val BOX_COLOR = MaterialTheme.colorScheme.secondary
-    val CONTENT_COLOR = MaterialTheme.colorScheme.onSecondary
+    val boxColor = MaterialTheme.colorScheme.secondary
+    val contentColor = MaterialTheme.colorScheme.onSecondary
     IconButton(
         onClick = onclick,
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp),
         enabled =   true,
-        colors = IconButtonDefaults.iconButtonColors(BOX_COLOR)
+        colors = IconButtonDefaults.iconButtonColors(boxColor)
     ) {
         Row (
             horizontalArrangement = Arrangement.Center,
@@ -78,13 +78,13 @@ fun DeleteButton(onclick: () -> Unit){
             Icon(
                 painter = painterResource(R.drawable.delete_24dp),
                 contentDescription = stringResource(R.string.delete),
-                tint = CONTENT_COLOR,
+                tint = contentColor,
                 modifier = Modifier.height(30.dp).width(30.dp)
             )
             Spacer(Modifier.size(8.dp))
             Text(
                 text = stringResource(R.string.delete),
-                color = CONTENT_COLOR,
+                color = contentColor,
                 fontSize = MaterialTheme.typography.headlineSmall.fontSize
             )
         }
@@ -163,7 +163,7 @@ fun SplitButtonMenu(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Avatar(content.get(0))
+                Avatar(content[0])
                 Spacer(Modifier.size(8.dp))
                 Text(
                     text = content,
@@ -180,7 +180,7 @@ fun SplitButtonMenu(
                 .background(backgroundColor),
             contentAlignment = Alignment.Center
         ){
-            ToggleIconButton(checked, { checked = it })
+            ToggleIconButton(checked){ checked = it }
             CustomDropDownMenu(checked, {checked = false}, heightMenu){
                 Column(
                     modifier = Modifier.padding(end = 20.dp, start = 20.dp)
@@ -189,7 +189,7 @@ fun SplitButtonMenu(
                         DropdownMenuItem(
                             text = { MenuText( text = item.name, colorTextMenu ) },
                             onClick = {
-                                item.onClick(item.name)
+                                item.onClick(item.idValues)
                                 checked = false
                             },
                         )

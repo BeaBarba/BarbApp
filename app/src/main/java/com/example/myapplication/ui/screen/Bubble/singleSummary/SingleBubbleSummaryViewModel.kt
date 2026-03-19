@@ -32,9 +32,8 @@ class SingleBubbleSummaryViewModel(
             if(state.value.started) return
 
             viewModelScope.launch {
-                _state.update { it.copy(started = true) }
                 repository.getBubbleFullDetailsById(bubbleId).collect{ data ->
-                    _state.update { it.copy(bubble = data) }
+                    _state.update { it.copy(bubble = data, started = true) }
                 }
             }
         }

@@ -94,14 +94,14 @@ fun DeadlineAddActivity(
     ) { contentPadding ->
         var selectedFrequency by remember { mutableStateOf(FrequencyType.Nessuna)}
         var frequency_menu : List<MenuItem> = listOf(
-            MenuItem(FrequencyType.Anno.toString(), {selectedFrequency = FrequencyType.Anno}),
-            MenuItem(FrequencyType.Mese.toString(), {selectedFrequency = FrequencyType.Mese}),
-            MenuItem(FrequencyType.Settimana.toString(), {selectedFrequency = FrequencyType.Settimana})
+            MenuItem(Pair(1,""),FrequencyType.Anno.toString(), {selectedFrequency = FrequencyType.Anno}),
+            MenuItem(Pair(1,""),FrequencyType.Mese.toString(), {selectedFrequency = FrequencyType.Mese}),
+            MenuItem(Pair(1,""),FrequencyType.Settimana.toString(), {selectedFrequency = FrequencyType.Settimana})
         )
         var selectedType by remember{ mutableStateOf(DeadlineType.Tipo)}
         var type_menu : List<MenuItem> = listOf(
-            MenuItem(DeadlineType.Singola.toString(), {selectedType = DeadlineType.Singola}),
-            MenuItem(DeadlineType.Periodica.toString(), {selectedType = DeadlineType.Periodica}),
+            MenuItem(Pair(1,""),DeadlineType.Singola.toString(), {selectedType = DeadlineType.Singola}),
+            MenuItem(Pair(1,""),DeadlineType.Periodica.toString(), {selectedType = DeadlineType.Periodica}),
         )
         LazyColumn(
             modifier = Modifier

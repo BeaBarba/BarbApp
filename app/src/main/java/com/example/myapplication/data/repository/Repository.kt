@@ -149,7 +149,7 @@ class Repository (private val db : AppDatabase) {
     fun getBubbleFullDetailsById(bubble: Int): Flow<BubbleFullDetails?> =
         db.bubbleDAO().getBubbleFullDetails(bubble)
 
-    suspend fun getAllBubblesFullDetails(): List<BubbleFullDetails> =
+    fun getAllBubblesFullDetails(): Flow<List<BubbleFullDetails>> =
         db.bubbleDAO().getAllBubblesFullDetails()
 
     /* Delivery */

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Bubble.bubbleAddActivity
+package com.example.myapplication.ui.screen.Bubble.add
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -30,7 +31,6 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.modules.SelectKey
-import com.example.myapplication.debug.bolle
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
@@ -42,8 +42,6 @@ import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.screen.Bubble.add.BubbleAddActions
-import com.example.myapplication.ui.screen.Bubble.add.BubbleAddState
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -84,10 +82,11 @@ fun BubbleAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            actions.saveBubble()
-                            navController.navigate(NavigationRoute.SingleBubbleSummary(state.bubbleId))
-                            {
-                                popUpTo(NavigationRoute.AllBubblesSummary) { inclusive = false }
+                            actions.saveBubble {
+                                navController.navigate(NavigationRoute.SingleBubbleSummary(it))
+                                {
+                                    popUpTo(NavigationRoute.AllBubblesSummary) { inclusive = false }
+                                }
                             }
                         },
                         colors = IconButtonDefaults.iconButtonColors(
@@ -121,27 +120,42 @@ fun BubbleAddActivity(
                 DatePickerFieldToModal(
                     title = stringResource(R.string.date_issue),
                     value = state.bubbleDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                    onValueChange = {actions.setBubbleDate(LocalDate.parse(it, DateTimeFormatter.ofPattern("dd/MM/yyyy")))},
+                    onValueChange = {date ->
+                        actions.setBubbleDate(
+                            if(date.isBlank()) LocalDate.now()
+                            else LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        )
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 SplitButtonMenu(
-                    content = state.selectedSeller?.name ?: "New",
-                    items = state.sellers.map{ item -> MenuItem(name = item.name, actions::setSeller)},
-                    heightMenu = (state.sellers.size * 55).dp
+                    content = if(state.selectedSeller?.id == -1) stringResource(R.string.new_item)
+                                else state.selectedSeller?.name ?: stringResource(R.string.new_item),
+                    items = state.sellers.map{ item ->
+                        MenuItem(
+                            idValues = Pair(first = item.id, ""),
+                            name = if(item.name == "New") stringResource(R.string.new_item)
+                            else item.name,
+                            onClick = actions::setSeller
+                        )
+                    }
                 )
             }
-            if(state.selectedSeller?.name.equals("New")){
+
+            if(state.selectedSeller?.id == -1){
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.name),
-                        onValueChange = actions::setNewSeller,
-                        value = state.newSeller?.name
+                        onValueChange = actions::createNewSeller,
+                        value = if(state.newSeller?.name.isNullOrEmpty()) ""
+                                else state.newSeller?.name
                     )
                 }
                 item{Spacer(Modifier.size(8.dp))}
             }
+
             item{CustomDivider()}
             item {
                 GenericCard(
@@ -164,28 +178,37 @@ fun BubbleAddActivity(
             }
 
             itemsIndexed(state.materialsSelected){index, item ->
-                TitleLabel(item.material.category)
+                TitleLabel(
+                    item.material.category +
+                        " " + item.material.model + " - " +
+                        item.material.brand
+                )
+
+                var quantityText by remember{ mutableStateOf(item.quantity.toString()) }
+                var priceText by remember { mutableStateOf(item.unitPrice.toString()) }
+                var vatText by remember { mutableStateOf(item.vatNumber.toString()) }
 
                 CustomOutlineTextField(
                     label = stringResource(R.string.quantity),
-                    value = item.quantity.toString(),
+                    value = quantityText,
                     onValueChange = { value ->
+                        quantityText = value
                         actions.setQuantityMaterial(item.material, value)
                     },
                 )
                 CustomOutlineTextField(
                     label = stringResource(R.string.unit_price),
-                    value = item.unitPrice.let {
-                        DecimalFormat("#.00").format(it)
-                    },
+                    value = priceText,
                     onValueChange = { value ->
+                        priceText = value
                         actions.setUnitPriceMaterial(item.material, value)
                     },
                 )
                 CustomOutlineTextField(
-                    label = stringResource(R.string.vat_number),
-                    value = item.vatNumber.toString(),
+                    label = stringResource(R.string.vat),
+                    value = vatText,
                     onValueChange = { value ->
+                        vatText = value
                         actions.setVatNumberMaterial(item.material, value)
                     },
                 )

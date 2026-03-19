@@ -43,5 +43,5 @@ interface BubbleDAO{
         "SELECT * " +
         "FROM BOLLE "
     )
-    suspend fun getAllBubblesFullDetails() : List<BubbleFullDetails>
+    fun getAllBubblesFullDetails() : Flow<List<BubbleFullDetails>>
 }

@@ -270,7 +270,7 @@ var scadenze = listOf(
 
 val categorie_fatture = scadenze.map {scadenza -> scadenza.fornitore}.distinct()
 
-val categorie_s_menu : List<MenuItem> = scadenze.map{ f -> MenuItem( name = f.categoria, {})}.distinct()
+val categorie_s_menu : List<MenuItem> = scadenze.map{ f -> MenuItem(idValues = Pair<Int,String>(0,""), name = f.categoria, {})}.distinct()
 
 var provenienze = listOf(
     Provenienze(fornitore = "Acciai Italia", quantita = "2000 kg", numeroBolla = "BO-2024-001", fattura = null, data = LocalDate.of(2024, 3, 1)),
@@ -349,15 +349,15 @@ val listaClienti = listOf(
 
 var address = appuntamenti.map{a -> a.indirizzo}
 
-var tipi_menu = tipiInterventi.map{tipo -> MenuItem(tipo, {})}
+var tipi_menu = tipiInterventi.map{tipo -> MenuItem(Pair(1,""), tipo, {})}
 
-var categorie_menu = prodotti.map{cat -> MenuItem(cat.nome, {})}
+var categorie_menu = prodotti.map{cat -> MenuItem(Pair(1,""),cat.nome, {})}
 
 var categorie_prodotti = prodotti.map{cat -> cat.nome}
 
 var cantieri = List<String>(10, {item -> "Cantiere $item"})
 
-var cantieri_menu = cantieri.map { c -> MenuItem(c, {}) }
+var cantieri_menu = cantieri.map { c -> MenuItem(Pair(1,""),c, {}) }
 
 val listaCantieri = listOf(
     Cantiere(
@@ -390,5 +390,3 @@ var addressType = address.map {item -> CardItem(name = item, type = "NONE")}
 var invoicesType = fatture.map{item -> CardItem(name = item.fattura.toString(), type = "NONE")}
 var materialsType = prodotti.map{item -> CardItem(name = item.nome, type = item.tipo)}
 var bubblesType = bolle.map{item -> CardItem(name = item.numeroBolla.toString(), type = "NONE")}
-
-var selectedMaterialResult = listOf<String>()

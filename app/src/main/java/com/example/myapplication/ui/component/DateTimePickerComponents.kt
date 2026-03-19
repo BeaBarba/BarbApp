@@ -167,8 +167,7 @@ fun DatePickerFieldToModal(
             onDateSelected = {dateSelected ->
                 onValueChange(
                     dateSelected?.let{epochMilli -> Instant.ofEpochMilli(epochMilli)}?.atZone(ZoneId.of("Europe/Rome"))
-                        ?.format(
-                            DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: ""
+                        ?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: ""
                 )
             },
             onDismiss = { showModal.value = false }
