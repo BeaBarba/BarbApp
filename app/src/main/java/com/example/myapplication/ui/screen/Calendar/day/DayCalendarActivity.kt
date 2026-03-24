@@ -75,7 +75,7 @@ fun DayCalendarActivity(
                         openDialogState = openPicker,
                         onDateSelected = { millis ->
                             if(millis != null){
-                                navController.navigate(NavigationRoute.DayCalendar)
+                                navController.navigate(NavigationRoute.DayCalendar(millis))
                             }
                         }
                     )

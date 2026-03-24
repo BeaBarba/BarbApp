@@ -32,7 +32,6 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Ora seedCustomers è suspend, quindi aspetta qui
                 seedDatabase.seedMaterials(repository)
                 seedDatabase.seedAirConditioner(repository)
                 seedDatabase.seedSeller(repository)
@@ -55,19 +54,13 @@ class MainActivity : ComponentActivity() {
                 seedDatabase.seedCustomerProvision(repository)
                 seedDatabase.seedPropertyOwnership(repository)
                 seedDatabase.seedWorksite(repository)
-                android.util.Log.d("SEED", "Inizio interventi")
                 seedDatabase.seedJob(repository)
-                android.util.Log.d("SEED", "Inizio foto")
                 seedDatabase.seedImage(repository)
-                android.util.Log.d("SEED", "Inizio prenotazioni")
                 seedDatabase.seedFutureJobMaterial(repository)
-                android.util.Log.d("SEED", "Inizio utilizzi")
                 seedDatabase.seedMaterialUsage(repository)
-                android.util.Log.d("SEED", "Inizio ricavi")
                 seedDatabase.seedRevenue(repository)
                 println("DEBUG: Seed completato!")
             } catch (e: Exception) {
-                // QUI vedrai finalmente l'errore (es. Foreign Key constraint failed)
                 android.util.Log.e("SEED_ERROR", "Errore durante il seeding", e)
             }
         }

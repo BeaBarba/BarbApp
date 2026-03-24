@@ -48,7 +48,7 @@ class AllJobsSummaryViewModel(
                 JobType.ALA.toString()
             } else if(job.job.airConditioning) {
                 JobType.CDZ.toString()
-            } else if(job.job.electic) {
+            } else if(job.job.electric) {
                 JobType.ELE.toString()
             } else {
                 JobType.NONE.toString()

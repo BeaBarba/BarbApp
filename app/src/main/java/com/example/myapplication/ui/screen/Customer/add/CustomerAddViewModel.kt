@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 data class CustomerAddState (
-    val id : String = "",
+    val cf : String = "",
     val name : String = "",
     val email : String = "",
     val averageCollectionTime : Float = 0.0F,
@@ -98,7 +98,7 @@ class CustomerAddViewModel(
                         if (customerEntity != null) {
                             _state.update {
                                 it.copy(
-                                    id = customerEntity.customer.cf,
+                                    cf = customerEntity.customer.cf,
                                     name = customerEntity.customer.name,
                                     email = customerEntity.customer.mail,
                                     phoneNumber = customerEntity.phoneNumber?.number ?: "",
@@ -110,7 +110,7 @@ class CustomerAddViewModel(
                                     city = customerEntity.address.city,
                                     province = customerEntity.address.province,
                                     zip = customerEntity.address.zip,
-                                    referralId = customerEntity.referral?.referral,
+                                    referralId = customerEntity.referral?.referral?.presented,
                                     referenceId = customerEntity.reference?.id ?: 0,
                                     referenceName = customerEntity.reference?.name ?: "",
                                     referenceLastName = customerEntity.reference?.lastName ?: "",
@@ -128,7 +128,8 @@ class CustomerAddViewModel(
                                         CustomerType.Azienda
                                     },
                                     collectionCount = customerEntity.customer.collectionCount,
-                                    averageCollectionTime = customerEntity.customer.avarageCollectionTime
+                                    averageCollectionTime = customerEntity.customer.avarageCollectionTime,
+                                    started = true
                                 )
                             }
                         }
@@ -142,80 +143,87 @@ class CustomerAddViewModel(
         }
 
         override fun save() {
+            var reference: Reference? = null
+            var phoneNumber: PhoneNumber? = null
+            var privateCustomer: Private? = null
+            var companyCustomer: Company? = null
+            var referral: Referral? = null
+
+            val address = Address(
+                state.value.addressId,
+                state.value.address,
+                state.value.houseNumber,
+                state.value.municipality,
+                state.value.city,
+                state.value.province,
+                state.value.zip
+            )
+
+            if(state.value.referenceName != ""){
+                reference = Reference(
+                    state.value.referenceId,
+                    state.value.referenceName,
+                    state.value.referenceLastName,
+                    state.value.referencePhoneNumber
+                )
+            }
+
+            val customer = Customer(
+                state.value.cf,
+                state.value.name,
+                state.value.email,
+                state.value.averageCollectionTime,
+                state.value.collectionCount,
+                state.value.addressId
+            )
+
+            if(state.value.phoneNumber != ""){
+                phoneNumber = PhoneNumber(
+                    state.value.phoneNumber,
+                    state.value.notePhoneNumber,
+                    state.value.cf
+                )
+            }
+
+            if (state.value.customerType == CustomerType.Privato) {
+                privateCustomer = Private(
+                    state.value.cf,
+                    state.value.privateLastName,
+                    state.value.privateDateBirth,
+                    state.value.privatePlaceBirth
+                )
+            }else{
+                companyCustomer = Company(
+                    state.value.companyUniqueCode,
+                    state.value.companyName,
+                    state.value.companyVatNumber,
+                    state.value.cf
+                )
+            }
+
+            if (state.value.referralId != null) {
+                referral = Referral(
+                        state.value.cf,
+                        state.value.referralId!!
+                )
+            }
+
             viewModelScope.launch {
-                if(state.value.address != "") {
-                    val addressId = repository.upsertAddress(
-                        Address(
-                            state.value.addressId,
-                            state.value.address,
-                            state.value.houseNumber,
-                            state.value.municipality,
-                            state.value.city,
-                            state.value.province,
-                            state.value.zip
-                        )
-                    ).toInt()
-                    val referenceId = if (state.value.referenceName != "") {
-                        repository.upsertReference(
-                            Reference(
-                                state.value.referenceId,
-                                state.value.referenceName,
-                                state.value.referenceLastName,
-                                state.value.referencePhoneNumber
-                            )
-                        ).toInt()
-                    } else null
-                    repository.upsertCustomer(
-                        Customer(
-                            state.value.id,
-                            state.value.name,
-                            state.value.email,
-                            state.value.averageCollectionTime,
-                            state.value.collectionCount,
-                            addressId,
-                            referenceId
-                        )
-                    )
-                    repository.upsertPhoneNumber(
-                        PhoneNumber(
-                            state.value.phoneNumber,
-                            state.value.notePhoneNumber,
-                            state.value.id
-                        )
-                    )
-                }
-                if (state.value.customerType == CustomerType.Privato) {
-                    repository.upsertPrivate(
-                        Private(
-                            state.value.id,
-                            state.value.privateLastName,
-                            state.value.privateDateBirth,
-                            state.value.privatePlaceBirth
-                        )
-                    )
-                } else {
-                    repository.upsertCompany(
-                        Company(
-                            state.value.companyUniqueCode,
-                            state.value.companyName,
-                            state.value.companyVatNumber,
-                            state.value.id
-                        )
-                    )
-                }
-                if (state.value.referralId != null) {
-                    repository.upsertReferral(
-                        Referral(
-                            state.value.id,
-                            state.value.referralId!!
-                        )
-                    )
-                }
+                repository.saveCustomerComplete(
+                    address = address,
+                    reference = reference,
+                    customer = customer,
+                    phoneNumber = phoneNumber,
+                    privateCustomer = privateCustomer,
+                    company = companyCustomer,
+                    referral = referral
+                )
+                _state.update{it.copy(started = false)}
             }
         }
 
         override fun setCustomerId(id: String) {
-            _state.update { it.copy(id = id) }
+            _state.update { it.copy(cf = id) }
         }
 
         override fun setCustomerName(name: String) {

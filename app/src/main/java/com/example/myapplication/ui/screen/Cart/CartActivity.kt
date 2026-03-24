@@ -89,10 +89,10 @@ fun CartActivity(
                         content = item.futureJobMaterial.map { job ->
                             val label : String =
                                 if(job.jobAssignment.customer != null) {
-                                    if (job.jobAssignment.isCompany) {
-                                        "${job.jobAssignment.companyCustomer?.companyName}"
-                                    } else if (job.jobAssignment.isPrivate) {
-                                        "${job.jobAssignment.privateCustomer?.lastName} ${job.jobAssignment.customer.name}"
+                                    if (job.jobAssignment.customer.isCompany) {
+                                        "${job.jobAssignment.customer.companyCustomer?.companyName}"
+                                    } else if (job.jobAssignment.customer.isPrivate) {
+                                        "${job.jobAssignment.customer.privateCustomer?.lastName} ${job.jobAssignment.customer.customer.name}"
                                     } else {
                                         "Cliente Ignoto"
                                     }

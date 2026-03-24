@@ -4,9 +4,50 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Relation
 
+data class CustomerTypeDetails(
+    @Embedded val customer: Customer,
+
+    @Relation(
+        parentColumn = "CF",
+        entityColumn = "CF"
+    )
+    val privateCustomer: Private?,
+
+    @Relation(
+        parentColumn = "CF",
+        entityColumn = "CF"
+    )
+    val companyCustomer: Company?
+){
+    val isPrivate : Boolean get() = privateCustomer != null
+    val isCompany : Boolean get() = companyCustomer != null
+}
+
+data class ReferralFullDetails(
+    @Embedded val referral: Referral,
+
+    @Relation(
+        entity = Customer::class,
+        parentColumn = "Presentatore",
+        entityColumn = "CF"
+    )
+    val presenter : CustomerTypeDetails
+)
+
 data class CustomerFullDetails(
-    @Embedded
-    val customer: Customer,
+    @Embedded val customer: Customer,
+
+    @Relation(
+        parentColumn = "CF",
+        entityColumn = "CF"
+    )
+    val privateCustomer: Private?,
+
+    @Relation(
+        parentColumn = "CF",
+        entityColumn = "CF"
+    )
+    val companyCustomer: Company?,
 
     @Relation(
         parentColumn = "Residenza",
@@ -21,35 +62,28 @@ data class CustomerFullDetails(
     val reference: Reference?,
 
     @Relation(
+        entity = Referral :: class,
         parentColumn = "CF",
         entityColumn = "Presentato"
     )
-    val referral: Referral?,
+    val referral: ReferralFullDetails?,
 
     @Relation(
+        entity = Job::class,
         parentColumn = "CF",
         entityColumn = "Cliente"
     )
-    val jobs: List<Job>,
+    val jobs: List<JobAssignmentDetails>,
 
     @Relation(
         parentColumn = "CF",
         entityColumn = "Cliente"
     )
     val phoneNumber: PhoneNumber?,
-
-    @Relation(
-        parentColumn = "CF",
-        entityColumn = "CF"
-    )
-    val privateCustomer: Private?,
-
-    @Relation(
-        parentColumn = "CF",
-        entityColumn = "CF"
-    )
-    val companyCustomer: Company?
-)
+){
+    val isPrivate : Boolean get() = privateCustomer != null
+    val isCompany : Boolean get() = companyCustomer != null
+}
 
 data class DeliveryWithMaterialDetails(
     @Embedded val delivery: Delivery,
@@ -195,28 +229,12 @@ data class JobAssignmentDetails(
     val address : Address,
 
     @Relation(
+        entity = Customer::class,
         parentColumn = "Cliente",
         entityColumn = "CF"
     )
-    val customer : Customer?,
-
-    @Relation(
-        parentColumn = "Cliente",
-        entityColumn = "CF"
-    )
-    val privateCustomer: Private?,
-
-    @Relation(
-        parentColumn = "Cliente",
-        entityColumn = "CF"
-    )
-    val companyCustomer: Company?
-
-
-){
-    val isPrivate : Boolean get() = privateCustomer != null
-    val isCompany : Boolean get() = companyCustomer != null
-}
+    val customer : CustomerTypeDetails?,
+)
 
 data class JobFullDetails(
     @Embedded val jobDetails: JobAssignmentDetails,
@@ -264,10 +282,11 @@ data class WorkSiteFullDetails(
     val reference : Reference?,
 
     @Relation(
+        entity = Customer::class,
         parentColumn = "Cliente",
         entityColumn = "CF"
     )
-    val customer : Customer?
+    val customer : CustomerTypeDetails?
 )
 
 data class PurchaseWithMaterialDetails(

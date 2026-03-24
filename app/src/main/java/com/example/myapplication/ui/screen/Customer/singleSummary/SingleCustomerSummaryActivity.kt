@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.data.database.Job
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
@@ -222,15 +221,41 @@ fun SingleCustomerSummaryActivity(
                     weightTitle =  1.2f
                 )
             }
+
+            if(state.customerData?.reference != null || state.customerData?.referral != null){
+                item{CustomDivider()}
+                item{TitleLabel(stringResource(R.string.reference))}
+                item{Spacer(Modifier.size(8.dp))}
+                val description =
+                    when{
+                        state.customerData.reference != null -> {"${state.customerData.reference.lastName} ${state.customerData.reference.name}"}
+                        state.customerData.referral != null ->{
+                            if(state.customerData.referral.presenter.isCompany){
+                                "${state.customerData.referral.presenter.companyCustomer?.companyName}"
+                            }else{
+                                "${state.customerData.referral.presenter.privateCustomer?.lastName} ${state.customerData.referral.presenter.customer.name}"
+                            }
+                        }
+                    else ->""
+                    }
+                item{
+                    KeyValueLabel(
+                        title = stringResource(R.string.reference),
+                        description =  description,
+                        weightTitle =  1.2f
+                    )
+                }
+            }
+
             if(state.customerData?.jobs?.isNotEmpty() == true){
                 item{CustomDivider()}
                 item{TitleLabel(stringResource(R.string.interventions))}
                 item{Spacer(Modifier.size(8.dp))}
-                items(state.customerData.jobs ?: listOf<Job>()) { item ->
+                items(state.customerData.jobs) { item ->
                     val typeJob =
-                        if (item?.airConditioning == true) {
+                        if (item.job.airConditioning) {
                             JobType.CDZ.toString()
-                        } else if (item?.alarm == true) {
+                        } else if (item.job.alarm) {
                             JobType.ALA.toString()
                         } else {
                             JobType.ELE.toString()
@@ -240,12 +265,12 @@ fun SingleCustomerSummaryActivity(
                         type = typeJob,
                         leadingContent = {
                             Avatar(
-                                char = typeJob.get(0),
+                                char = typeJob[0],
                                 type = typeJob
                             )
                         },
-                        text = "/*TO DO*/",
-                        textDescription = item?.date?.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")),
+                        text = "${item.address.address} ${item.address.houseNumber} - ${item.address.city} (${item.address.province})",
+                        textDescription = item.job.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         trailingContent = {
                             IconButton(
                                 onClick = { navController.navigate(NavigationRoute.JobAdd) }

@@ -46,7 +46,6 @@ class CartViewModel(
                 val adjustment =
                     if(checked) materialToUpdate.availability + quantity
                     else (materialToUpdate.availability - quantity).coerceAtLeast(0f)
-                println("DEBUG: qta = ${adjustment}")
                 viewModelScope.launch {
                     repository.upsertMaterial(materialToUpdate.copy(availability = adjustment))
                 }

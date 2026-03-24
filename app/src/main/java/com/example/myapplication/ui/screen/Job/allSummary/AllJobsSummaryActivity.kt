@@ -69,7 +69,7 @@ fun AllJobsSummaryActivity(
                 GenericCard(
                     type = actions.getTypeStringFromJob(item),
                     text = item.address.address,
-                    textDescription = item.customer?.name + item.privateCustomer?.lastName,
+                    textDescription = item.customer?.customer?.name + item.customer?.privateCustomer?.lastName,
                     leadingContent = {
                         Avatar(
                             char = actions.getTypeStringFromJob(item).get(0),
@@ -91,7 +91,7 @@ fun AllJobsSummaryActivity(
                 GenericCard(
                     type = actions.getTypeStringFromJob(item),
                     text = item.address.address,
-                    textDescription = item.customer?.name + item.privateCustomer?.lastName,
+                    textDescription = item.customer?.customer?.name + item.customer?.privateCustomer?.lastName,
                     leadingContent = {
                         Avatar(
                             char = actions.getTypeStringFromJob(item).get(0),

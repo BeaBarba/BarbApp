@@ -90,7 +90,7 @@ fun CustomerAddActivity(
                     IconButton(
                         onClick = {
                             actions.save()
-                            navController.navigate(NavigationRoute.SingleCustomerSummary(state.id)){
+                            navController.navigate(NavigationRoute.SingleCustomerSummary(state.cf)){
                                 popUpTo(NavigationRoute.AllCustomersSummary){inclusive = false}
                             }
                         },
@@ -117,7 +117,7 @@ fun CustomerAddActivity(
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.id),
-                    value = state.id,
+                    value = state.cf,
                     onValueChange = actions::setCustomerId
                 )
             }

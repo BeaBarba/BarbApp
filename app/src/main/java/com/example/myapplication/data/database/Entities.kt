@@ -303,13 +303,14 @@ data class Reference(
             entity = Address::class,
             parentColumns = ["id"],
             childColumns = ["Residenza"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.NO_ACTION,
+            onUpdate = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = Reference::class,
             parentColumns = ["id"],
             childColumns = ["Riferimento"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.SET_NULL
         )
     ]
 )
@@ -331,7 +332,8 @@ data class Customer(
             entity = Customer::class,
             parentColumns = ["CF"],
             childColumns = ["CF"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ]
 )
@@ -351,7 +353,8 @@ data class Private(
             entity = Customer::class,
             parentColumns = ["CF"],
             childColumns = ["CF"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
         )
     ]
 )
@@ -515,14 +518,14 @@ data class Job(
     @ColumnInfo(name = "NumeroPersone") val peopleNumber : Int,
     @ColumnInfo(name = "Indirizzo") val address : Int,
     @ColumnInfo(name = "OraFine") val endTime : LocalTime? = null,
-    @ColumnInfo(name = "Elettrico") val electic : Boolean,
+    @ColumnInfo(name = "Elettrico") val electric : Boolean,
     @ColumnInfo(name = "Allarme") val alarm : Boolean,
     @ColumnInfo(name = "Condizionamento") val airConditioning: Boolean,
     @ColumnInfo(name = "Cliente") val customer: String? = null,
     @ColumnInfo(name = "Cantiere") val workSite : Int? = null
 ){
     init{
-        require(electic == true || alarm == true || airConditioning == true){
+        require(electric == true || alarm == true || airConditioning == true){
             "Almeno un tipo di intervento deve essere selezionato!"
         }
     }

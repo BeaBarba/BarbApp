@@ -7,6 +7,7 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 import com.example.myapplication.data.database.Customer
 import com.example.myapplication.data.database.CustomerFullDetails
+import com.example.myapplication.data.database.CustomerTypeDetails
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -44,4 +45,11 @@ interface CustomerDAO{
             "FROM CLIENTI "
     )
     fun getAllCustomersFullDetails() : Flow<List<CustomerFullDetails>>
+
+    @Transaction
+    @Query("SELECT * " +
+            "FROM CLIENTI " +
+            "WHERE CF = :cf"
+    )
+    fun getCustomerTypeDetails(cf : String) : CustomerTypeDetails
 }

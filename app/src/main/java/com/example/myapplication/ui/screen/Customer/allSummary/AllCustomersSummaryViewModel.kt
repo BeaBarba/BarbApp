@@ -3,10 +3,10 @@ package com.example.myapplication.ui.screen.Customer.allSummary
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.CustomerFullDetails
+import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Locale.getDefault
@@ -48,12 +48,12 @@ class AllCustomersSummaryViewModel(
                 _state.update { currentState ->
                     val filterList =
                         if(currentState.searchString.isEmpty()) customerList
-                        else filter(currentState.searchString, customerList)
+                        else searchFilter(currentState.searchString, customerList)
 
                     currentState.copy(
                         customers = customerList,
                         customersToView = filterList,
-                        startingChar = getStartingChar(state.value.customers).sorted(),
+                        startingChar = getStartingChar(customerList).sorted(),
                         started = true
                     )
                 }
@@ -66,72 +66,109 @@ class AllCustomersSummaryViewModel(
         override fun setSearchString(searchString: String) {
             _state.update { it.copy(
                     searchString = searchString,
-                    customersToView = state.value.customers.filter {
-                        it.privateCustomer?.lastName?.lowercase()?.startsWith(searchString.lowercase(getDefault())) ?:false ||
-                        it.customer.name.lowercase().startsWith(searchString.lowercase(getDefault()))
-                    },
+                    customersToView = searchFilter(searchString, state.value.customers)
                 )
             }
             _state.update {it.copy(startingChar = state.value.sortingFunction(getStartingChar(state.value.customersToView)))}
         }
 
         override fun setAscendingSort() {
-            _state.update {it.copy(sortingFunction = {it.sorted()})}
+            _state.update {it.copy(sortingFunction = { list -> list.sorted()})}
             _state.update {it.copy(startingChar = state.value.sortingFunction(state.value.startingChar))}
         }
 
         override fun setDescendingSort() {
-            _state.update {it.copy(sortingFunction = {it.sorted().reversed()})}
+            _state.update {it.copy(sortingFunction = { list -> list.sorted().reversed() })}
             _state.update {it.copy(startingChar = state.value.sortingFunction(state.value.startingChar))}
         }
 
         override fun setReferenceFilter() {
-
         }
 
         override fun setAllCustomerFilter() {
+            val customers = _state.value.customers.sortedBy {
+                when{
+                    it.isPrivate -> {it.privateCustomer?.lastName}
+                    it.isCompany -> {it.companyCustomer?.companyName}
+                    else -> it.customer.name
+                }
 
+            }
+            _state.update {
+                it.copy (
+
+                    customersToView =  customers,
+                    startingChar = getStartingChar(customers),
+                    searchString = "",
+                    sortingFunction = { list -> list.sorted()}
+                )
+            }
         }
 
         override fun setAirConditionerFilter() {
-
+            val filterList = typeJobFilter(JobType.CDZ, _state.value.customers)
+            _state.update {
+                it.copy (
+                    customersToView = filterList,
+                    startingChar = getStartingChar(filterList),
+                    searchString = ""
+                )
+            }
         }
 
         override fun setAlarmFilter() {
-
+            val filterList = typeJobFilter(JobType.ALA, _state.value.customers)
+            _state.update {
+                it.copy (
+                    customersToView = filterList,
+                    startingChar = getStartingChar(filterList),
+                    searchString = ""
+                )
+            }
         }
 
         override fun setElectricFilter() {
-
+            val filterList = typeJobFilter(JobType.ELE, _state.value.customers)
+            _state.update {
+                it.copy (
+                    customersToView = filterList,
+                    startingChar = getStartingChar(filterList),
+                    searchString = ""
+                )
+            }
         }
     }
 
     private fun getStartingChar(customersList : List<CustomerFullDetails>) : List<Char> {
         return customersList.map {
-            if (it.privateCustomer != null && it.customer.name !="") {
-                it.privateCustomer.lastName.get(0)
-            } else {
-                it.customer.name.get(0)
+            when{
+                it.privateCustomer != null -> {it.privateCustomer.lastName.firstOrNull() ?: '?'}
+                it.companyCustomer != null -> {it.companyCustomer.companyName.firstOrNull()?: '?'}
+                else -> {it.customer.name.firstOrNull() ?: '?'}
             }
         }.distinct()
     }
 
-    private fun filter(searchString: String, customer: List<CustomerFullDetails>) : List<CustomerFullDetails>{
-        return customer.filter {
-            it.privateCustomer?.lastName?.lowercase()?.startsWith(searchString.lowercase()) ?:false ||
-            it.customer.name.lowercase().startsWith(searchString.lowercase())
+    private fun searchFilter(searchString: String, customers: List<CustomerFullDetails>) : List<CustomerFullDetails>{
+        return customers.filter {
+                it.privateCustomer?.lastName?.lowercase()?.startsWith(searchString.lowercase(getDefault())) ?:false ||
+                it.companyCustomer?.companyName?.lowercase()?.startsWith(searchString.lowercase(getDefault())) ?:false ||
+                it.customer.name.lowercase().startsWith(searchString.lowercase(getDefault()))
         }
     }
 
-    private fun customerToPairToView(customer : CustomerFullDetails) : Pair<String,String>{
-        return Pair<String, String>(
-            first = customer.customer.cf,
-            second =
-                if (customer.privateCustomer != null) {
-                    (customer.privateCustomer.lastName + " " + customer.customer.name)
-                }else {
-                    customer.customer.name
-                }
-        )
+    private fun typeJobFilter(type: JobType, customers: List<CustomerFullDetails>) : List<CustomerFullDetails>{
+        return when (type) {
+            (JobType.CDZ) -> customers.filter {
+                it.jobs.any { job -> job.job.airConditioning }
+            }
+            (JobType.ELE) -> customers.filter {
+                it.jobs.any { job -> job.job.electric }
+            }
+            (JobType.ALA) -> customers.filter {
+                it.jobs.any { job -> job.job.alarm }
+            }
+            else -> emptyList()
+        }
     }
 }

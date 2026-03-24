@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -62,14 +61,14 @@ fun AllCustomersSummaryActivity(
             CustomSearchBar(stringResource(R.string.customer),onValueChange = actions::setSearchString)
             CustomersCardsList(
                 letters = state.startingChar,
-                customers = state.customers.map{
+                customers = state.customersToView.map{
                     Triple(
                         first = it.customer.cf,
                         second =
                         if (it.privateCustomer != null) {
                             (it.privateCustomer.lastName + " " + it.customer.name)
                         }else {
-                            it.customer.name
+                            it.companyCustomer?.companyName ?: it.customer.name
                         },
                         third = {
                             navController.navigate(NavigationRoute.SingleCustomerSummary(it.customer.cf))
