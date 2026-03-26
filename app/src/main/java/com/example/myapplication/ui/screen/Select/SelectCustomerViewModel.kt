@@ -38,10 +38,10 @@ class SelectCustomerViewModel(
                             CardItem(
                                 id = customer.customer.cf,
                                 name =
-                                if (customer.privateCustomer != null){
-                                    customer.customer.name + " " + customer.privateCustomer.lastName
-                                } else{
-                                    customer.customer.name
+                                when{
+                                    customer.isPrivate -> "${customer.privateCustomer?.lastName} ${customer.customer.name}"
+                                    customer.isCompany -> "${customer.companyCustomer?.companyName}"
+                                    else -> customer.customer.name
                                 },
                                 type = JobType.NONE,
                                 description = null

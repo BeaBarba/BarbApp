@@ -42,7 +42,6 @@ import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
-import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -167,24 +166,27 @@ fun BubbleAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllMaterials))}
+                    onClick = {
+                        if(state.materialsSelected.isNotEmpty()){
+                            navController.currentBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("initialIds", actions.getMaterialIds())
+                        }
+                        navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllMaterials))
+                    }
                 )
             }
 
-            if(state.materialsSelected.isNotEmpty()){
-                item{CustomDivider()}
-            }else {
-                item{Spacer(Modifier.size(8.dp))}
-            }
+            item{Spacer(Modifier.size(8.dp))}
 
-            itemsIndexed(state.materialsSelected){index, item ->
+            itemsIndexed(state.materialsSelected) { index, item ->
                 TitleLabel(
                     item.material.category +
-                        " " + item.material.model + " - " +
-                        item.material.brand
+                            " " + item.material.model + " - " +
+                            item.material.brand
                 )
 
-                var quantityText by remember{ mutableStateOf(item.quantity.toString()) }
+                var quantityText by remember { mutableStateOf(item.quantity.toString()) }
                 var priceText by remember { mutableStateOf(item.unitPrice.toString()) }
                 var vatText by remember { mutableStateOf(item.vatNumber.toString()) }
 
@@ -212,10 +214,11 @@ fun BubbleAddActivity(
                         actions.setVatNumberMaterial(item.material, value)
                     },
                 )
-                if(index < state.materialsSelected.size - 1) {
+                if (index < state.materialsSelected.size - 1) {
                     CustomDivider()
                 }
             }
+
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleBubbleSummary>() == true) {
                 item {

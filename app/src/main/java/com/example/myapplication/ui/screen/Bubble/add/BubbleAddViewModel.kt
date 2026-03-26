@@ -54,6 +54,7 @@ interface BubbleAddActions {
     fun setUnitPriceMaterial(material: Material, unitPrice: String)
     fun setVatNumberMaterial(material : Material, vatNumber: String)
     fun createNewSeller(newSeller: String)
+    fun getMaterialIds() : List<String>
     fun delete()
 }
 
@@ -118,8 +119,8 @@ class BubbleAddViewModel(
 
             viewModelScope.launch(Dispatchers.IO) {
                 val bubble = repository.getBubbleFullDetailsById(bubbleId).firstOrNull()
-                val existingMaterials = bubble?.deliveriesWithMaterials ?: emptyList()
-                val materialsList = existingMaterials.map { item ->
+                val existingMaterialsDelivery = bubble?.deliveriesWithMaterials ?: emptyList()
+                val materialsList = existingMaterialsDelivery.map { item ->
                     MaterialBubble(
                         material = item.material,
                         quantity = item.delivery.quantity,
@@ -207,9 +208,10 @@ class BubbleAddViewModel(
             val inputIds = materials.mapNotNull { it.toIntOrNull() }
 
             val currentSelected = state.value.materialsSelected
-            val currentIds = currentSelected.map { it.material.id }
+            val preservedMaterials = currentSelected.filter { it.material.id in inputIds }
+            val preservedIds = preservedMaterials.map { it.material.id }
 
-            val newIdsToFetch = inputIds.filterNot { it in currentIds }
+            val newIdsToFetch = inputIds.filterNot { it in preservedIds }
 
             viewModelScope.launch(Dispatchers.IO) {
                 val newMaterials = newIdsToFetch.mapNotNull { id ->
@@ -223,7 +225,7 @@ class BubbleAddViewModel(
                     }
                 }
 
-                val updatedList = currentSelected.filter { it.material.id in inputIds } + newMaterials
+                val updatedList = preservedMaterials + newMaterials
 
                 _state.update { it.copy(materialsSelected = updatedList) }
             }
@@ -287,6 +289,13 @@ class BubbleAddViewModel(
                 }
                 _state.update { it.copy(materialsSelected = newMaterials) }
             }
+        }
+
+        override fun getMaterialIds(): List<String> {
+            val materialIds = _state.value.materialsSelected.map{item ->
+                item.material.id.toString()
+            }
+            return materialIds
         }
 
         override fun delete() {

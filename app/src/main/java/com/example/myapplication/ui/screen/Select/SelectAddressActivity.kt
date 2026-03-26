@@ -80,7 +80,7 @@ fun SelectAddressActivity(
                     checked = checked,
                     onCheckedChange = {
                         checked = !checked
-                        item.checked = it
+                        //item.checked = it
                     },
                     onClick = {},
                     type = item.type.toString()

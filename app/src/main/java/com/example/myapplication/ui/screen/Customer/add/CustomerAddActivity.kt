@@ -69,13 +69,14 @@ fun CustomerAddActivity(
     val currentBackStackEntry = navController.currentBackStackEntry
 
     val selectedItems by currentBackStackEntry?.savedStateHandle
-        ?.getStateFlow<List<String>>("selectedIds", emptyList())
+        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
-    LaunchedEffect(selectedItems) {
-        val firstId = selectedItems.firstOrNull()
-        if (firstId != null) {
-                actions.setReferral(firstId)
 
+    LaunchedEffect(selectedItems) {
+        selectedItems?.let{id ->
+            if (id.isNotEmpty()) {
+                    actions.setReferral(id.first())
+            }
         }
         currentBackStackEntry?.savedStateHandle?.set("selectedIds", emptyList<String>())
     }
@@ -266,7 +267,14 @@ fun CustomerAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllCustomers))}
+                    onClick = {
+                        if(!state.referralId.isNullOrBlank()){
+                            navController.currentBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("initialIds", listOf(state.referralId))
+                        }
+                        navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllCustomers))
+                    }
                 )
             }
             item{

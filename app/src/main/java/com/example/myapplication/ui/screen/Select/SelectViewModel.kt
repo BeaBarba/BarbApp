@@ -2,6 +2,7 @@ package com.example.myapplication.ui.screen.Select
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.data.repository.Repository
@@ -15,23 +16,28 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Locale.getDefault
 
 data class CardItem(
     val id : String,
     val name : String,
     val description : String?,
     val type : JobType,
-    var checked : Boolean = false
+    val checked : Boolean = false
 )
 
 data class SelectState(
     val searchText : String = "",
     val itemsList : List<CardItem> = emptyList(),
-    val idsList : List<String> = emptyList()
+    val viewList : List<CardItem> = emptyList(),
+    val idsList : List<String> = emptyList(),
 )
 
 interface SelectActions{
-    fun populateUI(searchText: String, select : SelectKey)
+    fun populateUI(searchText: String, select : SelectKey, initialCheckedIds: List<String>)
+    fun setCheckedItems(ids : List<String>)
+    fun setChecked(id : String)
+    fun search(string : String)
 }
 
 class SelectViewModel(
@@ -43,7 +49,7 @@ class SelectViewModel(
 
     val actions = object : SelectActions{
 
-        override fun populateUI(searchText: String, select : SelectKey) {
+        override fun populateUI(searchText: String, select : SelectKey, initialCheckedIds: List<String>) {
             when(select){
                 SelectKey.AllMaterials -> {
                     viewModelScope.launch(Dispatchers.IO) {
@@ -53,13 +59,19 @@ class SelectViewModel(
                                         id = material.id.toString(),
                                         name = material.category,
                                         description = material.model + " - " + material.brand,
-                                        type = material.type
+                                        type = material.type,
+                                        checked = initialCheckedIds.contains(material.id.toString())
                                     )
-                                }
+                                }.sortedWith(
+                                    compareBy<CardItem>({it.name})
+                                        .thenBy { it.description }
+                                )
+
                             _state.update {
                                 it.copy(
                                     searchText = searchText,
-                                    itemsList = materialCardList
+                                    itemsList = materialCardList,
+                                    viewList = materialCardList
                                 )
                             }
                         }
@@ -67,7 +79,15 @@ class SelectViewModel(
                 }
 
                 SelectKey.AllBubbles -> {
-                    val bubblesCardList = bubblesType.map{item -> CardItem(id = "0", name = item.name, description = "ciao", type = JobType.valueOf(item.type), checked = item.checked)}
+                    val bubblesCardList = bubblesType.map{item ->
+                        CardItem(
+                            id = "0",
+                            name = item.name,
+                            description = "ciao",
+                            type = JobType.valueOf(item.type),
+                            checked = item.checked
+                        )
+                    }
                     _state.update {
                         it.copy(
                             searchText = searchText,
@@ -76,7 +96,15 @@ class SelectViewModel(
                     }
                 }
                 SelectKey.AllInvoices -> {
-                    val invoicesCardList = invoicesType.map{item -> CardItem(id = "0", name = item.name, description = "ciao", type = JobType.valueOf(item.type), checked = item.checked)}
+                    val invoicesCardList = invoicesType.map{item ->
+                        CardItem(
+                            id = "0",
+                            name = item.name,
+                            description = "ciao",
+                            type = JobType.valueOf(item.type),
+                            checked = item.checked
+                        )
+                    }
                     _state.update {
                         it.copy(
                             searchText = searchText,
@@ -85,7 +113,15 @@ class SelectViewModel(
                     }
                 }
                 SelectKey.AllAddresses -> {
-                    val addressesCardList = addressType.map{item -> CardItem(id = "0", name = item.name, description = "ciao", type = JobType.valueOf(item.type), checked = item.checked)}
+                    val addressesCardList = addressType.map{item ->
+                        CardItem(
+                            id = "0",
+                            name = item.name,
+                            description = "ciao",
+                            type = JobType.valueOf(item.type),
+                            checked = item.checked
+                        )
+                    }
                     _state.update {
                         it.copy(
                             searchText = searchText,
@@ -101,20 +137,24 @@ class SelectViewModel(
                                 CardItem(
                                     id = customer.customer.cf,
                                     name =
-                                        if (customer.privateCustomer != null){
-                                            customer.customer.name + " " + customer.privateCustomer.lastName
+                                        if (customer.isPrivate){
+                                            "${customer.privateCustomer?.lastName} ${customer.customer.name}"
                                         } else{
-                                            customer.customer.name
+                                            "${customer.companyCustomer?.companyName}"
                                         },
                                     type = JobType.NONE,
-                                    description = null
+                                    description = null,
+                                    checked = initialCheckedIds.contains(customer.customer.cf)
                                 )
-                            }
+                            }.sortedWith(
+                                compareBy {it.name}
+                            )
 
                         _state.update {
                             it.copy(
                                 searchText = searchText,
-                                itemsList = customersCardList
+                                itemsList = customersCardList,
+                                viewList = customersCardList
                             )
                         }
                     }
@@ -131,6 +171,44 @@ class SelectViewModel(
                 }
                 SelectKey.AllPurchaseInvoices -> {}
             }
+        }
+
+        override fun setCheckedItems(ids : List<String>){
+            val checkedItems = _state.value.itemsList.map { item ->
+                CardItem(
+                    id = item.id,
+                    name = item.name,
+                    description = item.description,
+                    type = item.type,
+                    checked = ids.contains(item.id)
+                )
+            }
+
+            _state.update { it.copy(viewList = checkedItems) }
+        }
+
+        override fun setChecked(id: String) {
+            val updatedList = _state.value.itemsList.map { item ->
+                if (item.id == id) {
+                    item.copy(checked = !item.checked)
+                } else {
+                    item
+                }
+            }
+
+            _state.update { it.copy(itemsList = updatedList, viewList = updatedList) }
+        }
+
+        override fun search(string: String) {
+            val filterList =
+                if(string.isEmpty()) {
+                    _state.value.itemsList
+                }else{
+                    _state.value.itemsList.filter {
+                        it.name.lowercase().startsWith(string.lowercase(getDefault()))
+                    }
+                }
+            _state.update { it.copy(viewList = filterList) }
         }
     }
 }

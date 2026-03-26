@@ -1,6 +1,7 @@
 package com.example.myapplication.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,7 +43,7 @@ import com.example.myapplication.ui.screen.Bubble.singleSummary.SingleBubbleSumm
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.SingleDeadlineSummaryActivity
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryActivity
-import com.example.myapplication.ui.screen.Material.SingleMaterialSummaryActivity
+import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryActivity
 import com.example.myapplication.ui.screen.Payment.SinglePaymentSummaryActivity
 import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarActivity
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarViewModel
@@ -130,8 +131,6 @@ sealed interface NavigationRoute{
     @Serializable
     data object SingleJobSummary : NavigationRoute
     @Serializable
-    data object SingleMaterialSummary : NavigationRoute
-    @Serializable
     data object SinglePaymentSummary : NavigationRoute
     @Serializable
     data object SinglePurchaseInvoiceSummary : NavigationRoute
@@ -152,6 +151,8 @@ sealed interface NavigationRoute{
     data class SingleBubbleSummary(val bubbleId: Int) : NavigationRoute
     @Serializable
     data class SingleCustomerSummary (val customerId : String) : NavigationRoute
+    @Serializable
+    data class SingleMaterialSummary(val materialId : String) : NavigationRoute
     @Serializable
     data class DayCalendar (val date : Long) : NavigationRoute
     @Serializable
@@ -268,7 +269,12 @@ fun NavGraph(
             val route = backStackEntry.toRoute<NavigationRoute.Select>()
             val selectVm = koinViewModel<SelectViewModel>()
             val state by selectVm.state.collectAsStateWithLifecycle()
-            selectVm.actions.populateUI(route.textSearch, route.items)
+            val previousBackStackEntry = navController.previousBackStackEntry
+            val selectedItems = previousBackStackEntry?.savedStateHandle
+                ?.get<List<String>>("initialIds") ?: emptyList()
+            LaunchedEffect(route.items) {
+                selectVm.actions.populateUI(route.textSearch, route.items, selectedItems)
+            }
             SelectActivity(state, selectVm.actions, navController)
         }
         composable<NavigationRoute.SelectCustomer> {

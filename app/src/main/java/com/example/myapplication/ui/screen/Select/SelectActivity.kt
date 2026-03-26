@@ -29,6 +29,10 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.component.TopAppBar
 import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.myapplication.data.modules.SelectKey
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.CustomSearchBar
 
 @Composable
@@ -46,7 +50,7 @@ fun SelectActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            val selectedIds = state.itemsList.filter { it.checked }.map{ it.id }
+                            val selectedIds = state.viewList.filter { it.checked }.map{ it.id }
                             navController.previousBackStackEntry
                                 ?.savedStateHandle
                                 ?.set("selectedIds", selectedIds)
@@ -70,19 +74,19 @@ fun SelectActivity(
                 )
                 .fillMaxSize()
         ) {
-            item {CustomSearchBar(state.searchText, onValueChange = {})}
+            item {CustomSearchBar(state.searchText, onValueChange = {actions.search(it)})}
             item{Spacer(Modifier.size(8.dp))}
-            items(state.itemsList) { item ->
-                var checked by remember {mutableStateOf(item.checked)}
+            items(state.viewList) { item ->
                 ListItemCheckbox(
                     text = item.name,
                     textDescription = item.description,
-                    checked = checked,
+                    checked = item.checked,
                     onCheckedChange = {
-                        checked = !checked
-                        item.checked = it
+                        actions.setChecked(item.id)
                     },
-                    onClick = {},
+                    onClick = {
+                        navController.navigate(NavigationRoute.SingleMaterialSummary(item.id))
+                    },
                     type = item.type.toString()
                 )
                 Spacer(Modifier.size(8.dp))

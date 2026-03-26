@@ -38,7 +38,7 @@ fun ListItemCheckbox(
                     char = char,
                     type = type.toString()
                 )
-            }else{null}
+            }
         },
         textSpace = if(trailingText.isNullOrEmpty()){0.85f}else{0.65f},
         text = text,
