@@ -44,7 +44,7 @@ data class CustomerAddState (
     val referencePhoneNumber : String = "",
 
     val privateLastName : String = "",
-    val privateDateBirth: LocalDate = LocalDate.now(),
+    val privateDateBirth: LocalDate? = null,
     val privatePlaceBirth : String = "",
 
     val companyName : String = "",
@@ -62,7 +62,7 @@ interface CustomerAddActions {
     fun setCustomerName(name : String)
     fun setPrivateLastName(lastName : String)
     fun setPrivatePlaceBirth(placeBirth : String)
-    fun setPrivateDateBirth(dateBirth : LocalDate)
+    fun setPrivateDateBirth(dateBirth : LocalDate?)
     fun setCompanyName(name : String)
     fun setCompanyUniqueCode(uniqueCode : String)
     fun setCompanyVat(vat : String)
@@ -189,7 +189,7 @@ class CustomerAddViewModel(
                 privateCustomer = Private(
                     state.value.cf,
                     state.value.privateLastName,
-                    state.value.privateDateBirth,
+                    state.value.privateDateBirth ?: LocalDate.now(),
                     state.value.privatePlaceBirth
                 )
             }else{
@@ -238,7 +238,7 @@ class CustomerAddViewModel(
             _state.update { it.copy(privatePlaceBirth = placeBirth) }
         }
 
-        override fun setPrivateDateBirth(dateBirth: LocalDate) {
+        override fun setPrivateDateBirth(dateBirth: LocalDate?) {
             _state.update { it.copy(privateDateBirth = dateBirth) }
         }
 

@@ -147,11 +147,15 @@ fun CustomerAddActivity(
                 item{
                     DatePickerFieldToModal(
                         title = stringResource(R.string.date_birth),
-                        value = state.privateDateBirth.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        onValueChange = {
-                            actions.setPrivateDateBirth(
-                                LocalDate.parse(it, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                            )
+                        value = state.privateDateBirth?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "",
+                        onValueChange = { date ->
+                            if(date.isNotBlank()){
+                                actions.setPrivateDateBirth(
+                                    LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                                )
+                            }else{
+                                actions.setPrivateDateBirth(null)
+                            }
                         }
                     )
                 }

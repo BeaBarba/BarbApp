@@ -95,6 +95,7 @@ fun DatePickerModal(
         dismissButton = {
             TextButton(
                 onClick = {
+                    onDateSelected(null)
                     openDialogState.value = false
                     onDismiss?.invoke()
                 }
