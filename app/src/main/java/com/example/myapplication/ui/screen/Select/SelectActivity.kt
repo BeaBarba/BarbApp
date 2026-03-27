@@ -85,7 +85,7 @@ fun SelectActivity(
                         actions.setChecked(item.id)
                     },
                     onClick = {
-                        navController.navigate(NavigationRoute.SingleMaterialSummary(item.id))
+                        navController.navigate(NavigationRoute.SingleMaterialSummary(item.id.toInt()))
                     },
                     type = item.type.toString()
                 )

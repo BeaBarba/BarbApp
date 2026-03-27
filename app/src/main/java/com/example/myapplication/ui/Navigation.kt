@@ -62,6 +62,7 @@ import com.example.myapplication.ui.screen.Invoice.SingleInvoiceSummaryActivity
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Material.WarehouseActivity
+import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.AllPurchaseInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.PurchaseInvoiceAddActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.SinglePurchaseInvoiceSummaryActivity
@@ -152,7 +153,7 @@ sealed interface NavigationRoute{
     @Serializable
     data class SingleCustomerSummary (val customerId : String) : NavigationRoute
     @Serializable
-    data class SingleMaterialSummary(val materialId : String) : NavigationRoute
+    data class SingleMaterialSummary(val materialId : Int) : NavigationRoute
     @Serializable
     data class DayCalendar (val date : Long) : NavigationRoute
     @Serializable
@@ -314,8 +315,11 @@ fun NavGraph(
         composable<NavigationRoute.SingleJobSummary>{
             SingleJobSummaryActivity(navController)
         }
-        composable<NavigationRoute.SingleMaterialSummary>{
-            SingleMaterialSummaryActivity(navController)
+        composable<NavigationRoute.SingleMaterialSummary>{backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.SingleMaterialSummary>()
+            val singleMaterialSummaryVM = koinViewModel<SingleMaterialSummaryViewModel>()
+            val state by singleMaterialSummaryVM.state.collectAsStateWithLifecycle()
+            SingleMaterialSummaryActivity(route.materialId, state, singleMaterialSummaryVM.actions, navController)
         }
         composable<NavigationRoute.SinglePaymentSummary>{
             SinglePaymentSummaryActivity(navController)

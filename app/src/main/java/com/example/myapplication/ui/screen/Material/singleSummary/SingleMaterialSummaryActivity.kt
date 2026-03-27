@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,6 +22,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.data.modules.JobType
+import com.example.myapplication.data.modules.MachineType
 import com.example.myapplication.debug.prodotti
 import com.example.myapplication.debug.provenienze
 import com.example.myapplication.ui.component.BackButton
@@ -33,16 +36,24 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun SingleMaterialSummaryActivity(
+    materialId : Int,
+    state : SingleMaterialSummaryState,
+    actions: SingleMaterialSummaryActions,
     navController: NavHostController
 ){
+    LaunchedEffect(materialId) {
+        actions.populateFromId(materialId)
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(id = stringResource(R.string.material),
+            TopAppBar(
+                id = stringResource(R.string.material),
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.MaterialAdd)},
+                        onClick = {navController.navigate(NavigationRoute.MaterialAdd /*TODO*/)},
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
@@ -56,16 +67,7 @@ fun SingleMaterialSummaryActivity(
             )
         }
     ) { contentPadding ->
-        var somma = 0
-        provenienze.forEach{ p->
-            val numero = p.quantita.filter { it.isDigit() }
-            if(numero.isNotEmpty()){
-                somma += numero.toInt()
-            }
-        }
-        var year_installation : String? = null
-        var type_machine = "Esterna"
-        var type_prodoct = "ELE"
+
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -79,125 +81,139 @@ fun SingleMaterialSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.type),
-                    description = prodotti.get(0).tipo
+                    description = state.materialData?.material?.material?.type.toString()
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.category),
-                    description = "Interruttore"
+                    description = state.materialData?.material?.material?.category ?: ""
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.brand),
-                    description = "Vimar"
+                    description = state.materialData?.material?.material?.brand ?: ""
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.model),
-                    description = "Plana"
+                    description = state.materialData?.material?.material?.model ?: ""
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.total_q),
-                    description = somma.toString()
+                    description = state.materialData?.material?.material?.availableQuantity.toString()
                 )
             }
-            if(type_prodoct.equals("CDZ")){
+            if(state.materialData?.material?.isAirConditioner == true){
                 item{CustomDivider()}
                 item{TitleLabel(stringResource(R.string.specifications))}
                 item{Spacer(Modifier.size(8.dp))}
-                item{
-                    KeyValueLabel(
-                        title = stringResource(R.string.serial_number),
-                        description = "NM21ZP10UABC"
-                    )
-                }
-                item{Spacer(Modifier.size(8.dp))}
-                if(!year_installation.isNullOrEmpty()) {
-                    item {
-                        KeyValueLabel(
-                            title = stringResource(R.string.year_installation),
-                            description = "2010"
-                        )
-                    }
-                    item { Spacer(Modifier.size(8.dp)) }
-                }
-                item{
-                    KeyValueLabel(
-                        title = stringResource(R.string.btu),
-                        description = "9.000"
-                    )
-                }
-                item{Spacer(Modifier.size(8.dp))}
-                item{
-                    KeyValueLabel(
-                        title = stringResource(R.string.machine_type),
-                        description = type_machine
-                    )
-                }
-                item{Spacer(Modifier.size(8.dp))}
-                if(type_machine.equals("Esterna")){
+                state.materialData.material.airConditioner.forEach{ airConditioner ->
                     item{
                         KeyValueLabel(
-                            title = stringResource(R.string.split_number),
-                            description = "3"
+                            title = stringResource(R.string.serial_number),
+                            description = airConditioner.serialNumber
                         )
                     }
                     item{Spacer(Modifier.size(8.dp))}
                     item{
                         KeyValueLabel(
-                            title = stringResource(R.string.gas_quantity),
-                            description = "1.5 kg"
+                            title = stringResource(R.string.btu),
+                            description = airConditioner.btu.toString()
                         )
                     }
                     item{Spacer(Modifier.size(8.dp))}
                     item{
                         KeyValueLabel(
-                            title = stringResource(R.string.gas_type),
-                            description = "R410"
+                            title = stringResource(R.string.machine_type),
+                            description = airConditioner.machineType.toString()
                         )
+                    }
+                    item{Spacer(Modifier.size(8.dp))}
+                    if(airConditioner.machineType == MachineType.Esterna) {
+                        item {
+                            KeyValueLabel(
+                                title = stringResource(R.string.split_number),
+                                description = airConditioner.splitNumber.toString()
+                            )
+                        }
+                        item { Spacer(Modifier.size(8.dp)) }
+                        item {
+                            KeyValueLabel(
+                                title = stringResource(R.string.gas_quantity),
+                                description = airConditioner.gasQty.toString()
+                            )
+                        }
+                        item { Spacer(Modifier.size(8.dp)) }
+                        item {
+                            KeyValueLabel(
+                                title = stringResource(R.string.gas_type),
+                                description = airConditioner.gasType
+                            )
+                        }
+                        item { Spacer(Modifier.size(8.dp)) }
+                        if(airConditioner.yearInstallation != null) {
+                            item {
+                                KeyValueLabel(
+                                    title = stringResource(R.string.year_installation),
+                                    description = airConditioner.yearInstallation.toString(),
+                                    weightTitle = 2.0f
+                                )
+                            }
+                        }
                     }
                 }
             }
             item{CustomDivider()}
             item{TitleLabel(stringResource(R.string.origin))}
             item{Spacer(Modifier.size(8.dp))}
-            items(provenienze.subList(0,2)){ item ->
-                KeyValueLabel(
-                    title = stringResource(R.string.seller),
-                    description = item.fornitore
-                )
-                Spacer(Modifier.size(8.dp))
-                KeyValueLabel(
-                    title = stringResource(R.string.quantity),
-                    description = item.quantita
-                )
-                Spacer(Modifier.size(8.dp))
-                /*
-                if(!item.numeroBolla.isNullOrEmpty()) {
+            if(state.materialData?.deliveriesWithBubbles?.isNotEmpty() == true){
+                items(state.materialData.deliveriesWithBubbles) { bubble ->
+                    KeyValueLabel(
+                        title = stringResource(R.string.seller),
+                        description = bubble.bubble.seller.name
+                    )
+                    Spacer(Modifier.size(8.dp))
+                    KeyValueLabel(
+                        title = stringResource(R.string.quantity),
+                        description = bubble.delivery.quantity.toString()
+                    )
+                    Spacer(Modifier.size(8.dp))
+
                     KeyValueLabel(
                         title = stringResource(R.string.bubble),
-                        description = item.numeroBolla
+                        description = bubble.bubble.bubble.number
                     )
+                    CustomDivider()
                 }
+            }
+            if(state.materialData?.purchaseWithPurchaseInvoice?.isNotEmpty() == true){
+                items(state.materialData.purchaseWithPurchaseInvoice) { purchaseInvoice ->
+                    KeyValueLabel(
+                        title = stringResource(R.string.seller),
+                        description = purchaseInvoice.purchaseInvoice.seller.name
+                    )
+                    Spacer(Modifier.size(8.dp))
+                    KeyValueLabel(
+                        title = stringResource(R.string.quantity),
+                        description = purchaseInvoice.purchase.quantity.toString()
+                    )
+                    Spacer(Modifier.size(8.dp))
 
-                 */
-                if(!item.fattura.isNullOrEmpty()){
                     KeyValueLabel(
                         title = stringResource(R.string.invoice),
-                        description = item.fattura
+                        description = purchaseInvoice.purchaseInvoice.purchaseInvoice.number
                     )
+                    CustomDivider()
                 }
-                Spacer(Modifier.size(8.dp))
-                CustomDivider()
             }
             item{Images()}
             item{Spacer(Modifier.size(8.dp))}

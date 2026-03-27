@@ -119,6 +119,48 @@ data class BubbleFullDetails(
     val deliveriesWithMaterials: List<DeliveryWithMaterialDetails>
 )
 
+data class HeaderBubble(
+    @Embedded val bubble : Bubble,
+
+    @Relation(
+        parentColumn = "Venditore",
+        entityColumn = "id"
+    )
+    val seller : Seller,
+)
+
+data class DeliveryWithBubbleDetails(
+    @Embedded val delivery: Delivery,
+
+    @Relation(
+        entity = Bubble::class,
+        parentColumn = "Bolla",
+        entityColumn = "id"
+    )
+    val bubble : HeaderBubble
+)
+
+data class HeaderPurchaseInvoice(
+    @Embedded val purchaseInvoice: PurchaseInvoice,
+
+    @Relation(
+        parentColumn = "Venditore",
+        entityColumn = "id"
+    )
+    val seller : Seller,
+)
+
+data class PurchaseWithPurchaseInvoiceDetails(
+    @Embedded val purchase: Purchase,
+
+    @Relation(
+        entity = PurchaseInvoice::class,
+        parentColumn = "Fattura",
+        entityColumn = "id"
+    )
+    val purchaseInvoice : HeaderPurchaseInvoice
+)
+
 data class MaterialWithAirConditional(
     @Embedded val material : Material,
 
@@ -130,26 +172,6 @@ data class MaterialWithAirConditional(
 ){
     val isAirConditioner : Boolean get() = airConditioner.isNotEmpty()
 }
-
-data class DeliveryWithBubbleDetails(
-    @Embedded val delivery: Delivery,
-
-    @Relation(
-        parentColumn = "Bolla",
-        entityColumn = "id"
-    )
-    val bubble : Bubble
-)
-
-data class PurchaseWithPurchaseInvoiceDetails(
-    @Embedded val purchase: Purchase,
-
-    @Relation(
-        parentColumn = "Fattura",
-        entityColumn = "id"
-    )
-    val purchaseInvoice : PurchaseInvoice
-)
 
 data class MaterialFullDetails(
     @Embedded val material : MaterialWithAirConditional,

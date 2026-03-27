@@ -3,11 +3,9 @@ package com.example.myapplication.ui.screen.Cart
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.CartDetails
-import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -44,10 +42,10 @@ class CartViewModel(
             val materialToUpdate = state.value.items.find { it.material.id == material }?.material
             if(materialToUpdate != null){
                 val adjustment =
-                    if(checked) materialToUpdate.availability + quantity
-                    else (materialToUpdate.availability - quantity).coerceAtLeast(0f)
+                    if(checked) materialToUpdate.availableQuantity + quantity
+                    else (materialToUpdate.availableQuantity - quantity).coerceAtLeast(0f)
                 viewModelScope.launch {
-                    repository.upsertMaterial(materialToUpdate.copy(availability = adjustment))
+                    repository.upsertMaterial(materialToUpdate.copy(availableQuantity = adjustment))
                 }
             }
         }
