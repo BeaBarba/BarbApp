@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.interventi
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
@@ -27,6 +26,7 @@ import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.LocalDate
 import java.time.LocalTime
 
 @Composable
@@ -43,10 +43,21 @@ fun AllJobsSummaryActivity(
             TopAppBar(
                 id = stringResource(R.string.interventions),
                 navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
-                trailingIcon = {DropDownMenuJobs()}
+                trailingIcon = {
+                    DropDownMenuJobs(
+                        allOnClick = actions::filterAllJobs,
+                        completedOnClick = actions::filterCompletedJobs,
+                        scheduleOnClick = actions::filterToBeSchedule,
+                        electricOnClick = actions::filterElectricJobs,
+                        airConditioningOnClick = actions::filterAirConditioningJobs,
+                        alarmOnClick = actions::filterAlarmJobs,
+                        ascendingOnClick = actions::ascendingOrder,
+                        descendingOnClick = actions::descendingOrder
+                    )
+                }
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.JobAdd)}}
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.JobAdd(null))}}
     ) {
         contentPadding ->
         LazyColumn (
@@ -62,43 +73,60 @@ fun AllJobsSummaryActivity(
             item{CustomSearchBar(stringResource(R.string.intervention), onValueChange = {})}
             item{Spacer(Modifier.size(8.dp))}
             items(
-                state.jobs.filter {
-                    it.job.endTime == null || it.job.endTime.isAfter(LocalTime.now())
+                state.jobsView.filter {
+                    it.job.endTime == null || it.job.date.isAfter(LocalDate.now())
                 }
             ){ item ->
+                var customerLabel : String? = null
+                if(item.customer != null) {
+                    customerLabel = when{
+                        item.customer.isPrivate -> {"${item.customer.privateCustomer?.lastName} ${item.customer.customer.name}"}
+                        item.customer.isCompany -> {"${item.customer.companyCustomer?.companyName}"}
+                        else -> {null}
+                    }
+                }
                 GenericCard(
                     type = actions.getTypeStringFromJob(item),
                     text = item.address.address,
-                    textDescription = item.customer?.customer?.name + item.customer?.privateCustomer?.lastName,
+                    textDescription = customerLabel + " " + item.job.date.toString(),
                     leadingContent = {
                         Avatar(
-                            char = actions.getTypeStringFromJob(item).get(0),
+                            char = actions.getTypeStringFromJob(item)[0],
                             type = actions.getTypeStringFromJob(item)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}
+                    onClick = {navController.navigate(NavigationRoute.SingleJobSummary(item.job.id))}
                 )
                 Spacer(Modifier.size(8.dp))
+
             }
             item{CustomDivider()}
             item{TitleLabel(stringResource(R.string.j_completed))}
             item{Spacer(Modifier.size(8.dp))}
             items(
-                state.jobs.filter {
+                state.jobsView.filter {
                     it.job.endTime != null && it.job.endTime.isBefore(LocalTime.now())
                 }
             ){ item ->
+                var customerLabel : String? = null
+                if(item.customer != null) {
+                    customerLabel = when{
+                        item.customer.isPrivate -> {"${item.customer.privateCustomer?.lastName} ${item.customer.customer.name}"}
+                        item.customer.isCompany -> {"${item.customer.companyCustomer?.companyName}"}
+                        else -> {null}
+                    }
+                }
                 GenericCard(
                     type = actions.getTypeStringFromJob(item),
                     text = item.address.address,
-                    textDescription = item.customer?.customer?.name + item.customer?.privateCustomer?.lastName,
+                    textDescription = customerLabel + " " + item.job.date.toString(),
                     leadingContent = {
                         Avatar(
-                            char = actions.getTypeStringFromJob(item).get(0),
+                            char = actions.getTypeStringFromJob(item)[0],
                             type = actions.getTypeStringFromJob(item)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.SingleJobSummary)}
+                    onClick = {navController.navigate(NavigationRoute.SingleJobSummary(item.job.id))}
                 )
                 Spacer(Modifier.size(8.dp))
             }

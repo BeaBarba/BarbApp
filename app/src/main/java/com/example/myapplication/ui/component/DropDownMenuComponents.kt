@@ -279,7 +279,16 @@ fun DropDownMenuCleaning(){
 }
 
 @Composable
-fun DropDownMenuJobs(){
+fun DropDownMenuJobs(
+    allOnClick : () -> Unit,
+    completedOnClick : () -> Unit,
+    scheduleOnClick : () -> Unit,
+    electricOnClick : () -> Unit,
+    airConditioningOnClick : () -> Unit,
+    alarmOnClick : () -> Unit,
+    ascendingOnClick: () -> Unit,
+    descendingOnClick: () -> Unit
+){
     var expanded by remember { mutableStateOf(false) }
 
     Box(){
@@ -297,39 +306,39 @@ fun DropDownMenuJobs(){
             ) {
                 DropdownMenuItem(
                     text = { MenuText(text = stringResource(R.string.all)) },
-                    onClick = { /* Query that select all jobs */ }
+                    onClick = { allOnClick() }
                 )
                 DropdownMenuItem(
                     text = { MenuText(text = stringResource(R.string.j_completed)) },
-                    onClick = { /* Query that select jobs taken */ }
+                    onClick = { completedOnClick() }
                 )
                 DropdownMenuItem(
                     text = { MenuText(text = stringResource(R.string.schedule)) },
-                    onClick = { /* Query that select jobs to be planned */ }
+                    onClick = { scheduleOnClick() }
                 )
 
                 MenuDivider()
 
                 MenuTitle(stringResource(R.string.type))
                 DropdownMenuItem(
-                    leadingIcon = { Icon(Icons.Filled.Lightbulb,contentDescription = stringResource(R.string.eletric),tint = MaterialTheme.colorScheme.onPrimary) },
-                    text = { MenuText(text = stringResource(R.string.eletric)) },
-                    onClick = { /* Query that select jobs on eletric */ }
+                    leadingIcon = { Icon(Icons.Filled.Lightbulb,contentDescription = stringResource(R.string.electric),tint = MaterialTheme.colorScheme.onPrimary) },
+                    text = { MenuText(text = stringResource(R.string.electric)) },
+                    onClick = { electricOnClick() }
                 )
                 DropdownMenuItem(
                     leadingIcon = {Icon(Icons.Filled.Air,contentDescription = stringResource(R.string.air_conditioning),tint = MaterialTheme.colorScheme.onPrimary) },
                     text = { MenuText(text = stringResource(R.string.air_conditioning)) },
-                    onClick = { /* Query that select jobs on air conditioning */ }
+                    onClick = { airConditioningOnClick() }
                 )
                 DropdownMenuItem(
                     leadingIcon = { Icon(Icons.Filled.Campaign,contentDescription = stringResource(R.string.alarm),tint = MaterialTheme.colorScheme.onPrimary) },
                     text = { MenuText(text = stringResource(R.string.alarm)) },
-                    onClick = { /* Query that select jobs on air alarm */ }
+                    onClick = { alarmOnClick() }
                 )
 
                 MenuDivider()
 
-                Order(onClickAscending = {}, onClickDescending = {})
+                Order(onClickAscending = {ascendingOnClick()}, onClickDescending = {descendingOnClick()})
             }
         }
     }
@@ -385,11 +394,11 @@ fun DropDownMenuCustomers(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Filled.Lightbulb,
-                            contentDescription = stringResource(R.string.eletric),
+                            contentDescription = stringResource(R.string.electric),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     },
-                    text = { MenuText(text = stringResource(R.string.eletric)) },
+                    text = { MenuText(text = stringResource(R.string.electric)) },
                     onClick = onClickElectric
                 )
                 DropdownMenuItem(

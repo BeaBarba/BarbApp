@@ -372,7 +372,7 @@ class Repository (private val db : AppDatabase) {
     fun getJobAssignmentDetails(id: Int): Flow<JobAssignmentDetails?> =
         db.jobDAO().getJobAssignmentDetails(id)
 
-    suspend fun getAllJobsAssignmentDetails(): List<JobAssignmentDetails> =
+    fun getAllJobsAssignmentDetails(): Flow<List<JobAssignmentDetails>> =
         db.jobDAO().getAllJobsAssignmentDetails()
 
     fun getJobFullDetails(id: Int): Flow<JobFullDetails?> = db.jobDAO().getJobFullDetails(id)

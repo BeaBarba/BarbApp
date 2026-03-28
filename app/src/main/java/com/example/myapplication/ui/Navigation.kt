@@ -116,8 +116,6 @@ sealed interface NavigationRoute{
     @Serializable
     data object InvoiceAdd : NavigationRoute
     @Serializable
-    data object JobAdd : NavigationRoute
-    @Serializable
     data object MaterialAdd : NavigationRoute
     @Serializable
     data object PaymentAdd : NavigationRoute
@@ -130,8 +128,6 @@ sealed interface NavigationRoute{
     @Serializable
     data object SingleInvoiceSummary : NavigationRoute
     @Serializable
-    data object SingleJobSummary : NavigationRoute
-    @Serializable
     data object SinglePaymentSummary : NavigationRoute
     @Serializable
     data object SinglePurchaseInvoiceSummary : NavigationRoute
@@ -141,23 +137,29 @@ sealed interface NavigationRoute{
     data object Warehouse : NavigationRoute
 
     @Serializable
-    data class Select(val textSearch: String, val items: SelectKey) : NavigationRoute
-    @Serializable
-    data class AddressAdd(val addressId: Int?) : NavigationRoute
-    @Serializable
-    data class SingleAddressSummary(val addressId: Int)  : NavigationRoute
+    data class AddressAdd(val addressId : Int?) : NavigationRoute
     @Serializable
     data class BubbleAdd(val bubbleId: Int?) : NavigationRoute
     @Serializable
+    data class CustomerAdd(val customerId: String?) : NavigationRoute
+    @Serializable
+    data class JobAdd(val jobId : Int?) : NavigationRoute
+
+    @Serializable
+    data class SingleAddressSummary(val addressId: Int)  : NavigationRoute
+    @Serializable
     data class SingleBubbleSummary(val bubbleId: Int) : NavigationRoute
     @Serializable
-    data class SingleCustomerSummary (val customerId : String) : NavigationRoute
+    data class SingleCustomerSummary(val customerId : String) : NavigationRoute
+    @Serializable
+    data class SingleJobSummary(val jobId : Int) : NavigationRoute
     @Serializable
     data class SingleMaterialSummary(val materialId : Int) : NavigationRoute
+
+    @Serializable
+    data class Select(val textSearch : String, val items: SelectKey) : NavigationRoute
     @Serializable
     data class DayCalendar (val date : Long) : NavigationRoute
-    @Serializable
-    data class CustomerAdd(val customerId: String?) : NavigationRoute
 
     @Serializable
     data object Screen : NavigationRoute

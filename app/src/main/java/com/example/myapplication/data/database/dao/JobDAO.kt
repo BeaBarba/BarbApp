@@ -52,7 +52,7 @@ interface JobDAO{
         "SELECT * " +
         "FROM INTERVENTI "
     )
-    suspend fun getAllJobsAssignmentDetails() : List<JobAssignmentDetails>
+    fun getAllJobsAssignmentDetails() : Flow<List<JobAssignmentDetails>>
 
     @Transaction
     @Query(
