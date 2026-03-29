@@ -125,7 +125,7 @@ class Repository (private val db : AppDatabase) {
     fun getPurchaseInvoiceFullDetailsById(id: Int): Flow<PurchaseInvoiceFullDetails?> =
         db.purchaseInvoiceDAO().getPurchaseInvoiceFullDetails(id)
 
-    suspend fun getAllPurchaseInvoicesFullDetails(): List<PurchaseInvoiceFullDetails> =
+    fun getAllPurchaseInvoicesFullDetails(): Flow<List<PurchaseInvoiceFullDetails>> =
         db.purchaseInvoiceDAO().getAllPurchaseInvoicesFullDetails()
 
     /* Purchase */

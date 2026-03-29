@@ -337,6 +337,12 @@ data class PurchaseWithMaterialDetails(
 data class PurchaseInvoiceFullDetails(
     @Embedded val purchaseInvoice : PurchaseInvoice,
 
+    @Relation(
+        parentColumn = "Venditore",
+        entityColumn = "id"
+    )
+    val seller : Seller,
+
      @Relation(
         parentColumn = "id",
         entityColumn = "Fattura"

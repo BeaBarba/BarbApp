@@ -34,7 +34,7 @@ fun AllJobsSummaryActivity(
     actions: AllJobsSummaryActions,
     navController : NavHostController
 ){
-    actions.populateCustomers()
+    actions.populateJobs()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

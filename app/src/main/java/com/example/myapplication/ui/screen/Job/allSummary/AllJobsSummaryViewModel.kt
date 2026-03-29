@@ -22,7 +22,7 @@ data class AllJobsSummaryState(
 )
 
 interface AllJobsSummaryActions{
-    fun populateCustomers()
+    fun populateJobs()
     fun getTypeStringFromJob(job: JobAssignmentDetails) : String
     fun filterAllJobs()
     fun filterCompletedJobs()
@@ -45,7 +45,7 @@ class AllJobsSummaryViewModel(
 
     val actions = object : AllJobsSummaryActions {
 
-        override fun populateCustomers() {
+        override fun populateJobs() {
             if (!state.value.started) {
                 viewModelScope.launch {
                     repository.getAllJobsAssignmentDetails().collect{ jobsList ->

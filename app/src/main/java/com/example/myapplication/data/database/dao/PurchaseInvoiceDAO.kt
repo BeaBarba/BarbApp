@@ -42,5 +42,5 @@ interface PurchaseInvoiceDAO{
         "SELECT * " +
         "FROM FATTURE_ACQUISTO "
     )
-    fun getAllPurchaseInvoicesFullDetails() : List<PurchaseInvoiceFullDetails>
+    fun getAllPurchaseInvoicesFullDetails() : Flow<List<PurchaseInvoiceFullDetails>>
 }

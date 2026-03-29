@@ -30,9 +30,6 @@ fun AllBubblesSummaryActivity(
     actions: AllBubblesSummaryActions,
     navController : NavHostController
 ){
-
-    //actions.populateBubbles()
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
