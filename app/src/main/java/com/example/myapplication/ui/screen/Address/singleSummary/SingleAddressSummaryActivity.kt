@@ -161,14 +161,15 @@ fun SingleAddressSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.usable_area),
-                    description = state.usableArea.toString() + " mq"
+                    description = if(state.usableArea != null) state.usableArea.toString() + " mq"
+                                else ""
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.year_construction),
-                    description = state.yearOfConstruction.toString(),
+                    description = state.yearOfConstruction?.toString() ?: "",
                     weightTitle = 2.0f,
                 )
             }

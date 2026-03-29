@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Construction
+package com.example.myapplication.ui.screen.WorkSite
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding

@@ -17,7 +17,7 @@ data class AllJobsSummaryState(
     val started : Boolean = false,
     val jobs : List<JobAssignmentDetails> = listOf(),
     val jobsView : List<JobAssignmentDetails> = listOf(),
-    val searchString :String = "",
+    val searchString : String = "",
     val filterKey: FilterKey = FilterKey.ASC_DATE
 )
 
@@ -32,6 +32,7 @@ interface AllJobsSummaryActions{
     fun filterAlarmJobs()
     fun ascendingOrder()
     fun descendingOrder()
+    fun searchJob(string : String)
 }
 
 class AllJobsSummaryViewModel(
@@ -114,6 +115,10 @@ class AllJobsSummaryViewModel(
         override fun descendingOrder() {
             val jobs = _state.value.jobsView.sortedBy { it.job.date }.reversed()
             _state.update { it.copy(jobsView = jobs, filterKey = FilterKey.DESC_DATE) }
+        }
+
+        override fun searchJob(string: String) {
+            _state.update { it.copy(jobsView = searchFilter(string, state.value.jobs), searchString = string) }
         }
     }
 

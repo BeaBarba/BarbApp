@@ -273,7 +273,7 @@ fun SingleCustomerSummaryActivity(
                         textDescription = item.job.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         trailingContent = {
                             IconButton(
-                                onClick = { navController.navigate(NavigationRoute.JobAdd) }
+                                onClick = { navController.navigate(NavigationRoute.JobAdd(item.job.id)) }
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.Mode,
@@ -282,7 +282,7 @@ fun SingleCustomerSummaryActivity(
                                 )
                             }
                         },
-                        onClick = { navController.navigate(NavigationRoute.SingleJobSummary) }
+                        onClick = { navController.navigate(NavigationRoute.SingleJobSummary(item.job.id)) }
                     )
                     Spacer(Modifier.size(8.dp))
                 }

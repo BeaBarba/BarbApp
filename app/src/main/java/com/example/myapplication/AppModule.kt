@@ -21,6 +21,7 @@ import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomer
 import com.example.myapplication.ui.screen.Home.HomeViewModel
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
+import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryActivity
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectAddressViewModel
@@ -112,6 +113,7 @@ val appModule = module{
     /* Job */
     viewModel {AllJobsSummaryViewModel(get())}
     viewModel {JobAddViewModel(get())}
+    viewModel {SingleJobSummaryViewModel(get())}
 
     /* Material */
     viewModel {SingleMaterialSummaryViewModel(get())}

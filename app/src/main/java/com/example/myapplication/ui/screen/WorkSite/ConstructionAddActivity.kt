@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Construction
+package com.example.myapplication.ui.screen.WorkSite
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -32,9 +32,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.modules.SelectKey
-import com.example.myapplication.debug.addressType
 import com.example.myapplication.debug.cantieri
-import com.example.myapplication.debug.customersType
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
@@ -77,7 +75,7 @@ fun ConstructionAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.SingleConstructionSummary){
+                            navController.navigate(NavigationRoute.SingleWorkSiteSummary){
                                 popUpTo(NavigationRoute.ConstructionAdd){inclusive = true}
                             }
                         },
@@ -195,7 +193,7 @@ fun ConstructionAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleConstructionSummary>() == true) {
+            if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleWorkSiteSummary>() == true) {
                 item {
                     DeleteButton {
                         cantieri = cantieri.subList(1, cantieri.size)

@@ -15,6 +15,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -33,7 +34,10 @@ fun AddressAddActivity(
     actions: AddressAddActions,
     navController : NavHostController
 ){
-    addressId?.let(actions::populateFromEdit)
+    LaunchedEffect(addressId){
+        addressId?.let(actions::populateFromEdit)
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -126,28 +130,28 @@ fun AddressAddActivity(
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.staircase),
-                    value = state.staircase,
+                    value = state.staircase ?: "",
                     onValueChange = actions::setStaircase
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.floor),
-                    value = state.floor,
+                    value = state.floor ?: "",
                     onValueChange = actions::setFloor
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.interior),
-                    value = state.interior,
+                    value = state.interior ?: "",
                     onValueChange = actions::setInterior
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.real_estate_units),
-                    value = state.units,
+                    value = state.units ?: "",
                     onValueChange = actions::setUnits
                 )
             }
@@ -158,35 +162,35 @@ fun AddressAddActivity(
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.sheet),
-                    value = state.sheet,
+                    value = state.sheet ?: "",
                     onValueChange = actions::setSheet
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.property_map),
-                    value = state.map,
+                    value = state.map ?: "",
                     onValueChange = actions::setMap
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.subordinate),
-                    value = state.subordinate,
+                    value = state.subordinate ?: "",
                     onValueChange = actions::setSubordinate
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.year_construction),
-                    value = state.yearOfConstruction.toString(),
+                    value = state.yearOfConstruction?.toString() ?: "",
                     onValueChange = actions::setYearOfConstruction
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.usable_area),
-                    value = state.usableArea.toString(),
+                    value = state.usableArea?.toString() ?: "",
                     onValueChange = actions::setUsableArea
                 )
             }

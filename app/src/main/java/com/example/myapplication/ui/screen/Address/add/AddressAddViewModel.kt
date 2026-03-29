@@ -18,13 +18,13 @@ data class AddressAddState(
     val city: String = "",
     val province: String = "",
     val zip: String = "",
-    val staircase: String? = "",
-    val floor: String? = "",
-    val interior: String? = "",
-    val units: String? = "",
-    val sheet: String? = "",
-    val map: String? = "",
-    val subordinate: String? = "",
+    val staircase: String? = null,
+    val floor: String? = null,
+    val interior: String? = null,
+    val units: String? = null,
+    val sheet: String? = null,
+    val map: String? = null,
+    val subordinate: String? = null,
     val yearOfConstruction: Int? = null,
     val usableArea: Int? = null
 )
@@ -79,69 +79,79 @@ class AddressAddViewModel(
         }
 
         override fun setZip(zip: String) {
-            if (checkIfStringIsInt(zip)) {
+            if (zip.isEmpty() || checkIfStringIsInt(zip)) {
                 _state.update { it.copy(zip = zip) }
             }
         }
 
         override fun setStaircase(staircase: String) {
-            if (checkIfStringIsInt(staircase)) {
-                _state.update { it.copy(staircase = staircase) }
-            }
+            _state.update { it.copy(staircase = staircase) }
         }
 
         override fun setFloor(floor: String) {
-            if (checkIfStringIsInt(floor)) {
+            if (floor.isEmpty() || checkIfStringIsInt(floor)) {
                 _state.update { it.copy(floor = floor) }
             }
         }
 
         override fun setInterior(interior: String) {
-            if (checkIfStringIsInt(interior)) {
+            if (interior.isEmpty() || checkIfStringIsInt(interior)) {
                 _state.update { it.copy(interior = interior) }
             }
         }
 
         override fun setUnits(units: String) {
-            if (checkIfStringIsInt(units)) {
-                _state.update { it.copy(units = units) }
-            }
+            _state.update { it.copy(units = units) }
         }
 
         override fun setSheet(sheet: String) {
-            if (checkIfStringIsInt(sheet)) {
+            if (sheet.isEmpty() || checkIfStringIsInt(sheet)) {
                 _state.update { it.copy(sheet = sheet) }
             }
         }
 
         override fun setMap(map: String) {
-            if (checkIfStringIsInt(map)) {
+            if (map.isEmpty() || checkIfStringIsInt(map)) {
                 _state.update { it.copy(map = map) }
             }
         }
 
         override fun setSubordinate(subordinate: String) {
-            if (checkIfStringIsInt(subordinate)) {
+            if (subordinate.isEmpty() || checkIfStringIsInt(subordinate)) {
                 _state.update { it.copy(subordinate = subordinate) }
             }
         }
 
         override fun setYearOfConstruction(yearOfConstruction: String) {
-            if (checkIfStringIsInt(yearOfConstruction)) {
-                _state.update { it.copy(yearOfConstruction = yearOfConstruction.toInt()) }
+            if (yearOfConstruction.isEmpty()) {
+                _state.update { it.copy(yearOfConstruction = null) }
+                return
+            }
+
+            val newValue = yearOfConstruction.toIntOrNull()
+
+            if (newValue != null) {
+                _state.update { it.copy(yearOfConstruction = newValue) }
             }
         }
 
         override fun setUsableArea(usableArea: String) {
-            if (checkIfStringIsDouble(usableArea)) {
-                _state.update { it.copy(usableArea = usableArea.toInt()) }
+            if (usableArea.isEmpty()) {
+                _state.update { it.copy(usableArea = null) }
+                return
+            }
+
+            val newValue = usableArea.toIntOrNull()
+
+            if (newValue != null) {
+                _state.update { it.copy(usableArea = newValue) }
             }
         }
 
         override fun saveAddress() {
             val stateNow = _state.value
             val newAddress = Address(
-                id = 0,
+                id = stateNow.addressId ?: 0,
                 address = stateNow.address,
                 houseNumber = stateNow.houseNumber,
                 municipality = stateNow.municipality,

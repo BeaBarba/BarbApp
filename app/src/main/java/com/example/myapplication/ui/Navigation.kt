@@ -49,9 +49,9 @@ import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarActivity
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarViewModel
 import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
 import com.example.myapplication.ui.screen.Cart.CartViewModel
-import com.example.myapplication.ui.screen.Construction.AllConstructionSummaryActivity
-import com.example.myapplication.ui.screen.Construction.ConstructionAddActivity
-import com.example.myapplication.ui.screen.Construction.SingleConstructionSummaryActivity
+import com.example.myapplication.ui.screen.WorkSite.AllConstructionSummaryActivity
+import com.example.myapplication.ui.screen.WorkSite.ConstructionAddActivity
+import com.example.myapplication.ui.screen.WorkSite.SingleConstructionSummaryActivity
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
@@ -61,6 +61,7 @@ import com.example.myapplication.ui.screen.Invoice.InvoiceAddActivity
 import com.example.myapplication.ui.screen.Invoice.SingleInvoiceSummaryActivity
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
+import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
 import com.example.myapplication.ui.screen.Material.WarehouseActivity
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.AllPurchaseInvoicesSummaryActivity
@@ -122,8 +123,6 @@ sealed interface NavigationRoute{
     @Serializable
     data object PurchaseInvoiceAdd : NavigationRoute
     @Serializable
-    data object SingleConstructionSummary : NavigationRoute
-    @Serializable
     data object SingleDeadlineSummary: NavigationRoute
     @Serializable
     data object SingleInvoiceSummary : NavigationRoute
@@ -155,6 +154,8 @@ sealed interface NavigationRoute{
     data class SingleJobSummary(val jobId : Int) : NavigationRoute
     @Serializable
     data class SingleMaterialSummary(val materialId : Int) : NavigationRoute
+    @Serializable
+    data class SingleWorkSiteSummary(val workSiteId : Int) : NavigationRoute
 
     @Serializable
     data class Select(val textSearch : String, val items: SelectKey) : NavigationRoute
@@ -314,8 +315,11 @@ fun NavGraph(
         composable<NavigationRoute.SingleDeadlineSummary>{
             SingleDeadlineSummaryActivity(navController)
         }
-        composable<NavigationRoute.SingleJobSummary>{
-            SingleJobSummaryActivity(navController)
+        composable<NavigationRoute.SingleJobSummary>{ backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.SingleJobSummary>()
+            val singleJobVM = koinViewModel<SingleJobSummaryViewModel>()
+            val state by singleJobVM.state.collectAsStateWithLifecycle()
+            SingleJobSummaryActivity(route.jobId, state, singleJobVM.actions, navController)
         }
         composable<NavigationRoute.SingleMaterialSummary>{backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.SingleMaterialSummary>()
@@ -341,7 +345,7 @@ fun NavGraph(
         composable<NavigationRoute.AllInvoicesSummary> {
             AllInvoicesSummaryActivity(navController)
         }
-        composable<NavigationRoute.SingleConstructionSummary> {
+        composable<NavigationRoute.SingleWorkSiteSummary> {
             SingleConstructionSummaryActivity(navController)
         }
         composable<NavigationRoute.ConstructionAdd> {

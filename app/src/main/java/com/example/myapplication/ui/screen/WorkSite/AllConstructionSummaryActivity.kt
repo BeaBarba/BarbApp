@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Construction
+package com.example.myapplication.ui.screen.WorkSite
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -62,7 +62,7 @@ fun AllConstructionSummaryActivity(
                 GenericCard(
                     text = item.indirizzo,
                     textDescription = item.dataInizio + " - " + item.dataFine,
-                    onClick = {navController.navigate(NavigationRoute.SingleConstructionSummary)}
+                    onClick = {navController.navigate(NavigationRoute.SingleWorkSiteSummary)}
                 )
                 Spacer(Modifier.size(8.dp))
             }
@@ -79,7 +79,7 @@ fun AllConstructionSummaryActivity(
                     GenericCard(
                         text = item.indirizzo,
                         textDescription = item.dataInizio + " - " + item.dataFine,
-                        onClick = {navController.navigate(NavigationRoute.SingleConstructionSummary)}
+                        onClick = {navController.navigate(NavigationRoute.SingleWorkSiteSummary)}
                     )
                     Spacer(Modifier.size(8.dp))
                 }

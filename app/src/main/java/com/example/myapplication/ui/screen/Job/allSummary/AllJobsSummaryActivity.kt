@@ -27,7 +27,6 @@ import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import java.time.LocalDate
-import java.time.LocalTime
 
 @Composable
 fun AllJobsSummaryActivity(
@@ -70,7 +69,14 @@ fun AllJobsSummaryActivity(
                 )
                 .fillMaxSize()
         ) {
-            item{CustomSearchBar(stringResource(R.string.intervention), onValueChange = {})}
+            item{
+                CustomSearchBar(
+                    stringResource(R.string.intervention),
+                    onValueChange = {
+                        actions.searchJob(it)
+                    }
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             items(
                 state.jobsView.filter {
@@ -87,7 +93,7 @@ fun AllJobsSummaryActivity(
                 }
                 GenericCard(
                     type = actions.getTypeStringFromJob(item),
-                    text = item.address.address,
+                    text = "${item.address.address} ${item.address.houseNumber}",
                     textDescription = customerLabel + " " + item.job.date.toString(),
                     leadingContent = {
                         Avatar(
@@ -105,7 +111,7 @@ fun AllJobsSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             items(
                 state.jobsView.filter {
-                    it.job.endTime != null && it.job.endTime.isBefore(LocalTime.now())
+                    it.job.endTime != null && it.job.date.isBefore(LocalDate.now())
                 }
             ){ item ->
                 var customerLabel : String? = null
@@ -118,7 +124,7 @@ fun AllJobsSummaryActivity(
                 }
                 GenericCard(
                     type = actions.getTypeStringFromJob(item),
-                    text = item.address.address,
+                    text = "${item.address.address} ${item.address.houseNumber}",
                     textDescription = customerLabel + " " + item.job.date.toString(),
                     leadingContent = {
                         Avatar(

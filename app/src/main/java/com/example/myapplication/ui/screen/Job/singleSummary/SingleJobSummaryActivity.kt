@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,10 +26,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.cantieri
-import com.example.myapplication.debug.customers
-import com.example.myapplication.debug.prodotti
-import com.example.myapplication.debug.textDescription
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.BoxDescription
@@ -39,12 +36,18 @@ import com.example.myapplication.ui.component.Images
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkColorAvatar
 
 @Composable
 fun SingleJobSummaryActivity(
+    jobId : Int,
+    state : SingleJobSummaryState,
+    actions: SingleJobSummaryActions,
     navController : NavHostController
 ){
+    LaunchedEffect(jobId) {
+        actions.populateJobData(jobId)
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -53,7 +56,7 @@ fun SingleJobSummaryActivity(
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.JobAdd)},
+                        onClick = {navController.navigate(NavigationRoute.JobAdd(jobId))},
                         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
                     ) {
                         Icon(painterResource(R.drawable.edit_square_24dp), contentDescription = stringResource(R.string.edit))
@@ -71,14 +74,23 @@ fun SingleJobSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{
-                GenericCard(
-                    text = customers[0],
-                    leadingContent = {Avatar(char = customers[0][0])},
-                    onClick = {navController.navigate(NavigationRoute.SingleCustomerSummary)}
-                )
+            state.job?.jobDetails?.customer?.let { customer ->
+                item {
+                    GenericCard(
+                        text =
+                            if(customer.isPrivate) "${customer.privateCustomer!!.lastName} ${customer.customer.name}"
+                            else customer.companyCustomer!!.companyName,
+                        leadingContent = {
+                            Avatar(
+                                char = if(customer.isPrivate) customer.privateCustomer!!.lastName[0]
+                                        else customer.companyCustomer!!.companyName[0],
+                            )
+                        },
+                        onClick = { navController.navigate(NavigationRoute.SingleCustomerSummary(customer.customer.cf)) }
+                    )
+                }
+                item { Spacer(Modifier.size(8.dp)) }
             }
-            item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
                     leadingContent = {
@@ -87,7 +99,7 @@ fun SingleJobSummaryActivity(
                             contentDescription = stringResource(R.string.address)
                         )
                     },
-                    text = stringResource(R.string.address),
+                    text = "${state.job?.jobDetails?.address?.address} ${state.job?.jobDetails?.address?.houseNumber}",
                     trailingContent = {
                         Icon(
                             Icons.Filled.ChevronRight,
@@ -95,15 +107,24 @@ fun SingleJobSummaryActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.SingleAddressSummary(17))}
+                    onClick = {
+                        navController.navigate(
+                            NavigationRoute.SingleAddressSummary(state.job?.jobDetails?.address?.id.let { it ?: 0 }
+                            )
+                        )
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            /*
-            if(cantieri.get(0).isNotEmpty()){
+            if(state.job?.jobDetails?.job?.workSite != null){
                 item{
                     GenericCard(
-                        leadingContent = {Icon(painterResource(R.drawable.brickwall), contentDescription = stringResource(R.string.construction_site))},
+                        leadingContent = {
+                            Icon(
+                                painterResource(R.drawable.brickwall),
+                                contentDescription = stringResource(R.string.construction_site)
+                            )
+                        },
                         text = stringResource(R.string.construction_site),
                         trailingContent = {
                             Icon(
@@ -112,72 +133,89 @@ fun SingleJobSummaryActivity(
                                 modifier = Modifier.size(35.dp)
                             )
                         },
-                        onClick = {navController.navigate(NavigationRoute.SingleConstructionSummary)}
+                        onClick = {
+                            navController.navigate(
+                                NavigationRoute.SingleWorkSiteSummary(state.job.jobDetails.job.workSite)
+                            )
+                        }
                     )
                 }
                 item{Spacer(Modifier.size(8.dp))}
             }
 
-             */
+             /**/
             item{
                 DoubleKeyValueLabel(
                     firstTitle = stringResource(R.string.price),
-                    firstDescription = "1.000€",
+                    firstDescription = state.price.toString(),
                     secondTitle = stringResource(R.string.date),
-                    secondDescription = "01/01/2025"
+                    secondDescription = state.job?.jobDetails?.job?.date.toString()
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DoubleKeyValueLabel(
                     firstTitle = stringResource(R.string.start_time),
-                    firstDescription = "09:00",
+                    firstDescription = state.job?.jobDetails?.job?.startTime.toString(),
                     secondTitle = stringResource(R.string.end_time),
-                    secondDescription = "12:00"
+                    secondDescription = state.job?.jobDetails?.job?.endTime.toString()
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.people_number),
-                    description = "4"
+                    description = state.job?.jobDetails?.job?.peopleNumber.toString()
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.type),
-                    description = "Elettrico"
+                    description = when {
+                        state.job?.jobDetails?.job?.electric == true -> stringResource(R.string.electric)
+                        state.job?.jobDetails?.job?.airConditioning == true -> stringResource(R.string.air_conditioning)
+                        state.job?.jobDetails?.job?.alarm == true -> stringResource(R.string.alarm)
+                        else -> ""
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{TitleLabel(title = stringResource(R.string.description))}
             item{Spacer(Modifier.size(8.dp))}
-            item{BoxDescription(textDescription)}
+            item{BoxDescription(state.job?.jobDetails?.job?.description.toString())}
             item{Spacer(Modifier.size(8.dp))}
             item{Images()}
             item{Spacer(Modifier.size(8.dp))}
-            item{TitleLabel(stringResource(R.string.materials))}
-            item{Spacer(Modifier.size(8.dp))}
-            items(prodotti.subList(0,5)){ item ->
-                GenericCard(
-                    type = item.tipo,
-                    leadingContent = {
-                        Avatar(
-                            char = item.tipo[0],
-                            type = item.tipo
-                        )
-                    },
-                    text = item.nome,
-                    textDescription = item.modello,
-                    trailingContent = {
-                        Text(
-                            text = item.quantita.toString() + " " + item.unitaMisura
-                        )
-                    },
-                    onClick = {navController.navigate(NavigationRoute.SingleMaterialSummary)}
-                )
-                Spacer(Modifier.size(8.dp))
+            if(state.materials.isNotEmpty()) {
+                item{TitleLabel(stringResource(R.string.materials))}
+                item{Spacer(Modifier.size(8.dp))}
+                items(state.materials) { item ->
+                    GenericCard(
+                        type = item.type.toString(),
+                        leadingContent = {
+                            Avatar(
+                                char = item.type.toString()[0],
+                                type = item.type.toString()
+                            )
+                        },
+                        text = item.category,
+                        textDescription = "${item.model} - ${item.brand}",
+                        trailingContent = {
+                            Text(
+                                text = "${item.availableQuantity} ${item.unitMeasurement}"
+                            )
+                        },
+                        onClick = {
+                            navController.navigate(
+                                NavigationRoute.SingleMaterialSummary(
+                                    item.id
+                                )
+                            )
+                        }
+                    )
+                    Spacer(Modifier.size(8.dp))
+                }
             }
         }
     }

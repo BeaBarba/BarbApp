@@ -262,6 +262,13 @@ data class JobFullDetails(
     @Embedded val jobDetails: JobAssignmentDetails,
 
     @Relation(
+        entity = WorkSite::class,
+        parentColumn = "Cantiere",
+        entityColumn = "id"
+    )
+    val workSite: WorkSite?,
+
+    @Relation(
         entity = MaterialUsage::class,
         parentColumn = "id",
         entityColumn = "Intervento"
@@ -279,7 +286,13 @@ data class JobFullDetails(
         parentColumn = "id",
         entityColumn = "Intervento"
     )
-    val photos : List<Image>
+    val photos : List<Image>,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "Intervento"
+    )
+    val revenue: List<Revenue?>
 )
 
 data class WorkSiteFullDetails(

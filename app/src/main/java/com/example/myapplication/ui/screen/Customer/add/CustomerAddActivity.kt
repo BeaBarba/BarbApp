@@ -61,7 +61,7 @@ fun CustomerAddActivity(
 
     val type = listOf(
         MenuItem(Pair(0,""),stringResource(R.string.company)) { actions.setCustomerType(CustomerType.Azienda) },
-        MenuItem(Pair(0,""),stringResource(R.string.private_customer)){actions.setCustomerType(CustomerType.Privato)}
+        MenuItem(Pair(0,""),stringResource(R.string.private_customer)){ actions.setCustomerType(CustomerType.Privato) }
     )
 
     val selectSearchText = stringResource(R.string.customer)
@@ -92,7 +92,9 @@ fun CustomerAddActivity(
                         onClick = {
                             actions.save()
                             navController.navigate(NavigationRoute.SingleCustomerSummary(state.cf)){
-                                popUpTo(NavigationRoute.AllCustomersSummary){inclusive = false}
+                                popUpTo(navController.currentBackStackEntry?.destination?.route ?: return@navigate) {
+                                    inclusive = true
+                                }
                             }
                         },
                         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
