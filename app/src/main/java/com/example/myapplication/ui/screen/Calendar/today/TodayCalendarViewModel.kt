@@ -1,32 +1,44 @@
 package com.example.myapplication.ui.screen.Calendar.today
 
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.debug.Appuntamento
-import com.example.myapplication.debug.appuntamenti
+import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.database.JobFullDetails
+import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 data class TodayCalendarState(
-    val todayCalendar : List<Appuntamento> = listOf(),
-    val toScheduleCalendar : List<Appuntamento> = listOf(),
+    val todayCalendar : List<JobFullDetails> = emptyList(),
+    val toScheduleCalendar : List<JobFullDetails> = emptyList(),
     val started : Boolean = false
 )
 
-interface TodayCalendarActions {
-    fun populateTodayCalendar()
-}
-
-class TodayCalendarViewModel() : ViewModel() {
+class TodayCalendarViewModel(
+    private val repository: Repository
+) : ViewModel() {
     private val _state = MutableStateFlow(TodayCalendarState())
 
     val state = _state.asStateFlow()
 
-    val actions = object : TodayCalendarActions {
-        override fun populateTodayCalendar() {
-            if (!_state.value.started) {
-                _state.update { it.copy(todayCalendar = appuntamenti.take(6)) }
-                _state.update { it.copy(toScheduleCalendar = appuntamenti.take(4)) }
+    init{
+        populateTodayCalendar()
+    }
+
+    private fun populateTodayCalendar() {
+
+        if (state.value.started) return
+
+        viewModelScope.launch {
+            repository.getAllTodayJobsFullDetailsByDate(LocalDate.now()).collect { jobs ->
+                _state.update { it.copy(started = true, todayCalendar = jobs) }
+            }
+        }
+        viewModelScope.launch {
+            repository.getAllToScheduleJobsFullDetailsByDate(LocalDate.now()).collect{ jobs ->
+                _state.update { it.copy(started = true, toScheduleCalendar = jobs) }
             }
         }
     }

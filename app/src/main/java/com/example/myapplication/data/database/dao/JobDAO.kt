@@ -10,6 +10,7 @@ import com.example.myapplication.data.database.JobAssignmentDetails
 import com.example.myapplication.data.database.JobFullDetails
 import com.example.myapplication.data.database.JobMaterialFullDetails
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 @Dao
 interface JobDAO{
@@ -67,5 +68,21 @@ interface JobDAO{
         "SELECT * " +
         "FROM INTERVENTI "
     )
-    suspend fun getAllJobsFullDetails() : List<JobFullDetails>
+    fun getAllJobsFullDetails() : Flow<List<JobFullDetails>>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+                "FROM INTERVENTI " +
+                "WHERE Data > :date"
+    )
+    fun getAllToScheduleJobsFullDetails(date : LocalDate) : Flow<List<JobFullDetails>>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+        "FROM INTERVENTI " +
+        "WHERE Data = :date"
+    )
+    fun getAllTodayJobsFullDetails(date : LocalDate) : Flow<List<JobFullDetails>>
 }

@@ -68,6 +68,7 @@ import com.example.myapplication.data.database.dao.SellerDAO
 import com.example.myapplication.data.database.dao.SingleExpenseDAO
 import com.example.myapplication.data.database.dao.WorkSiteDAO
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 class Repository (private val db : AppDatabase) {
 
@@ -377,7 +378,13 @@ class Repository (private val db : AppDatabase) {
 
     fun getJobFullDetails(id: Int): Flow<JobFullDetails?> = db.jobDAO().getJobFullDetails(id)
 
-    suspend fun getAllJobsFullDetails(): List<JobFullDetails> = db.jobDAO().getAllJobsFullDetails()
+    fun getAllJobsFullDetails(): Flow<List<JobFullDetails>> = db.jobDAO().getAllJobsFullDetails()
+
+    fun getAllToScheduleJobsFullDetailsByDate(date : LocalDate) : Flow<List<JobFullDetails>> =
+        db.jobDAO().getAllToScheduleJobsFullDetails(date)
+
+    fun getAllTodayJobsFullDetailsByDate(date : LocalDate) : Flow<List<JobFullDetails>> =
+        db.jobDAO().getAllTodayJobsFullDetails(date)
 
     /* FutureJobMaterial */
     val futureJobMaterials = db.jobMaterialDAO().getAllFutureJobMaterials()

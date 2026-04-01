@@ -31,10 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,13 +43,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
 import com.example.myapplication.data.database.CartDetails
-import com.example.myapplication.debug.Prodotto
 import com.example.myapplication.debug.itemsList
 
 @Composable
 fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
 
-    val CONTENT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
+    val contentColor = MaterialTheme.colorScheme.onPrimaryContainer
 
     Card(
         onClick = onclick,
@@ -66,8 +62,7 @@ fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
             containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
             disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             disabledContainerColor = MaterialTheme.colorScheme.primaryContainer
-        ),
-        interactionSource = remember { MutableInteractionSource() } // Per le interazioni con l'utente
+        )
     ) {
         Column(
             modifier = Modifier
@@ -82,12 +77,12 @@ fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
                 modifier = Modifier
                     .size(60.dp)
                     .padding(2.dp),
-                tint = CONTENT_COLOR,
+                tint = contentColor,
             )
             Spacer(Modifier.size(8.dp))
             Text(
                 text = item,
-                color = CONTENT_COLOR
+                color = contentColor
             )
         }
     }
@@ -104,8 +99,8 @@ fun GenericCard(
     onClick : () -> Unit = {},
     //interactionSource: MutableInteractionSource? = null,
 ){
-    val TEXT_TYPOGRAPHY = MaterialTheme.typography.bodyLarge
-    val DESCRIPTION_TYPOGRAPHY = MaterialTheme.typography.bodyMedium
+    val textTypography = MaterialTheme.typography.bodyLarge
+    val descriptionTypography = MaterialTheme.typography.bodyMedium
 
     Card(
         modifier = Modifier
@@ -132,12 +127,12 @@ fun GenericCard(
                     Column (modifier = Modifier.fillMaxHeight()){
                         Text(
                             text,
-                            fontSize = TEXT_TYPOGRAPHY.fontSize,
+                            fontSize = textTypography.fontSize,
                             color = checkColor(type, onPrimaryContainer = true),
                             modifier = Modifier.fillMaxWidth(textSpace)
                         )
                         Text(text = textDescription,
-                            fontSize = DESCRIPTION_TYPOGRAPHY.fontSize,
+                            fontSize = descriptionTypography.fontSize,
                             color = checkColor(type, onPrimaryContainer = true),
                             modifier = Modifier.fillMaxWidth(textSpace),
                         )
@@ -146,7 +141,7 @@ fun GenericCard(
                     Text(
                         text = text,
                         modifier = Modifier.fillMaxWidth(textSpace).padding(top = 5.dp),
-                        fontSize = TEXT_TYPOGRAPHY.fontSize,
+                        fontSize = textTypography.fontSize,
                         color = checkColor(type, onPrimaryContainer = true),
                     )
                 }
@@ -164,11 +159,11 @@ fun GenericCard(
                             text = text,
                             modifier = Modifier.padding(start = 8.dp).fillMaxWidth(textSpace),
                             color = checkColor(type, onPrimaryContainer = true),
-                            fontSize = TEXT_TYPOGRAPHY.fontSize
+                            fontSize = textTypography.fontSize
                         )
                         Text(
                             text = textDescription,
-                            fontSize = DESCRIPTION_TYPOGRAPHY.fontSize,
+                            fontSize = descriptionTypography.fontSize,
                             color = checkColor(type, onPrimaryContainer = true),
                             modifier = Modifier.padding(start = 8.dp).fillMaxWidth(textSpace)
                         )
@@ -196,7 +191,7 @@ fun GenericCard(
                                 modifier = Modifier.padding(start = 8.dp, top = 10.dp)
                                     .fillMaxWidth(textSpace),
                                 color = checkColor(type, onPrimaryContainer = true),
-                                fontSize = TEXT_TYPOGRAPHY.fontSize
+                                fontSize = textTypography.fontSize
                             )
                             trailingContent()
                         }
@@ -205,7 +200,7 @@ fun GenericCard(
                             text = text,
                             modifier = Modifier.padding(start = 8.dp),
                             color = checkColor(type, onPrimaryContainer = true),
-                            fontSize = TEXT_TYPOGRAPHY.fontSize
+                            fontSize = textTypography.fontSize
                         )
                     }
                 }
@@ -238,11 +233,18 @@ fun StatisticCard(
 }
 
 @Composable
-fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: List<String>, description: String, onClick: () -> Unit) {
+fun LargeCard(
+    type: String = "NONE",
+    title: String,
+    subtitle: String?,
+    items: List<String>,
+    description: String,
+    onClick: () -> Unit
+) {
 
-    val TEXT_TYPOGRAPHY = MaterialTheme.typography.headlineSmall
-    val DESCRIPTION_TYPOGRAPHY = MaterialTheme.typography.bodyMedium
-    val TITLE_TYPOGRAPHY = MaterialTheme.typography.titleMedium
+    val textTypography = MaterialTheme.typography.headlineSmall
+    val descriptionTypography = MaterialTheme.typography.bodyMedium
+    val titleTypography = MaterialTheme.typography.titleMedium
 
     var materialText = ""
     for (item in items) {
@@ -269,24 +271,38 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
             horizontalArrangement = Arrangement.Center
         ) {
             Avatar(
-                char = type.get(0),
+                char = type[0],
                 type = type,
                 size = 40.dp
             )
             Spacer(Modifier.size(8.dp))
-            Column() {
-                Text(
-                    text = title,
-                    fontSize = TEXT_TYPOGRAPHY.fontSize,
-                    color = checkColor(type, onPrimaryContainer = true),
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = subtitle,
-                    fontSize = TITLE_TYPOGRAPHY.fontSize,
-                    color = checkColor(type, onPrimaryContainer = true),
-                    modifier = Modifier.fillMaxWidth(),
-                )
+            if(subtitle.isNullOrEmpty()){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = title,
+                        fontSize = textTypography.fontSize,
+                        color = checkColor(type, onPrimaryContainer = true),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }else {
+                Column{
+                    Text(
+                        text = title,
+                        fontSize = textTypography.fontSize,
+                        color = checkColor(type, onPrimaryContainer = true),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = subtitle,
+                        fontSize = titleTypography.fontSize,
+                        color = checkColor(type, onPrimaryContainer = true),
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
             }
         }
         Spacer(Modifier.size(8.dp))
@@ -296,7 +312,7 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
                     text = stringResource(R.string.description) + ": ",
                     modifier = Modifier.padding(start = 8.dp).fillMaxWidth(0.25f),
                     color = checkColor(type, onPrimaryContainer = true),
-                    fontSize = TITLE_TYPOGRAPHY.fontSize
+                    fontSize = titleTypography.fontSize
                 )
                 Text(
                     text = description,
@@ -304,7 +320,7 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     color = checkColor(type, onPrimaryContainer = true),
-                    fontSize = DESCRIPTION_TYPOGRAPHY.fontSize
+                    fontSize = descriptionTypography.fontSize
                 )
             }
             Spacer(Modifier.size(8.dp))
@@ -313,11 +329,11 @@ fun LargeCard(type: String = "NONE", title: String, subtitle: String, items: Lis
                     text = stringResource(R.string.material) + ": ",
                     modifier = Modifier.padding(start = 8.dp).fillMaxWidth(0.20f),
                     color = checkColor(type, onPrimaryContainer = true),
-                    fontSize = TITLE_TYPOGRAPHY.fontSize
+                    fontSize = titleTypography.fontSize
                 )
                 Text(
                     text = materialText,
-                    fontSize = DESCRIPTION_TYPOGRAPHY.fontSize,
+                    fontSize = descriptionTypography.fontSize,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     color = checkColor(type, onPrimaryContainer = true),

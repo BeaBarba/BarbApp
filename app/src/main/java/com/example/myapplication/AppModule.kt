@@ -104,7 +104,7 @@ val appModule = module{
     viewModel {SingleAddressSummaryViewModel(get())}
 
     /* Calendar */
-    viewModel {TodayCalendarViewModel()}
+    viewModel {TodayCalendarViewModel(get())}
     viewModel {DayCalendarViewModel()}
 
     /* Bubbles */
