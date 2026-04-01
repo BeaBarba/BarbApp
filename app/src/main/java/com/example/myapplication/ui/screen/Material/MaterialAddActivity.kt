@@ -75,7 +75,7 @@ fun MaterialAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.SingleMaterialSummary){
+                            navController.navigate(NavigationRoute.SingleMaterialSummary(0)){
                                 popUpTo(NavigationRoute.MaterialAdd){inclusive = true}
                             }
                         },
@@ -108,7 +108,8 @@ fun MaterialAddActivity(
             item{
                 SplitButtonMenu(
                     content = if(type.isNotEmpty()){type}else{stringResource(R.string.type)},
-                    items = tipi
+                    items = tipi,
+                    heightMenu = (type.length * 55).dp
                 )
             }
             item{

@@ -61,7 +61,7 @@ fun AllBubblesSummaryActivity(
             items(state.bubbles){ item ->
                 GenericCard(
                     text = item.seller.name,
-                    textDescription = item.bubble.date.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")),
+                    textDescription = item.bubble.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                     onClick = {navController.navigate(NavigationRoute.SingleBubbleSummary(bubbleId = item.bubble.id))}
                 )
                 Spacer(Modifier.size(8.dp))
