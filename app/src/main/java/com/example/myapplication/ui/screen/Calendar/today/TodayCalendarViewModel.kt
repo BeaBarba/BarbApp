@@ -2,6 +2,7 @@ package com.example.myapplication.ui.screen.Calendar.today
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.database.JobAssignmentDetails
 import com.example.myapplication.data.database.JobFullDetails
 import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,7 @@ import java.time.LocalDate
 
 data class TodayCalendarState(
     val todayCalendar : List<JobFullDetails> = emptyList(),
-    val toScheduleCalendar : List<JobFullDetails> = emptyList(),
+    val toScheduleCalendar : List<JobAssignmentDetails> = emptyList(),
     val started : Boolean = false
 )
 
@@ -37,7 +38,7 @@ class TodayCalendarViewModel(
             }
         }
         viewModelScope.launch {
-            repository.getAllToScheduleJobsFullDetailsByDate(LocalDate.now()).collect{ jobs ->
+            repository.getAllToScheduleJobsAssignmentDetailsByDate(LocalDate.now()).collect{ jobs ->
                 _state.update { it.copy(started = true, toScheduleCalendar = jobs) }
             }
         }

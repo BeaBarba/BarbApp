@@ -334,7 +334,7 @@ fun NavGraph(
         composable<NavigationRoute.TodayCalendar>{
             val todayCalendarVM = koinViewModel<TodayCalendarViewModel>()
             val state by todayCalendarVM.state.collectAsStateWithLifecycle()
-            TodayCalendarActivity(state, todayCalendarVM.actions, navController)
+            TodayCalendarActivity(state, navController)
         }
         composable<NavigationRoute.Warehouse> {
             WarehouseActivity(navController)

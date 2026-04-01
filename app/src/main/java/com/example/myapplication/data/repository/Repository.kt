@@ -380,8 +380,8 @@ class Repository (private val db : AppDatabase) {
 
     fun getAllJobsFullDetails(): Flow<List<JobFullDetails>> = db.jobDAO().getAllJobsFullDetails()
 
-    fun getAllToScheduleJobsFullDetailsByDate(date : LocalDate) : Flow<List<JobFullDetails>> =
-        db.jobDAO().getAllToScheduleJobsFullDetails(date)
+    fun getAllToScheduleJobsAssignmentDetailsByDate(date : LocalDate) : Flow<List<JobAssignmentDetails>> =
+        db.jobDAO().getAllToScheduleJobsAssignmentDetails(date)
 
     fun getAllTodayJobsFullDetailsByDate(date : LocalDate) : Flow<List<JobFullDetails>> =
         db.jobDAO().getAllTodayJobsFullDetails(date)

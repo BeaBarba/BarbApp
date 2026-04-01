@@ -113,9 +113,9 @@ fun TodayCalendarActivity(
             item{Spacer(Modifier.size(8.dp))}
             items(state.toScheduleCalendar){ item ->
                 val type = when {
-                    item.jobDetails.job.electric -> {JobType.ELE.toString()}
-                    item.jobDetails.job.alarm -> {JobType.ALA.toString()}
-                    item.jobDetails.job.airConditioning -> {JobType.CDZ.toString()}
+                    item.job.electric -> {JobType.ELE.toString()}
+                    item.job.alarm -> {JobType.ALA.toString()}
+                    item.job.airConditioning -> {JobType.CDZ.toString()}
                     else -> JobType.NONE.toString()
                 }
                 GenericCard(
@@ -126,14 +126,14 @@ fun TodayCalendarActivity(
                             type = type
                         )
                     },
-                    text = "${item.jobDetails.address.address} ${item.jobDetails.address.houseNumber}, " +
-                            item.jobDetails.address.city,
-                    textDescription = when(item.jobDetails.customer != null){
-                        item.jobDetails.customer?.isPrivate -> {"${item.jobDetails.customer.privateCustomer?.lastName} ${item.jobDetails.customer.customer.name}"}
-                        item.jobDetails.customer?.isCompany -> {item.jobDetails.customer.companyCustomer?.companyName}
+                    text = "${item.address.address} ${item.address.houseNumber}, " +
+                            item.address.city,
+                    textDescription = when(item.customer != null){
+                        item.customer?.isPrivate -> {"${item.customer.privateCustomer?.lastName} ${item.customer.customer.name}"}
+                        item.customer?.isCompany -> {item.customer.companyCustomer?.companyName}
                         else -> ""
                     },
-                    onClick = {navController.navigate(NavigationRoute.SingleJobSummary(item.jobDetails.job.id))}
+                    onClick = {navController.navigate(NavigationRoute.SingleJobSummary(item.job.id))}
                 )
                 Spacer(Modifier.size(8.dp))
             }

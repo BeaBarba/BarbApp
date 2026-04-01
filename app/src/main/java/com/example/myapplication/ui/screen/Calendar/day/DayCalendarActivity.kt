@@ -17,18 +17,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.appuntamenti
-import com.example.myapplication.debug.materialList
+import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DatePickerModal
@@ -37,6 +35,7 @@ import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
 import java.time.Instant
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun DayCalendarActivity(
@@ -45,21 +44,25 @@ fun DayCalendarActivity(
     actions: DayCalendarActions,
     navController : NavHostController
 ){
-    if (!state.started) {
+    LaunchedEffect(date) {
         actions.populateCalendar(
             Instant.ofEpochMilli(date)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate()
         )
     }
+
+    val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", java.util.Locale.getDefault())
+    val dateSelect = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate().format(formatter)
     val openPicker = remember {mutableStateOf(false)}
     val datePickerState = rememberDatePickerState()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigateUp()}},
-                id = "Giorno Selezionato",
+                id = dateSelect,
                 trailingIcon = {
                     IconButton(
                         onClick = {openPicker.value = true},
@@ -82,7 +85,7 @@ fun DayCalendarActivity(
                 }
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.JobAdd)}}
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.JobAdd(null))}}
     ) { contentPadding ->
         LazyColumn(
             modifier = Modifier.padding(
@@ -93,13 +96,25 @@ fun DayCalendarActivity(
             )
         ) {
             items(state.calendar){ item ->
+                val materials = item.materialsFuture.map { it.material.category } + item.materialUsage.map{it.material.category}
                 LargeCard(
-                    type = item.tipo,
-                    title = item.indirizzo,
-                    subtitle = item.cliente,
-                    description = item.descrizione,
-                    items = materialList,
-                    onClick = {navController.navigate(NavigationRoute.SingleJobSummary)},
+                    type =
+                        when{
+                            item.jobDetails.job.electric -> {JobType.ELE.toString()}
+                            item.jobDetails.job.alarm -> {JobType.ALA.toString()}
+                            item.jobDetails.job.airConditioning -> {JobType.CDZ.toString()}
+                            else -> JobType.NONE.toString()
+                        },
+                    title =
+                        "${item.jobDetails.address.address} ${item.jobDetails.address.houseNumber}, ${item.jobDetails.address.city}",
+                    subtitle = when(item.jobDetails.customer != null){
+                        item.jobDetails.customer?.isCompany -> {item.jobDetails.customer.companyCustomer?.companyName}
+                        item.jobDetails.customer?.isPrivate -> {"${item.jobDetails.customer.privateCustomer?.lastName} ${item.jobDetails.customer.customer.name}"}
+                        else -> ""
+                    },
+                    description = item.jobDetails.job.description ?: "",
+                    items = materials,
+                    onClick = {navController.navigate(NavigationRoute.SingleJobSummary(item.jobDetails.job.id))},
                 )
                 Spacer(Modifier.size(8.dp))
             }
