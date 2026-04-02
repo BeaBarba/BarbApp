@@ -8,6 +8,7 @@ import androidx.room.Upsert
 import com.example.myapplication.data.database.Customer
 import com.example.myapplication.data.database.CustomerFullDetails
 import com.example.myapplication.data.database.CustomerTypeDetails
+import com.example.myapplication.data.modules.CustomerType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,7 +25,7 @@ interface CustomerDAO{
         "SELECT * " +
         "FROM CLIENTI"
     )
-    fun getAllCustomers() : Flow<List<Customer>>
+    fun getAllCustomers() : Flow<List<CustomerTypeDetails>>
 
     @Upsert
     suspend fun upsertCustomer(customer: Customer)

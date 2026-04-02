@@ -253,10 +253,11 @@ fun NavGraph(
             val state by homeVM.state.collectAsStateWithLifecycle()
             HomeActivity(state, homeVM.actions, navController)
         }
-        composable<NavigationRoute.JobAdd>{
+        composable<NavigationRoute.JobAdd>{ backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.JobAdd>()
             val singleJobVM = koinViewModel<JobAddViewModel>()
             val state by singleJobVM.state.collectAsStateWithLifecycle()
-            JobAddActivity(state, singleJobVM.action, navController)
+            JobAddActivity(route.jobId, state, singleJobVM.action, navController)
         }
         composable<NavigationRoute.JobMaterials>{
             JobMaterialsActivity(navController)

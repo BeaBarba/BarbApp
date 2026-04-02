@@ -36,7 +36,7 @@ import com.example.myapplication.data.repository.Repository
 import java.time.LocalDate
 import java.time.LocalTime
 
-object seedDatabase {
+object SeedDatabase {
     suspend fun seedMaterials(repository: Repository) {
         val materials : List<Material> = listOf(
             Material(

@@ -248,7 +248,7 @@ val venditori = listOf("Venditore1", "Venditore2", "Venditore3" )
 var scadenze = listOf(
     Scadenze("Pizzeria Bella", "Ristorante", 45.50f, "15/01/2024"),
     Scadenze("Forniture S.p.A.", "Fornitore", 120.00f, "20/01/2024"),
-    Scadenze("Autocarrozzeria Rossi", "Facchina", 350.75f, "22/01/2024"),
+    Scadenze("Autocarrozzeria Rossi", "Macchina", 350.75f, "22/01/2024"),
     Scadenze("Trattoria Da Mario", "Ristorante", 80.00f, "05/02/2024"),
     Scadenze("Fornitore Alimentare SRL", "Fornitore", 210.30f, "10/02/2024"),
     Scadenze("Lavaggio Auto Milano", "Macchina", 60.00f, "12/02/2024"),

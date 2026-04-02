@@ -2,6 +2,7 @@ package com.example.myapplication.ui.screen.Select
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.modules.SelectKey
@@ -10,6 +11,7 @@ import com.example.myapplication.debug.addressType
 import com.example.myapplication.debug.bubblesType
 import com.example.myapplication.debug.customersType
 import com.example.myapplication.debug.invoicesType
+import com.example.myapplication.ui.NavigationRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,6 +33,7 @@ data class SelectState(
     val itemsList : List<CardItem> = emptyList(),
     val viewList : List<CardItem> = emptyList(),
     val idsList : List<String> = emptyList(),
+    val selectKey : SelectKey = SelectKey.AllMaterials
 )
 
 interface SelectActions{
@@ -38,6 +41,7 @@ interface SelectActions{
     fun setCheckedItems(ids : List<String>)
     fun setChecked(id : String)
     fun search(string : String)
+    fun setOnClick(id : Int = 0, id2 : String = "", navController : NavHostController)
 }
 
 class SelectViewModel(
@@ -71,7 +75,8 @@ class SelectViewModel(
                                 it.copy(
                                     searchText = searchText,
                                     itemsList = materialCardList,
-                                    viewList = materialCardList
+                                    viewList = materialCardList,
+                                    selectKey = SelectKey.AllMaterials
                                 )
                             }
                         }
@@ -112,27 +117,36 @@ class SelectViewModel(
                         )
                     }
                 }
+
                 SelectKey.AllAddresses -> {
-                    val addressesCardList = addressType.map{item ->
-                        CardItem(
-                            id = "0",
-                            name = item.name,
-                            description = "ciao",
-                            type = JobType.valueOf(item.type),
-                            checked = item.checked
-                        )
-                    }
-                    _state.update {
-                        it.copy(
-                            searchText = searchText,
-                            itemsList = addressesCardList
-                        )
+                    viewModelScope.launch(Dispatchers.IO) {
+                        val addressesCardList = repository.addresses.first()
+                            .map { address ->
+                                CardItem(
+                                    id = address.id.toString(),
+                                    name = "${address.address} ${address.houseNumber}",
+                                    description = "${address.city} (${address.province})",
+                                    type = JobType.NONE,
+                                    checked = initialCheckedIds.contains(address.id.toString())
+                                )
+                            }.sortedWith(
+                                compareBy({ it.name })
+                            )
+
+                        _state.update {
+                            it.copy(
+                                searchText = searchText,
+                                itemsList = addressesCardList,
+                                viewList = addressesCardList,
+                                selectKey = SelectKey.AllAddresses
+                            )
+                        }
                     }
                 }
 
                 SelectKey.AllCustomers -> {
                     viewModelScope.launch(Dispatchers.IO) {
-                        val customersCardList = repository.getAllCustomersFullDetails().first()
+                        val customersCardList = repository.customers.first()
                             .map { customer ->
                                 CardItem(
                                     id = customer.customer.cf,
@@ -154,7 +168,8 @@ class SelectViewModel(
                             it.copy(
                                 searchText = searchText,
                                 itemsList = customersCardList,
-                                viewList = customersCardList
+                                viewList = customersCardList,
+                                selectKey = SelectKey.AllCustomers
                             )
                         }
                     }
@@ -209,6 +224,15 @@ class SelectViewModel(
                     }
                 }
             _state.update { it.copy(viewList = filterList) }
+        }
+
+        override fun setOnClick(id : Int, id2 : String, navController : NavHostController){
+            when(state.value.selectKey){
+                SelectKey.AllMaterials -> navController.navigate(NavigationRoute.SingleMaterialSummary(id))
+                SelectKey.AllCustomers -> navController.navigate(NavigationRoute.SingleCustomerSummary(id2))
+                SelectKey.AllAddresses -> navController.navigate(NavigationRoute.SingleAddressSummary(id))
+                else -> {}
+            }
         }
     }
 }

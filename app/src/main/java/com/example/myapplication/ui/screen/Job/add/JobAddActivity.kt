@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.screen.Job.add
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -31,7 +33,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.data.modules.JobType
+import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.debug.interventi
+import com.example.myapplication.debug.tipiInterventi
 import com.example.myapplication.debug.tipi_menu
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -40,15 +45,22 @@ import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
+import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun JobAddActivity(
+    jobId : Int?,
     state : JobAddState,
     actions: JobAddActions,
     navController : NavHostController
 ){
+    LaunchedEffect(jobId) {
+        jobId?.let {actions.populateFromEdit(jobId)}
+    }
+
     val previousBackStackEntry = navController.previousBackStackEntry
 
     val selectSearchTextCustomer = stringResource(R.string.customer)
@@ -56,30 +68,30 @@ fun JobAddActivity(
 
     val currentBackStackEntry = navController.currentBackStackEntry
     val selectedCustomersItems by currentBackStackEntry?.savedStateHandle
-        ?.getStateFlow<List<String>?>("selectedCustomersIds", emptyList())
+        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList()) }
+
     val selectedAddressItems by currentBackStackEntry?.savedStateHandle
-        ?.getStateFlow<List<String>?>("selectedAddressIds", emptyList())
+        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList()) }
 
     LaunchedEffect(selectedCustomersItems) {
         selectedCustomersItems?.let{ ids ->
             if(ids.isNotEmpty()) {
-                println(ids)
-                //actions.setCustomers(ids)
+                actions.setCustomers(ids.first())
             }
         }
-        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedCustomersIds")
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
     }
 
     LaunchedEffect(selectedAddressItems) {
         selectedAddressItems?.let{ ids ->
             if(ids.isNotEmpty()) {
-                println(ids)
-                //actions.setMaterials(ids)
+                println("DEBUG:  joAdd  ${ids}")
+                actions.setAddress(ids.first().toInt())
             }
         }
-        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedCustomersIds")
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
     }
 
     Scaffold(
@@ -91,8 +103,10 @@ fun JobAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.SingleJobSummary){
-                                popUpTo(NavigationRoute.JobAdd){inclusive = true}
+                            actions.saveJob { id ->
+                                navController.navigate(NavigationRoute.SingleJobSummary(id)) {
+                                    popUpTo(NavigationRoute.JobAdd) { inclusive = true }
+                                }
                             }
                         },
                         colors = IconButtonDefaults.iconButtonColors(
@@ -119,6 +133,7 @@ fun JobAddActivity(
                 GenericCard(
                     leadingContent = {
                         IconButton(
+                            modifier = Modifier.border(1.dp,MaterialTheme.colorScheme.onPrimaryContainer, RoundedCornerShape(20.dp)),
                             onClick = {navController.navigate(NavigationRoute.CustomerAdd(null))}
                         ) {
                             Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_item))
@@ -132,19 +147,30 @@ fun JobAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.SelectCustomer)}
+                    onClick = {
+                        if(!state.customerId.isNullOrEmpty()) {
+                            navController.currentBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("initialIds", listOf(state.customerId))
+                        }
+                        navController.navigate(
+                            NavigationRoute.Select(
+                                selectSearchTextCustomer,
+                                SelectKey.AllCustomers
+                            )
+                        )
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
-                    leadingContent = {Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_item))},
                     text = stringResource(R.string.add) + " " + stringResource(R.string.address).lowercase(),
                     trailingContent = {
                         Icon(
-                            Icons.Filled.ChevronRight,
-                            contentDescription = stringResource(R.string.edit),
-                            modifier = Modifier.size(35.dp)
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = stringResource(R.string.add_item),
+                            modifier = Modifier.size(30.dp)
                         )
                     },
                     onClick = {navController.navigate(NavigationRoute.AddressAdd(null))}
@@ -153,7 +179,12 @@ fun JobAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
-                    leadingContent = {Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))},
+                    leadingContent = {
+                        Icon(
+                            imageVector = Icons.Filled.LocationOn,
+                            contentDescription = stringResource(R.string.address)
+                        )
+                    },
                     text = stringResource(R.string.address) + " " + stringResource(R.string.existing).lowercase(),
                     trailingContent = {
                         Icon(
@@ -162,21 +193,38 @@ fun JobAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.SelectAddress)}
+                    onClick = {
+                        if(state.addressId != 0){
+                            navController.currentBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("initialIds", listOf(state.addressId.toString()))
+                        }
+                        navController.navigate(
+                            NavigationRoute.Select(
+                                selectSearchTextAddress,
+                                SelectKey.AllAddresses
+                            )
+                        )
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{SplitButtonMenu(content = stringResource(R.string.type), items = tipi_menu, heightMenu = (tipi_menu.size *55).dp)}
+            item{SplitButtonMenu(
+                content = stringResource(R.string.type),
+                items = JobType.entries.map{type -> MenuItem(Pair(1,""), type.name, {})},
+                heightMenu = (JobType.entries.size *55).dp
+            )}
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.people_number),
+                    value = state.peopleNumber.toString(),
                     onValueChange = {}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DatePickerFieldToModal(
-                    value = "",
+                    value = state.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "",
                     onValueChange = {}
                 )
             }
@@ -188,6 +236,7 @@ fun JobAddActivity(
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.price),
+                    value = state.price?.toString(),
                     onValueChange = {}
                 )
             }
@@ -195,6 +244,7 @@ fun JobAddActivity(
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.description),
+                    value = state.description,
                     onValueChange = {}
                 )
             }
