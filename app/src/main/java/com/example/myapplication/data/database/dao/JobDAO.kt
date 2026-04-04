@@ -27,7 +27,7 @@ interface JobDAO{
     fun getAllJobs() : Flow<List<Job>>
 
     @Upsert
-    suspend fun upsertJob(job : Job)
+    suspend fun upsertJob(job : Job) : Long
 
     @Delete
     suspend fun deleteJob(job : Job)
@@ -73,8 +73,8 @@ interface JobDAO{
     @Transaction
     @Query(
         "SELECT * " +
-                "FROM INTERVENTI " +
-                "WHERE Data > :date"
+        "FROM INTERVENTI " +
+        "WHERE Data > :date"
     )
     fun getAllToScheduleJobsAssignmentDetails(date : LocalDate) : Flow<List<JobAssignmentDetails>>
 

@@ -41,7 +41,7 @@ class SingleAddressSummaryViewModel(
     val actions = object : SingleAddressSummaryActions {
         override fun populateFromId(addressId: Int) {
             viewModelScope.launch {
-                repository.getAddressById(addressId).collect { addressEntity ->
+                repository.address.getAddressById(addressId).collect { addressEntity ->
                     if(addressEntity != null) {
                         _state.update {
                             it.copy(

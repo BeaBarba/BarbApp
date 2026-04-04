@@ -25,6 +25,13 @@ interface RevenueDAO{
     )
     fun getAllRevenues() : Flow<List<Revenue>>
 
+    @Query(
+        "SELECT * " +
+        "FROM RICAVI " +
+        "WHERE Intervento = :job"
+    )
+    suspend fun getRevenueByJob(job : Int) : List<Revenue>
+
     @Upsert
     suspend fun upsertRevenue(revenue: Revenue)
 

@@ -49,11 +49,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -74,8 +72,8 @@ fun DatePickerModal(
 ) {
     if(!openDialogState.value){ return }
 
-    val TEXT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
-    val CONTAINER_COLOR = MaterialTheme.colorScheme.primaryContainer
+    val textColor = MaterialTheme.colorScheme.onPrimaryContainer
+    val containerColor = MaterialTheme.colorScheme.primaryContainer
 
     DatePickerDialog(
         onDismissRequest = {
@@ -89,7 +87,7 @@ fun DatePickerModal(
                     openDialogState.value = false
                 }
             ) {
-                Text(text = stringResource(R.string.ok), color = TEXT_COLOR)
+                Text(text = stringResource(R.string.ok), color = textColor)
             }
         },
         dismissButton = {
@@ -100,21 +98,21 @@ fun DatePickerModal(
                     onDismiss?.invoke()
                 }
             ) {
-                Text(text = stringResource(R.string.clear), color = TEXT_COLOR)
+                Text(text = stringResource(R.string.clear), color = textColor)
             }
         },
-        colors = DatePickerDefaults.colors(containerColor = CONTAINER_COLOR)
+        colors = DatePickerDefaults.colors(containerColor = containerColor)
     ) {
         DatePicker(
             state = datePickerState,
             colors = DatePickerDefaults.colors(
-                dividerColor = TEXT_COLOR,
-                titleContentColor = TEXT_COLOR,
-                headlineContentColor = TEXT_COLOR,
-                navigationContentColor = TEXT_COLOR,
-                yearContentColor = TEXT_COLOR,
-                dayContentColor = TEXT_COLOR,
-                weekdayContentColor = TEXT_COLOR,
+                dividerColor = textColor,
+                titleContentColor = textColor,
+                headlineContentColor = textColor,
+                navigationContentColor = textColor,
+                yearContentColor = textColor,
+                dayContentColor = textColor,
+                weekdayContentColor = textColor,
                 dateTextFieldColors = outlinedTextFieldColor()
             )
         )
@@ -127,7 +125,7 @@ fun DatePickerFieldToModal(
     onValueChange : (String) -> Unit,
     value : String = ""
 ) {
-    var showModal = remember {mutableStateOf(false)}
+    val showModal = remember {mutableStateOf(false)}
     val datePickerState = rememberDatePickerState()
 
     OutlinedTextField(
@@ -181,7 +179,7 @@ fun CustomRangePickerHeader(
     selectedStartDateMillis: Long?,
     selectedEndDateMillis: Long?
 ) {
-    val TEXT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
+    val textColor = MaterialTheme.colorScheme.onPrimaryContainer
     val startDate = selectedStartDateMillis?.let { convertMillisToDate(it) } ?: stringResource(R.string.start)
     val endDate = selectedEndDateMillis?.let { convertMillisToDate(it) } ?: stringResource(R.string.end)
 
@@ -197,7 +195,7 @@ fun CustomRangePickerHeader(
         ) {
             Text(
                 text = startDate,
-                color = TEXT_COLOR,
+                color = textColor,
                 fontWeight = if (selectedStartDateMillis != null) FontWeight.Bold else FontWeight.Normal
             )
             Spacer(modifier = Modifier.width(4.dp))
@@ -205,7 +203,7 @@ fun CustomRangePickerHeader(
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = endDate,
-                color = TEXT_COLOR,
+                color = textColor,
                 fontWeight = if (selectedEndDateMillis != null) FontWeight.Bold else FontWeight.Normal
             )
         }
@@ -218,10 +216,10 @@ fun DateRangePickerFullScreen(
     onDismiss: () -> Unit
 ) {
     val dateRangePickerState = rememberDateRangePickerState()
-    val TEXT_COLOR = MaterialTheme.colorScheme.onPrimaryContainer
-    val CONTAINER_COLOR = MaterialTheme.colorScheme.primaryContainer
-    var selectedStartDateMillis =  dateRangePickerState.selectedStartDateMillis
-    var selectedEndDateMillis = dateRangePickerState.selectedEndDateMillis
+    val textColor = MaterialTheme.colorScheme.onPrimaryContainer
+    val containerColor = MaterialTheme.colorScheme.primaryContainer
+    val selectedStartDateMillis =  dateRangePickerState.selectedStartDateMillis
+    val selectedEndDateMillis = dateRangePickerState.selectedEndDateMillis
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -269,7 +267,7 @@ fun DateRangePickerFullScreen(
                             ) {
                                 Text(
                                     text = stringResource(R.string.save),
-                                    color = if (isSaveEnabled) TEXT_COLOR else TEXT_COLOR.copy(alpha = 0.5f)
+                                    color = if (isSaveEnabled) textColor else textColor.copy(alpha = 0.5f)
                                 )
                             }
                         }
@@ -281,14 +279,14 @@ fun DateRangePickerFullScreen(
                         )
                     },
                     colors = DatePickerDefaults.colors(
-                        titleContentColor = TEXT_COLOR,
-                        headlineContentColor = TEXT_COLOR,
-                        navigationContentColor = TEXT_COLOR,
-                        dayInSelectionRangeContentColor = TEXT_COLOR,
-                        dayInSelectionRangeContainerColor = CONTAINER_COLOR,
-                        dayContentColor = TEXT_COLOR,
-                        weekdayContentColor = TEXT_COLOR,
-                        subheadContentColor = TEXT_COLOR,
+                        titleContentColor = textColor,
+                        headlineContentColor = textColor,
+                        navigationContentColor = textColor,
+                        dayInSelectionRangeContentColor = textColor,
+                        dayInSelectionRangeContainerColor = containerColor,
+                        dayContentColor = textColor,
+                        weekdayContentColor = textColor,
+                        subheadContentColor = textColor,
                         dateTextFieldColors = outlinedTextFieldColor()
                     )
                 )
@@ -307,9 +305,9 @@ fun CustomDateRangePicker(
 
     val dateRangeText = when {
         selectedStartDate != null && selectedEndDate != null ->
-            "${convertMillisToDate(selectedStartDate!!)} - ${convertMillisToDate(selectedEndDate!!)}"
+            "${convertMillisToDate(selectedStartDate)} - ${convertMillisToDate(selectedEndDate)}"
         selectedStartDate != null ->
-            convertMillisToDate(selectedStartDate!!) + " - "
+            convertMillisToDate(selectedStartDate) + " - "
         else -> ""
     }
 
@@ -389,19 +387,20 @@ fun TimePickerDialog(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTimePicker(
-    title : String = stringResource(R.string.time)
+    title : String = stringResource(R.string.time),
+    onValueChange: (String) -> Unit,
+    value : String = ""
 ){
-    var showDialog by remember { mutableStateOf(false) }
-    var selectedTime by remember { mutableStateOf("") }
+    val showDialog = remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = selectedTime,
-        onValueChange = { showDialog = true },
+        value = value,
+        onValueChange = { showDialog.value = true },
         placeholder = { Text("hh:mm") },
         label = { Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
         leadingIcon = {
             IconButton(
-                onClick = { showDialog = true },
+                onClick = {showDialog.value = true},
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
             ) { Icon(Icons.Outlined.Schedule, contentDescription = stringResource(R.string.select_time)) }
@@ -409,28 +408,30 @@ fun CustomTimePicker(
         trailingIcon = {
             IconButton(
                 onClick = {
-                    showDialog = false
-                    selectedTime = ""
+                    showDialog.value = false
+                    onValueChange("")
                 },
                 shape = RoundedCornerShape(15),
                 modifier = Modifier.size(30.dp),
             ) { Icon(Icons.Outlined.Cancel, contentDescription = stringResource(R.string.clear)) }
         },
+        readOnly = true,
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth(),
         colors = outlinedTextFieldColor()
     )
 
-    if(showDialog){
+    if(showDialog.value){
         TimePickerDialog(
             onConfirm = { timePickerState ->
                 val hour = timePickerState.hour
                 val minute = timePickerState.minute
-                selectedTime = "$hour:$minute"
-                showDialog = false
+                val formatTime = String.format(Locale.getDefault(), "%02d:%02d",hour,minute)
+                showDialog.value = false
+                onValueChange(formatTime)
             },
-            onDismiss = { showDialog = false }
+            onDismiss = { showDialog.value = false }
         )
     }
 }

@@ -94,7 +94,7 @@ class CustomerAddViewModel(
         override fun populateFromEdit(customerId: String) {
             if (!state.value.started) {
                 viewModelScope.launch {
-                    repository.getCustomerFullDetailsById(customerId).collect { customerEntity ->
+                    repository.customer.getCustomerFullDetailsById(customerId).collect { customerEntity ->
                         if (customerEntity != null) {
                             _state.update {
                                 it.copy(
@@ -209,7 +209,7 @@ class CustomerAddViewModel(
             }
 
             viewModelScope.launch {
-                repository.saveCustomerComplete(
+                repository.customer.saveCustomerComplete(
                     address = address,
                     reference = reference,
                     customer = customer,

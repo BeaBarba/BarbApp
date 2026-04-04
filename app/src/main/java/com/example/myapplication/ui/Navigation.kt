@@ -68,10 +68,6 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchas
 import com.example.myapplication.ui.screen.PurchaseInvoice.PurchaseInvoiceAddActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.SinglePurchaseInvoiceSummaryActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
-import com.example.myapplication.ui.screen.Select.SelectAddressActivity
-import com.example.myapplication.ui.screen.Select.SelectAddressViewModel
-import com.example.myapplication.ui.screen.Select.SelectCustomerActivity
-import com.example.myapplication.ui.screen.Select.SelectCustomerViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -283,19 +279,6 @@ fun NavGraph(
             }
             SelectActivity(state, selectVm.actions, navController)
         }
-        composable<NavigationRoute.SelectCustomer> {
-            val selectVm = koinViewModel<SelectCustomerViewModel>()
-            val state by selectVm.state.collectAsStateWithLifecycle()
-            selectVm.actions.populateUI()
-            SelectCustomerActivity(state, selectVm.actions, navController)
-        }
-        composable<NavigationRoute.SelectAddress> {
-            val selectVm = koinViewModel<SelectAddressViewModel>()
-            val state by selectVm.state.collectAsStateWithLifecycle()
-            selectVm.actions.populateUI()
-            SelectAddressActivity(state, selectVm.actions, navController)
-        }
-
         composable<NavigationRoute.SingleAddressSummary> {backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.SingleAddressSummary>()
             val singleAddressVM = koinViewModel<SingleAddressSummaryViewModel>()

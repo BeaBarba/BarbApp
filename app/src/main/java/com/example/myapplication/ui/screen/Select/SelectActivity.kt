@@ -53,7 +53,7 @@ fun SelectActivity(
                             val selectedIds = state.viewList.filter { it.checked }.map{ it.id }
                             navController.previousBackStackEntry
                                 ?.savedStateHandle
-                                ?.set("selectedIds", selectedIds)
+                                ?.set(state.resultKey, selectedIds)
                             navController.popBackStack()
                         },
                         colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)

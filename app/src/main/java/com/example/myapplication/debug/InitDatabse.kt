@@ -151,7 +151,7 @@ object SeedDatabase {
         )
 
         materials.forEach{  material ->
-            repository.upsertMaterial(material)
+            repository.inventory.upsertMaterial(material)
         }
 
     }
@@ -551,7 +551,7 @@ object SeedDatabase {
         )
 
         airConditioners.forEach{ airConditioner ->
-            repository.upsertAirConditioner(airConditioner)
+            repository.inventory.upsertAirConditioner(airConditioner)
         }
     }
 
@@ -608,7 +608,7 @@ object SeedDatabase {
         )
 
         sellers.forEach{ seller ->
-            repository.upsertSeller(seller)
+            repository.inventory.upsertSeller(seller)
         }
     }
 
@@ -671,7 +671,7 @@ object SeedDatabase {
         )
 
         purchaseInvoices.forEach { purchaseInvoice ->
-            repository.upsertPurchaseInvoice(purchaseInvoice)
+            repository.accounting.upsertPurchaseInvoice(purchaseInvoice)
         }
     }
 
@@ -693,7 +693,7 @@ object SeedDatabase {
         )
 
         purchases.forEach { purchase ->
-            repository.upsertPurchase(purchase)
+            repository.inventory.upsertPurchase(purchase)
         }
     }
 
@@ -757,7 +757,7 @@ object SeedDatabase {
         )
 
         bubbles.forEach { bubble ->
-            repository.upsertBubble(bubble)
+            repository.accounting.upsertBubble(bubble)
         }
     }
 
@@ -817,7 +817,7 @@ object SeedDatabase {
         )
 
         deliveries.forEach{ delivery ->
-            repository.upsertDelivery(delivery)
+            repository.inventory.upsertDelivery(delivery)
         }
     }
 
@@ -870,7 +870,7 @@ object SeedDatabase {
         )
 
         categories.forEach { category ->
-            repository.upsertCategoryPurchaseInvoice(category)
+            repository.accounting.upsertCategoryPurchaseInvoice(category)
         }
     }
 
@@ -909,7 +909,7 @@ object SeedDatabase {
         )
 
         payments.forEach { payment ->
-            repository.upsertPayment(payment)
+            repository.accounting.upsertPayment(payment)
         }
     }
 
@@ -972,7 +972,7 @@ object SeedDatabase {
         )
 
         expenses.forEach { singleExpense ->
-            repository.upsertSingleExpense(singleExpense)
+            repository.accounting.upsertSingleExpense(singleExpense)
         }
     }
 
@@ -1032,7 +1032,7 @@ object SeedDatabase {
         )
 
         recurringExpenses.forEach { recurringExpense ->
-            repository.upsertRecurringExpense(recurringExpense)
+            repository.accounting.upsertRecurringExpense(recurringExpense)
         }
     }
 
@@ -1070,7 +1070,7 @@ object SeedDatabase {
         )
 
         recurringPayments.forEach { recurringPayment ->
-            repository.upsertRecurringPayment(recurringPayment)
+            repository.accounting.upsertRecurringPayment(recurringPayment)
         }
     }
 
@@ -1186,7 +1186,7 @@ object SeedDatabase {
         )
 
         addresses.forEach { address ->
-            repository.upsertAddress(address)
+            repository.address.upsertAddress(address)
         }
     }
 
@@ -1211,7 +1211,7 @@ object SeedDatabase {
         )
 
         references.forEach { reference ->
-            repository.upsertReference(reference)
+            repository.customer.upsertReference(reference)
         }
     }
 
@@ -1283,7 +1283,7 @@ object SeedDatabase {
 
         )
         customers.forEach { customer ->
-            repository.upsertCustomer(customer)
+            repository.customer.upsertCustomer(customer)
         }
     }
 
@@ -1321,7 +1321,7 @@ object SeedDatabase {
         )
 
         privates.forEach { private ->
-            repository.upsertPrivate(private)
+            repository.customer.upsertPrivate(private)
         }
     }
 
@@ -1356,7 +1356,7 @@ object SeedDatabase {
         )
 
         companies.forEach { company ->
-            repository.upsertCompany(company)
+            repository.customer.upsertCompany(company)
         }
     }
 
@@ -1398,7 +1398,7 @@ object SeedDatabase {
         )
 
         referrals.forEach { refferal ->
-            repository.upsertReferral(refferal)
+            repository.customer.upsertReferral(refferal)
         }
     }
 
@@ -1427,7 +1427,7 @@ object SeedDatabase {
         )
 
         phoneNumbers.forEach { phoneNumber ->
-            repository.upsertPhoneNumber(phoneNumber)
+            repository.customer.upsertPhoneNumber(phoneNumber)
         }
     }
 
@@ -1488,7 +1488,7 @@ object SeedDatabase {
         )
 
         customerProvisions.forEach { customerProvision ->
-            repository.upsertCustomerProvision(customerProvision)
+            repository.inventory.upsertCustomerProvision(customerProvision)
         }
     }
 
@@ -1548,7 +1548,7 @@ object SeedDatabase {
 
         propertyOwnerships.fastForEach { property ->
             println("Inserimento ownership: Cliente ${property.customer} su Indirizzo ${property.address}")
-            repository.upsertPropertyOwnership(property)
+            repository.address.upsertPropertyOwnership(property)
         }
     }
 
@@ -1611,7 +1611,7 @@ object SeedDatabase {
         )
 
         workSites.forEach { worksite ->
-            repository.upsertWorkSite(worksite)
+            repository.job.upsertWorkSite(worksite)
         }
     }
 
@@ -1680,7 +1680,7 @@ object SeedDatabase {
         )
 
         jobs.forEach { job ->
-            repository.upsertJob(job)
+            repository.job.upsertJob(job)
         }
     }
 
@@ -1707,7 +1707,7 @@ object SeedDatabase {
         )
 
         images.forEach { image ->
-            repository.upsertImage(image)
+            repository.job.upsertImage(image)
         }
     }
 
@@ -1734,7 +1734,7 @@ object SeedDatabase {
         )
 
         futureJobMaterials.forEach { futureJobMaterial ->
-            repository.upsertFutureJobMaterial(futureJobMaterial)
+            repository.job.upsertFutureJobMaterial(futureJobMaterial)
         }
     }
 
@@ -1765,7 +1765,7 @@ object SeedDatabase {
         )
 
         materialUsages.forEach { materialUsage ->
-            repository.upsertMaterialUsage(materialUsage)
+            repository.job.upsertMaterialUsage(materialUsage)
         }
     }
 
@@ -1789,7 +1789,7 @@ object SeedDatabase {
         )
 
         revenues.forEach { revenue ->
-            repository.upsertRevenue(revenue)
+            repository.accounting.upsertRevenue(revenue)
         }
     }
 }

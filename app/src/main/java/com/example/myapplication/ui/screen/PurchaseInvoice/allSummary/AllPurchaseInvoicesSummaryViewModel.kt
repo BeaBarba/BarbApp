@@ -41,7 +41,7 @@ class AllPurchaseInvoicesSummaryViewModel(
 
     private fun populateUI(){
         viewModelScope.launch {
-            repository.getAllPurchaseInvoicesFullDetails().collect{ purchaseInvoicesList ->
+            repository.accounting.getAllPurchaseInvoicesFullDetails().collect{ purchaseInvoicesList ->
                 _state.update { currentState ->
                     val filterList =
                         if(currentState.searchString.isEmpty()) purchaseInvoicesList

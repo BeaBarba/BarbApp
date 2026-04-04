@@ -22,6 +22,13 @@ interface FutureJobMaterialDAO{
     )
     fun getAllFutureJobMaterials() : Flow<List<FutureJobMaterial>>
 
+    @Query(
+        "SELECT * " +
+        "FROM PRENOTAZIONI " +
+        "WHERE Intervento = :job"
+    )
+    fun getAllFutureMaterialsByJob(job : Int) : List<FutureJobMaterial>
+
     @Upsert
     suspend fun upsertFutureJobMaterial(futureJobMaterial: FutureJobMaterial)
 

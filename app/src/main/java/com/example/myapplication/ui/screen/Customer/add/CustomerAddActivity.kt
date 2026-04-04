@@ -69,7 +69,7 @@ fun CustomerAddActivity(
     val currentBackStackEntry = navController.currentBackStackEntry
 
     val selectedItems by currentBackStackEntry?.savedStateHandle
-        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
+        ?.getStateFlow<List<String>?>("customers", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
 
     LaunchedEffect(selectedItems) {

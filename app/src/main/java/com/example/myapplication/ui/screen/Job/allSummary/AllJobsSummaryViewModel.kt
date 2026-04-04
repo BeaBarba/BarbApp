@@ -48,7 +48,7 @@ class AllJobsSummaryViewModel(
         override fun populateJobs() {
             if (!state.value.started) {
                 viewModelScope.launch {
-                    repository.getAllJobsAssignmentDetails().collect{ jobsList ->
+                    repository.job.getAllJobsAssignmentDetails().collect{ jobsList ->
                         _state.update { currentState ->
                             val filterList =
                                 if(currentState.searchString.isEmpty()) jobsList

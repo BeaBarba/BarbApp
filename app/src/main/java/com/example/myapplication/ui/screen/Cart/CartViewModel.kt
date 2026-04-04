@@ -45,7 +45,7 @@ class CartViewModel(
                     if(checked) materialToUpdate.availableQuantity + quantity
                     else (materialToUpdate.availableQuantity - quantity).coerceAtLeast(0f)
                 viewModelScope.launch {
-                    repository.upsertMaterial(materialToUpdate.copy(availableQuantity = adjustment))
+                    repository.inventory.upsertMaterial(materialToUpdate.copy(availableQuantity = adjustment))
                 }
             }
         }

@@ -169,14 +169,14 @@ class AddressAddViewModel(
                 units = stateNow.units
             )
             viewModelScope.launch {
-                repository.upsertAddress(newAddress)
+                repository.address.upsertAddress(newAddress)
             }
             println("Pressed Save Button, data to save: " + state.value)
         }
 
         override fun populateFromEdit(addressId: Int) {
             viewModelScope.launch {
-                repository.getAddressById(addressId).collect{ addressEntity ->
+                repository.address.getAddressById(addressId).collect{ addressEntity ->
                     if(addressEntity != null) {
                         _state.update {
                             it.copy(

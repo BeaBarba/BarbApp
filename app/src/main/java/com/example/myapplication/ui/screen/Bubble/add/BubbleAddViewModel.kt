@@ -80,7 +80,7 @@ class BubbleAddViewModel(
 
         override fun populateSellers() {
             viewModelScope.launch(Dispatchers.IO) {
-                val sellersList = repository.sellers.first()
+                val sellersList = repository.inventory.sellers.first()
                 val completeSellerList = sellersList + Seller(-1, "New")
 
                 _state.update { it.copy(sellers = completeSellerList) }
@@ -93,7 +93,7 @@ class BubbleAddViewModel(
 
         override fun populateFromEdit(bubbleId: Int) {
             viewModelScope.launch {
-                repository.getBubbleFullDetailsById(bubbleId).collect { fullDetails ->
+                repository.accounting.getBubbleFullDetailsById(bubbleId).collect { fullDetails ->
                     fullDetails.let { data ->
                         if(data != null) {
                             _state.update {
@@ -118,7 +118,7 @@ class BubbleAddViewModel(
             if (bubbleId == 0) return
 
             viewModelScope.launch(Dispatchers.IO) {
-                val bubble = repository.getBubbleFullDetailsById(bubbleId).firstOrNull()
+                val bubble = repository.accounting.getBubbleFullDetailsById(bubbleId).firstOrNull()
                 val existingMaterialsDelivery = bubble?.deliveriesWithMaterials ?: emptyList()
                 val materialsList = existingMaterialsDelivery.map { item ->
                     MaterialBubble(
@@ -140,7 +140,7 @@ class BubbleAddViewModel(
                     if (_state.value.newSeller != null) {
                         val seller = _state.value.newSeller
                         val sellerInserted = Seller(
-                            id = repository.upsertSeller(seller!!).toInt(),
+                            id = repository.inventory.upsertSeller(seller!!).toInt(),
                             name = _state.value.newSeller!!.name
                         )
                         _state.update {
@@ -160,7 +160,7 @@ class BubbleAddViewModel(
                             seller = idSeller,
                             purchaseInvoice = _state.value.purchaseInvoice
                         )
-                        repository.upsertBubble(updateBubble)
+                        repository.accounting.upsertBubble(updateBubble)
                         updateBubble.id
                     }else{
                         val newBubble = Bubble(
@@ -170,7 +170,7 @@ class BubbleAddViewModel(
                             seller = idSeller,
                             purchaseInvoice = null
                         )
-                        repository.upsertBubble(newBubble).toInt()
+                        repository.accounting.upsertBubble(newBubble).toInt()
                     }
                 if(_state.value.materialsSelected.isNotEmpty()) {
                     _state.value.materialsSelected.forEach {
@@ -181,7 +181,7 @@ class BubbleAddViewModel(
                             unitPrice = it.unitPrice,
                             vatNumber = it.vatNumber
                         )
-                        repository.upsertDelivery(delivery)
+                        repository.inventory.upsertDelivery(delivery)
                     }
                 }
                 onSuccess(idBubble)
@@ -215,7 +215,7 @@ class BubbleAddViewModel(
 
             viewModelScope.launch(Dispatchers.IO) {
                 val newMaterials = newIdsToFetch.mapNotNull { id ->
-                    repository.getMaterialById(id).firstOrNull()?.let { material ->
+                    repository.inventory.getMaterialById(id).firstOrNull()?.let { material ->
                         MaterialBubble(
                             material = material,
                             quantity = 0.0f,
@@ -300,7 +300,7 @@ class BubbleAddViewModel(
 
         override fun delete() {
             viewModelScope.launch {
-                repository.deleteBubble(
+                repository.accounting.deleteBubble(
                     Bubble(
                         id = state.value.bubbleId,
                         number = state.value.bubbleNumber,

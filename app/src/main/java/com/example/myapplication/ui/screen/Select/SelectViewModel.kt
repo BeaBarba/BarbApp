@@ -33,7 +33,8 @@ data class SelectState(
     val itemsList : List<CardItem> = emptyList(),
     val viewList : List<CardItem> = emptyList(),
     val idsList : List<String> = emptyList(),
-    val selectKey : SelectKey = SelectKey.AllMaterials
+    val selectKey : SelectKey = SelectKey.AllMaterials,
+    val resultKey : String = "selectedIds"
 )
 
 interface SelectActions{
@@ -57,7 +58,7 @@ class SelectViewModel(
             when(select){
                 SelectKey.AllMaterials -> {
                     viewModelScope.launch(Dispatchers.IO) {
-                        repository.materials.collect{
+                        repository.inventory.materials.collect{
                             val materialCardList = it.map { material ->
                                     CardItem(
                                         id = material.id.toString(),
@@ -120,7 +121,7 @@ class SelectViewModel(
 
                 SelectKey.AllAddresses -> {
                     viewModelScope.launch(Dispatchers.IO) {
-                        val addressesCardList = repository.addresses.first()
+                        val addressesCardList = repository.address.addresses.first()
                             .map { address ->
                                 CardItem(
                                     id = address.id.toString(),
@@ -146,7 +147,7 @@ class SelectViewModel(
 
                 SelectKey.AllCustomers -> {
                     viewModelScope.launch(Dispatchers.IO) {
-                        val customersCardList = repository.customers.first()
+                        val customersCardList = repository.customer.customers.first()
                             .map { customer ->
                                 CardItem(
                                     id = customer.customer.cf,
@@ -169,7 +170,8 @@ class SelectViewModel(
                                 searchText = searchText,
                                 itemsList = customersCardList,
                                 viewList = customersCardList,
-                                selectKey = SelectKey.AllCustomers
+                                selectKey = SelectKey.AllCustomers,
+                                resultKey = "customers"
                             )
                         }
                     }

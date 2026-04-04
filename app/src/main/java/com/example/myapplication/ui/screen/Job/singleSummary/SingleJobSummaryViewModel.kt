@@ -36,7 +36,7 @@ class SingleJobSummaryViewModel(
             if(state.value.started) return
 
             viewModelScope.launch {
-                repository.getJobFullDetails(jobId).collect{ data ->
+                repository.job.getJobFullDetails(jobId).collect{ data ->
                     val materials = data?.materialsFuture?.map { it.material }?.plus(
                         data.materialUsage.map { it.material } )
 

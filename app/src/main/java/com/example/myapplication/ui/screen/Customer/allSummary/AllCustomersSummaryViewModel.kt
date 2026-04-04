@@ -44,7 +44,7 @@ class AllCustomersSummaryViewModel(
 
     private fun populateCustomers() {
         viewModelScope.launch {
-            repository.getAllCustomersFullDetails().collect { customerList ->
+            repository.customer.getAllCustomersFullDetails().collect { customerList ->
                 _state.update { currentState ->
                     val filterList =
                         if(currentState.searchString.isEmpty()) customerList

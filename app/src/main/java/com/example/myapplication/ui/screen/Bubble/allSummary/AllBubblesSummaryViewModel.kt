@@ -17,7 +17,6 @@ data class AllBubblesSummaryState(
 )
 
 interface AllBubblesSummaryActions {
-    fun populateBubbles()
     fun dateSort()
     fun sellerSort()
     fun ascendingSort()
@@ -37,27 +36,12 @@ class AllBubblesSummaryViewModel(
 
     private fun populateBubbles() {
         viewModelScope.launch {
-            repository.getAllBubblesFullDetails().collect { updatedItems ->
+            repository.accounting.getAllBubblesFullDetails().collect { updatedItems ->
                 _state.update { it.copy(bubbles = updatedItems) }
             }
         }
     }
     val actions = object : AllBubblesSummaryActions {
-
-        override fun populateBubbles() {
-            /*viewModelScope.launch{
-                val bubbles = repository.getAllBubblesFullDetails()
-                if (!state.value.started) {
-                    _state.update {
-                        it.copy(
-                            bubbles = bubbles,
-                            started = true
-                        )
-                    }
-                }
-            }
-            dateSort()*/
-        }
 
         override fun dateSort() {
             _state.update {

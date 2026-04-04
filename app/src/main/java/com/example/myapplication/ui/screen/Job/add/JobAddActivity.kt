@@ -35,9 +35,6 @@ import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.modules.SelectKey
-import com.example.myapplication.debug.interventi
-import com.example.myapplication.debug.tipiInterventi
-import com.example.myapplication.debug.tipi_menu
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.CustomTimePicker
@@ -48,6 +45,7 @@ import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -58,7 +56,7 @@ fun JobAddActivity(
     navController : NavHostController
 ){
     LaunchedEffect(jobId) {
-        jobId?.let {actions.populateFromEdit(jobId)}
+        jobId?.let(actions::populateFromEdit)
     }
 
     val previousBackStackEntry = navController.previousBackStackEntry
@@ -68,7 +66,7 @@ fun JobAddActivity(
 
     val currentBackStackEntry = navController.currentBackStackEntry
     val selectedCustomersItems by currentBackStackEntry?.savedStateHandle
-        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
+        ?.getStateFlow<List<String>?>("customers", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList()) }
 
     val selectedAddressItems by currentBackStackEntry?.savedStateHandle
@@ -81,13 +79,12 @@ fun JobAddActivity(
                 actions.setCustomers(ids.first())
             }
         }
-        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("customers")
     }
 
     LaunchedEffect(selectedAddressItems) {
         selectedAddressItems?.let{ ids ->
             if(ids.isNotEmpty()) {
-                println("DEBUG:  joAdd  ${ids}")
                 actions.setAddress(ids.first().toInt())
             }
         }
@@ -103,9 +100,9 @@ fun JobAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            actions.saveJob { id ->
-                                navController.navigate(NavigationRoute.SingleJobSummary(id)) {
-                                    popUpTo(NavigationRoute.JobAdd) { inclusive = true }
+                            actions.saveJob {
+                                navController.navigate(NavigationRoute.SingleJobSummary(it)) {
+                                    popUpTo(NavigationRoute.AllJobsSummary) { inclusive = false }
                                 }
                             }
                         },
@@ -170,7 +167,7 @@ fun JobAddActivity(
                         Icon(
                             imageVector = Icons.Filled.Add,
                             contentDescription = stringResource(R.string.add_item),
-                            modifier = Modifier.size(30.dp)
+                            modifier = Modifier.size(25.dp)
                         )
                     },
                     onClick = {navController.navigate(NavigationRoute.AddressAdd(null))}
@@ -210,34 +207,55 @@ fun JobAddActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             item{SplitButtonMenu(
-                content = stringResource(R.string.type),
-                items = JobType.entries.map{type -> MenuItem(Pair(1,""), type.name, {})},
-                heightMenu = (JobType.entries.size *55).dp
+                content =
+                    if(state.type == JobType.NONE){ stringResource(R.string.type)}
+                    else {state.type.toString()},
+                items = JobType.entries.map{type -> MenuItem(Pair(1,""), type.name){actions.setJobType(type)}},
+                heightMenu = (JobType.entries.size * 55).dp
             )}
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.people_number),
-                    value = state.peopleNumber.toString(),
-                    onValueChange = {}
+                    value = state.peopleNumber?.toString() ?: "",
+                    onValueChange = {number ->
+                        actions.setPeopleNumber(number)
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DatePickerFieldToModal(
-                    value = state.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "",
-                    onValueChange = {}
+                    value = state.date?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "",
+                    onValueChange = {date ->
+                        actions.setJobDate(
+                            if(date.isBlank()) LocalDate.now()
+                            else LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        )
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomTimePicker(stringResource(R.string.start_time))}
+            item{
+                CustomTimePicker(
+                    title = stringResource(R.string.start_time),
+                    onValueChange = actions::setStartTime,
+                    value = state.startTime?.format(DateTimeFormatter.ofPattern("hh:mm")) ?: ""
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
-            item{CustomTimePicker(stringResource(R.string.end_time))}
+            item{
+                CustomTimePicker(
+                    title = stringResource(R.string.end_time),
+                    onValueChange = actions::setEndTime,
+                    value = state.endTime?.format(DateTimeFormatter.ofPattern("hh:mm")) ?: ""
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.price),
-                    value = state.price?.toString(),
-                    onValueChange = {}
+                    value = state.price?.toString() ?: "",
+                    onValueChange = actions::setPrice
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -245,7 +263,7 @@ fun JobAddActivity(
                 CustomOutlineTextField(
                     label = stringResource(R.string.description),
                     value = state.description,
-                    onValueChange = {}
+                    onValueChange = actions::setDescription
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -278,9 +296,9 @@ fun JobAddActivity(
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.AllJobsSummary>() == false) {
                 item {
                     DeleteButton {
-                        interventi = interventi.subList(1, interventi.size)
-                        navController.navigate(NavigationRoute.AllJobsSummary){
-                            popUpTo(NavigationRoute.AllJobsSummary){inclusive = true}
+                        actions.deleteJob()
+                        navController.navigate(NavigationRoute.AllJobsSummary) {
+                            popUpTo(NavigationRoute.AllJobsSummary) { inclusive = true }
                             launchSingleTop = true
                         }
                     }
