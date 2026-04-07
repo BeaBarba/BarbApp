@@ -63,7 +63,7 @@ import com.example.myapplication.data.database.dao.WorkSiteDAO
         Revenue::class
     ],
     views = [CartView::class],
-    version = 14
+    version = 15
 )
 @TypeConverters(
     DateConverters::class,
@@ -98,7 +98,7 @@ abstract class AppDatabase : RoomDatabase(){
     abstract fun addressDAO() : AddressDAO
     abstract fun workSiteDAO() : WorkSiteDAO
     abstract fun jobDAO() : JobDAO
-    abstract fun jobMaterialDAO() : FutureJobMaterialDAO
+    abstract fun futureJobMaterialDAO() : FutureJobMaterialDAO
     abstract fun materialUsageDAO() : MaterialUsageDAO
     abstract fun revenuesDAO() : RevenueDAO
     abstract fun cartDAO() : CartDAO

@@ -2,6 +2,8 @@ package com.example.myapplication.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.myapplication.data.database.FutureJobMaterial
@@ -9,6 +11,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FutureJobMaterialDAO{
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFutureMaterials(list: List<FutureJobMaterial>)
 
     @Query("SELECT * " +
             "FROM PRENOTAZIONI " +
@@ -34,4 +39,9 @@ interface FutureJobMaterialDAO{
 
     @Delete
     suspend fun deleteFutureJobMaterial(futureJobMaterial: FutureJobMaterial)
+
+    @Query(
+        "DELETE FROM PRENOTAZIONI WHERE Intervento = :job"
+    )
+    suspend fun deleteFutureJobMaterialByJob(job : Int)
 }

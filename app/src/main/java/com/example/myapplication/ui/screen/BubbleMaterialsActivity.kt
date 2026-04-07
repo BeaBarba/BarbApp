@@ -42,7 +42,7 @@ fun BubbleMaterialsActivity(
                 id = stringResource(R.string.material) + " - " + stringResource(R.string.bubble),
                 trailingIcon = {
                     IconButton(
-                        onClick = {navController.navigate(NavigationRoute.BubbleAdd)},
+                        onClick = {navController.navigate(NavigationRoute.BubbleAdd(null))},
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )

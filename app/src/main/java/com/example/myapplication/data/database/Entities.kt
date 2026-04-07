@@ -569,7 +569,7 @@ data class Image(
             entity = Job::class,
             parentColumns = ["id"],
             childColumns = ["Intervento"],
-            onDelete = ForeignKey.SET_NULL
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )

@@ -191,25 +191,28 @@ fun SingleJobSummaryActivity(
                 item{TitleLabel(stringResource(R.string.materials))}
                 item{Spacer(Modifier.size(8.dp))}
                 items(state.materials) { item ->
+                    val material = item.first
+                    val quantity = item.second
+
                     GenericCard(
-                        type = item.type.toString(),
+                        type = material.type.toString(),
                         leadingContent = {
                             Avatar(
-                                char = item.type.toString()[0],
-                                type = item.type.toString()
+                                char = material.type.toString()[0],
+                                type = material.type.toString()
                             )
                         },
-                        text = item.category,
-                        textDescription = "${item.model} - ${item.brand}",
+                        text = material.category,
+                        textDescription = "${material.model} - ${material.brand}",
                         trailingContent = {
                             Text(
-                                text = "${item.availableQuantity} ${item.unitMeasurement}"
+                                text = "$quantity ${material.unitMeasurement}"
                             )
                         },
                         onClick = {
                             navController.navigate(
                                 NavigationRoute.SingleMaterialSummary(
-                                    item.id
+                                    material.id
                                 )
                             )
                         }

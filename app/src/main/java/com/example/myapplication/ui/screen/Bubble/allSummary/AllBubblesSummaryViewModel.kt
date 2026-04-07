@@ -46,7 +46,7 @@ class AllBubblesSummaryViewModel(
         override fun dateSort() {
             _state.update {
                 it.copy(
-                    bubbles = state.value.bubbles.sortedBy { value -> value?.bubble?.date },
+                    bubbles = state.value.bubbles.sortedBy { value -> value.bubble.date },
                     filterKey = FilterKey.ASC_DATE
                 )
             }
@@ -55,7 +55,7 @@ class AllBubblesSummaryViewModel(
         override fun sellerSort() {
             _state.update {
                 it.copy(
-                    bubbles = state.value.bubbles.sortedBy { value -> value?.seller?.name },
+                    bubbles = state.value.bubbles.sortedBy { value -> value.seller.name },
                     filterKey = FilterKey.ASC_SELLER
                 )
             }

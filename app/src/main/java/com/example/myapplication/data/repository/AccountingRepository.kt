@@ -12,7 +12,9 @@ import com.example.myapplication.data.database.RecurringPayment
 import com.example.myapplication.data.database.Revenue
 import com.example.myapplication.data.database.RevenueFullDetails
 import com.example.myapplication.data.database.SingleExpense
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 class AccountingRepository (private val db : AppDatabase) {
 
@@ -111,7 +113,9 @@ class AccountingRepository (private val db : AppDatabase) {
 
     fun getRevenueById(id: Int): Flow<Revenue?> = db.revenuesDAO().getRevenue(id)
 
-    suspend fun getRevenueByJobId(jobId : Int) : List<Revenue> = db.revenuesDAO().getRevenueByJob(jobId)
+    suspend fun getRevenueByJobId(jobId : Int) : List<Revenue> = withContext(Dispatchers.IO){
+        db.revenuesDAO().getRevenueByJob(jobId)
+    }
 
     suspend fun upsertRevenue(revenue: Revenue) = db.revenuesDAO().upsertRevenue(revenue)
 

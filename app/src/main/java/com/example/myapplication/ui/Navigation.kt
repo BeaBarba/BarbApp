@@ -3,6 +3,7 @@ package com.example.myapplication.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -25,7 +26,7 @@ import com.example.myapplication.ui.screen.Calendar.day.DayCalendarActivity
 import com.example.myapplication.ui.screen.Deadline.DeadlineAddActivity
 import com.example.myapplication.ui.screen.Home.HomeActivity
 import com.example.myapplication.ui.screen.Job.add.JobAddActivity
-import com.example.myapplication.ui.screen.Job.JobMaterialsActivity
+import com.example.myapplication.ui.screen.Job.add.JobMaterialsActivity
 import com.example.myapplication.ui.screen.Statistics.JobStatisticsActivity
 import com.example.myapplication.ui.screen.Material.MaterialAddActivity
 import com.example.myapplication.ui.screen.Payment.PaymentAddActivity
@@ -251,12 +252,17 @@ fun NavGraph(
         }
         composable<NavigationRoute.JobAdd>{ backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.JobAdd>()
-            val singleJobVM = koinViewModel<JobAddViewModel>()
-            val state by singleJobVM.state.collectAsStateWithLifecycle()
-            JobAddActivity(route.jobId, state, singleJobVM.action, navController)
+            val jobAddVM = koinViewModel<JobAddViewModel>()
+            val state by jobAddVM.state.collectAsStateWithLifecycle()
+            JobAddActivity(route.jobId, state, jobAddVM.actions, navController)
         }
-        composable<NavigationRoute.JobMaterials>{
-            JobMaterialsActivity(navController)
+        composable<NavigationRoute.JobMaterials>{backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry<NavigationRoute.JobAdd>()
+            }
+            val jobAddVM = koinViewModel<JobAddViewModel>(viewModelStoreOwner = parentEntry)
+            val state by jobAddVM.state.collectAsStateWithLifecycle()
+            JobMaterialsActivity(state, jobAddVM.actions, navController)
         }
         composable<NavigationRoute.JobStatistics>{
             JobStatisticsActivity(navController)

@@ -12,10 +12,9 @@ import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
 data class SingleJobSummaryState(
-    val started : Boolean = false,
     val job : JobFullDetails? = null,
     val price : Float = 0.0f,
-    val materials : List<Material> = emptyList()
+    val materials : List<Pair<Material,Float>> = emptyList()
 )
 
 interface SingleJobSummaryActions{
@@ -33,21 +32,23 @@ class SingleJobSummaryViewModel(
     val actions = object : SingleJobSummaryActions{
 
         override fun populateJobData(jobId: Int) {
-            if(state.value.started) return
-
             viewModelScope.launch {
                 repository.job.getJobFullDetails(jobId).collect{ data ->
-                    val materials = data?.materialsFuture?.map { it.material }?.plus(
-                        data.materialUsage.map { it.material } )
+
+                    val combinedMaterials =
+                        (data?.materialsFuture?.map { it.material to it.futureJobMaterial.quantity} ?: emptyList()) +
+                        (data?.materialUsage?.map { it.material to it.materialUsage.quantity }  ?: emptyList())
+
+                    val finalMaterials = combinedMaterials.groupBy {it.first.id}
+                        .map { (_, pairs) -> pairs.first().first to pairs.sumOf { it.second.toBigDecimal() }.toFloat() }
 
                     _state.update {
                         it.copy(
-                            started = true,
                             job = data,
                             price = data?.revenue?.fold(BigDecimal.ZERO) { acc, item ->
                                 acc.add(item?.amount?.toBigDecimal() ?: BigDecimal.ZERO)
                             }?.toFloat() ?: BigDecimal.ZERO.toFloat(),
-                            materials = materials ?: emptyList()
+                            materials = finalMaterials
                         )
                     }
                 }

@@ -56,7 +56,7 @@ fun JobAddActivity(
     navController : NavHostController
 ){
     LaunchedEffect(jobId) {
-        jobId?.let(actions::populateFromEdit)
+        actions.populateView(jobId)
     }
 
     val previousBackStackEntry = navController.previousBackStackEntry

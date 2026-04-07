@@ -70,7 +70,7 @@ val appModule = module{
     single{get<AppDatabase>().addressDAO()}
     single{get<AppDatabase>().workSiteDAO()}
     single{get<AppDatabase>().jobDAO()}
-    single{get<AppDatabase>().jobMaterialDAO()}
+    single{get<AppDatabase>().futureJobMaterialDAO()}
     single{get<AppDatabase>().materialUsageDAO()}
     single{get<AppDatabase>().revenuesDAO()}
 

@@ -11,7 +11,10 @@ import com.example.myapplication.data.database.JobMaterialFullDetails
 import com.example.myapplication.data.database.MaterialUsage
 import com.example.myapplication.data.database.WorkSite
 import com.example.myapplication.data.database.WorkSiteFullDetails
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class JobRepository(
@@ -40,8 +43,9 @@ class JobRepository(
     fun getWorkSiteFullDetailsById(id: Int): Flow<WorkSiteFullDetails?> =
         db.workSiteDAO().getWorkSiteFullDetails(id)
 
-    suspend fun getAllWorkSiteFullDetails(): List<WorkSiteFullDetails> =
+    suspend fun getAllWorkSiteFullDetails(): List<WorkSiteFullDetails> = withContext(Dispatchers.IO) {
         db.workSiteDAO().getAllWorkSitesFullDetails()
+    }
 
 
     /* Job */
@@ -60,8 +64,50 @@ class JobRepository(
             }
 
             db.jobDAO().deleteJob(job)
-            println("DEBUG: repository - job eliminato")
         }
+
+    suspend fun getJobMaterialFullDetailsById(id : Int) : JobMaterialFullDetails? = withContext(Dispatchers.IO){
+        db.jobDAO().getJobMaterialFullDetails(id).first()
+    }
+
+    suspend fun saveJobComplete(
+        job : Job,
+        materials : List<Pair<Int, Float>>
+    ) : Int =
+        db.withTransaction {
+            val newJobId = db.jobDAO().upsertJob(job).toInt()
+            val jobId = if(newJobId > 0) newJobId else job.id
+
+            val isFuture = job.date.isAfter(LocalDate.now())
+
+            deleteFutureJobMaterialByJobId(jobId)
+            deleteMaterialUsageByJobId(jobId)
+
+            if(isFuture){
+                val futureItems = materials.map{ (matId, quantity) ->
+                    FutureJobMaterial(
+                        material = matId,
+                        job = jobId,
+                        quantity = quantity
+                    )
+                }
+
+                insertFutureMaterialsList(futureItems)
+
+            }else{
+                val usageItems = materials.map { (matId, quantity) ->
+                    MaterialUsage(
+                        material = matId,
+                        job = jobId,
+                        quantity = quantity
+                    )
+                }
+
+                insertMaterialUsageList(usageItems)
+            }
+            jobId
+        }
+
 
     fun getJobDoneSummaryById(id: Int): Flow<JobMaterialFullDetails?> =
         db.jobDAO().getJobMaterialFullDetails(id)
@@ -83,18 +129,25 @@ class JobRepository(
         db.jobDAO().getAllTodayJobsFullDetails(date)
 
     /* FutureJobMaterial */
-    val futureJobMaterials = db.jobMaterialDAO().getAllFutureJobMaterials()
+    val futureJobMaterials = db.futureJobMaterialDAO().getAllFutureJobMaterials()
 
     fun getFutureJobMaterialById(material: Int, job: Int): Flow<FutureJobMaterial?> =
-        db.jobMaterialDAO().getFutureJobMaterial(material, job)
+        db.futureJobMaterialDAO().getFutureJobMaterial(material, job)
 
-    private fun getAllFutureMaterialsByJobId(job : Int) : List<FutureJobMaterial> = db.jobMaterialDAO().getAllFutureMaterialsByJob(job)
+    private suspend fun getAllFutureMaterialsByJobId(job : Int) : List<FutureJobMaterial> =
+        db.futureJobMaterialDAO().getAllFutureMaterialsByJob(job)
+
+    private suspend fun insertFutureMaterialsList (materials : List<FutureJobMaterial>) =
+        db.futureJobMaterialDAO().insertFutureMaterials(materials)
 
     suspend fun upsertFutureJobMaterial(futureJobMaterial: FutureJobMaterial) =
-        db.jobMaterialDAO().upsertFutureJobMaterial(futureJobMaterial)
+        db.futureJobMaterialDAO().upsertFutureJobMaterial(futureJobMaterial)
 
     suspend fun deleteFutureJobMaterial(futureJobMaterial: FutureJobMaterial) =
-        db.jobMaterialDAO().deleteFutureJobMaterial(futureJobMaterial)
+        db.futureJobMaterialDAO().deleteFutureJobMaterial(futureJobMaterial)
+
+    private suspend fun deleteFutureJobMaterialByJobId(jobId : Int) =
+        db.futureJobMaterialDAO().deleteFutureJobMaterialByJob(jobId)/**/
 
     /* MaterialUsage */
     val materialsUsage = db.materialUsageDAO().getAllMaterialsUsage()
@@ -102,9 +155,15 @@ class JobRepository(
     fun getMaterialUsageById(material: Int, job: Int): Flow<MaterialUsage?> =
         db.materialUsageDAO().getMaterialUsage(material, job)
 
+    private suspend fun insertMaterialUsageList (materials : List<MaterialUsage>) =
+        db.materialUsageDAO().insertMaterialUsage(materials)
+
     suspend fun upsertMaterialUsage(materialUsage: MaterialUsage) =
         db.materialUsageDAO().upsertMaterialUsage(materialUsage)
 
     suspend fun deleteMaterialUsage(materialUsage: MaterialUsage) =
         db.materialUsageDAO().deleteMaterialUsage(materialUsage)
+
+    private suspend fun deleteMaterialUsageByJobId(jobId : Int) =
+        db.materialUsageDAO().deleteMaterialUsageByJob(jobId)
 }

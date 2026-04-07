@@ -10,7 +10,9 @@ import com.example.myapplication.data.database.PhoneNumber
 import com.example.myapplication.data.database.Private
 import com.example.myapplication.data.database.Reference
 import com.example.myapplication.data.database.Referral
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 class CustomerRepository (private val db : AppDatabase) {
 
@@ -35,7 +37,7 @@ class CustomerRepository (private val db : AppDatabase) {
         privateCustomer: Private?,
         company: Company?,
         referral: Referral?
-    ){
+    ) = withContext(Dispatchers.IO){
         db.withTransaction {
             val addressUpsertResult = db.addressDAO().upsertAddress(address).toInt()
             val addressId = if(addressUpsertResult == -1) address.id else addressUpsertResult

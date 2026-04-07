@@ -10,8 +10,10 @@ import com.example.myapplication.data.database.MaterialFullDetails
 import com.example.myapplication.data.database.MaterialWithAirConditional
 import com.example.myapplication.data.database.Purchase
 import com.example.myapplication.data.database.Seller
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 
 class InventoryRepository(private val db : AppDatabase){
 
@@ -50,11 +52,13 @@ class InventoryRepository(private val db : AppDatabase){
 
     suspend fun deleteMaterial(material: Material) = db.materialDAO().deleteMaterial(material)
 
-    suspend fun getAllMaterialsWithAirConditional(): List<MaterialWithAirConditional> =
+    suspend fun getAllMaterialsWithAirConditional(): List<MaterialWithAirConditional> = withContext(Dispatchers.IO) {
         db.materialDAO().getAllMaterialsWithAirConditionalDetails()
+    }
 
-    suspend fun getAllMaterialsFullDetails(): List<MaterialFullDetails> =
+    suspend fun getAllMaterialsFullDetails(): List<MaterialFullDetails> = withContext(Dispatchers.IO) {
         db.materialDAO().getAllMaterialsFullDetails()
+    }
 
     /* Seller */
     val sellers = db.sellerDAO().getAllSeller()
