@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Upsert
 import com.example.myapplication.data.database.Payment
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 @Dao
 interface PaymentDAO{
@@ -20,6 +21,13 @@ interface PaymentDAO{
             "FROM PAGAMENTI"
     )
     fun getAllPayments() : Flow<List<Payment>>
+
+    @Query(
+        "UPDATE PAGAMENTI " +
+        "SET DataPagamento = :date " +
+        "WHERE id = :id"
+    )
+    suspend fun updatePaymentDate(id : Int, date : LocalDate?)
 
     @Upsert
     suspend fun upsertPayment(payment : Payment)

@@ -128,7 +128,7 @@ class CustomerAddViewModel(
                                         CustomerType.Azienda
                                     },
                                     collectionCount = customerEntity.customer.collectionCount,
-                                    averageCollectionTime = customerEntity.customer.avarageCollectionTime,
+                                    averageCollectionTime = customerEntity.customer.averageCollectionTime,
                                     started = true
                                 )
                             }

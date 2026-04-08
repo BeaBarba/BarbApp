@@ -34,31 +34,13 @@ interface AllCustomersSummaryActions {
 class AllCustomersSummaryViewModel(
     private val repository : Repository
 ) : ViewModel()  {
+
     private val _state = MutableStateFlow(AllCustomersSummaryState())
 
     val state = _state.asStateFlow()
 
     init{
         populateCustomers()
-    }
-
-    private fun populateCustomers() {
-        viewModelScope.launch {
-            repository.customer.getAllCustomersFullDetails().collect { customerList ->
-                _state.update { currentState ->
-                    val filterList =
-                        if(currentState.searchString.isEmpty()) customerList
-                        else searchFilter(currentState.searchString, customerList)
-
-                    currentState.copy(
-                        customers = customerList,
-                        customersToView = filterList,
-                        startingChar = getStartingChar(customerList).sorted(),
-                        started = true
-                    )
-                }
-            }
-        }
     }
 
     val actions = object : AllCustomersSummaryActions {
@@ -135,6 +117,25 @@ class AllCustomersSummaryViewModel(
                     startingChar = getStartingChar(filterList),
                     searchString = ""
                 )
+            }
+        }
+    }
+
+    private fun populateCustomers() {
+        viewModelScope.launch {
+            repository.customer.getAllCustomersFullDetails().collect { customerList ->
+                _state.update { currentState ->
+                    val filterList =
+                        if(currentState.searchString.isEmpty()) customerList
+                        else searchFilter(currentState.searchString, customerList)
+
+                    currentState.copy(
+                        customers = customerList,
+                        customersToView = filterList,
+                        startingChar = getStartingChar(customerList).sorted(),
+                        started = true
+                    )
+                }
             }
         }
     }

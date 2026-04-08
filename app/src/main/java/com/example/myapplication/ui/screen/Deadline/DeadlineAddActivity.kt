@@ -78,7 +78,7 @@ fun DeadlineAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.SingleDeadlineSummary){
+                            navController.navigate(NavigationRoute.SingleDeadlineSummary(0, DeadlineType.Singola.toString())){
                                 popUpTo(NavigationRoute.DeadlineAdd){inclusive = true}
                             }
                         },
@@ -149,6 +149,13 @@ fun DeadlineAddActivity(
                 CustomOutlineTextField(
                     label = stringResource(R.string.name),
                     onValueChange = {}
+                )
+            }
+            item{
+                DatePickerFieldToModal(
+                    title = stringResource(R.string.date_issue),
+                    onValueChange = {},
+                    value = ""
                 )
             }
             item{

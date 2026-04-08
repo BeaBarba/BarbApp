@@ -8,7 +8,7 @@ enum class FrequencyType { Anno, Mese, Settimana, Nessuna }
 
 enum class DeadlineType { Tipo, Singola, Periodica }
 
-enum class FilterKey { ASC_DATE, DESC_DATE, ASC_SELLER, DESC_SELLER }
+enum class FilterKey { ASC_DATE, DESC_DATE, ASC_SELLER, DESC_SELLER, ASC_CATEGORY, DESC_CATEGORY }
 
 enum class SplitNumber{ Mono, Dual, Trial, Quadri, Penta }
 

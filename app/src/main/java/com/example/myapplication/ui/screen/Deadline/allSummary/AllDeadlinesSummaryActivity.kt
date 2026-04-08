@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Deadline
+package com.example.myapplication.ui.screen.Deadline.allSummary
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -34,20 +34,33 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun AllDeadlinesSummaryActivity(
+    state : AllDeadlineSummaryState,
+    actions: AllDeadlinesSummaryActions,
     navController: NavHostController
 ){
+    var showItems by remember {mutableStateOf(false)}
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                navigationIcon = {BackButton{navController.navigate(NavigationRoute.Home)}},
+                navigationIcon = { BackButton{navController.navigate(NavigationRoute.Home)} },
                 id = stringResource(R.string.deadline),
-                trailingIcon = {DropDownMenuDeadlines(categorie_fatture, venditori)}
+                trailingIcon = {
+                    DropDownMenuDeadlines(
+                        category = state.categoriesList,
+                        sellers = state.sellers,
+                        allOnClick = actions::filterAll,
+                        categoryOnClick = actions::filterByCategory,
+                        sellerOnClick = actions::filterBySeller,
+                        ascendingOnClick = actions::ascendingOrder,
+                        descendingOnClick = actions::descendingOrder
+                    )
+                }
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.DeadlineAdd)}}
+        floatingActionButton = { AddButton{navController.navigate(NavigationRoute.DeadlineAdd(null))} }
     ) { contentPadding ->
-        var showItems by remember {mutableStateOf(false)}
+
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -57,17 +70,17 @@ fun AllDeadlinesSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{CustomSearchBar(stringResource(R.string.category), onValueChange = {})}
-            items(scadenze.subList(0,5)){ item ->
-                var checked by remember {mutableStateOf(false)}
+            item{CustomSearchBar(stringResource(R.string.category), onValueChange = actions::searchDeadline)}
+            item{Spacer(Modifier.size(8.dp))}
+            items(state.deadlinesView.filter { !it.checked }){ item ->
                 ListItemCheckbox(
-                    char = item.categoria.get(0),
-                    text = item.fornitore,
-                    textDescription = item.categoria,
-                    trailingText = item.prezzo.toString() + "€",
-                    checked = checked,
-                    onCheckedChange = {checked = !checked},
-                    onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)}
+                    char = item.category[0],
+                    text = if(item.seller == null) item.name else "${item.seller} - ${item.name}",
+                    textDescription = item.category,
+                    trailingText = "${item.amount} €",
+                    checked = item.checked,
+                    onCheckedChange = {actions.setChecked(item)},
+                    onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary(item.id, item.type.toString()))}
                 )
                 Spacer(Modifier.size(8.dp))
             }
@@ -81,16 +94,15 @@ fun AllDeadlinesSummaryActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             if(showItems){
-                items(scadenze){ item ->
-                    var checked by remember { mutableStateOf(true) }
+                items(state.deadlinesView.filter { it.checked }){ item ->
                     ListItemCheckbox(
-                        char = item.categoria.get(0),
-                        text = item.fornitore,
-                        textDescription = item.categoria,
-                        trailingText = item.prezzo.toString() + "€",
-                        checked = checked,
-                        onCheckedChange = {checked = !checked},
-                        onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary)}
+                        char = item.category[0],
+                        text = item.category,
+                        textDescription = if(item.seller == null) item.name else "${item.seller} - ${item.name}",
+                        trailingText = "${item.amount} €",
+                        checked = item.checked,
+                        onCheckedChange = {actions.deleteChecked(item)},
+                        onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary(item.id, item.type.toString()))}
                     )
                     Spacer(Modifier.size(8.dp))
                 }

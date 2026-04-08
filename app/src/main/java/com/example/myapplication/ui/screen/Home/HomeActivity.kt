@@ -2,13 +2,16 @@ package com.example.myapplication.ui.screen.Home
 
 import com.example.myapplication.ui.component.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -17,11 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,7 +28,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.data.modules.Theme
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
 
@@ -102,12 +100,19 @@ fun HomeActivity(
                     painterResource(R.drawable.warehouse_magazzino),
                     onclick = {navController.navigate(NavigationRoute.Warehouse)}
                 )
-            }
+            }/*
             item{
                 HomeCard(
                     item = stringResource(R.string.cleaning_all),
                     iconName = painterResource(R.drawable.vacuum_pulizie),
                     onclick = {navController.navigate(NavigationRoute.AllCleaningSummary)}
+                )
+            }*/
+            item{
+                HomeCard(
+                    item = stringResource(R.string.bubbles),
+                    iconName = painterResource(R.drawable.receipt_bolle),
+                    onclick = {navController.navigate(NavigationRoute.AllBubblesSummary)}
                 )
             }
             item{
@@ -133,13 +138,6 @@ fun HomeActivity(
             }
             item{
                 HomeCard(
-                    item = stringResource(R.string.bubbles),
-                    iconName = painterResource(R.drawable.receipt_bolle),
-                    onclick = {navController.navigate(NavigationRoute.AllBubblesSummary)}
-                )
-            }
-            item{
-                HomeCard(
                     item = stringResource(R.string.invoices),
                     iconName = painterResource(R.drawable.description_24dp),
                     onclick = {navController.navigate(NavigationRoute.AllInvoicesSummary)}
@@ -152,14 +150,20 @@ fun HomeActivity(
                     onclick = {navController.navigate(NavigationRoute.AllPurchaseInvoicesSummary)}
                 )
             }
-            item{
-                HomeCard(
-                    item = stringResource(R.string.statistics),
-                    iconName = painterResource(R.drawable.monitor_statistiche),
-                    onclick = {navController.navigate(NavigationRoute.AllStatistics)}
-                )
+            item(span = {GridItemSpan(2)}) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    HomeCard(
+                        item = stringResource(R.string.statistics),
+                        iconName = painterResource(R.drawable.monitor_statistiche),
+                        onclick = { navController.navigate(NavigationRoute.AllStatistics) },
+                        modifier = Modifier.fillMaxWidth(0.5f)
+                    )
+                }
             }
-            item{Spacer(Modifier.size(8.dp))}
+            item(span = {GridItemSpan(2)}){Spacer(Modifier.size(8.dp))}
         }
     }
 }

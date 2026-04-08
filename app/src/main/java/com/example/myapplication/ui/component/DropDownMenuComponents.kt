@@ -448,7 +448,12 @@ fun DropDownMenuPayments(){
 @Composable
 fun DropDownMenuDeadlines(
     category : List<String>,
-    sellers : List<String>
+    sellers : List<String>,
+    allOnClick: () -> Unit,
+    categoryOnClick : (String) -> Unit,
+    sellerOnClick : (String) -> Unit,
+    ascendingOnClick: () -> Unit,
+    descendingOnClick: () -> Unit
 ){
     var expanded by remember { mutableStateOf(false) }
 
@@ -469,7 +474,7 @@ fun DropDownMenuDeadlines(
             Column(modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
                 DropdownMenuItem(
                     text = { MenuText(text = stringResource(R.string.all)) },
-                    onClick = { /* Query that select all payments */ }
+                    onClick = { allOnClick() }
                 )
 
                 MenuDivider()
@@ -478,7 +483,7 @@ fun DropDownMenuDeadlines(
                 category.forEach { cat ->
                     DropdownMenuItem(
                         text = { MenuText(cat) },
-                        onClick = { /* Query that filter payments by category */ }
+                        onClick = { categoryOnClick(cat) }
                     )
                 }
 
@@ -488,12 +493,12 @@ fun DropDownMenuDeadlines(
                 sellers.forEach { seller ->
                     DropdownMenuItem(
                         text = { MenuText(seller) },
-                        onClick = { /* Query that filter payments by sellers */ }
+                        onClick = { sellerOnClick(seller) }
                     )
                 }
 
                 MenuDivider()
-                Order(onClickDescending = {}, onClickAscending = {})
+                Order(onClickDescending = {descendingOnClick()}, onClickAscending = {ascendingOnClick()})
             }
         }
     }

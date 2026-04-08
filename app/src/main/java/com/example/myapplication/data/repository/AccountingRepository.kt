@@ -8,13 +8,16 @@ import com.example.myapplication.data.database.Payment
 import com.example.myapplication.data.database.PurchaseInvoice
 import com.example.myapplication.data.database.PurchaseInvoiceFullDetails
 import com.example.myapplication.data.database.RecurringExpense
+import com.example.myapplication.data.database.RecurringExpenseFullDetails
 import com.example.myapplication.data.database.RecurringPayment
 import com.example.myapplication.data.database.Revenue
 import com.example.myapplication.data.database.RevenueFullDetails
 import com.example.myapplication.data.database.SingleExpense
+import com.example.myapplication.data.database.SingleExpenseFullDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 class AccountingRepository (private val db : AppDatabase) {
 
@@ -69,6 +72,15 @@ class AccountingRepository (private val db : AppDatabase) {
 
     fun getSingleExpenseById(id: Int): Flow<SingleExpense?> = db.singleExpenseDAO().getSingleExpense(id)
 
+    fun getFlowSingleExpenseFullDetailsById(singleExpenseId : Int) : Flow<SingleExpenseFullDetails?> =
+        db.singleExpenseDAO().getFlowSingleExpenseFullDetails(singleExpenseId)
+
+    fun getFlowAllSingleExpenseFullDetails() : Flow<List<SingleExpenseFullDetails?>> =
+        db.singleExpenseDAO().getFlowAllSingleExpenseFullDetails()
+
+    suspend fun getSingleExpenseFullDetailsById(singleExpenseId : Int) : SingleExpenseFullDetails =
+        db.singleExpenseDAO().getSingleExpenseFullDetails(singleExpenseId)
+
     suspend fun upsertSingleExpense(singleExpense: SingleExpense) =
         db.singleExpenseDAO().upsertSingleExpense(singleExpense)
 
@@ -81,6 +93,15 @@ class AccountingRepository (private val db : AppDatabase) {
     fun getRecurringExpenseById(id: Int): Flow<RecurringExpense?> =
         db.recurringExpenseDAO().getRecurringExpense(id)
 
+    fun getFlowRecurringExpenseFullDetailsById(recurringExpenseId : Int) : Flow<RecurringExpenseFullDetails?> =
+        db.recurringExpenseDAO().getFlowRecurringExpenseFullDetails(recurringExpenseId)
+
+    fun getFlowAllRecurringExpensesFullDetails() : Flow<List<RecurringExpenseFullDetails>> =
+        db.recurringExpenseDAO().getFlowAllRecurringExpensesFullDetails()
+
+    suspend fun getRecurringExpenseFullDetailsById(recurringExpenseId : Int) : RecurringExpenseFullDetails =
+        db.recurringExpenseDAO().getRecurringExpenseFullDetails(recurringExpenseId)
+
     suspend fun upsertRecurringExpense(recurringExpense: RecurringExpense) =
         db.recurringExpenseDAO().upsertRecurringExpense(recurringExpense)
 
@@ -91,6 +112,9 @@ class AccountingRepository (private val db : AppDatabase) {
     val payments = db.paymentDAO().getAllPayments()
 
     fun getPaymentById(id: Int): Flow<Payment?> = db.paymentDAO().getPayment(id)
+
+    suspend fun updatePaymentDateById(id : Int, date : LocalDate?) =
+        db.paymentDAO().updatePaymentDate(id, date)
 
     suspend fun upsertPayment(payment: Payment) = db.paymentDAO().upsertPayment(payment)
 

@@ -397,3 +397,60 @@ data class CartDetails(
     )
     val futureJobMaterial : List<FutureJobMaterialWithJobDetails>
 )
+
+data class SingleExpenseFullDetails(
+    @Embedded val singleExpense: SingleExpense,
+
+    @Relation(
+        parentColumn = "Categoria",
+        entityColumn = "id"
+    )
+    val category : CategoryPurchaseInvoice,
+
+    @Relation(
+        entity = PurchaseInvoice::class,
+        parentColumn = "Fattura",
+        entityColumn = "id"
+    )
+    val purchaseInvoice: HeaderPurchaseInvoice?,
+
+    @Relation(
+        parentColumn = "Pagamento",
+        entityColumn = "id"
+    )
+    val payment: Payment?
+)
+
+data class RecurringPaymentDetails(
+    @Embedded val recurringPayment: RecurringPayment,
+
+    @Relation(
+        parentColumn = "Pagamento",
+        entityColumn = "id"
+    )
+    val payment: Payment
+)
+
+data class RecurringExpenseFullDetails(
+    @Embedded val recurringExpense: RecurringExpense,
+
+    @Relation(
+        parentColumn = "Categoria",
+        entityColumn = "id"
+    )
+    val category : CategoryPurchaseInvoice,
+
+    @Relation(
+        entity = PurchaseInvoice::class,
+        parentColumn = "Fattura",
+        entityColumn = "id"
+    )
+    val purchaseInvoice: HeaderPurchaseInvoice?,
+
+    @Relation(
+        entity = RecurringPayment::class,
+        parentColumn = "id",
+        entityColumn = "Spesa"
+    )
+    val payments: List<RecurringPaymentDetails>
+)

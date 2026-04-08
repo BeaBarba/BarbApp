@@ -46,13 +46,13 @@ import com.example.myapplication.data.database.CartDetails
 import com.example.myapplication.debug.itemsList
 
 @Composable
-fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit) {
+fun HomeCard(item : String, iconName : Painter, onclick: () -> Unit, modifier : Modifier = Modifier) {
 
     val contentColor = MaterialTheme.colorScheme.onPrimaryContainer
 
     Card(
         onClick = onclick,
-        modifier = Modifier
+        modifier = modifier
             .size(150.dp)
             .fillMaxSize(),
         border = BorderStroke(16.dp, MaterialTheme.colorScheme.background),

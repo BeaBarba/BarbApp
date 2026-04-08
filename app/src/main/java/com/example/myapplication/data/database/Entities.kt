@@ -318,7 +318,7 @@ data class Customer(
     @ColumnInfo(name = "CF") val cf : String,
     @ColumnInfo(name = "Nome") val name : String,
     @ColumnInfo(name = "Email") val mail : String,
-    @ColumnInfo(name = "TempoMedioRiscossione") val avarageCollectionTime : Float,
+    @ColumnInfo(name = "TempoMedioRiscossione") val averageCollectionTime : Float,
     @ColumnInfo(name = "NumeroRiscossioni") val collectionCount : Int,
     @ColumnInfo(name = "Residenza") val residence : Int,
     @ColumnInfo(name = "Riferimento") val reference : Int? = null
@@ -525,7 +525,7 @@ data class Job(
     @ColumnInfo(name = "Cantiere") val workSite : Int? = null
 ){
     init{
-        require(electric == true || alarm == true || airConditioning == true){
+        require(electric || alarm || airConditioning ){
             "Almeno un tipo di intervento deve essere selezionato!"
         }
     }
