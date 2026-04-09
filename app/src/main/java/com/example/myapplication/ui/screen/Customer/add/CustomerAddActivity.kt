@@ -214,11 +214,11 @@ fun CustomerAddActivity(
             item{
                 CustomOutlineTextField(
                     leadingIcon = {
-                        /*IconButton(
+                        IconButton(
                             onClick = {}
-                        ) {*/
+                        ) {
                             Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))
-                        //}
+                        }
                     },
                     label = stringResource(R.string.address),
                     value = state.address,

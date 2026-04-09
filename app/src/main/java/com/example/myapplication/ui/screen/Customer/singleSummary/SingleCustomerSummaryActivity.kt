@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.screen.Customer.singleSummary
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -17,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -68,6 +71,9 @@ fun SingleCustomerSummaryActivity(
             )
         }
     ) { contentPadding ->
+
+        val ctx = LocalContext.current
+
         LazyColumn (
             modifier = Modifier
                 .padding(
@@ -177,16 +183,20 @@ fun SingleCustomerSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.address),
-                    description = state.customerData?.address?.address ?: "",
-                    weightTitle =  1.2f
-                )
-            }
-            item{Spacer(Modifier.size(8.dp))}
-            item{
-                KeyValueLabel(
-                    title = stringResource(R.string.house_number),
-                    description = state.customerData?.address?.houseNumber ?: "",
-                    weightTitle =  1.2f
+                    description = "${state.customerData?.address?.address} ${state.customerData?.address?.houseNumber}",
+                    weightTitle =  1.2f,
+                    onClick = {
+                        val fullAddress = "${state.customerData?.address?.address} ${state.customerData?.address?.houseNumber}, " +
+                                "${state.customerData?.address?.zip} ${state.customerData?.address?.city}, " +
+                                "(${state.customerData?.address?.province})"
+
+                        val addressQuery = Uri.parse("geo:0,0?q=${Uri.encode(fullAddress)}")
+
+                        val intent = Intent(Intent.ACTION_VIEW).apply { data = addressQuery }
+                        if(intent.resolveActivity(ctx.packageManager)!= null) {
+                            ctx.startActivity(intent)
+                        }
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

@@ -78,7 +78,6 @@ fun SingleAddressSummaryActivity(
                     title = stringResource(R.string.address),
                     description = "${state.address} ${state.houseNumber}",
                     onClick = {
-
                         val fullAddress = "${state.address} ${state.houseNumber}, ${state.zip} ${state.city}, (${state.province})"
 
                         val addressQuery = Uri.parse("geo:0,0?q=${Uri.encode(fullAddress)}")
