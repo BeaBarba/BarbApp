@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.CustomerFullDetails
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.repository.Repository
+import com.example.myapplication.ui.screen.Deadline.allSummary.Deadline
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -151,10 +152,12 @@ class AllCustomersSummaryViewModel(
     }
 
     private fun searchFilter(searchString: String, customers: List<CustomerFullDetails>) : List<CustomerFullDetails>{
+        if(searchString.isBlank()) return customers
+        val query = searchString.trim().lowercase(getDefault())
         return customers.filter {
-                it.privateCustomer?.lastName?.lowercase()?.startsWith(searchString.lowercase(getDefault())) ?:false ||
-                it.companyCustomer?.companyName?.lowercase()?.startsWith(searchString.lowercase(getDefault())) ?:false ||
-                it.customer.name.lowercase().startsWith(searchString.lowercase(getDefault()))
+                it.privateCustomer?.lastName?.lowercase()?.startsWith(query) ?:false ||
+                it.companyCustomer?.companyName?.lowercase()?.startsWith(query) ?:false ||
+                it.customer.name.lowercase().startsWith(query)
         }
     }
 

@@ -1,13 +1,21 @@
 package com.example.myapplication.ui.screen.Address.add
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.os.Build
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.Address
 import com.example.myapplication.data.repository.Repository
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Locale.getDefault
 import kotlin.String
 
 data class AddressAddState(
@@ -45,6 +53,7 @@ interface AddressAddActions {
     fun setSubordinate(subordinate: String)
     fun setYearOfConstruction(yearOfConstruction: String)
     fun setUsableArea(usableArea: String)
+    fun getLocationAddress(context : Context)
     fun saveAddress()
     fun populateFromEdit(addressId: Int)
 }
@@ -148,6 +157,54 @@ class AddressAddViewModel(
             }
         }
 
+        override fun getLocationAddress(context: Context) {
+            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                    location?.let {
+                        val geocoder = Geocoder(context, getDefault())
+                        val geocodeListener = Geocoder.GeocodeListener { geoAddress ->
+                            if (geoAddress.isNotEmpty()) {
+                                val address = geoAddress[0]
+                                _state.update { state ->
+                                    state.copy(
+                                        address = address.thoroughfare ?: "",
+                                        houseNumber = address.subThoroughfare ?: "",
+                                        municipality = address.subLocality ?: address.locality ?: "",
+                                        city = address.locality ?: "" ,
+                                        zip = address.postalCode ?: "",
+                                        province = address.subAdminArea ?: ""
+                                    )
+                                }
+                            }
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            geocoder.getFromLocation(it.latitude, it.longitude, 1, geocodeListener)
+                        } else {
+                            @Suppress("DEPRECATION")
+                            val geoAddresses = geocoder.getFromLocation(it.latitude, it.longitude, 1)
+                            if (!geoAddresses.isNullOrEmpty()) {
+                                val address = geoAddresses[0]
+                                _state.update { state ->
+                                    state.copy(
+                                        address = address.thoroughfare ?: "",
+                                        houseNumber = address.subThoroughfare ?: "",
+                                        municipality = address.subLocality ?: address.locality ?: "",
+                                        city = address.locality ?: "" ,
+                                        zip = address.postalCode ?: "",
+                                        province = address.subAdminArea ?: ""
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
         override fun saveAddress() {
             val stateNow = _state.value
             val newAddress = Address(
@@ -206,27 +263,5 @@ class AddressAddViewModel(
 
     private fun checkIfStringIsInt(value: String): Boolean {
         return value.all { char -> char.isDigit() }
-    }
-
-    private fun checkIfStringIsDouble(value: String): Boolean {
-        return value.toDoubleOrNull() != null || value == ""
-    }
-
-    private fun simulateData(): Unit {
-        _state.update { it.copy(address = "Via Pasquale Orlandi 21") }
-        _state.update { it.copy(municipality = "Medicina") }
-        _state.update { it.copy(city = "Bologna") }
-        _state.update { it.copy(province = "Bologna") }
-        _state.update { it.copy(zip = "40059") }
-        _state.update { it.copy(floor = "1") }
-        _state.update { it.copy(staircase = "1") }
-        _state.update { it.copy(interior = "1") }
-        _state.update { it.copy(units = "4") }
-        _state.update { it.copy(sheet = "10") }
-        _state.update { it.copy(map = "200") }
-        _state.update { it.copy(subordinate = "45") }
-        _state.update { it.copy(usableArea = 122) }
-        _state.update { it.copy(yearOfConstruction = 1900) }
-        _state.update { it.copy(addressId = -1) }
     }
 }

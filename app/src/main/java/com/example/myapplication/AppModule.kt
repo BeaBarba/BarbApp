@@ -5,7 +5,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.example.myapplication.data.database.AppDatabase
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.data.repository.ThemeRepository
+import com.example.myapplication.data.repository.UserPreferencesRepository
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
 import com.example.myapplication.ui.screen.Bubble.add.BubbleAddViewModel
@@ -34,7 +34,7 @@ val appModule = module{
 
     single{get<Context>().dataStore}
 
-    single{ThemeRepository(get())}
+    single{UserPreferencesRepository(get())}
 
     single{
         Room.databaseBuilder(

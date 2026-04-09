@@ -67,23 +67,5 @@ class SingleAddressSummaryViewModel(
                 }
             }
         }
-
-        private fun simulateData() {
-            _state.update { it.copy(address = "Via Pasquale Orlandi 21") }
-            _state.update { it.copy(municipality = "Medicina") }
-            _state.update { it.copy(city = "Bologna") }
-            _state.update { it.copy(province = "Bologna") }
-            _state.update { it.copy(zip = "40059") }
-            _state.update { it.copy(floor = "1") }
-            _state.update { it.copy(staircase = "1") }
-            _state.update { it.copy(interior = "1") }
-            _state.update { it.copy(units = "4") }
-            _state.update { it.copy(sheet = "10") }
-            _state.update { it.copy(map = "200") }
-            _state.update { it.copy(subordinate = "45") }
-            _state.update { it.copy(usableArea = 122) }
-            _state.update { it.copy(yearOfConstruction = 1900) }
-            _state.update { it.copy(addressId = -1) }
-        }
     }
 }

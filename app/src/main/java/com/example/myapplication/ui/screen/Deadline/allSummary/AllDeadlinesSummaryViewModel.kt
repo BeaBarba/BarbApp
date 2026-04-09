@@ -44,7 +44,6 @@ interface AllDeadlinesSummaryActions{
     fun descendingOrder()
     fun searchDeadline(searchText : String)
     fun setChecked(deadline : Deadline)
-    fun deleteChecked(deadline : Deadline)
 }
 
 class AllDeadlinesSummaryViewModel(
@@ -153,12 +152,6 @@ class AllDeadlinesSummaryViewModel(
 
                 repository.accounting.updatePaymentDateById(paymentId, newDate)
             }
-        }
-
-        override fun deleteChecked(deadline: Deadline) {
-            /*TODO
-            delete payment for the deadline
-             */
         }
     }
 

@@ -3,11 +3,9 @@ package com.example.myapplication.ui.screen.Select
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.debug.addressType
 import com.example.myapplication.debug.bubblesType
 import com.example.myapplication.debug.customersType
 import com.example.myapplication.debug.invoicesType
@@ -68,7 +66,7 @@ class SelectViewModel(
                                         checked = initialCheckedIds.contains(material.id.toString())
                                     )
                                 }.sortedWith(
-                                    compareBy<CardItem>({it.name})
+                                    compareBy<CardItem> {it.name}
                                         .thenBy { it.description }
                                 )
 
@@ -222,7 +220,7 @@ class SelectViewModel(
                     _state.value.itemsList
                 }else{
                     _state.value.itemsList.filter {
-                        it.name.lowercase().startsWith(string.lowercase(getDefault()))
+                        it.name.trim().lowercase().contains(string.lowercase(getDefault()))
                     }
                 }
             _state.update { it.copy(viewList = filterList) }

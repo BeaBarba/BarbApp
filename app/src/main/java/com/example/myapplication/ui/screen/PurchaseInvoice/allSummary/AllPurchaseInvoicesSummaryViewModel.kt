@@ -112,7 +112,12 @@ class AllPurchaseInvoicesSummaryViewModel(
         }
     }
 
-    private fun searchFilter(string : String, list : List<PurchaseInvoiceFullDetails>) : List<PurchaseInvoiceFullDetails>{
-        return list.filter { it.purchaseInvoice.number.lowercase().startsWith(string.lowercase(getDefault())) }
+    private fun searchFilter(searchString: String, purchasesInvoice : List<PurchaseInvoiceFullDetails>) : List<PurchaseInvoiceFullDetails>{
+        if(searchString.isBlank()) return purchasesInvoice
+        val query = searchString.trim().lowercase(getDefault())
+        return purchasesInvoice.filter {
+            it.purchaseInvoice.number.lowercase().contains(query) ||
+            it.seller.name.lowercase().contains(query)
+        }
     }
 }

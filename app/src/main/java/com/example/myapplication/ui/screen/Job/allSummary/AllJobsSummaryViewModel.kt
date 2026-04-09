@@ -6,6 +6,7 @@ import com.example.myapplication.data.database.JobAssignmentDetails
 import com.example.myapplication.data.modules.FilterKey
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.repository.Repository
+import com.example.myapplication.ui.screen.Deadline.allSummary.Deadline
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -123,6 +124,13 @@ class AllJobsSummaryViewModel(
     }
 
     private fun searchFilter(searchString: String, jobs : List<JobAssignmentDetails>) : List<JobAssignmentDetails>{
-        return jobs.filter { it.address.address.lowercase().startsWith(searchString.lowercase(getDefault())) }
+        if(searchString.isBlank()) return jobs
+        val query = searchString.trim().lowercase(getDefault())
+        return jobs.filter {
+            it.address.address.lowercase().contains(query) ||
+            (it.customer?.privateCustomer?.lastName?.lowercase()?.contains(query)) ?: false ||
+            (it.customer?.companyCustomer?.companyName?.lowercase()?.contains(query)) ?: false ||
+            (it.customer?.customer?.name?.lowercase()?.contains(query)) ?: false
+        }
     }
 }

@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.runtime.livedata.v1101)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.datastore.core.android)
+    implementation(libs.play.services.location)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)

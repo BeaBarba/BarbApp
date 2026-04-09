@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -62,6 +63,7 @@ fun AddressAddActivity(
             )
         }
     ) { contentPadding ->
+        val  ctx = LocalContext.current
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -75,7 +77,7 @@ fun AddressAddActivity(
                 CustomOutlineTextField(
                     leadingIcon = {
                         IconButton(
-                            onClick = {},
+                            onClick = {actions.getLocationAddress(ctx)},
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.LocationOn,

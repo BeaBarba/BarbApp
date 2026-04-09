@@ -3,7 +3,7 @@ package com.example.myapplication.ui.screen.Home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.modules.Theme
-import com.example.myapplication.data.repository.ThemeRepository
+import com.example.myapplication.data.repository.UserPreferencesRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -20,7 +20,7 @@ interface HomeActions {
 }
 
 class HomeViewModel(
-    private val repository: ThemeRepository
+    private val repository: UserPreferencesRepository
 ) : ViewModel(){
 
     val state = repository.theme.map { HomeState(theme = it) }.stateIn(

@@ -20,9 +20,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.categorie_fatture
-import com.example.myapplication.debug.scadenze
-import com.example.myapplication.debug.venditori
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuDeadlines
@@ -101,7 +98,7 @@ fun AllDeadlinesSummaryActivity(
                         textDescription = if(item.seller == null) item.name else "${item.seller} - ${item.name}",
                         trailingText = "${item.amount} €",
                         checked = item.checked,
-                        onCheckedChange = {actions.deleteChecked(item)},
+                        onCheckedChange = {actions.setChecked(item)},
                         onClick = {navController.navigate(NavigationRoute.SingleDeadlineSummary(item.id, item.type.toString()))}
                     )
                     Spacer(Modifier.size(8.dp))

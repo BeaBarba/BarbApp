@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -37,7 +38,10 @@ fun SingleAddressSummaryActivity(
     navController: NavHostController
 ){
 
-    actions.populateFromId(addressId)
+    LaunchedEffect(addressId) {
+        actions.populateFromId(addressId)
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -72,11 +76,14 @@ fun SingleAddressSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.address),
-                    description = state.address + " " + state.houseNumber,
+                    description = "${state.address} ${state.houseNumber}",
                     onClick = {
-                        val location = Uri.parse("geo: 44.1391, 12.24315")
-                        // Viene settato l'intent implicito con la proprietà
-                        val intent = Intent(Intent.ACTION_VIEW).apply { data = location }
+
+                        val fullAddress = "${state.address} ${state.houseNumber}, ${state.zip} ${state.city}, (${state.province})"
+
+                        val addressQuery = Uri.parse("geo:0,0?q=${Uri.encode(fullAddress)}")
+
+                        val intent = Intent(Intent.ACTION_VIEW).apply { data = addressQuery }
                         if(intent.resolveActivity(ctx.packageManager)!= null) {
                             ctx.startActivity(intent)
                         }
@@ -161,8 +168,7 @@ fun SingleAddressSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.usable_area),
-                    description = if(state.usableArea != null) state.usableArea.toString() + " mq"
-                                else ""
+                    description = if(state.usableArea != null) "${state.usableArea} mq" else ""
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

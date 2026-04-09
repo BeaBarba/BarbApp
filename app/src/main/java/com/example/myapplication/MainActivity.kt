@@ -1,10 +1,15 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.Manifest
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -12,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.data.modules.Theme
 import com.example.myapplication.data.repository.Repository
+import com.example.myapplication.data.repository.UserPreferencesRepository
 import com.example.myapplication.debug.SeedDatabase
 import com.example.myapplication.ui.NavGraph
 import com.example.myapplication.ui.screen.Home.HomeViewModel
@@ -24,6 +30,8 @@ import org.koin.androidx.compose.koinViewModel
 class MainActivity : ComponentActivity() {
 
     private val repository : Repository by inject()
+
+    private val userPreferencesRepository : UserPreferencesRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +81,28 @@ class MainActivity : ComponentActivity() {
                 Theme.Dark -> true
                 Theme.System -> isSystemInDarkTheme()
             }
+
+            val isLocationRequested by userPreferencesRepository.isLocationRequested.collectAsState(initial = true)
+
+            val locationPermissionLauncher = rememberLauncherForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) { _ ->
+                lifecycleScope.launch {
+                    userPreferencesRepository.setLocationRequested(true)
+                }
+            }
+
+            LaunchedEffect(isLocationRequested) {
+                if (!isLocationRequested) {
+                    locationPermissionLauncher.launch(
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    )
+                }
+            }
+
             MyApplicationTheme(darkTheme = theme) {
                 val navController = rememberNavController()
                 NavGraph(navController, Modifier)
