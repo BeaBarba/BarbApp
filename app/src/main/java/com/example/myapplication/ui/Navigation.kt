@@ -41,7 +41,7 @@ import com.example.myapplication.ui.screen.Bubble.allSummary.AllBubblesSummaryVi
 import com.example.myapplication.ui.screen.Bubble.add.BubbleAddActivity
 import com.example.myapplication.ui.screen.Bubble.singleSummary.SingleBubbleSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryActivity
-import com.example.myapplication.ui.screen.Deadline.SingleDeadlineSummaryActivity
+import com.example.myapplication.ui.screen.Deadline.singleSummary.SingleDeadlineSummaryActivity
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryActivity
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryActivity
 import com.example.myapplication.ui.screen.Payment.SinglePaymentSummaryActivity
@@ -55,7 +55,6 @@ import com.example.myapplication.ui.screen.WorkSite.SingleConstructionSummaryAct
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
-import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSummaryActions
 import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSummaryViewModel
 import com.example.myapplication.ui.screen.Home.HomeViewModel
 import com.example.myapplication.ui.screen.Invoice.AllInvoicesSummaryActivity

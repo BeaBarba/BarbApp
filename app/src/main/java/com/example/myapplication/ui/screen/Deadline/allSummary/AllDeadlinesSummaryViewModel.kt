@@ -151,6 +151,10 @@ class AllDeadlinesSummaryViewModel(
                 val newDate = if (!deadline.checked) LocalDate.now() else null
 
                 repository.accounting.updatePaymentDateById(paymentId, newDate)
+
+                if(!deadline.checked && deadline.type == DeadlineType.Periodica){
+                    repository.accounting.generateNextOrAllPayments(paymentId, deadline.id)
+                }
             }
         }
     }
@@ -182,7 +186,13 @@ class AllDeadlinesSummaryViewModel(
                 _state.update {
                     it.copy(
                         deadlines = allDeadlines,
-                        deadlinesView = searchFilter(state.value.searchText, allDeadlines),
+                        deadlinesView = searchFilter(state.value.searchText, allDeadlines.filter { deadline ->
+                            deadline.checked ||
+                            deadline
+                                .deadlineDate
+                                .isBefore(LocalDate.now().plusMonths(2))
+                            }
+                        ),
                         categoriesList = categories,
                         sellers = sellers,
                     )
@@ -210,7 +220,7 @@ class AllDeadlinesSummaryViewModel(
         expense.payments.forEach { rate ->
              deadlinesList.add(
                  Deadline(
-                    id = rate.recurringPayment.payment,
+                    id = rate.recurringPayment.recurringExpense,
                     key = "${DeadlineType.Periodica}_${rate.recurringPayment.payment}",
                     type = DeadlineType.Periodica,
                     category = expense.category.name,

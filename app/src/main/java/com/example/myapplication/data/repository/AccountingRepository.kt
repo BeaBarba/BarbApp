@@ -1,5 +1,6 @@
 package com.example.myapplication.data.repository
 
+import androidx.room.withTransaction
 import com.example.myapplication.data.database.AppDatabase
 import com.example.myapplication.data.database.Bubble
 import com.example.myapplication.data.database.BubbleFullDetails
@@ -14,8 +15,10 @@ import com.example.myapplication.data.database.Revenue
 import com.example.myapplication.data.database.RevenueFullDetails
 import com.example.myapplication.data.database.SingleExpense
 import com.example.myapplication.data.database.SingleExpenseFullDetails
+import com.example.myapplication.data.modules.FrequencyType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
@@ -38,7 +41,6 @@ class AccountingRepository (private val db : AppDatabase) {
 
     fun getAllPurchaseInvoicesFullDetails(): Flow<List<PurchaseInvoiceFullDetails>> =
         db.purchaseInvoiceDAO().getAllPurchaseInvoicesFullDetails()
-
 
     /* Bubbles */
     val bubbles = db.bubbleDAO().getAllBubbles()
@@ -116,7 +118,12 @@ class AccountingRepository (private val db : AppDatabase) {
     suspend fun updatePaymentDateById(id : Int, date : LocalDate?) =
         db.paymentDAO().updatePaymentDate(id, date)
 
-    suspend fun upsertPayment(payment: Payment) = db.paymentDAO().upsertPayment(payment)
+    suspend fun checkExistingNextPayment(date : LocalDate, expenseId : Int) : Boolean =
+        withContext(Dispatchers.IO){
+            db.paymentDAO().checkExistingNextPayment(date, expenseId) > 0
+        }
+
+    suspend fun upsertPayment(payment: Payment) : Long = db.paymentDAO().upsertPayment(payment)
 
     suspend fun deletePayment(payment: Payment) = db.paymentDAO().deletePayment(payment)
 
@@ -131,6 +138,58 @@ class AccountingRepository (private val db : AppDatabase) {
 
     suspend fun deleteRecurringPayment(recurringPayment: RecurringPayment) =
         db.recurringPaymentDAO().deleteRecurringPayment(recurringPayment)
+
+    suspend fun generateNextOrAllPayments(paymentId : Int, expenseId : Int)
+        = withContext(Dispatchers.IO){
+            db.withTransaction {
+
+                val expense = getRecurringExpenseById(expenseId).firstOrNull()
+                val payment = getPaymentById(paymentId).firstOrNull()
+
+                expense?.let {
+                    if(expense.endDate != null ){
+                        val newDates = calculateNewDates(payment?.issueDate?: LocalDate.now(), expense.endDate, expense.frequency)
+                        newDates.forEach { date ->
+                            if (!checkExistingNextPayment(date, expense.id)) {
+                                val newPaymentId = upsertPayment(
+                                    Payment(
+                                        id = 0,
+                                        issueDate = date,
+                                        paymentDate = null
+                                    )
+                                ).toInt()
+                                upsertRecurringPayment(
+                                    RecurringPayment(
+                                        payment = newPaymentId,
+                                        recurringExpense = expenseId
+                                    )
+                                )
+                            }
+                        }
+                    }else {
+                        payment?.let {
+                            val newDate = calculateNexDate(payment.issueDate, expense.frequency)
+
+                            if(!checkExistingNextPayment(newDate, expenseId)) {
+                                val newPaymentId = upsertPayment(
+                                    Payment(
+                                        id = 0,
+                                        issueDate = newDate,
+                                        paymentDate = null
+                                    )
+                                ).toInt()
+                                upsertRecurringPayment(
+                                    RecurringPayment(
+                                        payment = newPaymentId,
+                                        recurringExpense = expenseId
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
     /* Revenue */
     val revenues = db.revenuesDAO().getAllRevenues()
@@ -150,4 +209,25 @@ class AccountingRepository (private val db : AppDatabase) {
 
     suspend fun getAllRevenuesFullDetails(): List<RevenueFullDetails> =
         db.revenuesDAO().getAllRevenuesFullDetails()
+
+    private fun calculateNewDates(issueDate : LocalDate, endDate: LocalDate, frequency : FrequencyType) :
+            List<LocalDate>{
+        val dates = mutableListOf<LocalDate>()
+        var nextDate = calculateNexDate(issueDate, frequency)
+
+        while (!nextDate.isAfter(endDate)) {
+            dates.add(nextDate)
+            nextDate = calculateNexDate(nextDate, frequency)
+        }
+        return dates
+    }
+
+    private fun calculateNexDate(currentDate : LocalDate, frequency : FrequencyType) : LocalDate{
+        return when (frequency) {
+            FrequencyType.Settimana -> currentDate.plusWeeks(1)
+            FrequencyType.Mese -> currentDate.plusMonths(1)
+            FrequencyType.Anno -> currentDate.plusYears(1)
+            else -> currentDate
+        }
+    }
 }

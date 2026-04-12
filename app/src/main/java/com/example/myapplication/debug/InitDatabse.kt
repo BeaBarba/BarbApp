@@ -1224,10 +1224,7 @@ object SeedDatabase {
     suspend fun seedRecurringPayment(repository : Repository){
         val recurringPayments = listOf(
             RecurringPayment(payment = 55, recurringExpense = 1),
-            RecurringPayment(payment = 55, recurringExpense = 1),
             RecurringPayment(payment = 56, recurringExpense = 2),
-            RecurringPayment(payment = 56, recurringExpense = 2),
-            RecurringPayment(payment = 57, recurringExpense = 3),
             RecurringPayment(payment = 57, recurringExpense = 3),
             RecurringPayment(payment = 58, recurringExpense = 4),
             RecurringPayment(payment = 59, recurringExpense = 11),
