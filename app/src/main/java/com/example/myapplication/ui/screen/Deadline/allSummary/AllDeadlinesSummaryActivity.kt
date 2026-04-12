@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.data.modules.DeadlineType
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.DropDownMenuDeadlines
@@ -55,7 +56,8 @@ fun AllDeadlinesSummaryActivity(
                 }
             )
         },
-        floatingActionButton = { AddButton{navController.navigate(NavigationRoute.DeadlineAdd(null))} }
+        floatingActionButton = { AddButton{navController.navigate(NavigationRoute.DeadlineAdd(null, DeadlineType.Tipo
+            .toString()))} }
     ) { contentPadding ->
 
         LazyColumn(

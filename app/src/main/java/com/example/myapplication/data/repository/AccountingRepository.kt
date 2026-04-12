@@ -168,22 +168,29 @@ class AccountingRepository (private val db : AppDatabase) {
                         }
                     }else {
                         payment?.let {
-                            val newDate = calculateNexDate(payment.issueDate, expense.frequency)
+                            var lastIssueDate = payment.issueDate
+                            val today = LocalDate.now()
 
-                            if(!checkExistingNextPayment(newDate, expenseId)) {
-                                val newPaymentId = upsertPayment(
-                                    Payment(
-                                        id = 0,
-                                        issueDate = newDate,
-                                        paymentDate = null
+                            while (lastIssueDate.isBefore(today)) {
+                                val newDate = calculateNexDate(lastIssueDate, expense.frequency)
+
+                                if (!checkExistingNextPayment(newDate, expenseId)) {
+                                    val newPaymentId = upsertPayment(
+                                        Payment(
+                                            id = 0,
+                                            issueDate = newDate,
+                                            paymentDate = null
+                                        )
+                                    ).toInt()
+                                    upsertRecurringPayment(
+                                        RecurringPayment(
+                                            payment = newPaymentId,
+                                            recurringExpense = expenseId
+                                        )
                                     )
-                                ).toInt()
-                                upsertRecurringPayment(
-                                    RecurringPayment(
-                                        payment = newPaymentId,
-                                        recurringExpense = expenseId
-                                    )
-                                )
+                                }
+
+                                lastIssueDate = newDate
                             }
                         }
                     }

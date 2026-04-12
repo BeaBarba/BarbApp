@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.example.myapplication.data.database.AppDatabase
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.data.repository.UserPreferencesRepository
+import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
 import com.example.myapplication.ui.screen.Bubble.add.BubbleAddViewModel
@@ -18,6 +19,7 @@ import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
 import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSummaryViewModel
+import com.example.myapplication.ui.screen.Deadline.singleSummary.SingleDeadlineSummaryViewModel
 import com.example.myapplication.ui.screen.Home.HomeViewModel
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
@@ -119,4 +121,5 @@ val appModule = module{
 
     /* Deadlines */
     viewModel {AllDeadlinesSummaryViewModel(get())}
+    viewModel {SingleDeadlineSummaryViewModel(get())}
 }
