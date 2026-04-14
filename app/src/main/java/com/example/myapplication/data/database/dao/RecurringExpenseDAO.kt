@@ -25,7 +25,7 @@ interface RecurringExpenseDAO{
 
 
     @Upsert
-    suspend fun upsertRecurringExpense(recurringExpense : RecurringExpense)
+    suspend fun upsertRecurringExpense(recurringExpense : RecurringExpense) : Long
 
     @Delete
     suspend fun deleteRecurringExpense(recurringExpense : RecurringExpense)

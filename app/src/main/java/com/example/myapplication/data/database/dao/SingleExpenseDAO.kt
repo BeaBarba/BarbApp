@@ -24,7 +24,7 @@ interface SingleExpenseDAO{
     fun getAllSingleExpenses() : Flow<List<SingleExpense>>
 
     @Upsert
-    suspend fun upsertSingleExpense(singleExpense : SingleExpense)
+    suspend fun upsertSingleExpense(singleExpense : SingleExpense) : Long
 
     @Delete
     suspend fun deleteSingleExpense(singleExpense : SingleExpense)

@@ -6,7 +6,6 @@ import com.example.myapplication.data.database.Bubble
 import com.example.myapplication.data.database.Delivery
 import com.example.myapplication.data.database.DeliveryWithMaterialDetails
 import com.example.myapplication.data.database.Material
-import com.example.myapplication.data.database.PurchaseInvoice
 import com.example.myapplication.data.database.Seller
 import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +47,7 @@ interface BubbleAddActions {
     fun saveBubble(onSuccess : (Int) -> Unit)
     fun setBubbleNumber(bubbleNumber: String)
     fun setBubbleDate(bubbleDate: LocalDate)
-    fun setSeller(selectedSeller: Pair<Int, String>)
+    fun setSeller(selectedSeller: Int)
     fun setMaterials(materials: List<String>)
     fun setQuantityMaterial(material: Material, quantity: String)
     fun setUnitPriceMaterial(material: Material, unitPrice: String)
@@ -87,7 +86,7 @@ class BubbleAddViewModel(
             }
 
             if (state.value.bubbleId == 0)
-                setSeller(Pair(-1,""))
+                setSeller(-1)
             _state.update { it.copy(started = true) }
         }
 
@@ -196,8 +195,8 @@ class BubbleAddViewModel(
             _state.update { it.copy(bubbleDate = bubbleDate) }
         }
 
-        override fun setSeller(selectedSeller: Pair<Int,String>) {
-            _state.update { it.copy(selectedSeller = state.value.sellers.find{ it.id == selectedSeller.first }) }
+        override fun setSeller(selectedSeller: Int) {
+            _state.update { it.copy(selectedSeller = state.value.sellers.find{ it.id == selectedSeller}) }
         }
 
         override fun createNewSeller(newSeller: String) {

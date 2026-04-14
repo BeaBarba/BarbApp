@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -105,6 +106,9 @@ fun CustomerAddActivity(
             )
         }
     ) { contentPadding ->
+
+        val  ctx = LocalContext.current
+
         LazyColumn (
             modifier = Modifier
                 .padding(
@@ -215,7 +219,10 @@ fun CustomerAddActivity(
                 CustomOutlineTextField(
                     leadingIcon = {
                         IconButton(
-                            onClick = {}
+                            onClick = {
+                                println("DEBUG: CustomerAddActivity - ho  premuto l'icona")
+                                actions.getLocationAddress(ctx)
+                            }
                         ) {
                             Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))
                         }

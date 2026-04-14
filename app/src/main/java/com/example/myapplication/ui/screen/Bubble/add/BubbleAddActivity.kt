@@ -137,7 +137,7 @@ fun BubbleAddActivity(
                             idValues = Pair(first = item.id, ""),
                             name = if(item.name == "New") stringResource(R.string.new_item)
                                     else item.name,
-                            onClick = actions::setSeller
+                            onClick = {actions.setSeller(item.id)}
                         )
                     }
                 )

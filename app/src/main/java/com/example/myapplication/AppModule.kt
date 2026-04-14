@@ -18,6 +18,7 @@ import com.example.myapplication.ui.screen.Cart.CartViewModel
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
+import com.example.myapplication.ui.screen.Deadline.add.DeadlineAddViewModel
 import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSummaryViewModel
 import com.example.myapplication.ui.screen.Deadline.singleSummary.SingleDeadlineSummaryViewModel
 import com.example.myapplication.ui.screen.Home.HomeViewModel
@@ -122,4 +123,5 @@ val appModule = module{
     /* Deadlines */
     viewModel {AllDeadlinesSummaryViewModel(get())}
     viewModel {SingleDeadlineSummaryViewModel(get())}
+    viewModel {DeadlineAddViewModel(get())}
 }

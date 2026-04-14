@@ -1,5 +1,11 @@
 package com.example.myapplication.ui.screen.Customer.add
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.os.Build
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.Address
@@ -11,11 +17,13 @@ import com.example.myapplication.data.database.Reference
 import com.example.myapplication.data.database.Referral
 import com.example.myapplication.data.modules.CustomerType
 import com.example.myapplication.data.repository.Repository
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.util.Locale.getDefault
 
 data class CustomerAddState (
     val cf : String = "",
@@ -79,6 +87,7 @@ interface CustomerAddActions {
     fun setReferenceName(referenceName: String)
     fun setReferenceLastName(referenceLastName: String)
     fun setReferencePhoneNumber(referencePhoneNumber: String)
+    fun getLocationAddress(context: Context)
 }
 
 class CustomerAddViewModel(
@@ -304,6 +313,53 @@ class CustomerAddViewModel(
 
         override fun setReferencePhoneNumber(referencePhoneNumber: String) {
             _state.update { it.copy(referencePhoneNumber = referencePhoneNumber) }
+        }
+
+        override fun getLocationAddress(context: Context) {
+            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                    location?.let {
+                        val geocoder = Geocoder(context, getDefault())
+                        val geocodeListener = Geocoder.GeocodeListener { geoAddress ->
+                            if (geoAddress.isNotEmpty()) {
+                                val address = geoAddress[0]
+                                _state.update { state ->
+                                    state.copy(
+                                        address = address.thoroughfare ?: "",
+                                        houseNumber = address.subThoroughfare ?: "",
+                                        municipality = address.subLocality ?: address.locality ?: "",
+                                        city = address.locality ?: "" ,
+                                        zip = address.postalCode ?: "",
+                                        province = address.subAdminArea ?: ""
+                                    )
+                                }
+                            }
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            geocoder.getFromLocation(it.latitude, it.longitude, 1, geocodeListener)
+                        } else {
+                            @Suppress("DEPRECATION")
+                            val geoAddresses = geocoder.getFromLocation(it.latitude, it.longitude, 1)
+                            if (!geoAddresses.isNullOrEmpty()) {
+                                val address = geoAddresses[0]
+                                _state.update { state ->
+                                    state.copy(
+                                        address = address.thoroughfare ?: "",
+                                        houseNumber = address.subThoroughfare ?: "",
+                                        municipality = address.subLocality ?: address.locality ?: "",
+                                        city = address.locality ?: "" ,
+                                        zip = address.postalCode ?: "",
+                                        province = address.subAdminArea ?: ""
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

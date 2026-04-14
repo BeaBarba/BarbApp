@@ -72,12 +72,12 @@ fun CustomOutlineTextField(
     value : String? = "",
     onValueChange : (String) -> Unit
 ) {
-    var content by remember { mutableStateOf(value ?: "") }
+    //var content by remember { mutableStateOf(value ?: "") }
 
     OutlinedTextField(
-        value = value.toString(),
+        value = value ?: "",
         onValueChange = {newContent ->
-            content = newContent
+            //content = newContent
             onValueChange(newContent)
         },
         leadingIcon = leadingIcon,
@@ -90,7 +90,7 @@ fun CustomOutlineTextField(
         trailingIcon = {
             IconButton(
                 onClick = {
-                    content = ""
+                    //content = ""
                     onValueChange("")
                 },
                 shape = RoundedCornerShape(15),
@@ -119,7 +119,7 @@ fun SuggestionTextField(
 ){
     var content by remember { mutableStateOf( "") }
     var expanded by remember { mutableStateOf(false) }
-    var selectedTheme = isSystemInDarkTheme()
+    val selectedTheme = isSystemInDarkTheme()
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },

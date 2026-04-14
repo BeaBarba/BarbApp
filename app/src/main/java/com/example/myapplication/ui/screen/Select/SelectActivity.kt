@@ -15,10 +15,6 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -29,10 +25,6 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.component.TopAppBar
 import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.myapplication.data.modules.SelectKey
-import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.CustomSearchBar
 
 @Composable
@@ -85,7 +77,7 @@ fun SelectActivity(
                         actions.setChecked(item.id)
                     },
                     onClick = {
-                        actions.setOnClick(item.id.toIntOrNull() ?: 0, item.id.toString(), navController)
+                        actions.setOnClick(item.id.toIntOrNull() ?: 0, item.id, navController)
                     },
                     type = item.type.toString()
                 )

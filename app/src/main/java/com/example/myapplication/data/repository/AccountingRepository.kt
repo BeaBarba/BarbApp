@@ -83,8 +83,30 @@ class AccountingRepository (private val db : AppDatabase) {
     suspend fun getSingleExpenseFullDetailsById(singleExpenseId : Int) : SingleExpenseFullDetails =
         db.singleExpenseDAO().getSingleExpenseFullDetails(singleExpenseId)
 
-    suspend fun upsertSingleExpense(singleExpense: SingleExpense) =
+    suspend fun upsertSingleExpense(singleExpense: SingleExpense) : Long =
         db.singleExpenseDAO().upsertSingleExpense(singleExpense)
+
+    suspend fun saveSingleExpenseComplete(
+        singleExpense: SingleExpense,
+        payment : Payment) : Int
+    = withContext(Dispatchers.IO){
+        db.withTransaction {
+            val paymentId =
+                if (payment.id == 0) {
+                    val newId = upsertPayment(payment).toInt()
+
+                    if (newId == -1) 0 else newId
+
+                } else {
+                    payment.id
+                }
+
+            val expenseId = upsertSingleExpense(singleExpense.copy(payment = paymentId)).toInt()
+            val newExpenseId = if(expenseId == -1) singleExpense.id else expenseId
+
+            return@withTransaction newExpenseId
+        }
+    }
 
     suspend fun deleteSingleExpense(singleExpense: SingleExpense) =
         db.singleExpenseDAO().deleteSingleExpense(singleExpense)
@@ -104,7 +126,7 @@ class AccountingRepository (private val db : AppDatabase) {
     suspend fun getRecurringExpenseFullDetailsById(recurringExpenseId : Int) : RecurringExpenseFullDetails =
         db.recurringExpenseDAO().getRecurringExpenseFullDetails(recurringExpenseId)
 
-    suspend fun upsertRecurringExpense(recurringExpense: RecurringExpense) =
+    suspend fun upsertRecurringExpense(recurringExpense: RecurringExpense) : Long =
         db.recurringExpenseDAO().upsertRecurringExpense(recurringExpense)
 
     suspend fun deleteRecurringExpense(recurringExpense: RecurringExpense) =

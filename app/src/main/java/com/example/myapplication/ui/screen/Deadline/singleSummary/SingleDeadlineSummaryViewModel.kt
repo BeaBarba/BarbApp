@@ -88,3 +88,18 @@ class SingleDeadlineSummaryViewModel(
         }
     }
 }
+/*TODO Aggiungere l'edit dei pagamenti matitina affianco alle card
+*  val paymentDate : LocalDate? = null
+    fun setPaymentDate(date : String)
+*  override fun setPaymentDate(date: String) {
+            val dateConverted = checkDate(date)
+            _state.update { it.copy(paymentDate = dateConverted) }
+        }
+    item{
+                DatePickerFieldToModal(
+                    title = stringResource(R.string.date_payment),
+                    onValueChange = actions::setPaymentDate,
+                    value = state.paymentDate?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: ""
+                )
+            }
+        * */

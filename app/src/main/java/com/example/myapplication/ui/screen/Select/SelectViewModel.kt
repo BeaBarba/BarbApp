@@ -66,7 +66,8 @@ class SelectViewModel(
                                         checked = initialCheckedIds.contains(material.id.toString())
                                     )
                                 }.sortedWith(
-                                    compareBy<CardItem> {it.name}
+                                    compareByDescending<CardItem> {it.checked}
+                                        .thenBy {it.name}
                                         .thenBy { it.description }
                                 )
 
@@ -184,7 +185,37 @@ class SelectViewModel(
                         )
                     }
                 }
-                SelectKey.AllPurchaseInvoices -> {}
+                SelectKey.AllPurchaseInvoices -> {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        println("DEBUG: Select - $initialCheckedIds")
+                        repository.accounting.purchaseInvoices.collect{
+                            val purchasesCardList = it.map { purchase ->
+                                println("DEBUG: Select - id = ${purchase.id} ${initialCheckedIds.contains(purchase.id
+                                    .toString()
+                                )}")
+                                CardItem(
+                                    id = purchase.id.toString(),
+                                    name = purchase.number,
+                                    description = null,
+                                    type = JobType.NONE,
+                                    checked = initialCheckedIds.contains(purchase.id.toString())
+                                )
+                            }.sortedWith(
+                                compareByDescending<CardItem> {it.checked}
+                                    .thenBy {it.name}
+                            )
+
+                            _state.update {
+                                it.copy(
+                                    searchText = searchText,
+                                    itemsList = purchasesCardList,
+                                    viewList = purchasesCardList,
+                                    selectKey = SelectKey.AllPurchaseInvoices
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -231,6 +262,8 @@ class SelectViewModel(
                 SelectKey.AllMaterials -> navController.navigate(NavigationRoute.SingleMaterialSummary(id))
                 SelectKey.AllCustomers -> navController.navigate(NavigationRoute.SingleCustomerSummary(id2))
                 SelectKey.AllAddresses -> navController.navigate(NavigationRoute.SingleAddressSummary(id))
+                SelectKey.AllPurchaseInvoices -> navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary
+                    (id))
                 else -> {}
             }
         }

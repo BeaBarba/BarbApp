@@ -189,7 +189,7 @@ fun SplitButtonMenu(
                         DropdownMenuItem(
                             text = { MenuText( text = item.name, colorTextMenu ) },
                             onClick = {
-                                item.onClick(item.idValues)
+                                item.onClick()
                                 checked = false
                             },
                         )

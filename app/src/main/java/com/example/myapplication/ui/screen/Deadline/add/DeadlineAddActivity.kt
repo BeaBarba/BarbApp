@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Deadline
+package com.example.myapplication.ui.screen.Deadline.add
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -15,6 +15,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDefaults
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,7 +38,6 @@ import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.debug.categorie_menu
 import com.example.myapplication.debug.categorie_s_menu
-import com.example.myapplication.debug.invoicesType
 import com.example.myapplication.debug.scadenze
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -45,11 +48,21 @@ import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun DeadlineAddActivity(
+    expenseId : Int?,
+    expenseType : DeadlineType,
+    state : DeadlineAddState,
+    actions: DeadlineAddActions,
     navController: NavHostController
 ) {
+    val labelNew = stringResource(R.string.new_item)
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
     val previousBackStackEntry = navController.previousBackStackEntry
 
     val selectSearchText = stringResource(R.string.invoice_purchase)
@@ -63,10 +76,27 @@ fun DeadlineAddActivity(
         selectedItems?.let{ ids ->
             if(ids.isNotEmpty()) {
                 println("println " + ids.size)
-                //actions.setPurchaseInvoices(ids)
+                actions.setPurchaseInvoices(ids)
             }
         }
         currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+    }
+
+    LaunchedEffect(expenseId) {
+        expenseId.let {
+            actions.populateView(expenseId, expenseType, labelNew)
+        }
+    }
+
+    LaunchedEffect(state.errorMessage) {
+        state.errorMessage?.let { message ->
+            snackbarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short
+            )
+            actions.resetErrorMessage()
+        }
+
     }
 
     Scaffold(
@@ -78,8 +108,12 @@ fun DeadlineAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.SingleDeadlineSummary(0, DeadlineType.Singola.toString())){
-                                popUpTo(NavigationRoute.DeadlineAdd){inclusive = true}
+                            actions.saveNewExpense() { id, type ->
+                                navController.navigate(
+                                    NavigationRoute.SingleDeadlineSummary(id, type.name)
+                                ) {
+                                    popUpTo(NavigationRoute.AllDeadlinesSummary) { inclusive = false }
+                                }
                             }
                         },
                         colors = IconButtonDefaults.iconButtonColors(
@@ -90,19 +124,10 @@ fun DeadlineAddActivity(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) { contentPadding ->
-        var selectedFrequency by remember { mutableStateOf(FrequencyType.Nessuna)}
-        var frequency_menu : List<MenuItem> = listOf(
-            MenuItem(Pair(1,""),FrequencyType.Anno.toString(), {selectedFrequency = FrequencyType.Anno}),
-            MenuItem(Pair(1,""),FrequencyType.Mese.toString(), {selectedFrequency = FrequencyType.Mese}),
-            MenuItem(Pair(1,""),FrequencyType.Settimana.toString(), {selectedFrequency = FrequencyType.Settimana})
-        )
-        var selectedType by remember{ mutableStateOf(DeadlineType.Tipo)}
-        var type_menu : List<MenuItem> = listOf(
-            MenuItem(Pair(1,""),DeadlineType.Singola.toString(), {selectedType = DeadlineType.Singola}),
-            MenuItem(Pair(1,""),DeadlineType.Periodica.toString(), {selectedType = DeadlineType.Periodica}),
-        )
+
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -115,72 +140,83 @@ fun DeadlineAddActivity(
             item{
                 SplitButtonMenu(
                     content =
-                        if(selectedType.equals(DeadlineType.Tipo)){
+                        if(state.expenseType == DeadlineType.Tipo){
                             stringResource(R.string.type)
                         }else{
-                            selectedType.toString()
+                            state.expenseType.name
                         },
-                    items = type_menu,
-                    heightMenu = (type_menu.size * 55).dp
+                    items = state.expenseTypeMenu,
+                    heightMenu = (state.expenseTypeMenu.size * 55).dp
                 )
             }
-            if(selectedType.equals(DeadlineType.Periodica)){
+            if(state.expenseType == DeadlineType.Periodica){
                 item{
                     SplitButtonMenu(
                         content =
-                            if(selectedFrequency.equals(FrequencyType.Nessuna)){
+                            if(state.frequency == FrequencyType.Nessuna){
                                 stringResource(R.string.frequency)
                             }else{
-                                selectedFrequency.toString()
+                                state.frequency.name
                             },
-                        items = frequency_menu,
-                        heightMenu = (frequency_menu.size * 55).dp
+                        items = state.frequencyMenu,
+                        heightMenu = (state.frequencyMenu.size * 55).dp
                     )
                 }
             }
             item{
                 SplitButtonMenu(
-                    content = stringResource(R.string.category),
-                    items = categorie_s_menu,
-                    heightMenu = (categorie_menu.size * 55).dp
+                    content =
+                        if(state.category == null){
+                            stringResource(R.string.category)
+                        }else if(state.category.id == 0 && state.category.name == labelNew) {
+                            labelNew
+                        }else{
+                            state.categoryView
+                        },
+                    items = state.categoriesMenu,
+                    heightMenu = 400.dp
                 )
+            }
+            if(state.category?.id == 0){
+                item{
+                    CustomOutlineTextField(
+                        label = "${stringResource(R.string.name)} ${stringResource(R.string.category)}",
+                        value = state.category.name,
+                        onValueChange = actions::setNewCategory
+                    )
+                }
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.name),
-                    onValueChange = {}
+                    value = state.name,
+                    onValueChange = actions::setName
                 )
             }
             item{
                 DatePickerFieldToModal(
                     title = stringResource(R.string.date_issue),
-                    onValueChange = {},
-                    value = ""
+                    onValueChange = actions::setIssueDate,
+                    value = state.issueDate?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: ""
                 )
             }
             item{
                 DatePickerFieldToModal(
                     title =
-                        if(selectedType.equals(DeadlineType.Singola)) {
+                        if(state.expenseType == DeadlineType.Singola) {
                                 stringResource(R.string.date_deadline)
                         }else{
                             stringResource(R.string.date_end)
                         },
-                    onValueChange = {},
-                    value = ""
-                )
-            }
-            item{
-                DatePickerFieldToModal(
-                    title = stringResource(R.string.date_payment),
-                    onValueChange = {},
-                    value = ""
+                    onValueChange = actions::setDeadlineDate,
+                    value = state.deadlineDate?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: ""
                 )
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.amount),
-                    onValueChange = {}
+                    value = if(state.amount != null) "${state.amount}" else "",
+                    onValueChange = actions::setAmount
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -194,7 +230,19 @@ fun DeadlineAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllPurchaseInvoices))}
+                    onClick = {
+                        if(state.purchaseInvoiceSelected.isNotEmpty()){
+                            navController.currentBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("initialIds", actions.getPurchaseInvoiceSelected())
+                        }
+                        navController.navigate(
+                            NavigationRoute.Select(
+                                selectSearchText,
+                                SelectKey.AllPurchaseInvoices,
+                            )
+                        )
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

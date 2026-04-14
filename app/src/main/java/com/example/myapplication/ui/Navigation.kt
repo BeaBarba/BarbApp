@@ -23,7 +23,7 @@ import com.example.myapplication.ui.screen.Statistics.AveragePaymentsTimesStatis
 import com.example.myapplication.ui.screen.Cart.CartActivity
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddActivity
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarActivity
-import com.example.myapplication.ui.screen.Deadline.DeadlineAddActivity
+import com.example.myapplication.ui.screen.Deadline.add.DeadlineAddActivity
 import com.example.myapplication.ui.screen.Home.HomeActivity
 import com.example.myapplication.ui.screen.Job.add.JobAddActivity
 import com.example.myapplication.ui.screen.Job.add.JobMaterialsActivity
@@ -56,6 +56,7 @@ import com.example.myapplication.ui.screen.WorkSite.SingleConstructionSummaryAct
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
+import com.example.myapplication.ui.screen.Deadline.add.DeadlineAddViewModel
 import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSummaryViewModel
 import com.example.myapplication.ui.screen.Deadline.singleSummary.SingleDeadlineSummaryViewModel
 import com.example.myapplication.ui.screen.Home.HomeViewModel
@@ -143,7 +144,7 @@ sealed interface NavigationRoute{
     @Serializable
     data class SingleCustomerSummary(val customerId : String) : NavigationRoute
     @Serializable
-    data class SingleDeadlineSummary(val id : Int, val type : String): NavigationRoute
+    data class SingleDeadlineSummary(val expenseId : Int, val type : String): NavigationRoute
     @Serializable
     data class SingleJobSummary(val jobId : Int) : NavigationRoute
     @Serializable
@@ -244,8 +245,11 @@ fun NavGraph(
             val state by customerAddVM.state.collectAsStateWithLifecycle()
             CustomerAddActivity(route.customerId, state, customerAddVM.actions, navController)
         }
-        composable<NavigationRoute.DeadlineAdd>{
-            DeadlineAddActivity(navController)
+        composable<NavigationRoute.DeadlineAdd>{ backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.DeadlineAdd>()
+            val deadlineAddVM = koinViewModel<DeadlineAddViewModel>()
+            val state by deadlineAddVM.state.collectAsStateWithLifecycle()
+            DeadlineAddActivity(route.id, DeadlineType.valueOf(route.type), state, deadlineAddVM.actions, navController)
         }
         composable<NavigationRoute.InvoiceAdd>{
             InvoiceAddActivity(navController)
@@ -292,8 +296,8 @@ fun NavGraph(
             val route = backStackEntry.toRoute<NavigationRoute.SingleDeadlineSummary>()
             val singleDeadlineSummaryVM = koinViewModel<SingleDeadlineSummaryViewModel>()
             val state by singleDeadlineSummaryVM.state.collectAsStateWithLifecycle()
-            SingleDeadlineSummaryActivity(route.id, DeadlineType.valueOf(route.type), state, singleDeadlineSummaryVM
-                .actions, navController)
+            SingleDeadlineSummaryActivity(route.expenseId, DeadlineType.valueOf(route.type), state,
+                singleDeadlineSummaryVM.actions, navController)
         }
         composable<NavigationRoute.SingleInvoiceSummary>{
             SingleInvoiceSummaryActivity(navController)
