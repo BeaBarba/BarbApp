@@ -16,7 +16,13 @@ interface RecurringExpenseDAO{
             "FROM SPESE_PERIODICHE " +
             "WHERE id = :id"
     )
-    fun getRecurringExpense(id : Int) : Flow<RecurringExpense?>
+    fun getFlowRecurringExpense(id : Int) : Flow<RecurringExpense?>
+
+    @Query("SELECT * " +
+            "FROM SPESE_PERIODICHE " +
+            "WHERE id = :id"
+    )
+    suspend fun getRecurringExpense(id : Int) : RecurringExpense?
 
     @Query("SELECT * " +
             "FROM SPESE_PERIODICHE"

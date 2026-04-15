@@ -247,13 +247,13 @@ data class RecurringExpense(
             entity = Payment::class,
             parentColumns = ["id"],
             childColumns = ["Pagamento"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = RecurringExpense::class,
             parentColumns = ["id"],
             childColumns = ["Spesa"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )

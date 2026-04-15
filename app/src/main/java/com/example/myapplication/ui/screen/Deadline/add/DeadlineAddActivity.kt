@@ -15,7 +15,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDefaults
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -24,7 +23,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -36,8 +34,6 @@ import com.example.myapplication.R
 import com.example.myapplication.data.modules.DeadlineType
 import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.data.modules.SelectKey
-import com.example.myapplication.debug.categorie_menu
-import com.example.myapplication.debug.categorie_s_menu
 import com.example.myapplication.debug.scadenze
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
@@ -45,10 +41,8 @@ import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
-import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -61,7 +55,9 @@ fun DeadlineAddActivity(
 ) {
     val labelNew = stringResource(R.string.new_item)
 
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
+
+    actions.populateView(expenseId, expenseType, labelNew)
 
     val previousBackStackEntry = navController.previousBackStackEntry
 
@@ -75,22 +71,15 @@ fun DeadlineAddActivity(
     LaunchedEffect(selectedItems) {
         selectedItems?.let{ ids ->
             if(ids.isNotEmpty()) {
-                println("println " + ids.size)
                 actions.setPurchaseInvoices(ids)
             }
         }
         currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
     }
 
-    LaunchedEffect(expenseId) {
-        expenseId.let {
-            actions.populateView(expenseId, expenseType, labelNew)
-        }
-    }
-
     LaunchedEffect(state.errorMessage) {
         state.errorMessage?.let { message ->
-            snackbarHostState.showSnackbar(
+            snackBarHostState.showSnackbar(
                 message = message,
                 duration = SnackbarDuration.Short
             )
@@ -125,7 +114,7 @@ fun DeadlineAddActivity(
                 }
             )
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
     ) { contentPadding ->
 
         LazyColumn(
@@ -168,7 +157,7 @@ fun DeadlineAddActivity(
                     content =
                         if(state.category == null){
                             stringResource(R.string.category)
-                        }else if(state.category.id == 0 && state.category.name == labelNew) {
+                        }else if(state.category.id == 0 || state.category.name == labelNew) {
                             labelNew
                         }else{
                             state.categoryView
@@ -249,7 +238,7 @@ fun DeadlineAddActivity(
             if(previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleDeadlineSummary>() == true) {
                 item {
                     DeleteButton {
-                        scadenze = scadenze.subList(1, scadenze.size)
+                        actions.deleteExpense()
                         navController.navigate(NavigationRoute.AllDeadlinesSummary){
                             popUpTo(NavigationRoute.AllDeadlinesSummary){inclusive = true}
                             launchSingleTop = true

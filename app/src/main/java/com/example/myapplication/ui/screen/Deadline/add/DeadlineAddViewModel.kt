@@ -35,7 +35,8 @@ data class DeadlineAddState(
     val categoriesMenu : List<MenuItem> = emptyList(),
     val frequencyMenu : List<MenuItem> = emptyList(),
     val expenseTypeMenu : List<MenuItem> = emptyList(),
-    val errorMessage : String? = null
+    val errorMessage : String? = null,
+    val started : Boolean = false
 )
 
 
@@ -54,7 +55,7 @@ interface DeadlineAddActions{
     fun saveNewExpense(onSuccess : (Int, DeadlineType) -> Unit)
     fun checkRequirements() : Boolean
     fun resetErrorMessage()
-    fun deleteExpense(id : Int)
+    fun deleteExpense()
 }
 
 class DeadlineAddViewModel(
@@ -68,10 +69,12 @@ class DeadlineAddViewModel(
     val actions = object : DeadlineAddActions{
 
         override fun populateView(expenseId : Int?, expenseType: DeadlineType, labelNew : String){
+
+            if(state.value.started) return
+
             val deadlineTypes = getDeadlineTypeMenu()
             val frequencies = getFrequencyMenu()
             viewModelScope.launch {
-                /*combine(){ oggetto return}.collect{gli oggetti -> _state.update{}*/
                 val categories = repository.accounting.categoryPurchaseInvoice.first()
                 val categoriesMenu = categories.map { category ->
                     MenuItem(
@@ -79,7 +82,9 @@ class DeadlineAddViewModel(
                         name = category.name,
                         onClick = { setCategory(Pair(category.id, category.name)) }
                     )
-                } +
+                }.sortedWith(
+                    compareBy{it.name}
+                ) +
                 MenuItem(
                     idValues = Pair(0, labelNew),
                     name = labelNew,
@@ -129,7 +134,8 @@ class DeadlineAddViewModel(
                         expenseTypeMenu = deadlineTypes,
                         frequencyMenu = frequencies,
                         categoriesMenu = categoriesMenu,
-                        categoryView = loadedState.category?.name ?: currentState.categoryView
+                        categoryView = loadedState.category?.name ?: currentState.categoryView,
+                        started = true
                     )
                 }
             }
@@ -211,6 +217,11 @@ class DeadlineAddViewModel(
             if(checkRequirements()) return
 
             viewModelScope.launch {
+                val category = CategoryPurchaseInvoice(
+                    id = currentState.category?.id ?: 0,
+                    name = currentState.category?.name ?: ""
+                )
+
                 when(currentState.expenseType){
                     DeadlineType.Singola -> {
                         val payment = Payment(
@@ -227,19 +238,18 @@ class DeadlineAddViewModel(
                                 purchaseInvoice = currentState.purchaseInvoiceSelected.firstOrNull(),
                                 payment = null
                             )
-                        val newExpenseId =  repository.accounting.saveSingleExpenseComplete(newExpense, payment)
+
+                        val newExpenseId =  repository.accounting.saveSingleExpenseComplete(newExpense, payment, category)
                         onSuccess(newExpenseId, DeadlineType.Singola)
                     }
-                    DeadlineType.Periodica -> { /* TODO fare transaction
-                        val paymentId = repository.accounting.upsertPayment(
-                            Payment(
+                    DeadlineType.Periodica -> {
+                        val payment = Payment(
                                 id = 0,
                                 issueDate = currentState.issueDate ?: LocalDate.now(),
                                 paymentDate = null
                             )
-                        ).toInt()
-                        val newExpenseId = repository.accounting.upsertRecurringExpense(
-                            RecurringExpense(
+
+                        val newExpense = RecurringExpense(
                                 id = currentState.expenseId ?: 0,
                                 name = currentState.name,
                                 frequency = currentState.frequency,
@@ -248,16 +258,12 @@ class DeadlineAddViewModel(
                                 endDate = currentState.deadlineDate,
                                 purchaseInvoice = currentState.purchaseInvoiceSelected.firstOrNull()
                             )
-                        ).toInt()
-                        repository.accounting.upsertRecurringPayment(
-                            RecurringPayment(
-                                payment = paymentId,
-                                recurringExpense = newExpenseId
-                            )
+                        val newExpenseId = repository.accounting.saveRecurringExpenseComplete(
+                                payment = payment,
+                                expense = newExpense,
+                                category = category
                         )
-                        repository.accounting.generateNextOrAllPayments(paymentId, newExpenseId)
                         onSuccess(newExpenseId, DeadlineType.Periodica)
-                        */
                     }
                     else -> {}
                 }
@@ -299,9 +305,24 @@ class DeadlineAddViewModel(
             return false
         }
 
-        override fun deleteExpense(id: Int) {
+        override fun deleteExpense() {
+            viewModelScope.launch {
+                val currentState = state.value
 
-            TODO("Not yet implemented")
+                when (currentState.expenseType) {
+                    DeadlineType.Singola -> {
+                        currentState.expenseId?.let {
+                            repository.accounting.deleteSingleExpenseComplete(currentState.expenseId)
+                        }
+                    }
+                    DeadlineType.Periodica ->{
+                        currentState.expenseId?.let{
+                            repository.accounting.deleteRecurringExpenseComplete(currentState.expenseId)
+                        }
+                    }
+                    else -> {}
+                }
+            }
         }
 
     }
@@ -335,11 +356,6 @@ class DeadlineAddViewModel(
     private fun checkIfStringIsFloat(value: String): Boolean {
         return value.toFloatOrNull() != null || value == ""
     }
-
-    /*TODO
-    *  creare la funzione di save
-    *  creare la funzione di delete  di una spesa.
-    *  */
 }
 
 

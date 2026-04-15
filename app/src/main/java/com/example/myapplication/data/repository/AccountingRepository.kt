@@ -18,9 +18,9 @@ import com.example.myapplication.data.database.SingleExpenseFullDetails
 import com.example.myapplication.data.modules.FrequencyType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import kotlin.math.sin
 
 class AccountingRepository (private val db : AppDatabase) {
 
@@ -63,11 +63,23 @@ class AccountingRepository (private val db : AppDatabase) {
     fun getCategoryPurchaseInvoiceById(id: Int): Flow<CategoryPurchaseInvoice?> =
         db.categoryPurchaseInvoiceDAO().getCategoryPurchaseInvoice(id)
 
-    suspend fun upsertCategoryPurchaseInvoice(category: CategoryPurchaseInvoice) =
+    suspend fun upsertCategoryPurchaseInvoice(category: CategoryPurchaseInvoice) : Long =
         db.categoryPurchaseInvoiceDAO().upsertCategoryPurchaseInvoice(category)
 
     suspend fun deleteCategoryPurchaseInvoice(category: CategoryPurchaseInvoice) =
         db.categoryPurchaseInvoiceDAO().deleteCategoryPurchaseInvoice(category)
+
+    private suspend fun checkCategoryId(category : CategoryPurchaseInvoice) : Int{
+        val categoryId =
+            if(category.id == 0){
+                val newId = upsertCategoryPurchaseInvoice(category).toInt()
+
+                if(newId == -1) 0 else newId
+            }else{
+                category.id
+            }
+        return categoryId
+    }
 
     /* SingleExpense */
     val singleExpenses = db.singleExpenseDAO().getAllSingleExpenses()
@@ -88,7 +100,9 @@ class AccountingRepository (private val db : AppDatabase) {
 
     suspend fun saveSingleExpenseComplete(
         singleExpense: SingleExpense,
-        payment : Payment) : Int
+        payment : Payment,
+        category : CategoryPurchaseInvoice
+    ) : Int
     = withContext(Dispatchers.IO){
         db.withTransaction {
             val paymentId =
@@ -101,7 +115,8 @@ class AccountingRepository (private val db : AppDatabase) {
                     payment.id
                 }
 
-            val expenseId = upsertSingleExpense(singleExpense.copy(payment = paymentId)).toInt()
+            val categoryId = checkCategoryId(category)
+            val expenseId = upsertSingleExpense(singleExpense.copy(payment = paymentId, category = categoryId)).toInt()
             val newExpenseId = if(expenseId == -1) singleExpense.id else expenseId
 
             return@withTransaction newExpenseId
@@ -111,11 +126,29 @@ class AccountingRepository (private val db : AppDatabase) {
     suspend fun deleteSingleExpense(singleExpense: SingleExpense) =
         db.singleExpenseDAO().deleteSingleExpense(singleExpense)
 
+    suspend fun deleteSingleExpenseComplete(singleExpenseId : Int) =
+        withContext(Dispatchers.IO){
+            db.withTransaction {
+                val singleExpense = getSingleExpenseFullDetailsById(singleExpenseId)
+
+                deleteSingleExpense(singleExpense.singleExpense)
+
+                singleExpense.payment?.let {
+                    deletePayment(singleExpense.payment)
+                }
+            }
+        }
+
     /* RecurringExpense */
     val recurringExpenses = db.recurringExpenseDAO().getAllRecurringExpenses()
 
-    fun getRecurringExpenseById(id: Int): Flow<RecurringExpense?> =
-        db.recurringExpenseDAO().getRecurringExpense(id)
+    fun getFlowRecurringExpenseById(id: Int): Flow<RecurringExpense?> =
+        db.recurringExpenseDAO().getFlowRecurringExpense(id)
+
+    private suspend fun getRecurringExpenseById(id : Int) : RecurringExpense? =
+        withContext(Dispatchers.IO){
+            db.recurringExpenseDAO().getRecurringExpense(id)
+        }
 
     fun getFlowRecurringExpenseFullDetailsById(recurringExpenseId : Int) : Flow<RecurringExpenseFullDetails?> =
         db.recurringExpenseDAO().getFlowRecurringExpenseFullDetails(recurringExpenseId)
@@ -129,25 +162,89 @@ class AccountingRepository (private val db : AppDatabase) {
     suspend fun upsertRecurringExpense(recurringExpense: RecurringExpense) : Long =
         db.recurringExpenseDAO().upsertRecurringExpense(recurringExpense)
 
+    suspend fun saveRecurringExpenseComplete(
+        expense : RecurringExpense,
+        payment : Payment,
+        category: CategoryPurchaseInvoice
+    ) : Int = withContext(Dispatchers.IO){
+        db.withTransaction {
+            val categoryId = checkCategoryId(category)
+
+            val finalExpense = expense.copy(category = categoryId)
+
+            val oldExpense = if (expense.id != 0) getRecurringExpenseById(expense.id) else null
+
+            if (oldExpense != null) {
+                val today = LocalDate.now()
+
+                val frequencyChanged = oldExpense.frequency != finalExpense.frequency
+                val endDateChanged = oldExpense.endDate != finalExpense.endDate
+
+                if (frequencyChanged || endDateChanged) {
+                    val obsoletePayments = getUnpaidFuturePaymentsByExpenseId(expense.id, today)
+                    deletePaymentsByIds(obsoletePayments)
+
+                }
+            }
+
+            val expenseId = upsertRecurringExpense(finalExpense).toInt()
+
+            val paymentId = upsertPayment(payment).toInt()
+            upsertRecurringPayment(RecurringPayment(paymentId, expenseId))
+
+            generateNextOrAllPayments(paymentId, expenseId)
+
+            return@withTransaction expenseId
+        }
+    }
+
     suspend fun deleteRecurringExpense(recurringExpense: RecurringExpense) =
         db.recurringExpenseDAO().deleteRecurringExpense(recurringExpense)
+
+    suspend fun deleteRecurringExpenseComplete(recurringExpenseId : Int) =
+        withContext(Dispatchers.IO){
+            db.withTransaction {
+                val recurringExpense = getRecurringExpenseFullDetailsById(recurringExpenseId)
+
+                recurringExpense.payments.forEach { payment ->
+                    deletePayment(payment.payment)
+                }
+
+                deleteRecurringExpense(recurringExpense.recurringExpense)
+            }
+        }
 
     /* Payment */
     val payments = db.paymentDAO().getAllPayments()
 
-    fun getPaymentById(id: Int): Flow<Payment?> = db.paymentDAO().getPayment(id)
+    fun getFlowPaymentById(id: Int): Flow<Payment?> = db.paymentDAO().getFlowPayment(id)
 
-    suspend fun updatePaymentDateById(id : Int, date : LocalDate?) =
-        db.paymentDAO().updatePaymentDate(id, date)
+    private suspend fun getPaymentById(id : Int) : Payment? =
+        withContext(Dispatchers.IO) {
+            db.paymentDAO().getPayment(id)
+        }
 
     suspend fun checkExistingNextPayment(date : LocalDate, expenseId : Int) : Boolean =
         withContext(Dispatchers.IO){
             db.paymentDAO().checkExistingNextPayment(date, expenseId) > 0
         }
 
+    private suspend fun getUnpaidFuturePaymentsByExpenseId(expenseId : Int, date : LocalDate) =
+        withContext(Dispatchers.IO){
+            db.paymentDAO().getUnpaidFuturePaymentsByExpense(expenseId, date)
+        }
+
     suspend fun upsertPayment(payment: Payment) : Long = db.paymentDAO().upsertPayment(payment)
 
+    suspend fun updatePaymentDateById(id : Int, date : LocalDate?) =
+        db.paymentDAO().updatePaymentDate(id, date)
+
     suspend fun deletePayment(payment: Payment) = db.paymentDAO().deletePayment(payment)
+
+    private suspend fun deletePaymentsByIds(ids : List<Int>) =
+        withContext(Dispatchers.IO){
+            db.paymentDAO().deletePaymentsByIds(ids)
+        }
 
     /* RecurringPayment */
     val recurringPayments = db.recurringPaymentDAO().getAllRecurringPayments()
@@ -165,8 +262,8 @@ class AccountingRepository (private val db : AppDatabase) {
         = withContext(Dispatchers.IO){
             db.withTransaction {
 
-                val expense = getRecurringExpenseById(expenseId).firstOrNull()
-                val payment = getPaymentById(paymentId).firstOrNull()
+                val expense = getRecurringExpenseById(expenseId)
+                val payment = getPaymentById(paymentId)
 
                 expense?.let {
                     if(expense.endDate != null ){
@@ -193,7 +290,7 @@ class AccountingRepository (private val db : AppDatabase) {
                             var lastIssueDate = payment.issueDate
                             val today = LocalDate.now()
 
-                            while (lastIssueDate.isBefore(today)) {
+                            while (!lastIssueDate.isAfter(today)) {
                                 val newDate = calculateNexDate(lastIssueDate, expense.frequency)
 
                                 if (!checkExistingNextPayment(newDate, expenseId)) {
@@ -211,7 +308,6 @@ class AccountingRepository (private val db : AppDatabase) {
                                         )
                                     )
                                 }
-
                                 lastIssueDate = newDate
                             }
                         }

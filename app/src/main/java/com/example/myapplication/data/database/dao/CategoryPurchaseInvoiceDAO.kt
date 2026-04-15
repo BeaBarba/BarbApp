@@ -22,7 +22,7 @@ interface CategoryPurchaseInvoiceDAO{
     fun getAllCategoriesPurchaseInvoice() : Flow<List<CategoryPurchaseInvoice>>
 
     @Upsert
-    suspend fun upsertCategoryPurchaseInvoice(category : CategoryPurchaseInvoice)
+    suspend fun upsertCategoryPurchaseInvoice(category : CategoryPurchaseInvoice) : Long
 
     @Delete
     suspend fun deleteCategoryPurchaseInvoice(category : CategoryPurchaseInvoice)
