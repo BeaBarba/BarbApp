@@ -63,7 +63,7 @@ import com.example.myapplication.data.database.dao.WorkSiteDAO
         Revenue::class
     ],
     views = [CartView::class],
-    version = 17
+    version = 19
 )
 @TypeConverters(
     DateConverters::class,

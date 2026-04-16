@@ -43,6 +43,10 @@ class JobRepository(
     fun getWorkSiteFullDetailsById(id: Int): Flow<WorkSiteFullDetails?> =
         db.workSiteDAO().getWorkSiteFullDetails(id)
 
+    suspend fun getFlowAllWorkSiteFullDetails(): Flow<List<WorkSiteFullDetails>> = withContext(Dispatchers.IO) {
+        db.workSiteDAO().getFlowAllWorkSitesFullDetails()
+    }
+
     suspend fun getAllWorkSiteFullDetails(): List<WorkSiteFullDetails> = withContext(Dispatchers.IO) {
         db.workSiteDAO().getAllWorkSitesFullDetails()
     }
@@ -60,7 +64,7 @@ class JobRepository(
             val materialsRestock = getAllFutureMaterialsByJobId(job.id)
 
             materialsRestock.forEach{ item ->
-               inventory.incMaterialAvailableQuantity(item.material, item.quantity)
+               inventory.offsetMaterialAvailableQuantity(item.material, item.quantity)
             }
 
             db.jobDAO().deleteJob(job)

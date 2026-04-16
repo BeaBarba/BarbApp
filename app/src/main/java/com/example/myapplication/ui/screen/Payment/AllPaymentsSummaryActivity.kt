@@ -42,8 +42,7 @@ fun AllPaymentsSummaryActivity(
                 id = stringResource(R.string.payments),
                 trailingIcon = {DropDownMenuPayments()}
             )
-        },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.PaymentAdd)}}
+        }
     ) {contentPadding ->
         var showItems by remember {mutableStateOf(false)}
         LazyColumn(

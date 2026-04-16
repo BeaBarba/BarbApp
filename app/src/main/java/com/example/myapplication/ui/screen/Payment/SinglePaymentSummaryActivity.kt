@@ -47,19 +47,6 @@ fun SinglePaymentSummaryActivity(
             TopAppBar(
                 navigationIcon = {BackButton{navController.navigateUp()}},
                 id = stringResource(R.string.payment),
-                trailingIcon = {
-                    IconButton(
-                        onClick = {navController.navigate(NavigationRoute.PaymentAdd)},
-                        colors = IconButtonDefaults.iconButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onPrimary
-                        )
-                    ){
-                        Icon(
-                            painter = painterResource(R.drawable.edit_square_24dp),
-                            contentDescription = stringResource(R.string.edit)
-                        )
-                    }
-                }
             )
         }
     ){ contentPadding ->

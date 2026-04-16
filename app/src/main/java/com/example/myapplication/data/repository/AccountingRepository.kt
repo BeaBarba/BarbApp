@@ -333,7 +333,12 @@ class AccountingRepository (private val db : AppDatabase) {
         db.revenuesDAO().getRevenueFullDetails(id)
 
     suspend fun getAllRevenuesFullDetails(): List<RevenueFullDetails> =
-        db.revenuesDAO().getAllRevenuesFullDetails()
+        withContext(Dispatchers.IO) {
+            db.revenuesDAO().getAllRevenuesFullDetails()
+        }
+
+    suspend fun getFlowAllRevenuesFullDetails(): Flow<List<RevenueFullDetails>> =
+        db.revenuesDAO().getFlowAllRevenuesFullDetails()
 
     private fun calculateNewDates(issueDate : LocalDate, endDate: LocalDate, frequency : FrequencyType) :
             List<LocalDate>{

@@ -52,4 +52,11 @@ interface RevenueDAO{
         "FROM RICAVI "
     )
     fun getAllRevenuesFullDetails() : List<RevenueFullDetails>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+                "FROM RICAVI "
+    )
+    fun getFlowAllRevenuesFullDetails() : Flow<List<RevenueFullDetails>>
 }

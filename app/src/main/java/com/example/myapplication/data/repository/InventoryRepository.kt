@@ -32,14 +32,16 @@ class InventoryRepository(private val db : AppDatabase){
     /* Material */
     val materials = db.materialDAO().getAllMaterials()
 
-    fun getMaterialById(id: Int): Flow<Material?> = db.materialDAO().getMaterial(id)
+    fun getFlowMaterialById(id: Int): Flow<Material?> = db.materialDAO().getFlowMaterial(id)
+
+    fun getMaterialById(id: Int): Material? = db.materialDAO().getMaterial(id)
 
     fun getMaterialFullDetailsById(id: Int): Flow<MaterialFullDetails?> =
-        db.materialDAO().getMaterialFullDetails(id)
+        db.materialDAO().getFlowMaterialFullDetails(id)
 
-    suspend fun incMaterialAvailableQuantity(materialId : Int, quantity : Float) =
+    suspend fun offsetMaterialAvailableQuantity(materialId : Int, quantity : Float) =
         db.withTransaction {
-            val material = getMaterialById(materialId).first()
+            val material = getMaterialById(materialId)
 
             material.let {mat ->
                 db.materialDAO().upsertMaterial(

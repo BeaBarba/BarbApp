@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.os.Bundle
 import android.Manifest
+import android.content.pm.PackageManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -12,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
@@ -82,7 +84,7 @@ class MainActivity : ComponentActivity() {
                 Theme.System -> isSystemInDarkTheme()
             }
 
-            val isLocationRequested by userPreferencesRepository.isLocationRequested.collectAsState(initial = true)
+            val isLocationRequested by userPreferencesRepository.isLocationRequested.collectAsState(initial = false)
 
             val locationPermissionLauncher = rememberLauncherForActivityResult(
                 ActivityResultContracts.RequestMultiplePermissions()
@@ -92,8 +94,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            LaunchedEffect(isLocationRequested) {
-                if (!isLocationRequested) {
+            LaunchedEffect(Unit) {
+                val fineLocation = ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+
+                if (fineLocation != PackageManager.PERMISSION_GRANTED) {
                     locationPermissionLauncher.launch(
                         arrayOf(
                             Manifest.permission.ACCESS_FINE_LOCATION,

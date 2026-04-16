@@ -60,9 +60,11 @@ import com.example.myapplication.ui.screen.Deadline.add.DeadlineAddViewModel
 import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSummaryViewModel
 import com.example.myapplication.ui.screen.Deadline.singleSummary.SingleDeadlineSummaryViewModel
 import com.example.myapplication.ui.screen.Home.HomeViewModel
-import com.example.myapplication.ui.screen.Invoice.AllInvoicesSummaryActivity
+import com.example.myapplication.ui.screen.Invoice.allSummary.AllInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.Invoice.InvoiceAddActivity
 import com.example.myapplication.ui.screen.Invoice.SingleInvoiceSummaryActivity
+import com.example.myapplication.ui.screen.Invoice.allSummary.AllInvoiceSummaryActions
+import com.example.myapplication.ui.screen.Invoice.allSummary.AllInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
@@ -108,15 +110,11 @@ sealed interface NavigationRoute{
     @Serializable
     data object JobStatistics : NavigationRoute
     @Serializable
-    data object ConstructionAdd : NavigationRoute
-    @Serializable
-    data object InvoiceAdd : NavigationRoute
+    data object WorkSiteAdd : NavigationRoute
     @Serializable
     data object MaterialAdd : NavigationRoute
     @Serializable
     data object PaymentAdd : NavigationRoute
-    @Serializable
-    data object SingleInvoiceSummary : NavigationRoute
     @Serializable
     data object SinglePaymentSummary : NavigationRoute
     @Serializable
@@ -133,6 +131,8 @@ sealed interface NavigationRoute{
     @Serializable
     data class DeadlineAdd(val id: Int?, val type : String) : NavigationRoute
     @Serializable
+    data class InvoiceAdd(val id : Int?) : NavigationRoute
+    @Serializable
     data class JobAdd(val jobId : Int?) : NavigationRoute
     @Serializable
     data class PurchaseInvoiceAdd(val purchaseInvoiceId : Int?) : NavigationRoute
@@ -145,6 +145,8 @@ sealed interface NavigationRoute{
     data class SingleCustomerSummary(val customerId : String) : NavigationRoute
     @Serializable
     data class SingleDeadlineSummary(val expenseId : Int, val type : String): NavigationRoute
+    @Serializable
+    data class SingleInvoiceSummary(val invoiceId : Int) : NavigationRoute
     @Serializable
     data class SingleJobSummary(val jobId : Int) : NavigationRoute
     @Serializable
@@ -200,7 +202,9 @@ fun NavGraph(
             AllDeadlinesSummaryActivity(state, allDeadlinesSummaryVM.actions, navController)
         }
         composable<NavigationRoute.AllInvoicesSummary> {
-            AllInvoicesSummaryActivity(navController)
+            val allInvoiceSummaryVM = koinViewModel<AllInvoicesSummaryViewModel>()
+            val state by allInvoiceSummaryVM.state.collectAsStateWithLifecycle()
+            AllInvoicesSummaryActivity(state, allInvoiceSummaryVM.actions, navController)
         }
         composable<NavigationRoute.AllJobsSummary>{
             val allJobsSummaryVM = koinViewModel<AllJobsSummaryViewModel>()
@@ -269,7 +273,7 @@ fun NavGraph(
         composable<NavigationRoute.PurchaseInvoiceAdd>{
             PurchaseInvoiceAddActivity(navController)
         }
-        composable<NavigationRoute.ConstructionAdd> {
+        composable<NavigationRoute.WorkSiteAdd> {
             ConstructionAddActivity(navController)
         }
 

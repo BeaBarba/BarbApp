@@ -22,6 +22,7 @@ import com.example.myapplication.ui.screen.Deadline.add.DeadlineAddViewModel
 import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSummaryViewModel
 import com.example.myapplication.ui.screen.Deadline.singleSummary.SingleDeadlineSummaryViewModel
 import com.example.myapplication.ui.screen.Home.HomeViewModel
+import com.example.myapplication.ui.screen.Invoice.allSummary.AllInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
@@ -85,43 +86,46 @@ val appModule = module{
     /* Home */
     viewModel {HomeViewModel(get())}
 
-    /* Cart */
-    viewModel {CartViewModel(get())}
-
-    /* Customer */
-    viewModel {AllCustomersSummaryViewModel(get())}
-    viewModel {SingleCustomerSummaryViewModel(get())}
-    viewModel {CustomerAddViewModel(get())}
-
     /* Select */
     viewModel {SelectViewModel(get())}
+
+    /* Cart */
+    viewModel {CartViewModel(get())}
 
     /* Address */
     viewModel {AddressAddViewModel(get())}
     viewModel {SingleAddressSummaryViewModel(get())}
-
-    /* Calendar */
-    viewModel {TodayCalendarViewModel(get())}
-    viewModel {DayCalendarViewModel(get())}
 
     /* Bubbles */
     viewModel {AllBubblesSummaryViewModel(get())}
     viewModel {BubbleAddViewModel(get())}
     viewModel {SingleBubbleSummaryViewModel(get())}
 
+    /* Calendar */
+    viewModel {TodayCalendarViewModel(get())}
+    viewModel {DayCalendarViewModel(get())}
+
+    /* Customer */
+    viewModel {AllCustomersSummaryViewModel(get())}
+    viewModel {SingleCustomerSummaryViewModel(get())}
+    viewModel {CustomerAddViewModel(get())}
+
+    /* Deadlines */
+    viewModel {AllDeadlinesSummaryViewModel(get())}
+    viewModel {SingleDeadlineSummaryViewModel(get())}
+    viewModel {DeadlineAddViewModel(get())}
+
     /* Job */
     viewModel {AllJobsSummaryViewModel(get())}
     viewModel {JobAddViewModel(get())}
     viewModel {SingleJobSummaryViewModel(get())}
+
+    /* Invoice */
+    viewModel {AllInvoicesSummaryViewModel(get())}
 
     /* Material */
     viewModel {SingleMaterialSummaryViewModel(get())}
 
     /* Purchase Invoice */
     viewModel {AllPurchaseInvoicesSummaryViewModel(get())}
-
-    /* Deadlines */
-    viewModel {AllDeadlinesSummaryViewModel(get())}
-    viewModel {SingleDeadlineSummaryViewModel(get())}
-    viewModel {DeadlineAddViewModel(get())}
 }

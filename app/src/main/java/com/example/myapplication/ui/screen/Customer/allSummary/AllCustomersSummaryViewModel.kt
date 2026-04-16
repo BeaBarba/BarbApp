@@ -49,10 +49,10 @@ class AllCustomersSummaryViewModel(
         override fun setSearchString(searchString: String) {
             _state.update { it.copy(
                     searchString = searchString,
-                    customersToView = searchFilter(searchString, state.value.customers)
+                    customersToView = searchFilter(searchString, state.value.customers),
+                    startingChar = state.value.sortingFunction(getStartingChar(state.value.customersToView))
                 )
             }
-            _state.update {it.copy(startingChar = state.value.sortingFunction(getStartingChar(state.value.customersToView)))}
         }
 
         override fun setAscendingSort() {

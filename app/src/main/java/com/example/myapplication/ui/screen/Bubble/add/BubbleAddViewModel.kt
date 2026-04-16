@@ -214,7 +214,7 @@ class BubbleAddViewModel(
 
             viewModelScope.launch(Dispatchers.IO) {
                 val newMaterials = newIdsToFetch.mapNotNull { id ->
-                    repository.inventory.getMaterialById(id).firstOrNull()?.let { material ->
+                    repository.inventory.getMaterialById(id)?.let { material ->
                         MaterialBubble(
                             material = material,
                             quantity = 0.0f,

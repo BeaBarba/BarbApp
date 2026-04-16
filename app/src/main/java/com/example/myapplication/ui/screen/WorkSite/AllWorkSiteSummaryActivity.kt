@@ -41,7 +41,7 @@ fun AllConstructionSummaryActivity(
                 navigationIcon = {BackButton{navController.navigateUp()}},
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.ConstructionAdd)}}
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.WorkSiteAdd)}}
     ) { contentPadding ->
         var showItems by remember {mutableStateOf(false)}
         LazyColumn(

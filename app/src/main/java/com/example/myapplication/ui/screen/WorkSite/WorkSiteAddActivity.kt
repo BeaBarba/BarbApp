@@ -76,7 +76,7 @@ fun ConstructionAddActivity(
                     IconButton(
                         onClick = {
                             navController.navigate(NavigationRoute.SingleWorkSiteSummary){
-                                popUpTo(NavigationRoute.ConstructionAdd){inclusive = true}
+                                popUpTo(NavigationRoute.WorkSiteAdd){inclusive = true}
                             }
                         },
                         colors = IconButtonDefaults.iconButtonColors(

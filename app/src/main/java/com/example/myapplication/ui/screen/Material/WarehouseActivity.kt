@@ -65,6 +65,7 @@ fun WarehouseActivity(
                 .fillMaxSize()
         ) {
             item{CustomSearchBar(stringResource(R.string.material), onValueChange = {})}
+            item{Spacer(Modifier.size(8.dp))}
             items(prodotti){ item ->
                 var quantity by remember {mutableStateOf(item.quantita)}
                 if(quantity > 0){

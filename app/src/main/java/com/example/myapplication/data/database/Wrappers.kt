@@ -295,6 +295,29 @@ data class JobFullDetails(
     val revenue: List<Revenue?>
 )
 
+data class WorkSiteAssignmentDetails(
+    @Embedded val workSite : WorkSite,
+
+    @Relation(
+        parentColumn = "Indirizzo",
+        entityColumn = "id"
+    )
+    val address : Address,
+
+    @Relation(
+        entity = Customer::class,
+        parentColumn = "Cliente",
+        entityColumn = "CF"
+    )
+    val customer : CustomerTypeDetails?,
+
+    @Relation(
+        parentColumn = "Responsabile",
+        entityColumn = "id"
+    )
+    val manager : Reference?,
+)
+
 data class WorkSiteFullDetails(
     @Embedded val workSite : WorkSite,
 
@@ -361,16 +384,18 @@ data class RevenueFullDetails(
     @Embedded val revenue: Revenue,
 
     @Relation(
+        entity = WorkSite::class,
         parentColumn = "Cantiere",
         entityColumn = "id"
     )
-    val workSite : WorkSite?,
+    val workSite : WorkSiteAssignmentDetails?,
 
     @Relation(
+        entity = Job::class,
         parentColumn = "Intervento",
         entityColumn = "id"
     )
-    val job : Job?
+    val job : JobAssignmentDetails?
 )
 
 data class FutureJobMaterialWithJobDetails(

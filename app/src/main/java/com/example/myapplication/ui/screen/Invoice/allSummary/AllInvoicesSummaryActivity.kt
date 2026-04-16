@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Invoice
+package com.example.myapplication.ui.screen.Invoice.allSummary
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -16,16 +16,18 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun AllInvoicesSummaryActivity(
+    state : AllInvoiceSummaryState,
+    actions : AllInvoiceSummaryActions,
     navController : NavHostController
 ){
     Scaffold(
@@ -36,9 +38,10 @@ fun AllInvoicesSummaryActivity(
                 id = stringResource(R.string.invoices)
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.InvoiceAdd)}}
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.InvoiceAdd(null))}}
 
     ) { contentPadding ->
+
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -48,12 +51,19 @@ fun AllInvoicesSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            item{CustomSearchBar(stringResource(R.string.invoice), onValueChange = {})}
-            items(pagamenti){ item ->
+            item{
+                CustomSearchBar(
+                    label = stringResource(R.string.invoice),
+                    value = state.searchString,
+                    onValueChange = actions::searchInvoice
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
+            items(state.invoicesView){ item ->
                 GenericCard(
-                    text = item.fattura + " - " + item.cliente,
-                    textDescription = item.data,
-                    onClick = {navController.navigate(NavigationRoute.SingleInvoiceSummary)}
+                    text = actions.getTitle(item.revenue.id),
+                    textDescription = item.revenue.issueDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    onClick = {navController.navigate(NavigationRoute.SingleInvoiceSummary(item.revenue.id))}
                 )
                 Spacer(Modifier.size(8.dp))
             }
