@@ -15,12 +15,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.LocalDate
 
 data class MaterialBubble(
     val material: Material,
-    val quantity : Float,
-    val unitPrice: Float,
+    val quantity : BigDecimal,
+    val unitPrice: BigDecimal,
     val vatNumber : Int,
     val delivery: Delivery? = null
 )
@@ -122,8 +123,8 @@ class BubbleAddViewModel(
                 val materialsList = existingMaterialsDelivery.map { item ->
                     MaterialBubble(
                         material = item.material,
-                        quantity = item.delivery.quantity,
-                        unitPrice = item.delivery.unitPrice,
+                        quantity = item.delivery.quantity.toBigDecimal(),
+                        unitPrice = item.delivery.unitPrice.toBigDecimal(),
                         vatNumber = item.delivery.vatNumber,
                         delivery = item.delivery
                     )
@@ -176,8 +177,8 @@ class BubbleAddViewModel(
                         val delivery = Delivery(
                             bubble = idBubble,
                             material = it.material.id,
-                            quantity = it.quantity,
-                            unitPrice = it.unitPrice,
+                            quantity = it.quantity.toFloat(),
+                            unitPrice = it.unitPrice.toFloat(),
                             vatNumber = it.vatNumber
                         )
                         repository.inventory.upsertDelivery(delivery)
@@ -217,8 +218,8 @@ class BubbleAddViewModel(
                     repository.inventory.getMaterialById(id)?.let { material ->
                         MaterialBubble(
                             material = material,
-                            quantity = 0.0f,
-                            unitPrice = 0.0f,
+                            quantity = BigDecimal.ZERO,
+                            unitPrice = BigDecimal.ZERO,
                             vatNumber = 0
                         )
                     }
@@ -231,8 +232,8 @@ class BubbleAddViewModel(
         }
 
         override fun setQuantityMaterial(material: Material, quantity: String) {
-            if (checkIfStringIsInt(quantity)) {
-                val quantityToSet = if (quantity == "") 0f else quantity.toFloat()
+            if (checkIfStringIsBigDecimal(quantity)) {
+                val quantityToSet = if (quantity == "") BigDecimal.ZERO else quantity.toBigDecimal()
                 val newMaterials = state.value.materialsSelected.map {
                     MaterialBubble(
                         material = it.material,
@@ -251,8 +252,8 @@ class BubbleAddViewModel(
         }
 
         override fun setUnitPriceMaterial(material: Material, unitPrice: String) {
-            if (checkIfStringIsFloat(unitPrice)) {
-                val unitPriceToSet: Float = if (unitPrice == "") 0.0f else unitPrice.toFloat()
+            if (checkIfStringIsBigDecimal(unitPrice)) {
+                val unitPriceToSet = if (unitPrice == "") BigDecimal.ZERO else unitPrice.toBigDecimal()
                 val newMaterials = state.value.materialsSelected.map {
                     MaterialBubble(
                         material = it.material,
@@ -316,7 +317,7 @@ class BubbleAddViewModel(
         return value.all { char -> char.isDigit() }
     }
 
-    private fun checkIfStringIsFloat(value: String): Boolean {
-        return value.toFloatOrNull() != null || value == ""
+    private fun checkIfStringIsBigDecimal(value: String): Boolean {
+        return value.toBigDecimalOrNull() != null || value.isBlank()
     }
 }

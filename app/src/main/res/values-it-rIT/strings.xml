@@ -155,4 +155,6 @@
     <string name="date_payment">Data pagamento</string>
     <string name="house_number">Civico</string>
     <string name="new_item">Nuovo</string>
+    <string name="amountPaid">Importo pagato</string>
+    <string name="cancel">Annulla</string>
 </resources>

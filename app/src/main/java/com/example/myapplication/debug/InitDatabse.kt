@@ -2007,21 +2007,25 @@ object SeedDatabase {
 
     suspend fun seedRevenue(repository: Repository){
         val revenues = listOf(
-            Revenue(id = 1, invoice = 101, issueDate = LocalDate.of(2023, 10, 15), amount = 450f, percent = 100, collectionDate = LocalDate.of(2023, 10, 20), worksite = 10, job = null),
-            Revenue(id = 2, invoice = 102, issueDate = LocalDate.of(2023, 5, 20), amount = 2500f, percent = 30, collectionDate = LocalDate.of(2023, 6, 15), worksite = 11, job = null),
-            Revenue(id = 3, invoice = 103, issueDate = LocalDate.of(2022, 3, 5), amount = 1200f, percent = 100, collectionDate = LocalDate.of(2022, 4, 10), worksite = 1, job = null),
-            Revenue(id = 4, invoice = 104, issueDate = LocalDate.of(2023, 6, 30), amount = 3500f, percent = 50, collectionDate = null, worksite = 18, job = null),
-            Revenue(id = 5, invoice = 105, issueDate = LocalDate.of(2023, 5, 5), amount = 850f, percent = 100, collectionDate = LocalDate.of(2023, 5, 20), worksite = 32, job = null),
-            Revenue(id = 6, invoice = 201, issueDate = LocalDate.of(2024, 1, 16), amount = 85.5f, percent = 100, collectionDate = LocalDate.of(2024, 1, 16), worksite = null, job = 6),
-            Revenue(id = 7, invoice = 202, issueDate = LocalDate.of(2024, 1, 21), amount = 120f, percent = 100, collectionDate = LocalDate.of(2024, 2, 5), worksite = null, job = 7),
-            Revenue(id = 8, invoice = 203, issueDate = LocalDate.of(2023, 6, 11), amount = 350f, percent = 100, collectionDate = LocalDate.of(2023, 6, 11), worksite = null, job = 18),
-            Revenue(id = 9, invoice = 204, issueDate = LocalDate.of(2026, 2, 11), amount = 150f, percent = 100, collectionDate = null, worksite = null, job = 9),
-            Revenue(id = 10, invoice = 106, issueDate = LocalDate.of(2023, 4, 1), amount = 5000f, percent = 60, collectionDate = LocalDate.of(2023, 4, 15), worksite = 13, job = null),
-            Revenue(id = 11, invoice = 107, issueDate = LocalDate.of(2023, 10, 5), amount = 3300f, percent = 40, collectionDate = LocalDate.of(2023, 11, 1), worksite = 13, job = null),
-            Revenue(id = 12, invoice = 1, issueDate = LocalDate.of(2026, 2, 17), amount = 2526.3f, percent = 0, collectionDate = null, worksite = 54, job = null),
-            Revenue(id = 13, invoice = 2, issueDate = LocalDate.of(2026, 2, 18), amount = 6000f, percent = 40, collectionDate = LocalDate.of(2026, 3, 4), worksite = null, job = 135),
-            Revenue(id = 14, invoice = 100, issueDate = LocalDate.of(2022, 3, 17), amount = 3000f, percent = 90, collectionDate = LocalDate.of(2024, 5, 2), worksite = 2, job = null),
-            Revenue(id = 15, invoice = 6, issueDate = LocalDate.of(2024, 1, 20), amount = 200f, percent = 50, collectionDate = LocalDate.of(2024, 1, 25), worksite = null, job = 6)
+            Revenue(id = 1, invoice = 101, issueDate = LocalDate.of(2023, 10, 15), amount = 450f,  amountPaid = 450f,
+                percent = 100, collectionDate = LocalDate.of(2023, 10, 20), worksite = 10, job = null),
+            Revenue(id = 2, invoice = 102, issueDate = LocalDate.of(2023, 5, 20), amount = 2500f,  amountPaid =
+            750f, percent = 30, collectionDate = LocalDate.of(2023, 6, 15), worksite = 11, job = null),
+            Revenue(id = 3, invoice = 103, issueDate = LocalDate.of(2022, 3, 5), amount = 1200f, amountPaid = 1200f,
+                percent = 100, collectionDate = LocalDate.of(2022, 4, 10), worksite = 1, job = null),
+            Revenue(id = 4, invoice = 104, issueDate = LocalDate.of(2023, 6, 30), amount = 3500f, amountPaid = 1750f, percent = 50, collectionDate = null, worksite = 18, job = null),
+            Revenue(id = 5, invoice = 105, issueDate = LocalDate.of(2023, 5, 5), amount = 850f,  amountPaid = 850f, percent = 100, collectionDate = LocalDate.of(2023, 5, 20), worksite = 32, job = null),
+            Revenue(id = 6, invoice = 201, issueDate = LocalDate.of(2024, 1, 16), amount = 85.5f,  amountPaid = 85.5f, percent = 100, collectionDate = LocalDate.of(2024, 1, 16), worksite = null, job = 6),
+            Revenue(id = 7, invoice = 202, issueDate = LocalDate.of(2024, 1, 21), amount = 120f,  amountPaid = 120f, percent = 100, collectionDate = LocalDate.of(2024, 2, 5), worksite = null, job = 7),
+            Revenue(id = 8, invoice = 203, issueDate = LocalDate.of(2023, 6, 11), amount = 350f,  amountPaid = 350f, percent = 100, collectionDate = LocalDate.of(2023, 6, 11), worksite = null, job = 18),
+            Revenue(id = 9, invoice = 204, issueDate = LocalDate.of(2026, 2, 11), amount = 150f,  amountPaid = 150f, percent = 100, collectionDate = null, worksite = null, job = 9),
+            Revenue(id = 10, invoice = 106, issueDate = LocalDate.of(2023, 4, 1), amount = 5000f,  amountPaid = 3000f, percent = 60, collectionDate = LocalDate.of(2023, 4, 15), worksite = 13, job = null),
+            Revenue(id = 11, invoice = 107, issueDate = LocalDate.of(2023, 10, 5), amount = 3300f,  amountPaid = 1320f, percent = 40, collectionDate = LocalDate.of(2023, 11, 1), worksite = 13, job = null),
+            Revenue(id = 12, invoice = 1, issueDate = LocalDate.of(2026, 2, 17), amount = 2526.0f,  amountPaid = 0f,
+                percent = 0, collectionDate = null, worksite = 54, job = null),
+            Revenue(id = 13, invoice = 2, issueDate = LocalDate.of(2026, 2, 18), amount = 6000f,  amountPaid = 2400f, percent = 40, collectionDate = LocalDate.of(2026, 3, 4), worksite = null, job = 135),
+            Revenue(id = 14, invoice = 100, issueDate = LocalDate.of(2022, 3, 17), amount = 3000f,  amountPaid = 2700f, percent = 90, collectionDate = LocalDate.of(2024, 5, 2), worksite = 2, job = null),
+            Revenue(id = 15, invoice = 6, issueDate = LocalDate.of(2024, 1, 20), amount = 200f,  amountPaid = 100f, percent = 50, collectionDate = LocalDate.of(2024, 1, 25), worksite = null, job = 6)
         )
 
         revenues.forEach { revenue ->

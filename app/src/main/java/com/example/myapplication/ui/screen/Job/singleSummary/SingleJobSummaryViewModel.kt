@@ -13,7 +13,7 @@ import java.math.BigDecimal
 
 data class SingleJobSummaryState(
     val job : JobFullDetails? = null,
-    val price : Float = 0.0f,
+    val price : BigDecimal = BigDecimal.ZERO,
     val materials : List<Pair<Material,Float>> = emptyList()
 )
 
@@ -45,9 +45,9 @@ class SingleJobSummaryViewModel(
                     _state.update {
                         it.copy(
                             job = data,
-                            price = data?.revenue?.fold(BigDecimal.ZERO) { acc, item ->
-                                acc.add(item?.amount?.toBigDecimal() ?: BigDecimal.ZERO)
-                            }?.toFloat() ?: BigDecimal.ZERO.toFloat(),
+                            price = data?.revenue?.fold(BigDecimal.ZERO) { partialTot, item ->
+                                partialTot.add(item?.amount?.toBigDecimal() ?: BigDecimal.ZERO)
+                            } ?: BigDecimal.ZERO,
                             materials = finalMaterials
                         )
                     }

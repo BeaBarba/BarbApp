@@ -95,7 +95,7 @@ fun MenuTitle(text : String){
 }
 
 @Composable
-fun Order(
+fun Sort(
     text : String = stringResource(R.string.sorting),
     onClickAscending : () -> Unit,
     onClickDescending : () -> Unit
@@ -236,7 +236,7 @@ fun DropDownMenuBubbles(
                     onClick = {dateOnClick()}
                 )
                 MenuDivider()
-                Order(onClickAscending = {ascendingOnClick()}, onClickDescending = {descendingOnClick()})
+                Sort(onClickAscending = {ascendingOnClick()}, onClickDescending = {descendingOnClick()})
             }
         }
     }
@@ -272,7 +272,7 @@ fun DropDownMenuCleaning(){
 
                 MenuDivider()
 
-                Order(onClickAscending = {}, onClickDescending = {})
+                Sort(onClickAscending = {}, onClickDescending = {})
             }
         }
     }
@@ -338,7 +338,7 @@ fun DropDownMenuJobs(
 
                 MenuDivider()
 
-                Order(onClickAscending = {ascendingOnClick()}, onClickDescending = {descendingOnClick()})
+                Sort(onClickAscending = {ascendingOnClick()}, onClickDescending = {descendingOnClick()})
             }
         }
     }
@@ -415,19 +415,28 @@ fun DropDownMenuCustomers(
 
                 MenuDivider()
 
-                Order(onClickAscending = onClickAscending, onClickDescending = onClickDescending)
+                Sort(onClickAscending = onClickAscending, onClickDescending = onClickDescending)
             }
         }
     }
 }
 
 @Composable
-fun DropDownMenuPayments(){
+fun DropDownMenuPayments(
+    ascendingAmountOnClick: () -> Unit,
+    descendingAmountOnClick: () -> Unit,
+    ascendingDateOnClick: () -> Unit,
+    descendingDateOnClick: () -> Unit
+){
     var expanded by remember { mutableStateOf(false) }
 
     Box(){
         IconButton(onClick = {expanded = !expanded}) {
-            Icon(Icons.Filled.FilterAlt, contentDescription = stringResource(R.string.filters), tint = MaterialTheme.colorScheme.onPrimary)
+            Icon(
+                imageVector = Icons.Filled.FilterAlt,
+                contentDescription = stringResource(R.string.filters),
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
         }
 
         CustomDropDownMenu(
@@ -435,11 +444,19 @@ fun DropDownMenuPayments(){
             onDismissRequest = {expanded = false}
         ) {
             Column(modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
-                Order(stringResource(R.string.amount), {}, {})
+                Sort(
+                    stringResource(R.string.amount),
+                    onClickAscending = ascendingAmountOnClick,
+                    onClickDescending = descendingAmountOnClick
+                )
 
                 MenuDivider()
 
-                Order(stringResource(R.string.date_issue), {}, {})
+                Sort(
+                    stringResource(R.string.date_issue),
+                    onClickAscending = ascendingDateOnClick,
+                    onClickDescending = descendingDateOnClick
+                )
             }
         }
     }
@@ -498,7 +515,7 @@ fun DropDownMenuDeadlines(
                 }
 
                 MenuDivider()
-                Order(onClickDescending = {descendingOnClick()}, onClickAscending = {ascendingOnClick()})
+                Sort(onClickDescending = {descendingOnClick()}, onClickAscending = {ascendingOnClick()})
             }
         }
     }

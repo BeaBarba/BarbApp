@@ -154,4 +154,6 @@
     <string name="date_payment">Payment date</string>
     <string name="house_number">House number</string>
     <string name="new_item">New</string>
+    <string name="amountPaid">Amount paid</string>
+    <string name="cancel">Cancel</string>
 </resources>

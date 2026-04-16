@@ -28,6 +28,7 @@ import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryViewModel
+import com.example.myapplication.ui.screen.Payment.allSummary.AllPaymentsSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
 import org.koin.core.module.dsl.viewModel
@@ -111,7 +112,7 @@ val appModule = module{
     viewModel {SingleCustomerSummaryViewModel(get())}
     viewModel {CustomerAddViewModel(get())}
 
-    /* Deadlines */
+    /* Deadline */
     viewModel {AllDeadlinesSummaryViewModel(get())}
     viewModel {SingleDeadlineSummaryViewModel(get())}
     viewModel {DeadlineAddViewModel(get())}
@@ -127,6 +128,9 @@ val appModule = module{
 
     /* Material */
     viewModel {SingleMaterialSummaryViewModel(get())}
+
+    /* Payment */
+    viewModel {AllPaymentsSummaryViewModel(get())}
 
     /* Purchase Invoice */
     viewModel {AllPurchaseInvoicesSummaryViewModel(get())}

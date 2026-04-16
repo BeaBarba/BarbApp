@@ -70,6 +70,7 @@ import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewMode
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
 import com.example.myapplication.ui.screen.Material.WarehouseActivity
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryViewModel
+import com.example.myapplication.ui.screen.Payment.allSummary.AllPaymentsSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.PurchaseInvoiceAddActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.SinglePurchaseInvoiceSummaryActivity
@@ -212,10 +213,11 @@ fun NavGraph(
             AllJobsSummaryActivity(state, allJobsSummaryVM.actions, navController)
         }
         composable<NavigationRoute.AllPaymentsSummary>{
-            AllPaymentsSummaryActivity(navController)
+            val allPaymentsSummaryVM = koinViewModel<AllPaymentsSummaryViewModel>()
+            val state by allPaymentsSummaryVM.state.collectAsStateWithLifecycle()
+            AllPaymentsSummaryActivity(state, allPaymentsSummaryVM.actions, navController)
         }
-        composable<NavigationRoute.AllPurchaseInvoicesSummary>{ backStackEntry ->
-            val route = backStackEntry.toRoute<NavigationRoute.AllPurchaseInvoicesSummary>()
+        composable<NavigationRoute.AllPurchaseInvoicesSummary>{
             val allPurchaseInvoiceSummaryVM = koinViewModel<AllPurchaseInvoicesSummaryViewModel>()
             val state by allPurchaseInvoiceSummaryVM.state.collectAsStateWithLifecycle()
             AllPurchaseInvoicesSummaryActivity(state, allPurchaseInvoiceSummaryVM.actions, navController)

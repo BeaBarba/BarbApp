@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.DropdownMenuItem
@@ -70,14 +71,13 @@ fun CustomOutlineTextField(
     label : String,
     leadingIcon : @Composable (() -> Unit)? = null,
     value : String? = "",
-    onValueChange : (String) -> Unit
+    onValueChange : (String) -> Unit,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    singleLine : Boolean = false
 ) {
-    //var content by remember { mutableStateOf(value ?: "") }
-
     OutlinedTextField(
         value = value ?: "",
-        onValueChange = {newContent ->
-            //content = newContent
+        onValueChange = { newContent ->
             onValueChange(newContent)
         },
         leadingIcon = leadingIcon,
@@ -90,7 +90,6 @@ fun CustomOutlineTextField(
         trailingIcon = {
             IconButton(
                 onClick = {
-                    //content = ""
                     onValueChange("")
                 },
                 shape = RoundedCornerShape(15),
@@ -105,7 +104,9 @@ fun CustomOutlineTextField(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth(),
-        colors =  outlinedTextFieldColor()
+        colors =  outlinedTextFieldColor(),
+        keyboardOptions = keyboardOptions,
+        singleLine = singleLine
     )
 }
 

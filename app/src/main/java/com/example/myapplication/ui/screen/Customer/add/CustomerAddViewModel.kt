@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.Locale.getDefault
 
@@ -29,7 +30,7 @@ data class CustomerAddState (
     val cf : String = "",
     val name : String = "",
     val email : String = "",
-    val averageCollectionTime : Float = 0.0F,
+    val averageCollectionTime : BigDecimal = BigDecimal.ZERO,
     val collectionCount : Int = 0,
     val referralId : String? = null,
     val addressId : Int = 0,
@@ -137,7 +138,7 @@ class CustomerAddViewModel(
                                         CustomerType.Azienda
                                     },
                                     collectionCount = customerEntity.customer.collectionCount,
-                                    averageCollectionTime = customerEntity.customer.averageCollectionTime,
+                                    averageCollectionTime = customerEntity.customer.averageCollectionTime.toBigDecimal(),
                                     started = true
                                 )
                             }
@@ -181,7 +182,7 @@ class CustomerAddViewModel(
                 state.value.cf,
                 state.value.name,
                 state.value.email,
-                state.value.averageCollectionTime,
+                state.value.averageCollectionTime.toFloat(),
                 state.value.collectionCount,
                 state.value.addressId
             )

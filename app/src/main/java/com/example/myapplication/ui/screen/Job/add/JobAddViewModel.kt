@@ -28,7 +28,7 @@ data class JobAddState(
     val customerId: String? = null,
     val addressId: Int? = null,
     val workSite: Int? = null,
-    val price: Float? = null,
+    val price: BigDecimal? = null,
     val materialsList : List<Pair<MaterialWithAirConditional,Float>> = emptyList(),
     val materialsView : List<Pair<MaterialWithAirConditional,Float>> = emptyList(),
     val materialsQuantity: List<Pair<Int, Float>> = emptyList(),
@@ -104,7 +104,7 @@ class JobAddViewModel(
                                 job.airConditioning -> {JobType.CDZ}
                                 else -> JobType.NONE
                             },
-                            price = price
+                            price = price.toBigDecimal()
                         )
                     }
                 }
@@ -237,7 +237,7 @@ class JobAddViewModel(
         }
 
         override fun setPrice(price: String) {
-            val parsedFloat = price.toFloatOrNull()
+            val parsedFloat = price.toBigDecimalOrNull()
             _state.update { it.copy(price = parsedFloat) }
         }
 

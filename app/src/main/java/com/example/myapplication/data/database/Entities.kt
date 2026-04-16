@@ -626,6 +626,7 @@ data class Revenue(
     @ColumnInfo(name = "Fattura") val invoice : Int,
     @ColumnInfo(name = "DataEmissione") val issueDate : LocalDate,
     @ColumnInfo(name = "Importo") val amount : Float,
+    @ColumnInfo(name = "ImportoPagato") val amountPaid : Float,
     @ColumnInfo(name = "Percentuale") val percent : Int,
     @ColumnInfo(name = "DataRiscossione") val collectionDate : LocalDate? = null,
     @ColumnInfo(name = "Cantiere") val worksite : Int?,
