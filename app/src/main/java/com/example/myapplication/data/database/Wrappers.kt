@@ -328,12 +328,6 @@ data class WorkSiteFullDetails(
     val address : Address,
 
     @Relation(
-        parentColumn = "id",
-        entityColumn = "Cantiere"
-    )
-    val jobs : List<Job>,
-
-    @Relation(
         parentColumn = "Responsabile",
         entityColumn = "id"
     )
@@ -344,7 +338,13 @@ data class WorkSiteFullDetails(
         parentColumn = "Cliente",
         entityColumn = "CF"
     )
-    val customer : CustomerTypeDetails?
+    val customer : CustomerTypeDetails?,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "Cantiere"
+    )
+    val jobs : List<Job>
 )
 
 data class PurchaseWithMaterialDetails(

@@ -19,7 +19,7 @@ data class AllInvoiceSummaryState(
 
 interface AllInvoiceSummaryActions{
     fun searchInvoice(searchString : String)
-    fun getTitle(id : Int) : String
+    fun getCustomerName(id : Int) : String
 }
 
 class AllInvoicesSummaryViewModel(
@@ -45,7 +45,7 @@ class AllInvoicesSummaryViewModel(
             }
         }
 
-        override fun getTitle(id : Int): String {
+        override fun getCustomerName(id : Int): String {
             val currentState = state.value.invoices.single{ it.revenue.id == id }
             val customer : String
             if(currentState.workSite != null) {

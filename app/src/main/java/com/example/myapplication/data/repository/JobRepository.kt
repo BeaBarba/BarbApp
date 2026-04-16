@@ -40,7 +40,10 @@ class JobRepository(
 
     suspend fun deleteWorkSite(workSite: WorkSite) = db.workSiteDAO().deleteWorkSite(workSite)
 
-    fun getWorkSiteFullDetailsById(id: Int): Flow<WorkSiteFullDetails?> =
+    fun getFlowWorkSiteFullDetailsById(id: Int): Flow<WorkSiteFullDetails?> =
+        db.workSiteDAO().getFlowWorkSiteFullDetails(id)
+
+    suspend fun getWorkSiteFullDetailsById(id: Int): WorkSiteFullDetails? =
         db.workSiteDAO().getWorkSiteFullDetails(id)
 
     suspend fun getFlowAllWorkSiteFullDetails(): Flow<List<WorkSiteFullDetails>> = withContext(Dispatchers.IO) {

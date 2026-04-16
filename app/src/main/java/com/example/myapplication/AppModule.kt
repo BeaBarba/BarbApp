@@ -23,6 +23,7 @@ import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSumma
 import com.example.myapplication.ui.screen.Deadline.singleSummary.SingleDeadlineSummaryViewModel
 import com.example.myapplication.ui.screen.Home.HomeViewModel
 import com.example.myapplication.ui.screen.Invoice.allSummary.AllInvoicesSummaryViewModel
+import com.example.myapplication.ui.screen.Invoice.singleSummary.SingleInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
@@ -122,6 +123,7 @@ val appModule = module{
 
     /* Invoice */
     viewModel {AllInvoicesSummaryViewModel(get())}
+    viewModel {SingleInvoiceSummaryViewModel(get())}
 
     /* Material */
     viewModel {SingleMaterialSummaryViewModel(get())}

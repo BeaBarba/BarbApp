@@ -61,7 +61,7 @@ fun AllInvoicesSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             items(state.invoicesView){ item ->
                 GenericCard(
-                    text = actions.getTitle(item.revenue.id),
+                    text = actions.getCustomerName(item.revenue.id),
                     textDescription = item.revenue.issueDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                     onClick = {navController.navigate(NavigationRoute.SingleInvoiceSummary(item.revenue.id))}
                 )

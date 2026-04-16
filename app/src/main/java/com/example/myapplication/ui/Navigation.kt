@@ -17,7 +17,7 @@ import com.example.myapplication.ui.screen.Job.AllCleaningSummaryActivity
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryActivity
 import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSummaryActivity
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryActivity
-import com.example.myapplication.ui.screen.Payment.AllPaymentsSummaryActivity
+import com.example.myapplication.ui.screen.Payment.allSummary.AllPaymentsSummaryActivity
 import com.example.myapplication.ui.screen.Statistics.AllStatisticsActivity
 import com.example.myapplication.ui.screen.Statistics.AveragePaymentsTimesStatisticsActivity
 import com.example.myapplication.ui.screen.Cart.CartActivity
@@ -45,7 +45,7 @@ import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomer
 import com.example.myapplication.ui.screen.Deadline.singleSummary.SingleDeadlineSummaryActivity
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryActivity
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryActivity
-import com.example.myapplication.ui.screen.Payment.SinglePaymentSummaryActivity
+import com.example.myapplication.ui.screen.Payment.singleSummary.SinglePaymentSummaryActivity
 import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarActivity
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarViewModel
 import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
@@ -62,9 +62,9 @@ import com.example.myapplication.ui.screen.Deadline.singleSummary.SingleDeadline
 import com.example.myapplication.ui.screen.Home.HomeViewModel
 import com.example.myapplication.ui.screen.Invoice.allSummary.AllInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.Invoice.InvoiceAddActivity
-import com.example.myapplication.ui.screen.Invoice.SingleInvoiceSummaryActivity
-import com.example.myapplication.ui.screen.Invoice.allSummary.AllInvoiceSummaryActions
+import com.example.myapplication.ui.screen.Invoice.singleSummary.SingleInvoiceSummaryActivity
 import com.example.myapplication.ui.screen.Invoice.allSummary.AllInvoicesSummaryViewModel
+import com.example.myapplication.ui.screen.Invoice.singleSummary.SingleInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
@@ -303,8 +303,11 @@ fun NavGraph(
             SingleDeadlineSummaryActivity(route.expenseId, DeadlineType.valueOf(route.type), state,
                 singleDeadlineSummaryVM.actions, navController)
         }
-        composable<NavigationRoute.SingleInvoiceSummary>{
-            SingleInvoiceSummaryActivity(navController)
+        composable<NavigationRoute.SingleInvoiceSummary>{backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.SingleInvoiceSummary>()
+            val singleInvoicesSummaryVM = koinViewModel<SingleInvoiceSummaryViewModel>()
+            val state by singleInvoicesSummaryVM.state.collectAsStateWithLifecycle()
+            SingleInvoiceSummaryActivity(route.invoiceId, state, singleInvoicesSummaryVM.actions, navController)
         }
         composable<NavigationRoute.SingleJobSummary>{ backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.SingleJobSummary>()
