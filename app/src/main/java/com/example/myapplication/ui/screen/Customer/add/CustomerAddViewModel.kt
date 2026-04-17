@@ -132,11 +132,11 @@ class CustomerAddViewModel(
                                     companyVatNumber = customerEntity.companyCustomer?.vatNumber?: "",
                                     companyUniqueCode = customerEntity.companyCustomer?.uniqueCode?: "",
                                     customerType =
-                                    if (customerEntity.companyCustomer == null) {
-                                        CustomerType.Privato
-                                    } else {
-                                        CustomerType.Azienda
-                                    },
+                                        if (customerEntity.companyCustomer == null) {
+                                            CustomerType.Privato
+                                        } else {
+                                            CustomerType.Azienda
+                                        },
                                     collectionCount = customerEntity.customer.collectionCount,
                                     averageCollectionTime = customerEntity.customer.averageCollectionTime.toBigDecimal(),
                                     started = true

@@ -68,9 +68,10 @@ import com.example.myapplication.ui.screen.Invoice.singleSummary.SingleInvoiceSu
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
-import com.example.myapplication.ui.screen.Material.WarehouseActivity
+import com.example.myapplication.ui.screen.Material.allSummary.WarehouseActivity
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryViewModel
 import com.example.myapplication.ui.screen.Payment.allSummary.AllPaymentsSummaryViewModel
+import com.example.myapplication.ui.screen.Payment.singleSummary.SinglePaymentSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.PurchaseInvoiceAddActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.SinglePurchaseInvoiceSummaryActivity
@@ -117,8 +118,6 @@ sealed interface NavigationRoute{
     @Serializable
     data object PaymentAdd : NavigationRoute
     @Serializable
-    data object SinglePaymentSummary : NavigationRoute
-    @Serializable
     data object TodayCalendar : NavigationRoute
     @Serializable
     data object Warehouse : NavigationRoute
@@ -152,6 +151,8 @@ sealed interface NavigationRoute{
     data class SingleJobSummary(val jobId : Int) : NavigationRoute
     @Serializable
     data class SingleMaterialSummary(val materialId : Int) : NavigationRoute
+    @Serializable
+    data class SinglePaymentSummary(val paymentId : Int) : NavigationRoute
     @Serializable
     data class SinglePurchaseInvoiceSummary(val purchaseInvoiceId : Int) : NavigationRoute
     @Serializable
@@ -323,8 +324,11 @@ fun NavGraph(
             val state by singleMaterialSummaryVM.state.collectAsStateWithLifecycle()
             SingleMaterialSummaryActivity(route.materialId, state, singleMaterialSummaryVM.actions, navController)
         }
-        composable<NavigationRoute.SinglePaymentSummary>{
-            SinglePaymentSummaryActivity(navController)
+        composable<NavigationRoute.SinglePaymentSummary>{ backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.SinglePaymentSummary>()
+            val singlePaymentSummaryVM = koinViewModel<SinglePaymentSummaryViewModel>()
+            val state by singlePaymentSummaryVM.state.collectAsStateWithLifecycle()
+            SinglePaymentSummaryActivity(route.paymentId, state, singlePaymentSummaryVM.actions, navController)
         }
         composable<NavigationRoute.SinglePurchaseInvoiceSummary>{
             SinglePurchaseInvoiceSummaryActivity(navController)

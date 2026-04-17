@@ -108,11 +108,11 @@ fun AllPaymentsSummaryActivity(
                 ListItemCheckbox(
                     char = if(item.customer.isBlank()) '?' else item.customer[0],
                     text = item.customer,
-                    textDescription = item.invoiceNumber,
+                    textDescription = "${item.invoiceNumber} - ${item.issueDate}",
                     trailingText = item.price,
                     checked = item.checked,
                     onCheckedChange = {actions.setChecked(item.revenueId)},
-                    onClick = {navController.navigate(NavigationRoute.SingleInvoiceSummary(item.revenueId))}
+                    onClick = {navController.navigate(NavigationRoute.SinglePaymentSummary(item.revenueId))}
                 )
                 Spacer(Modifier.size(8.dp))
             }
@@ -130,11 +130,11 @@ fun AllPaymentsSummaryActivity(
                     ListItemCheckbox(
                         char = if(item.customer.isBlank()) '?' else item.customer[0],
                         text = item.customer,
-                        textDescription = item.invoiceNumber,
+                        textDescription = "${item.invoiceNumber} - ${item.issueDate}",
                         trailingText = item.price,
                         checked = item.checked,
                         onCheckedChange = {actions.setChecked(item.revenueId)},
-                        onClick = {navController.navigate(NavigationRoute.SingleInvoiceSummary(item.revenueId))}
+                        onClick = {navController.navigate(NavigationRoute.SinglePaymentSummary(item.revenueId))}
                     )
                     Spacer(Modifier.size(8.dp))
                 }

@@ -47,23 +47,11 @@ class AllInvoicesSummaryViewModel(
 
         override fun getCustomerName(id : Int): String {
             val currentState = state.value.invoices.single{ it.revenue.id == id }
-            val customer : String
-            if(currentState.workSite != null) {
-                customer = when {
-                    currentState.workSite.customer?.isPrivate == true -> {
-                        "${currentState.workSite.customer.privateCustomer?.lastName} ${currentState.workSite.customer.customer.name}"
-                    }
-                    currentState.workSite.customer?.isCompany == true -> {"${currentState.workSite.customer.companyCustomer?.companyName}"}
-                    else -> {""}
-                }
-            }else{
-                customer = when {
-                    currentState.job?.customer?.isPrivate == true -> {
-                        "${currentState.job.customer.privateCustomer?.lastName} ${currentState.job.customer.customer.name}"
-                    }
-                    currentState.job?.customer?.isCompany == true -> {"${currentState.job.customer.companyCustomer?.companyName}"}
-                    else -> {""}
-                }
+            val customerData = currentState.workSite?.customer ?: currentState.job?.customer ?: return "${currentState.revenue.invoice}"
+            val customer = when {
+                customerData.isPrivate -> {"${customerData.privateCustomer?.lastName} ${customerData.customer.name}"}
+                customerData.isCompany -> {"${customerData.companyCustomer?.companyName}"}
+                else -> {""}
             }
 
             return "${currentState.revenue.invoice} - $customer"
@@ -90,15 +78,23 @@ class AllInvoicesSummaryViewModel(
 
     private fun searchFilter(searchString: String, invoices: List<RevenueFullDetails>) : List<RevenueFullDetails>{
         if(searchString.isBlank()) return invoices
+
         val query = searchString.trim().lowercase(getDefault())
-        return invoices.filter {
-            it.revenue.invoice.toString().startsWith(query) ||
-            it.job?.customer?.privateCustomer?.lastName?.lowercase()?.startsWith(query) ?: false ||
-            it.job?.customer?.companyCustomer?.companyName?.lowercase()?.startsWith(query) ?:false ||
-            it.job?.customer?.customer?.name?.lowercase()?.startsWith(query) ?: false ||
-            it.workSite?.customer?.privateCustomer?.lastName?.lowercase()?.startsWith(query) ?: false ||
-            it.workSite?.customer?.companyCustomer?.companyName?.lowercase()?.startsWith(query) ?:false ||
-            it.workSite?.customer?.customer?.name?.lowercase()?.startsWith(query) ?: false
+
+        return invoices.filter { item ->
+            val invoiceMatch = item.revenue.invoice.toString().startsWith(query)
+
+            if(invoiceMatch) return@filter true
+
+            val customer = item.job?.customer ?: item.workSite?.customer
+
+            val nameMatch = customer?.let {
+                it.privateCustomer?.lastName?.lowercase()?.startsWith(query) == true ||
+                it.companyCustomer?.companyName?.lowercase()?.startsWith(query) == true ||
+                it.customer.name.lowercase().startsWith(query)
+            } ?: false
+
+            nameMatch
         }
     }
 }

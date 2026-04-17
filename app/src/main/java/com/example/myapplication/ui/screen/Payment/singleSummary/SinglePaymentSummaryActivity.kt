@@ -24,11 +24,17 @@ import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.KeyValueLabel
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun SinglePaymentSummaryActivity(
+    paymentId : Int,
+    state :SinglePaymentSummaryState,
+    actions: SinglePaymentSummaryActions,
     navController: NavHostController
 ){
+    actions.populateView(paymentId)
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -47,14 +53,20 @@ fun SinglePaymentSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ){
-            item{
-                GenericCard(
-                    leadingContent = {Avatar(char = pagamenti[0].cliente.get(0))},
-                    text = pagamenti[0].cliente,
-                    onClick = {navController.navigate(NavigationRoute.SingleCustomerSummary(""))}
-                )
+            if(state.customerView != null) {
+                item {
+                    GenericCard(
+                        leadingContent = {
+                            Avatar(
+                                char = state.customerView.second[0]
+                            )
+                        },
+                        text = state.customerView.second,
+                        onClick = { navController.navigate(NavigationRoute.SingleCustomerSummary(state.customerView.first)) }
+                    )
+                }
+                item { Spacer(Modifier.size(8.dp)) }
             }
-            item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
                     leadingContent = {
@@ -64,38 +76,40 @@ fun SinglePaymentSummaryActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    text = listaFatture.get(0).name,
-                    onClick = {navController.navigate(NavigationRoute.SingleInvoiceSummary(0))}
+                    text = state.revenue?.revenue?.invoice.toString(),
+                    onClick = {navController.navigate(NavigationRoute.SingleInvoiceSummary(state.invoiceId))}
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DoubleKeyValueLabel(
                     firstTitle = stringResource(R.string.price),
-                    firstDescription = "1.00,00€",
+                    firstDescription = state.revenue?.revenue?.amount.toString(),
                     secondTitle = stringResource(R.string.amount),
-                    secondDescription = pagamenti[0].prezzo
+                    secondDescription = state.revenue?.revenue?.amountPaid.toString()
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.date_issue),
-                    description = listaFatture.get(0).type
+                    description = state.revenue?.revenue?.issueDate?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    ) ?: ""
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.date_collection),
-                    description = pagamenti[0].data
+                    description = state.revenue?.revenue?.collectionDate?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    ) ?: ""
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.percentage),
-                    description = "12 %"
+                    description = "${state.revenue?.revenue?.percent}%"
                 )
             }
         }

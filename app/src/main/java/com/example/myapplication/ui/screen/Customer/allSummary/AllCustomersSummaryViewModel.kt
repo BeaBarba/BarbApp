@@ -75,11 +75,9 @@ class AllCustomersSummaryViewModel(
                     it.isCompany -> {it.companyCustomer?.companyName}
                     else -> it.customer.name
                 }
-
             }
             _state.update {
                 it.copy (
-
                     customersToView =  customers,
                     startingChar = getStartingChar(customers),
                     searchString = "",

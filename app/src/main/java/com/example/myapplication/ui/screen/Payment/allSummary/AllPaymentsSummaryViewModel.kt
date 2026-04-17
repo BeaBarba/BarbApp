@@ -12,11 +12,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.time.format.DateTimeFormatter
 import java.util.Locale.getDefault
 
 data class Payment(
     val customer : String = "?",
     val invoiceNumber : String = "",
+    val issueDate : String = "",
     val price : String = "",
     val checked : Boolean = false,
     val revenueId : Int = 0
@@ -80,7 +82,8 @@ class AllPaymentsSummaryViewModel(
         override fun sortAscendingByAmount() {
             _state.update { currentState ->
                 currentState.copy(
-                    paymentsView = mapViewList(currentState.payments.sortedWith(compareBy { it.revenue.amount })),
+                    paymentsView = mapViewList(currentState.payments.sortedWith(compareBy { it.revenue.amount - it
+                        .revenue.amountPaid })),
                     filterKey = FilterKey.ASC_AMOUNT
                 )
             }
@@ -89,7 +92,8 @@ class AllPaymentsSummaryViewModel(
         override fun sortDescendingByAmount() {
             _state.update { currentState ->
                 currentState.copy(
-                    paymentsView = mapViewList(currentState.payments.sortedWith(compareByDescending { it.revenue.amount })),
+                    paymentsView = mapViewList(currentState.payments.sortedWith(compareByDescending { it.revenue
+                        .amount - it.revenue.amountPaid })),
                     filterKey = FilterKey.DESC_AMOUNT
                 )
             }
@@ -154,10 +158,13 @@ class AllPaymentsSummaryViewModel(
     private fun populateView(){
         viewModelScope.launch {
             repository.accounting.getFlowAllRevenuesFullDetails().collect{ revenues ->
+                val revenueList = revenues.sortedWith(
+                    compareBy<RevenueFullDetails> { it.revenue.issueDate }
+                        .thenBy { it.revenue.invoice })
                 _state.update {
                     it.copy(
-                        payments = revenues,
-                        paymentsView = mapViewList(searchFilter(it.searchString, revenues)),
+                        payments = revenueList,
+                        paymentsView = mapViewList(searchFilter(it.searchString, revenueList)),
                         started = true
                     )
                 }
@@ -167,41 +174,35 @@ class AllPaymentsSummaryViewModel(
 
     private fun searchFilter(searchString: String, payments : List<RevenueFullDetails>) : List<RevenueFullDetails>{
         if(searchString.isBlank()) return payments
+
         val query = searchString.trim().lowercase(getDefault())
-        return payments.filter {
-            it.revenue.invoice.toString().startsWith(query) ||
-            it.revenue.amount.toString().startsWith(query) ||
-            it.job?.customer?.privateCustomer?.lastName?.lowercase()?.startsWith(query) ?: false ||
-            it.job?.customer?.companyCustomer?.companyName?.lowercase()?.startsWith(query) ?:false ||
-            it.job?.customer?.customer?.name?.lowercase()?.startsWith(query) ?: false ||
-            it.workSite?.customer?.privateCustomer?.lastName?.lowercase()?.startsWith(query) ?: false ||
-            it.workSite?.customer?.companyCustomer?.companyName?.lowercase()?.startsWith(query) ?:false ||
-            it.workSite?.customer?.customer?.name?.lowercase()?.startsWith(query) ?: false
+
+        return payments.filter { item ->
+            val invoiceMatch = item.revenue.invoice.toString().startsWith(query)
+            val amountMatch = item.revenue.amount.toString().startsWith(query)
+
+            if (invoiceMatch || amountMatch) return@filter true
+
+            val customerData = item.job?.customer ?: item.workSite?.customer
+
+            val nameMatch = customerData?.let {
+                it.privateCustomer?.lastName?.lowercase()?.startsWith(query) == true ||
+                it.companyCustomer?.companyName?.lowercase()?.startsWith(query) == true ||
+                it.customer.name.lowercase().startsWith(query)
+            } ?: false
+
+            nameMatch
         }
     }
 
     private fun getCustomerName(revenue : RevenueFullDetails) : String{
-        val customer : String
-        if(revenue.workSite != null) {
-            customer = when {
-                revenue.workSite.customer?.isPrivate == true -> {
-                    "${revenue.workSite.customer.privateCustomer?.lastName} ${revenue.workSite.customer.customer
-                        .name}"
-                }
-                revenue.workSite.customer?.isCompany == true -> {"${revenue.workSite.customer.companyCustomer?.companyName}"}
-                else -> {""}
-            }
-        }else{
-            customer = when {
-                revenue.job?.customer?.isPrivate == true -> {
-                    "${revenue.job.customer.privateCustomer?.lastName} ${revenue.job.customer.customer.name}"
-                }
-                revenue.job?.customer?.isCompany == true -> {"${revenue.job.customer.companyCustomer?.companyName}"}
-                else -> {""}
-            }
-        }
+        val customerData = revenue.workSite?.customer ?: revenue.job?.customer ?: return ""
 
-        return customer
+        return when {
+                customerData.isPrivate -> {"${customerData.privateCustomer?.lastName} ${customerData.customer.name}"}
+                customerData.isCompany -> {customerData.companyCustomer?.companyName ?: customerData.customer.name}
+                else -> {""}
+        }
     }
 
     private fun mapViewList(payments : List<RevenueFullDetails>) : List<Payment> {
@@ -211,6 +212,7 @@ class AllPaymentsSummaryViewModel(
                 customer = getCustomerName(revenue),
                 revenueId = revenue.revenue.id,
                 invoiceNumber = "${revenue.revenue.invoice}",
+                issueDate = revenue.revenue.issueDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                 price = "$price",
                 checked = revenue.revenue.percent == 100
             )

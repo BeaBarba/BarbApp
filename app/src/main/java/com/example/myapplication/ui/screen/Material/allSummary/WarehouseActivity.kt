@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Material
+package com.example.myapplication.ui.screen.Material.allSummary
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
