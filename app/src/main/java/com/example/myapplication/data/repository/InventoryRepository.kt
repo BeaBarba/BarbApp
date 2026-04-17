@@ -12,8 +12,9 @@ import com.example.myapplication.data.database.Purchase
 import com.example.myapplication.data.database.Seller
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class InventoryRepository(private val db : AppDatabase){
 
@@ -30,11 +31,11 @@ class InventoryRepository(private val db : AppDatabase){
         db.airConditionerDAO().deleteAirConditioner(airConditioner)
 
     /* Material */
-    val materials = db.materialDAO().getAllMaterials()
+    val materials = db.materialDAO().getFlowAllMaterialsWithAirConditionalDetails()
 
     fun getFlowMaterialById(id: Int): Flow<Material?> = db.materialDAO().getFlowMaterial(id)
 
-    fun getMaterialById(id: Int): Material? = db.materialDAO().getMaterial(id)
+    suspend fun getMaterialById(id: Int): Material? = db.materialDAO().getMaterial(id)
 
     fun getMaterialFullDetailsById(id: Int): Flow<MaterialFullDetails?> =
         db.materialDAO().getFlowMaterialFullDetails(id)
@@ -43,9 +44,16 @@ class InventoryRepository(private val db : AppDatabase){
         db.withTransaction {
             val material = getMaterialById(materialId)
 
-            material.let {mat ->
+            material?.let { mat ->
+
+                val newQuantity = BigDecimal(
+                        (mat.availableQuantity + quantity)
+                            .coerceAtLeast(0.0F)
+                            .toDouble()
+                    ).setScale(2, RoundingMode.HALF_UP).toFloat()
+
                 db.materialDAO().upsertMaterial(
-                    mat!!.copy(id = mat.id, availableQuantity = mat.availableQuantity + quantity)
+                    mat.copy(id = mat.id, availableQuantity = newQuantity)
                 )
             }
         }

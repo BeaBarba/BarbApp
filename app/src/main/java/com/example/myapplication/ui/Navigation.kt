@@ -69,6 +69,7 @@ import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
 import com.example.myapplication.ui.screen.Material.allSummary.WarehouseActivity
+import com.example.myapplication.ui.screen.Material.allSummary.WarehouseViewModel
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryViewModel
 import com.example.myapplication.ui.screen.Payment.allSummary.AllPaymentsSummaryViewModel
 import com.example.myapplication.ui.screen.Payment.singleSummary.SinglePaymentSummaryViewModel
@@ -114,8 +115,6 @@ sealed interface NavigationRoute{
     @Serializable
     data object WorkSiteAdd : NavigationRoute
     @Serializable
-    data object MaterialAdd : NavigationRoute
-    @Serializable
     data object PaymentAdd : NavigationRoute
     @Serializable
     data object TodayCalendar : NavigationRoute
@@ -134,6 +133,8 @@ sealed interface NavigationRoute{
     data class InvoiceAdd(val id : Int?) : NavigationRoute
     @Serializable
     data class JobAdd(val jobId : Int?) : NavigationRoute
+    @Serializable
+    data class MaterialAdd(val materialId : Int?) : NavigationRoute
     @Serializable
     data class PurchaseInvoiceAdd(val purchaseInvoiceId : Int?) : NavigationRoute
 
@@ -227,7 +228,9 @@ fun NavGraph(
             AllStatisticsActivity(navController)
         }
         composable<NavigationRoute.Warehouse> {
-            WarehouseActivity(navController)
+            val warehouseVM = koinViewModel<WarehouseViewModel>()
+            val state by warehouseVM.state.collectAsStateWithLifecycle()
+            WarehouseActivity(state, warehouseVM.actions, navController)
         }
         composable<NavigationRoute.AllConstructionSummary> {
             AllConstructionSummaryActivity(navController)

@@ -28,7 +28,7 @@ interface MaterialDAO{
     @Query("SELECT * " +
             "FROM MATERIALI "
     )
-    fun getAllMaterials() : Flow<List<Material>>
+    fun getFlowAllMaterials() : Flow<List<Material>>
 
     @Upsert
     suspend fun upsertMaterial(material : Material)
@@ -42,6 +42,12 @@ interface MaterialDAO{
         "FROM MATERIALI"
     )
     suspend fun getAllMaterialsWithAirConditionalDetails() : List<MaterialWithAirConditional>
+
+    @Transaction
+    @Query("SELECT * " +
+            "FROM MATERIALI "
+    )
+    fun getFlowAllMaterialsWithAirConditionalDetails() : Flow<List<MaterialWithAirConditional>>
 
     @Transaction
     @Query("SELECT * " +

@@ -59,11 +59,11 @@ class SelectViewModel(
                         repository.inventory.materials.collect{
                             val materialCardList = it.map { material ->
                                     CardItem(
-                                        id = material.id.toString(),
-                                        name = material.category,
-                                        description = material.model + " - " + material.brand,
-                                        type = material.type,
-                                        checked = initialCheckedIds.contains(material.id.toString())
+                                        id = material.material.id.toString(),
+                                        name = material.material.category,
+                                        description = "${material.material.model}  - ${material.material.brand}",
+                                        type = material.material.type,
+                                        checked = initialCheckedIds.contains(material.material.id.toString())
                                     )
                                 }.sortedWith(
                                     compareByDescending<CardItem> {it.checked}
