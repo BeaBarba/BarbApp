@@ -7,7 +7,7 @@ import com.example.myapplication.data.database.Payment
 import com.example.myapplication.data.modules.DeadlineType
 import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.component.convertStringtoDate
+import com.example.myapplication.ui.component.convertStringToDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -115,7 +115,7 @@ class SingleDeadlineSummaryViewModel(
             val expenseId = if(currentState.id != 0) currentState.id else return
             val paymentId = currentState.selectDeadlinePaymentId ?: return
 
-            val newPaymentDate = convertStringtoDate(currentState.inputDate) ?: return
+            val newPaymentDate = convertStringToDate(currentState.inputDate) ?: return
 
             viewModelScope.launch {
                 repository.accounting.editPaymentDateByPaymentId(paymentId, newPaymentDate, expenseId)

@@ -104,7 +104,7 @@ data class MenuItem(
     val onClick : () -> Unit
 )
 
-fun convertStringtoDate(date : String) : LocalDate? {
+fun convertStringToDate(date : String) : LocalDate? {
     return if(date.isBlank()) null
     else LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 
@@ -121,5 +121,6 @@ fun checkStringIsInt(value: String): Boolean {
 
 fun checkStringIsFloat(value : String) : Boolean{
     if(value.isBlank()) return false
-    return value.toFloatOrNull() != null
+    val normalizeValue = value.replace(",",".").toFloatOrNull()
+    return normalizeValue != null
 }

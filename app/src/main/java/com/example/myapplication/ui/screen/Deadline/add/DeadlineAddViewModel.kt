@@ -10,7 +10,7 @@ import com.example.myapplication.data.modules.DeadlineType
 import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.ui.component.MenuItem
-import com.example.myapplication.ui.component.convertStringtoDate
+import com.example.myapplication.ui.component.convertStringToDate
 import com.example.myapplication.ui.component.checkStringIsBigDecimal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -179,12 +179,12 @@ class DeadlineAddViewModel(
         }
 
         override fun setIssueDate(date: String) {
-            val dateConverted = convertStringtoDate(date)
+            val dateConverted = convertStringToDate(date)
             _state.update { it.copy(issueDate = dateConverted) }
         }
 
         override fun setDeadlineDate(date: String) {
-            val dateConverted = convertStringtoDate(date)
+            val dateConverted = convertStringToDate(date)
             _state.update { it.copy(deadlineDate = dateConverted) }
         }
 
