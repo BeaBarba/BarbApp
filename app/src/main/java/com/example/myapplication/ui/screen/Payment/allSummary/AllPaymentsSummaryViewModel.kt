@@ -30,9 +30,10 @@ data class AllPaymentsSummaryState(
     val paymentsView : List<Payment> = emptyList(),
     val searchString: String = "",
     val filterKey : FilterKey = FilterKey.ASC_DATE,
+
     val showDialog : Boolean = false,
     val selectPaymentId: Int? = null,
-    val  inputAmount: String = ""
+    val inputAmount: String = ""
 )
 
 interface AllPaymentsSummaryActions{

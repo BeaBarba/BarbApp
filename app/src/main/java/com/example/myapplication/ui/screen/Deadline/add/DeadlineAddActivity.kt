@@ -85,7 +85,6 @@ fun DeadlineAddActivity(
             )
             actions.resetErrorMessage()
         }
-
     }
 
     Scaffold(

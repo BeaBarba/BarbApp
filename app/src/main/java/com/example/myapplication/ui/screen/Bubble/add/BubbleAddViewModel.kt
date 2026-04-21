@@ -8,6 +8,8 @@ import com.example.myapplication.data.database.DeliveryWithMaterialDetails
 import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.database.Seller
 import com.example.myapplication.data.repository.Repository
+import com.example.myapplication.ui.component.checkStringIsBigDecimal
+import com.example.myapplication.ui.component.checkStringIsInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -232,7 +234,7 @@ class BubbleAddViewModel(
         }
 
         override fun setQuantityMaterial(material: Material, quantity: String) {
-            if (checkIfStringIsBigDecimal(quantity)) {
+            if (checkStringIsBigDecimal(quantity)) {
                 val quantityToSet = if (quantity == "") BigDecimal.ZERO else quantity.toBigDecimal()
                 val newMaterials = state.value.materialsSelected.map {
                     MaterialBubble(
@@ -252,7 +254,7 @@ class BubbleAddViewModel(
         }
 
         override fun setUnitPriceMaterial(material: Material, unitPrice: String) {
-            if (checkIfStringIsBigDecimal(unitPrice)) {
+            if (checkStringIsBigDecimal(unitPrice)) {
                 val unitPriceToSet = if (unitPrice == "") BigDecimal.ZERO else unitPrice.toBigDecimal()
                 val newMaterials = state.value.materialsSelected.map {
                     MaterialBubble(
@@ -272,7 +274,7 @@ class BubbleAddViewModel(
         }
 
         override fun setVatNumberMaterial(material : Material, vatNumber : String){
-            if(checkIfStringIsInt(vatNumber)){
+            if(checkStringIsInt(vatNumber)){
                 val vatNumberToSet: Int = if (vatNumber == "") 0 else vatNumber.toInt()
                 val newMaterials = state.value.materialsSelected.map {
                     MaterialBubble(
@@ -311,13 +313,5 @@ class BubbleAddViewModel(
                 )
             }
         }
-    }
-
-    private fun checkIfStringIsInt(value: String): Boolean {
-        return value.all { char -> char.isDigit() }
-    }
-
-    private fun checkIfStringIsBigDecimal(value: String): Boolean {
-        return value.toBigDecimalOrNull() != null || value.isBlank()
     }
 }

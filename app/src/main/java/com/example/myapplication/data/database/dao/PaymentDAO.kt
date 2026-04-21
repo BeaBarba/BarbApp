@@ -54,8 +54,8 @@ interface PaymentDAO{
 
     @Query(
         "UPDATE PAGAMENTI " +
-                "SET DataPagamento = :date " +
-                "WHERE id = :id"
+        "SET DataPagamento = :date " +
+        "WHERE id = :id"
     )
     suspend fun updatePaymentDate(id : Int, date : LocalDate?)
 

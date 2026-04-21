@@ -104,7 +104,7 @@ data class MenuItem(
     val onClick : () -> Unit
 )
 
-fun checkStringIsDate(date : String) : LocalDate? {
+fun convertStringtoDate(date : String) : LocalDate? {
     return if(date.isBlank()) null
     else LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 
@@ -116,5 +116,10 @@ fun checkStringIsBigDecimal(value: String): Boolean {
 
 fun checkStringIsInt(value: String): Boolean {
     if(value.isBlank()) return false
-    return value.all { char -> char.isDigit() } || value.isBlank()
+    return value.all { char -> char.isDigit() }
+}
+
+fun checkStringIsFloat(value : String) : Boolean{
+    if(value.isBlank()) return false
+    return value.toFloatOrNull() != null
 }

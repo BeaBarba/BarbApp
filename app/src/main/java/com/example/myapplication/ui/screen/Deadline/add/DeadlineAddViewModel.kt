@@ -5,19 +5,20 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.CategoryPurchaseInvoice
 import com.example.myapplication.data.database.Payment
 import com.example.myapplication.data.database.RecurringExpense
-import com.example.myapplication.data.database.RecurringPayment
 import com.example.myapplication.data.database.SingleExpense
 import com.example.myapplication.data.modules.DeadlineType
 import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.ui.component.MenuItem
+import com.example.myapplication.ui.component.convertStringtoDate
+import com.example.myapplication.ui.component.checkStringIsBigDecimal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 data class DeadlineAddState(
     val expenseId : Int? = null,
@@ -27,7 +28,7 @@ data class DeadlineAddState(
     val name : String = "",
     val issueDate : LocalDate? = null,
     val deadlineDate : LocalDate? = null,
-    val amount : Float? = null,
+    val amount : BigDecimal? = null,
     val purchaseInvoiceSelected : List<Int> = emptyList(),
     val paymentsIds : List<Int> = emptyList(),
 
@@ -103,7 +104,7 @@ class DeadlineAddViewModel(
                                 name = expense.singleExpense.name,
                                 issueDate = expense.payment?.issueDate,
                                 deadlineDate = expense.singleExpense.deadlineDate,
-                                amount = expense.singleExpense.amount,
+                                amount = expense.singleExpense.amount.toBigDecimal(),
                                 purchaseInvoiceSelected = expense.purchaseInvoice?.let{ listOf(it.purchaseInvoice.id)
                                 } ?: emptyList(),
                                 paymentsIds = expense.payment?. let{ listOf(it.id)} ?: emptyList()
@@ -120,7 +121,7 @@ class DeadlineAddViewModel(
                                 name = expense.recurringExpense.name,
                                 issueDate = expense.payments.minOfOrNull{it.payment.issueDate},
                                 deadlineDate = expense.recurringExpense.endDate,
-                                amount = expense.recurringExpense.amount,
+                                amount = expense.recurringExpense.amount.toBigDecimal(),
                                 purchaseInvoiceSelected = expense.purchaseInvoice?.let { listOf(it.purchaseInvoice.id) } ?: emptyList(),
                                 paymentsIds = payments
                             )
@@ -178,18 +179,18 @@ class DeadlineAddViewModel(
         }
 
         override fun setIssueDate(date: String) {
-            val dateConverted = checkDate(date)
+            val dateConverted = convertStringtoDate(date)
             _state.update { it.copy(issueDate = dateConverted) }
         }
 
         override fun setDeadlineDate(date: String) {
-            val dateConverted = checkDate(date)
+            val dateConverted = convertStringtoDate(date)
             _state.update { it.copy(deadlineDate = dateConverted) }
         }
 
         override fun setAmount(amount: String) {
-            if(checkIfStringIsFloat(amount)){
-                val amountToSet : Float? = if(amount.isBlank()) null else amount.toFloat()
+            if(checkStringIsBigDecimal(amount)){
+                val amountToSet = if(amount.isBlank()) null else amount.toBigDecimal()
                 _state.update{it.copy(amount = amountToSet)}
             }
         }
@@ -232,7 +233,7 @@ class DeadlineAddViewModel(
                         val newExpense = SingleExpense(
                                 id = currentState.expenseId ?: 0,
                                 name = currentState.name,
-                                amount = currentState.amount ?: 0.0f,
+                                amount = currentState.amount?.toFloat() ?: 0.0f,
                                 deadlineDate = currentState.deadlineDate ?: LocalDate.now(),
                                 category = currentState.category!!.id,
                                 purchaseInvoice = currentState.purchaseInvoiceSelected.firstOrNull(),
@@ -253,7 +254,7 @@ class DeadlineAddViewModel(
                                 id = currentState.expenseId ?: 0,
                                 name = currentState.name,
                                 frequency = currentState.frequency,
-                                amount = currentState.amount ?: 0.0f,
+                                amount = currentState.amount?.toFloat() ?: 0.0f,
                                 category = currentState.category!!.id,
                                 endDate = currentState.deadlineDate,
                                 purchaseInvoice = currentState.purchaseInvoiceSelected.firstOrNull()
@@ -297,7 +298,7 @@ class DeadlineAddViewModel(
                 return true
             }
 
-            if (currentState.amount == null || currentState.amount < 0.1f) {
+            if (currentState.amount == null || currentState.amount < BigDecimal.ZERO) {
                 _state.update { it.copy(errorMessage = "Definisci l'importo per continuare") }
                 return true
             }
@@ -345,16 +346,6 @@ class DeadlineAddViewModel(
                 onClick = { actions.setFrequency(entry) }
             )
         }
-    }
-
-    private fun checkDate(date : String) : LocalDate? {
-        return if(date.isBlank()) null
-        else LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-
-    }
-
-    private fun checkIfStringIsFloat(value: String): Boolean {
-        return value.toFloatOrNull() != null || value == ""
     }
 }
 

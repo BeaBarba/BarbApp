@@ -6,6 +6,7 @@ import com.example.myapplication.data.database.Job
 import com.example.myapplication.data.database.MaterialWithAirConditional
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.repository.Repository
+import com.example.myapplication.ui.component.checkStringIsBigDecimal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -34,8 +35,6 @@ data class JobAddState(
     val materialsQuantity: List<Pair<Int, Float>> = emptyList(),
     val searchText : String = ""
     //val photos : *ToDo*
-
-
 )
 
 interface JobAddActions {
@@ -237,8 +236,8 @@ class JobAddViewModel(
         }
 
         override fun setPrice(price: String) {
-            val parsedFloat = price.toBigDecimalOrNull()
-            _state.update { it.copy(price = parsedFloat) }
+            val parsedPrice = if(checkStringIsBigDecimal(price)) price.toBigDecimalOrNull() else BigDecimal.ZERO
+            _state.update { it.copy(price = parsedPrice) }
         }
 
         override fun setDescription(description: String) {
@@ -268,7 +267,6 @@ class JobAddViewModel(
                     .thenBy { it.first.material.model }
                     .thenBy { it.first.material.brand }
             )
-
             syncEverything(materials)
         }
 
@@ -286,7 +284,6 @@ class JobAddViewModel(
                     .thenBy { it.first.material.model }
                     .thenBy { it.first.material.brand }
             )
-
             syncEverything(materials)
         }
 

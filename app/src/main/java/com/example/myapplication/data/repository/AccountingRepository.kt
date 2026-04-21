@@ -239,6 +239,14 @@ class AccountingRepository (private val db : AppDatabase) {
     suspend fun updatePaymentDateById(id : Int, date : LocalDate?) =
         db.paymentDAO().updatePaymentDate(id, date)
 
+    suspend fun editPaymentDateByPaymentId(paymentId : Int, date : LocalDate, expenseId: Int) = withContext(Dispatchers.IO){
+        db.withTransaction {
+            updatePaymentDateById(paymentId, date)
+
+            generateNextOrAllPayments(paymentId, expenseId)
+        }
+    }
+
     suspend fun deletePayment(payment: Payment) = db.paymentDAO().deletePayment(payment)
 
     private suspend fun deletePaymentsByIds(ids : List<Int>) =
