@@ -28,7 +28,7 @@ import com.example.myapplication.ui.screen.Home.HomeActivity
 import com.example.myapplication.ui.screen.Job.add.JobAddActivity
 import com.example.myapplication.ui.screen.Job.add.JobMaterialsActivity
 import com.example.myapplication.ui.screen.Statistics.JobStatisticsActivity
-import com.example.myapplication.ui.screen.Material.MaterialAddActivity
+import com.example.myapplication.ui.screen.Material.add.MaterialAddActivity
 import com.example.myapplication.ui.screen.Payment.PaymentAddActivity
 import com.example.myapplication.debug.Screen
 import com.example.myapplication.ui.screen.Address.add.AddressAddActivity
@@ -68,6 +68,7 @@ import com.example.myapplication.ui.screen.Invoice.singleSummary.SingleInvoiceSu
 import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
+import com.example.myapplication.ui.screen.Material.add.MaterialAddViewModel
 import com.example.myapplication.ui.screen.Material.allSummary.WarehouseActivity
 import com.example.myapplication.ui.screen.Material.allSummary.WarehouseViewModel
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryViewModel
@@ -134,7 +135,7 @@ sealed interface NavigationRoute{
     @Serializable
     data class JobAdd(val jobId : Int?) : NavigationRoute
     @Serializable
-    data class MaterialAdd(val materialId : Int?) : NavigationRoute
+    data class MaterialAdd(val materialId : Int?, val serialNumber : String?) : NavigationRoute
     @Serializable
     data class PurchaseInvoiceAdd(val purchaseInvoiceId : Int?) : NavigationRoute
 
@@ -270,8 +271,11 @@ fun NavGraph(
             val state by jobAddVM.state.collectAsStateWithLifecycle()
             JobAddActivity(route.jobId, state, jobAddVM.actions, navController)
         }
-        composable<NavigationRoute.MaterialAdd>{
-            MaterialAddActivity(navController)
+        composable<NavigationRoute.MaterialAdd>{ backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.MaterialAdd>()
+            val materialAddVM = koinViewModel<MaterialAddViewModel>()
+            val state by materialAddVM.state.collectAsStateWithLifecycle()
+            MaterialAddActivity(route.materialId, route.serialNumber, state, materialAddVM.actions, navController)
         }
         composable<NavigationRoute.PaymentAdd>{
             PaymentAddActivity(navController)

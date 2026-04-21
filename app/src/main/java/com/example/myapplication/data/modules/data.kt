@@ -11,10 +11,10 @@ enum class DeadlineType { Tipo, Singola, Periodica }
 enum class FilterKey { ASC_DATE, DESC_DATE, ASC_SELLER, DESC_SELLER, ASC_CATEGORY, DESC_CATEGORY, ASC_AMOUNT,
     DESC_AMOUNT }
 
-enum class SplitNumber{ Mono, Dual, Trial, Quadri, Penta }
+enum class SplitNumber{ Mono, Dual, Trial, Quadri, Penta, NONE }
 
 enum class JobType { ELE, ALA, CDZ, NONE }
 
-enum class MachineType { Esterna, Interna }
+enum class MachineType { Esterna, Interna, NONE }
 
 enum class SelectKey { AllMaterials, AllAddresses, AllInvoices, AllBubbles, AllCustomers, AllReferences, AllPurchaseInvoices }

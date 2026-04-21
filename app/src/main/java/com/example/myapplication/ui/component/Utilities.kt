@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.myapplication.R
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 /* Function that returns a specific color */
 @Composable
@@ -101,3 +103,18 @@ data class MenuItem(
     val name : String,
     val onClick : () -> Unit
 )
+
+fun checkStringIsDate(date : String) : LocalDate? {
+    return if(date.isBlank()) null
+    else LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+
+}
+
+fun checkStringIsBigDecimal(value: String): Boolean {
+    return value.toBigDecimalOrNull() != null || value.isBlank()
+}
+
+fun checkStringIsInt(value: String): Boolean {
+    if(value.isBlank()) return false
+    return value.all { char -> char.isDigit() } || value.isBlank()
+}

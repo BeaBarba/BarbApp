@@ -30,11 +30,25 @@ interface MaterialDAO{
     )
     fun getFlowAllMaterials() : Flow<List<Material>>
 
+    @Query(
+        "SELECT DISTINCT(Categoria) " +
+        "FROM MATERIALI"
+    )
+    suspend fun getAllCategoriesOfMaterials() : List<String>?
+
     @Upsert
-    suspend fun upsertMaterial(material : Material)
+    suspend fun upsertMaterial(material : Material) : Long
 
     @Delete
     suspend fun deleteMaterial(material : Material)
+
+    @Transaction
+    @Query("SELECT * " +
+            "FROM MATERIALI " +
+            "WHERE id = :id"
+    )
+    suspend fun getMaterialWithAirConditionalDetails(id : Int) : MaterialWithAirConditional?
+
 
     @Transaction
     @Query(

@@ -67,7 +67,12 @@ fun JobMaterialsActivity(
                 }
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.MaterialAdd/*TODO(null)*/)}}
+        floatingActionButton = {
+            AddButton{
+
+                navController.navigate(NavigationRoute.MaterialAdd(null, null))
+            }
+        }
     ) { contentPadding ->
         LazyColumn(
             modifier = Modifier

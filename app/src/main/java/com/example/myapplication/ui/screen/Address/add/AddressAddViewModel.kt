@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.Address
 import com.example.myapplication.data.repository.Repository
+import com.example.myapplication.ui.component.checkStringIsInt
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -88,7 +89,7 @@ class AddressAddViewModel(
         }
 
         override fun setZip(zip: String) {
-            if (zip.isEmpty() || checkIfStringIsInt(zip)) {
+            if (zip.isEmpty() || checkStringIsInt(zip)) {
                 _state.update { it.copy(zip = zip) }
             }
         }
@@ -98,13 +99,13 @@ class AddressAddViewModel(
         }
 
         override fun setFloor(floor: String) {
-            if (floor.isEmpty() || checkIfStringIsInt(floor)) {
+            if (floor.isEmpty() || checkStringIsInt(floor)) {
                 _state.update { it.copy(floor = floor) }
             }
         }
 
         override fun setInterior(interior: String) {
-            if (interior.isEmpty() || checkIfStringIsInt(interior)) {
+            if (interior.isEmpty() || checkStringIsInt(interior)) {
                 _state.update { it.copy(interior = interior) }
             }
         }
@@ -114,19 +115,19 @@ class AddressAddViewModel(
         }
 
         override fun setSheet(sheet: String) {
-            if (sheet.isEmpty() || checkIfStringIsInt(sheet)) {
+            if (sheet.isEmpty() || checkStringIsInt(sheet)) {
                 _state.update { it.copy(sheet = sheet) }
             }
         }
 
         override fun setMap(map: String) {
-            if (map.isEmpty() || checkIfStringIsInt(map)) {
+            if (map.isEmpty() || checkStringIsInt(map)) {
                 _state.update { it.copy(map = map) }
             }
         }
 
         override fun setSubordinate(subordinate: String) {
-            if (subordinate.isEmpty() || checkIfStringIsInt(subordinate)) {
+            if (subordinate.isEmpty() || checkStringIsInt(subordinate)) {
                 _state.update { it.copy(subordinate = subordinate) }
             }
         }
@@ -204,7 +205,6 @@ class AddressAddViewModel(
             }
         }
 
-
         override fun saveAddress() {
             val stateNow = _state.value
             val newAddress = Address(
@@ -259,9 +259,5 @@ class AddressAddViewModel(
                 }
             }
         }
-    }
-
-    private fun checkIfStringIsInt(value: String): Boolean {
-        return value.all { char -> char.isDigit() }
     }
 }

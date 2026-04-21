@@ -14,12 +14,19 @@ interface AirConditionerDAO{
             "WHERE Matricola = :serialNumber " +
             "AND  Materiale = :material"
     )
-    fun getAirConditioner(serialNumber : String, material : Int) : Flow<AirConditioner?>
+    fun getFlowAirConditioner(serialNumber : String, material : Int) : Flow<AirConditioner?>
+
+    @Query("SELECT * " +
+            "FROM CONDIZIONATORI " +
+            "WHERE Matricola = :serialNumber " +
+            "AND  Materiale = :material"
+    )
+    fun getAirConditioner(serialNumber : String, material : Int) : AirConditioner?
 
     @Query("SELECT * " +
             "FROM CONDIZIONATORI"
     )
-    fun getAllAirConditioners() : Flow<List<AirConditioner>>
+    fun getFlowAllAirConditioners() : Flow<List<AirConditioner>>
 
     @Upsert
     suspend fun upsertAirConditioner(airConditioner : AirConditioner)

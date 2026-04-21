@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Material
+package com.example.myapplication.ui.screen.Material.add
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
@@ -15,56 +16,76 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
+import com.example.myapplication.data.modules.JobType
+import com.example.myapplication.data.modules.MachineType
 import com.example.myapplication.data.modules.SelectKey
-import com.example.myapplication.debug.categorie_menu
-import com.example.myapplication.debug.categorie_prodotti
-import com.example.myapplication.debug.prodotti
-import com.example.myapplication.debug.tipi_menu
+import com.example.myapplication.data.modules.SplitNumber
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.NavigationRoute
-import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.SuggestionTextField
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun MaterialAddActivity(
+    materialId : Int?,
+    serialNumber : String?,
+    state : MaterialAddState,
+    actions: MaterialAddActions,
     navController : NavHostController
 ){
+    val snackBarHostState = remember { SnackbarHostState() }
+
     val previousBackStackEntry = navController.previousBackStackEntry
 
     val selectSearchText = stringResource(R.string.customer)
 
     val currentBackStackEntry = navController.currentBackStackEntry
     val selectedItems by currentBackStackEntry?.savedStateHandle
-        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
+        ?.getStateFlow<List<String>?>("customers", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
 
     LaunchedEffect(selectedItems) {
         selectedItems?.let{ ids ->
             if(ids.isNotEmpty()) {
                 println("Println " + ids.size)
-                //actions.setMaterials(ids)
+                actions.setCustomer(ids.first())
             }
         }
-        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("customers")
+    }
+
+    LaunchedEffect(materialId) {
+        actions.populateView(materialId, serialNumber)
+    }
+
+    LaunchedEffect(state.errorMessage) {
+        state.errorMessage?.let { message ->
+            snackBarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short
+            )
+            actions.resetErrorMessage()
+        }
     }
 
     Scaffold(
@@ -75,8 +96,10 @@ fun MaterialAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.SingleMaterialSummary(0)){
-                                popUpTo(NavigationRoute.MaterialAdd){inclusive = true}
+                            actions.saveMaterial { id ->
+                                navController.navigate(NavigationRoute.SingleMaterialSummary(id)){
+                                    popUpTo(NavigationRoute.Warehouse){inclusive = false}
+                                }
                             }
                         },
                         colors = IconButtonDefaults.iconButtonColors(
@@ -87,14 +110,10 @@ fun MaterialAddActivity(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) { contentPadding ->
-        var type by remember { mutableStateOf("")}
-        var tipi = tipi_menu.map{item -> MenuItem(Pair(1,""),name = item.name, {type = item.name})}
-        var category by remember { mutableStateOf("")}
-        var categorie = categorie_menu.map{item -> MenuItem(Pair(1,""),name = item.name, {category = item.name})}
-        var checked by remember {mutableStateOf("")}
-        var machine_type = listOf(MenuItem(Pair(1,""),name = "Interna", {checked = "Interna"}), MenuItem(Pair(1,""),name = "Esterna", {checked = "Esterna"}))
+
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -107,36 +126,50 @@ fun MaterialAddActivity(
         ) {
             item{
                 SplitButtonMenu(
-                    content = if(type.isNotEmpty()){type}else{stringResource(R.string.type)},
-                    items = tipi,
-                    heightMenu = (type.length * 55).dp
+                    content = if(state.type == JobType.NONE) stringResource(R.string.type) else state.type.name,
+                    items = state.jobTypeMenu,
+                    heightMenu = (state.jobTypeMenu.size * 55).dp
                 )
             }
             item{
-                /*
-                SplitButtonMenu(
-                    content = if(category.isNotEmpty()){category}else{stringResource(R.string.category)},
-                    items = categorie
-                )
-                */
                 SuggestionTextField(
                     title = stringResource(R.string.category ),
+                    value = state.category,
                     isAutocompleteMode = true,
-                    suggestions = categorie_prodotti
+                    suggestions = state.categorySuggestionsList,
+                    onValueChange = actions::setCategory
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 CustomOutlineTextField(
-                    label =stringResource(R.string.brand),
-                    onValueChange = {}
+                    label = stringResource(R.string.brand),
+                    value = state.brand,
+                    onValueChange = actions::setBrand
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 CustomOutlineTextField(
-                    label =stringResource(R.string.model),
-                    onValueChange = {}
+                    label = stringResource(R.string.model),
+                    value = state.model,
+                    onValueChange = actions::setModel
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.quantity),
+                    value = state.availableQuantity,
+                    onValueChange = actions::setQuantity,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                )
+            }
+            item{
+                CustomOutlineTextField(
+                    label = stringResource(R.string.unit_measurement),
+                    value = state.unitMeasurement,
+                    onValueChange = actions::setUnit
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -150,74 +183,84 @@ fun MaterialAddActivity(
                                 contentDescription = stringResource(R.string.customers)
                             )
                         },
-                        onClick = {navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllCustomers))}
-                    )
-                }
-                item{Spacer(Modifier.size(8.dp))}
-            }
-            if(type.equals("CDZ")){
-                item{
-                    CustomOutlineTextField(
-                        label =stringResource(R.string.serial_number),
-                        onValueChange = {}
-                    )
-                }
-                item{Spacer(Modifier.size(8.dp))}
-                item{
-                    CustomOutlineTextField(
-                        label =stringResource(R.string.btu),
-                        onValueChange = {}
-                    )
-                }
-                item{Spacer(Modifier.size(8.dp))}
-                item{
-                    CustomOutlineTextField(
-                        label =stringResource(R.string.year_installation),
-                        onValueChange = {}
-                    )
-                }
-                item{Spacer(Modifier.size(8.dp))}
-                item{
-                    SplitButtonMenu(
-                        content = if(checked.isNotEmpty()){checked}else{stringResource(R.string.machine_type)},
-                        items = machine_type
-                    )
-                }
-                if(checked.equals("Esterna")){
-                    item{
-                        CustomOutlineTextField(
-                            label =stringResource(R.string.split_number),
-                            onValueChange = {}
-                        )
-                    }
-                    item{Spacer(Modifier.size(8.dp))}
-                    item{
-                        CustomOutlineTextField(
-                            label =stringResource(R.string.gas_quantity),
-                            onValueChange = {}
-                        )
-                    }
-                    item{Spacer(Modifier.size(8.dp))}
-                    item{
-                        CustomOutlineTextField(
-                            label =stringResource(R.string.gas_type),
-                            onValueChange = {}
-                        )
-                    }
-                    item{Spacer(Modifier.size(8.dp))}
-                }
-            }
-            if(previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleMaterialSummary>() == true) {
-                item {
-                    DeleteButton {
-                        prodotti = prodotti.subList(1, prodotti.size)
-                        navController.navigate(NavigationRoute.Warehouse){
-                            popUpTo(NavigationRoute.Warehouse){inclusive = true}
-                            launchSingleTop = true
+                        onClick = {
+                            navController.navigate(
+                                NavigationRoute.Select(
+                                    textSearch = selectSearchText,
+                                    items = SelectKey.AllCustomers
+                                )
+                            )
                         }
-                    }
+                    )
                 }
-                item { Spacer(Modifier.size(8.dp)) }
+                item{Spacer(Modifier.size(8.dp))}
+            }
+            if(state.type == JobType.CDZ){
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.serial_number),
+                        value = state.serialNumber,
+                        onValueChange = actions::setSerialNumber
+                    )
+                }
+                item{Spacer(Modifier.size(8.dp))}
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.btu),
+                        value = state.btu,
+                        onValueChange = actions::setBtu
+                    )
+                }
+                item{Spacer(Modifier.size(8.dp))}
+                item{
+                    CustomOutlineTextField(
+                        label = stringResource(R.string.year_installation),
+                        value = state.yearOfInstallation,
+                        onValueChange = actions::setYearInstallation,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                    )
+                }
+                item{Spacer(Modifier.size(8.dp))}
+                item{
+                    val machineTypeItems = actions.getMachineTypeMenu()
+                    SplitButtonMenu(
+                        content =
+                            if(state.machineType == MachineType.NONE) stringResource(R.string.machine_type)
+                            else state.machineType.name,
+                        items = machineTypeItems,
+                        heightMenu = (machineTypeItems.size * 55).dp
+                    )
+                }
+                if(state.machineType == MachineType.Esterna){
+                    item{
+                        val splitItems = actions.getSplitNumbersMenu()
+                        SplitButtonMenu(
+                            content =
+                                if(state.splitNumber == SplitNumber.NONE) stringResource(R.string.split_number)
+                                else state.splitNumber.name,
+                            items = splitItems,
+                            heightMenu = (splitItems.size * 55).dp
+                        )
+                    }
+                    item{Spacer(Modifier.size(8.dp))}
+                    item{
+                        CustomOutlineTextField(
+                            label = stringResource(R.string.gas_quantity),
+                            value = state.gasQty,
+                            onValueChange = actions::setGasQty,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                        )
+                    }
+                    item{Spacer(Modifier.size(8.dp))}
+                    item{
+                        CustomOutlineTextField(
+                            label = stringResource(R.string.gas_type),
+                            value = state.gasType,
+                            onValueChange = actions::setGasType
+                        )
+                    }
+                    item{Spacer(Modifier.size(8.dp))}
+                }
             }
         }
     }

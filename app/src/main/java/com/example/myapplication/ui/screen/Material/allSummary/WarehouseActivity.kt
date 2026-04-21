@@ -49,7 +49,7 @@ fun WarehouseActivity(
                 id = stringResource(R.string.warehouse)
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.MaterialAdd(null))}}
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.MaterialAdd(null, null))}}
     ) { contentPadding ->
         LazyColumn(
             modifier = Modifier

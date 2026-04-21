@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
@@ -114,38 +115,57 @@ fun CustomOutlineTextField(
 @Composable
 fun SuggestionTextField(
     title : String,
+    value : String = "",
     leadingIcon : @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit,
     isAutocompleteMode : Boolean = false,
-    suggestions : List<String>? = null
+    suggestions : List<String>? = null,
 ){
-    var content by remember { mutableStateOf( "") }
     var expanded by remember { mutableStateOf(false) }
+
+    val filteredSuggestions = remember(value, suggestions){
+        suggestions?.filter { it.contains(value, ignoreCase = true) } ?: emptyList()
+    }
+
     val selectedTheme = isSystemInDarkTheme()
+
     ExposedDropdownMenuBox(
-        expanded = expanded,
+        expanded = expanded && isAutocompleteMode && filteredSuggestions.isNotEmpty(),
         onExpandedChange = { expanded = it },
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
     ) {
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().menuAnchor(),
-            value = content,
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(
+                    type = ExposedDropdownMenuAnchorType.PrimaryEditable,
+                    enabled = true
+                ),
+            value = value,
             onValueChange = { newContent ->
-                content = newContent
+                onValueChange(newContent)
                 expanded = newContent.isNotEmpty()
             },
             label = { Text(text = title, fontSize = MaterialTheme.typography.titleMedium.fontSize) },
             leadingIcon = leadingIcon,
             trailingIcon = {
-                IconButton(
-                    onClick = {
-                        content = ""
-                        expanded = false
-                    },
-                    shape = RoundedCornerShape(15),
-                    modifier = Modifier.size(30.dp),
-                ) { Icon(Icons.Outlined.Cancel, contentDescription = stringResource(R.string.delete)) }
+                if(value.isNotEmpty()){
+                    IconButton(
+                        onClick = {
+                            onValueChange("")
+                            expanded = false
+                        },
+                        shape = RoundedCornerShape(15),
+                        modifier = Modifier.size(30.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Cancel,
+                            contentDescription = stringResource(R.string.delete)
+                        )
+                    }
+                }
             },
             colors = OutlinedTextFieldDefaults.colors(
                 /* Color Text */
@@ -176,8 +196,7 @@ fun SuggestionTextField(
         )
 
         /* Suggestions */
-        if(suggestions != null) {
-            val filteredSuggestions = suggestions.filter { it.contains(content, ignoreCase = true) }
+        if(isAutocompleteMode && filteredSuggestions.isNotEmpty()) {
             ExposedDropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
@@ -190,7 +209,7 @@ fun SuggestionTextField(
                     DropdownMenuItem(
                         text = { MenuText(selectionOption) },
                         onClick = {
-                            content = selectionOption
+                            onValueChange(selectionOption)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding

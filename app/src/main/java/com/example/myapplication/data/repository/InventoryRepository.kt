@@ -10,6 +10,7 @@ import com.example.myapplication.data.database.MaterialFullDetails
 import com.example.myapplication.data.database.MaterialWithAirConditional
 import com.example.myapplication.data.database.Purchase
 import com.example.myapplication.data.database.Seller
+import com.example.myapplication.data.modules.JobType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -19,9 +20,12 @@ import java.math.RoundingMode
 class InventoryRepository(private val db : AppDatabase){
 
     /* AirConditioner */
-    val airConditioners = db.airConditionerDAO().getAllAirConditioners()
+    val airConditioners = db.airConditionerDAO().getFlowAllAirConditioners()
 
-    fun getAirConditionerById(serialNumber: String, material: Int): Flow<AirConditioner?> =
+    fun getFlowAirConditionerById(serialNumber: String, material: Int): Flow<AirConditioner?> =
+        db.airConditionerDAO().getFlowAirConditioner(serialNumber, material)
+
+    suspend fun getAirConditionerById(serialNumber: String, material: Int): AirConditioner? =
         db.airConditionerDAO().getAirConditioner(serialNumber, material)
 
     suspend fun upsertAirConditioner(airConditioner: AirConditioner) =
@@ -37,8 +41,11 @@ class InventoryRepository(private val db : AppDatabase){
 
     suspend fun getMaterialById(id: Int): Material? = db.materialDAO().getMaterial(id)
 
-    fun getMaterialFullDetailsById(id: Int): Flow<MaterialFullDetails?> =
+    fun getFlowMaterialFullDetailsById(id: Int): Flow<MaterialFullDetails?> =
         db.materialDAO().getFlowMaterialFullDetails(id)
+
+    suspend fun getMaterialWithAirConditionalDetails(id : Int) : MaterialWithAirConditional? =
+        db.materialDAO().getMaterialWithAirConditionalDetails(id)
 
     suspend fun offsetMaterialAvailableQuantity(materialId : Int, quantity : Float) =
         db.withTransaction {
@@ -58,7 +65,9 @@ class InventoryRepository(private val db : AppDatabase){
             }
         }
 
-    suspend fun upsertMaterial(material: Material) = db.materialDAO().upsertMaterial(material)
+    suspend fun getAllCategoriesOfMaterials() : List<String>? = db.materialDAO().getAllCategoriesOfMaterials()
+
+    suspend fun upsertMaterial(material: Material) : Int = db.materialDAO().upsertMaterial(material).toInt()
 
     suspend fun deleteMaterial(material: Material) = db.materialDAO().deleteMaterial(material)
 
@@ -68,6 +77,36 @@ class InventoryRepository(private val db : AppDatabase){
 
     suspend fun getAllMaterialsFullDetails(): List<MaterialFullDetails> = withContext(Dispatchers.IO) {
         db.materialDAO().getAllMaterialsFullDetails()
+    }
+
+    suspend fun saveMaterialDetails(
+        material : Material,
+        airConditioner: AirConditioner?,
+        customerCF : String?,
+        quantity : Float
+    ) : Int = withContext(Dispatchers.IO){
+        db.withTransaction {
+
+            val newMaterialId = upsertMaterial(material)
+            val materialId = if(material.id == 0) newMaterialId else material.id
+
+            if(airConditioner!= null && material.type == JobType.CDZ && airConditioner.serialNumber.isNotBlank()){
+                upsertAirConditioner(airConditioner.copy(material = materialId))
+            }
+
+            if(customerCF != null) {
+                val provision = CustomerProvision(
+                    material = materialId,
+                    customer = customerCF,
+                    quantity = quantity
+                )
+                upsertCustomerProvision(provision)
+            }else{
+                upsertMaterial(material.copy(id = materialId, availableQuantity = quantity))
+            }
+
+            return@withTransaction materialId
+        }
     }
 
     /* Seller */

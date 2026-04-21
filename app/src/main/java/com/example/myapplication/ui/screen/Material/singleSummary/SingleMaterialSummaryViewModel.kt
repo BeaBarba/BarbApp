@@ -31,7 +31,7 @@ class SingleMaterialSummaryViewModel(
             if(state.value.started) return
 
             viewModelScope.launch {
-                repository.inventory.getMaterialFullDetailsById(materialId).collect{ data ->
+                repository.inventory.getFlowMaterialFullDetailsById(materialId).collect{ data ->
                     if(data != null) {
                         _state.update {
                             it.copy(
@@ -48,6 +48,5 @@ class SingleMaterialSummaryViewModel(
                 }
             }
         }
-
     }
 }
