@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.WorkSite
+package com.example.myapplication.ui.screen.WorkSite.allSummary
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -30,9 +30,14 @@ import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
-fun AllConstructionSummaryActivity(
+fun AllWorksitesSummaryActivity(
+    state: AllWorksitesSummaryState,
+    actions: AllWorksitesSummaryActions,
     navController : NavHostController
 ) {
+
+    actions.populateView()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -41,7 +46,7 @@ fun AllConstructionSummaryActivity(
                 navigationIcon = {BackButton{navController.navigateUp()}},
             )
         },
-        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.WorkSiteAdd)}}
+        floatingActionButton = {AddButton{navController.navigate(NavigationRoute.WorkSiteAdd(null))}}
     ) { contentPadding ->
         var showItems by remember {mutableStateOf(false)}
         LazyColumn(
@@ -53,16 +58,14 @@ fun AllConstructionSummaryActivity(
                     bottom = contentPadding.calculateBottomPadding()
                 )
         ) {
-            val cantieriEffettuati = listaCantieri.filter{it.dataFine.toString() != "/" }
-            val cantieriInCorso = listaCantieri.filter{it.dataFine.toString() == "/" }
 
             item{TitleLabel(stringResource(R.string.in_progress))}
             item{Spacer(Modifier.size(8.dp))}
-            items(cantieriInCorso){ item ->
+            items(state.worksites){ item ->
                 GenericCard(
-                    text = item.indirizzo,
-                    textDescription = item.dataInizio + " - " + item.dataFine,
-                    onClick = {navController.navigate(NavigationRoute.SingleWorkSiteSummary)}
+                    text = "${item.address.address} ${item.address.houseNumber}, ${item.address.municipality} (${item.address.province})",
+                    textDescription = "${item.workSite.startDate} - ${item.workSite.endDate ?: "/"}",
+                    onClick = {navController.navigate(NavigationRoute.SingleWorkSiteSummary(item.workSite.id))}
                 )
                 Spacer(Modifier.size(8.dp))
             }
@@ -75,11 +78,11 @@ fun AllConstructionSummaryActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             if(showItems){
-                items(cantieriEffettuati){ item ->
+                items(state.worksitesDone){ item ->
                     GenericCard(
-                        text = item.indirizzo,
-                        textDescription = item.dataInizio + " - " + item.dataFine,
-                        onClick = {navController.navigate(NavigationRoute.SingleWorkSiteSummary)}
+                        text = "${item.address.address} ${item.address.houseNumber}, ${item.address.municipality} (${item.address.province})",
+                        textDescription = "${item.workSite.startDate} - ${item.workSite.endDate ?: "/"}",
+                        onClick = {navController.navigate(NavigationRoute.SingleWorkSiteSummary(item.workSite.id))}
                     )
                     Spacer(Modifier.size(8.dp))
                 }

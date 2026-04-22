@@ -50,7 +50,7 @@ import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarActivity
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarViewModel
 import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
 import com.example.myapplication.ui.screen.Cart.CartViewModel
-import com.example.myapplication.ui.screen.WorkSite.AllConstructionSummaryActivity
+import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryActivity
 import com.example.myapplication.ui.screen.WorkSite.ConstructionAddActivity
 import com.example.myapplication.ui.screen.WorkSite.SingleConstructionSummaryActivity
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
@@ -81,6 +81,7 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SingleP
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
+import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryViewModel
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -116,8 +117,6 @@ sealed interface NavigationRoute{
     @Serializable
     data object JobStatistics : NavigationRoute
     @Serializable
-    data object WorkSiteAdd : NavigationRoute
-    @Serializable
     data object PaymentAdd : NavigationRoute
     @Serializable
     data object TodayCalendar : NavigationRoute
@@ -140,6 +139,8 @@ sealed interface NavigationRoute{
     data class MaterialAdd(val materialId : Int?, val serialNumber : String?) : NavigationRoute
     @Serializable
     data class PurchaseInvoiceAdd(val purchaseInvoiceId : Int?) : NavigationRoute
+    @Serializable
+    data class WorkSiteAdd(val worksiteId : Int?) : NavigationRoute
 
     @Serializable
     data class SingleAddressSummary(val addressId: Int)  : NavigationRoute
@@ -236,7 +237,9 @@ fun NavGraph(
             WarehouseActivity(state, warehouseVM.actions, navController)
         }
         composable<NavigationRoute.AllConstructionSummary> {
-            AllConstructionSummaryActivity(navController)
+            val allWorksitesSummaryVM = koinViewModel<AllWorksitesSummaryViewModel>()
+            val state by allWorksitesSummaryVM.state.collectAsStateWithLifecycle()
+            AllWorksitesSummaryActivity(state, allWorksitesSummaryVM.actions, navController)
         }
 
 
