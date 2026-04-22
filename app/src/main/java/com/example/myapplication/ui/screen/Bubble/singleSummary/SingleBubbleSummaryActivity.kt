@@ -102,7 +102,7 @@ fun SingleBubbleSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.date_issue),
-                    description = state.bubble?.bubble?.date?.format(DateTimeFormatter.ofPattern("dd/MM/YYYY")) ?: "",
+                    description = state.bubble?.bubble?.date?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "",
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
                 )
@@ -116,7 +116,7 @@ fun SingleBubbleSummaryActivity(
                             Icon(Icons.Filled.ChevronRight, contentDescription = stringResource(R.string.show_items))
                         },
                         textSpace = 0.9f,
-                        onClick = {navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary/*(state.bubble.purchaseInvoice.id)*/)}
+                        onClick = {navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary(state.bubble.purchaseInvoice.id))}
                     )
                 }
             }
@@ -124,7 +124,7 @@ fun SingleBubbleSummaryActivity(
             item{TitleLabel(title = stringResource(R.string.material))}
             item{Spacer(Modifier.size(8.dp))}
             if(state.bubble?.deliveriesWithMaterials != null) {
-                materialTable(state.bubble.deliveriesWithMaterials, headerColumns, tableStyle)
+                materialTable(state.materials, headerColumns, tableStyle)
             }
             item{Spacer(Modifier.size(8.dp))}
         }

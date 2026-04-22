@@ -22,13 +22,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.data.database.DeliveryWithMaterialDetails
 import com.example.myapplication.data.database.Material
+import com.example.myapplication.data.database.MaterialWithOrigin
 import com.example.myapplication.debug.Prodotto
 import com.example.myapplication.ui.theme.TabelStyle
 import com.example.myapplication.ui.theme.TableStyleDefaults
 import com.example.myapplication.ui.theme.TableColumn
 
 fun LazyListScope.materialTable(
-    listData: List<DeliveryWithMaterialDetails>,
+    listData: List<MaterialWithOrigin>,
     headerColumns: List<TableColumn>,
     style: TabelStyle,
 ){
@@ -108,8 +109,9 @@ fun LazyListScope.materialTable(
                     .height(style.measures.heightRow),
                 contentAlignment = Alignment.Center
             ) {
+                val quantity = data.delivery?.quantity ?: data.purchase?.quantity
                 Text(
-                    text = "${data.delivery.quantity} ${data.material.unitMeasurement}",
+                    text = "$quantity ${data.material.unitMeasurement}",
                     modifier = Modifier.padding(horizontal = 4.dp),
                     fontSize = style.typography.text.fontSize
                 )
@@ -121,8 +123,9 @@ fun LazyListScope.materialTable(
                     .height(style.measures.heightRow),
                 contentAlignment = Alignment.Center
             ) {
+                val unitPrice = data.delivery?.unitPrice ?: data.purchase?.unitPrice
                 Text(
-                    text = "${data.delivery.unitPrice}€",
+                    text = "$unitPrice €",
                     modifier = Modifier.padding(horizontal = 4.dp),
                     fontSize = style.typography.text.fontSize
                 )
@@ -134,8 +137,9 @@ fun LazyListScope.materialTable(
                     .height(style.measures.heightRow),
                 contentAlignment = Alignment.Center
             ) {
+                val vatNumber = data.delivery?.vatNumber ?: data.purchase?.vatNumber
                 Text(
-                    text = "${data.delivery.vatNumber}%",
+                    text = "$vatNumber %",
                     modifier = Modifier.padding(horizontal = 4.dp),
                     fontSize = style.typography.text.fontSize
                 )

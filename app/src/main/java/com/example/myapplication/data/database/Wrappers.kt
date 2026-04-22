@@ -197,6 +197,23 @@ data class MaterialFullDetails(
     val photos : List<Image>
 )
 
+data class MaterialWithOrigin(
+    @Embedded val material : Material,
+
+    @Relation(
+        entity = PurchaseInvoice::class,
+        parentColumn = "id",
+        entityColumn = "Materiale"
+    )
+    val purchase: Purchase?,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "Materiale"
+    )
+    val delivery: Delivery?
+)
+
 data class MaterialUsageWithMaterialDetails(
     @Embedded val materialUsage : MaterialUsage,
 

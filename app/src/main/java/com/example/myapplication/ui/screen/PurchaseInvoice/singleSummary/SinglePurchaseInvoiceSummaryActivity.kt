@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.PurchaseInvoice
+package com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -22,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.debug.listaBolle
-import com.example.myapplication.debug.prodotti
 import com.example.myapplication.debug.provenienze
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
@@ -33,11 +33,20 @@ import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
 import com.example.myapplication.ui.component.materialTable
 import com.example.myapplication.ui.theme.TableStyleDefaults
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun SinglePurchaseInvoiceSummaryActivity(
+    purchaseInvoiceId : Int,
+    state : SinglePurchaseInvoiceSummaryState,
+    actions: SinglePurchaseInvoiceSummaryActions,
     navController : NavHostController
 ){
+
+    LaunchedEffect(purchaseInvoiceId) {
+        actions.populateView(purchaseInvoiceId)
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -47,7 +56,7 @@ fun SinglePurchaseInvoiceSummaryActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.BubbleAdd(null))
+                            navController.navigate(NavigationRoute.PurchaseInvoiceAdd(state.purchaseInvoiceId))
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
@@ -62,8 +71,10 @@ fun SinglePurchaseInvoiceSummaryActivity(
             )
         }
     ) { contentPadding ->
+
         val headerColumns = TableStyleDefaults.defaultColumns()
         val tableStyle = TableStyleDefaults.defaultStyle()
+
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -78,7 +89,7 @@ fun SinglePurchaseInvoiceSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.seller),
-                    description = provenienze.get(0).fornitore,
+                    description = state.purchaseInvoiceFullDetails?.seller?.name ?: "",
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
                 )
@@ -87,7 +98,7 @@ fun SinglePurchaseInvoiceSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.number),
-                    description = provenienze.get(0).numeroBolla.toString(),
+                    description = state.purchaseInvoiceFullDetails?.purchaseInvoice?.number ?: "",
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
                 )
@@ -96,7 +107,8 @@ fun SinglePurchaseInvoiceSummaryActivity(
             item{
                 KeyValueLabel(
                     title = stringResource(R.string.date_issue),
-                    description = provenienze.get(0).data.toString(),
+                    description = state.purchaseInvoiceFullDetails?.purchaseInvoice?.year?.format(
+                        DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "",
                     weightTitle = 1.0f,
                     weighDescription = 2.0f
                 )
@@ -104,25 +116,30 @@ fun SinglePurchaseInvoiceSummaryActivity(
             item{CustomDivider()}
             item{TitleLabel(stringResource(R.string.bubbles))}
             item{Spacer(Modifier.size(8.dp))}
-            itemsIndexed(listaBolle.subList(0,3)){index, item ->
-                GenericCard(
-                    leadingContent = {
-                        Icon(
-                            painter = painterResource(R.drawable.receipt_bolle),
-                            contentDescription = stringResource(R.string.bubble)
-                        )
-                    },
-                    text = item.name,
-                    textDescription = item.type
-                )
-                if(index < 2) {
-                    Spacer(Modifier.size(8.dp))
+            state.purchaseInvoiceFullDetails?.let {
+                itemsIndexed(state.purchaseInvoiceFullDetails.bubbles) { index, item ->
+                    GenericCard(
+                        leadingContent = {
+                            Icon(
+                                painter = painterResource(R.drawable.receipt_bolle),
+                                contentDescription = stringResource(R.string.bubble)
+                            )
+                        },
+                        text = item.number,
+                        textDescription = item.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        onClick = {navController.navigate(NavigationRoute.SingleBubbleSummary(item.id))}
+                    )
+                    if (index < 2) {
+                        Spacer(Modifier.size(8.dp))
+                    }
                 }
             }
-            item{CustomDivider()}
-            item{TitleLabel(stringResource(R.string.materials))}
-            item{Spacer(Modifier.size(8.dp))}
-            //materialTable(prodotti, headerColumns, tableStyle)
+            if(state.materials.isNotEmpty()) {
+                item { CustomDivider() }
+                item { TitleLabel(stringResource(R.string.materials)) }
+                item { Spacer(Modifier.size(8.dp)) }
+                materialTable(state.materials, headerColumns, tableStyle)
+            }
             item{Spacer(Modifier.size(8.dp))}
         }
     }

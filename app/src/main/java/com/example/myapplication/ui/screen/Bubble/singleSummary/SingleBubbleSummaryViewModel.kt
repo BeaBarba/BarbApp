@@ -3,6 +3,7 @@ package com.example.myapplication.ui.screen.Bubble.singleSummary
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.BubbleFullDetails
+import com.example.myapplication.data.database.MaterialWithOrigin
 import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 data class SingleBubbleSummaryState(
     val started: Boolean = false,
     val bubble : BubbleFullDetails? = null,
+    val materials : List<MaterialWithOrigin> = emptyList()
 )
 
 interface SingleBubbleSummaryActions {
@@ -33,7 +35,21 @@ class SingleBubbleSummaryViewModel(
 
             viewModelScope.launch {
                 repository.accounting.getBubbleFullDetailsById(bubbleId).collect{ data ->
-                    _state.update { it.copy(bubble = data, started = true) }
+                    data?.let {
+                        _state.update {
+                            it.copy(
+                                bubble = data,
+                                materials = data.deliveriesWithMaterials.map { mat ->
+                                    MaterialWithOrigin(
+                                        material = mat.material,
+                                        delivery = mat.delivery,
+                                        purchase = null
+                                    )
+                                },
+                                started = true
+                            )
+                        }
+                    }
                 }
             }
         }

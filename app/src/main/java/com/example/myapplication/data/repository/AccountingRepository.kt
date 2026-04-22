@@ -23,39 +23,6 @@ import java.time.LocalDate
 
 class AccountingRepository (private val db : AppDatabase) {
 
-    /* Purchase Invoice */
-    val purchaseInvoices = db.purchaseInvoiceDAO().getAllPurchaseInvoice()
-
-    fun getPurchaseInvoiceById(id: Int): Flow<PurchaseInvoice?> =
-        db.purchaseInvoiceDAO().getPurchaseInvoice(id)
-
-    suspend fun upsertPurchaseInvoice(purchaseInvoice: PurchaseInvoice) =
-        db.purchaseInvoiceDAO().upsertPurchaseInvoice(purchaseInvoice)
-
-    suspend fun deletePurchaseInvoice(purchaseInvoice: PurchaseInvoice) =
-        db.purchaseInvoiceDAO().deletePurchaseInvoice(purchaseInvoice)
-
-    fun getPurchaseInvoiceFullDetailsById(id: Int): Flow<PurchaseInvoiceFullDetails?> =
-        db.purchaseInvoiceDAO().getPurchaseInvoiceFullDetails(id)
-
-    fun getAllPurchaseInvoicesFullDetails(): Flow<List<PurchaseInvoiceFullDetails>> =
-        db.purchaseInvoiceDAO().getAllPurchaseInvoicesFullDetails()
-
-    /* Bubbles */
-    val bubbles = db.bubbleDAO().getAllBubbles()
-
-    fun getBubbleById(id: Int): Flow<Bubble?> = db.bubbleDAO().getBubble(id)
-
-    suspend fun upsertBubble(bubble: Bubble): Long = db.bubbleDAO().upsertBubble(bubble)
-
-    suspend fun deleteBubble(bubble: Bubble) = db.bubbleDAO().deleteBubble(bubble)
-
-    fun getBubbleFullDetailsById(bubble: Int): Flow<BubbleFullDetails?> =
-        db.bubbleDAO().getBubbleFullDetails(bubble)
-
-    fun getAllBubblesFullDetails(): Flow<List<BubbleFullDetails>> =
-        db.bubbleDAO().getAllBubblesFullDetails()
-
     /* Category */
     val categoryPurchaseInvoice = db.categoryPurchaseInvoiceDAO().getAllCategoriesPurchaseInvoice()
 
@@ -79,6 +46,42 @@ class AccountingRepository (private val db : AppDatabase) {
             }
         return categoryId
     }
+
+    /* Purchase Invoice */
+    val purchaseInvoices = db.purchaseInvoiceDAO().getFlowAllPurchaseInvoice()
+
+    fun getFlowPurchaseInvoiceById(id: Int): Flow<PurchaseInvoice?> =
+        db.purchaseInvoiceDAO().getFlowPurchaseInvoice(id)
+
+    suspend fun upsertPurchaseInvoice(purchaseInvoice: PurchaseInvoice) =
+        db.purchaseInvoiceDAO().upsertPurchaseInvoice(purchaseInvoice)
+
+    suspend fun deletePurchaseInvoice(purchaseInvoice: PurchaseInvoice) =
+        db.purchaseInvoiceDAO().deletePurchaseInvoice(purchaseInvoice)
+
+    fun getPurchaseInvoiceFullDetailsById(id: Int): Flow<PurchaseInvoiceFullDetails?> =
+        db.purchaseInvoiceDAO().getFlowPurchaseInvoiceFullDetails(id)
+
+    suspend fun getPurchaseInvoiceById(id : Int) : PurchaseInvoiceFullDetails? =
+        db.purchaseInvoiceDAO().getPurchaseInvoiceFullDetails(id)
+
+    fun getAllPurchaseInvoicesFullDetails(): Flow<List<PurchaseInvoiceFullDetails>> =
+        db.purchaseInvoiceDAO().getFlowAllPurchaseInvoicesFullDetails()
+
+    /* Bubbles */
+    val bubbles = db.bubbleDAO().getAllBubbles()
+
+    fun getBubbleById(id: Int): Flow<Bubble?> = db.bubbleDAO().getBubble(id)
+
+    suspend fun upsertBubble(bubble: Bubble): Long = db.bubbleDAO().upsertBubble(bubble)
+
+    suspend fun deleteBubble(bubble: Bubble) = db.bubbleDAO().deleteBubble(bubble)
+
+    fun getBubbleFullDetailsById(bubble: Int): Flow<BubbleFullDetails?> =
+        db.bubbleDAO().getBubbleFullDetails(bubble)
+
+    fun getAllBubblesFullDetails(): Flow<List<BubbleFullDetails>> =
+        db.bubbleDAO().getAllBubblesFullDetails()
 
     /* SingleExpense */
     val singleExpenses = db.singleExpenseDAO().getAllSingleExpenses()

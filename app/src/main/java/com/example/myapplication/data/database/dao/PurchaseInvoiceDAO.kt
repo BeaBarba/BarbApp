@@ -7,7 +7,6 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 import com.example.myapplication.data.database.PurchaseInvoice
 import com.example.myapplication.data.database.PurchaseInvoiceFullDetails
-import com.example.myapplication.data.database.WorkSiteFullDetails
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,12 +15,12 @@ interface PurchaseInvoiceDAO{
             "FROM FATTURE_ACQUISTO " +
             "WHERE id = :id"
     )
-    fun getPurchaseInvoice(id : Int) : Flow<PurchaseInvoice?>
+    fun getFlowPurchaseInvoice(id : Int) : Flow<PurchaseInvoice?>
 
     @Query("SELECT * " +
             "FROM FATTURE_ACQUISTO"
     )
-    fun getAllPurchaseInvoice() : Flow<List<PurchaseInvoice>>
+    fun getFlowAllPurchaseInvoice() : Flow<List<PurchaseInvoice>>
 
     @Upsert
     suspend fun upsertPurchaseInvoice(seller : PurchaseInvoice)
@@ -35,12 +34,20 @@ interface PurchaseInvoiceDAO{
         "FROM FATTURE_ACQUISTO " +
         "WHERE id = :id"
     )
-    fun getPurchaseInvoiceFullDetails(id : Int) : Flow<PurchaseInvoiceFullDetails?>
+    fun getFlowPurchaseInvoiceFullDetails(id : Int) : Flow<PurchaseInvoiceFullDetails?>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+        "FROM FATTURE_ACQUISTO " +
+        "WHERE id = :id"
+    )
+    suspend fun getPurchaseInvoiceFullDetails(id : Int) : PurchaseInvoiceFullDetails?
 
     @Transaction
     @Query(
         "SELECT * " +
         "FROM FATTURE_ACQUISTO "
     )
-    fun getAllPurchaseInvoicesFullDetails() : Flow<List<PurchaseInvoiceFullDetails>>
+    fun getFlowAllPurchaseInvoicesFullDetails() : Flow<List<PurchaseInvoiceFullDetails>>
 }

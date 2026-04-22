@@ -77,8 +77,9 @@ import com.example.myapplication.ui.screen.Payment.allSummary.AllPaymentsSummary
 import com.example.myapplication.ui.screen.Payment.singleSummary.SinglePaymentSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.PurchaseInvoiceAddActivity
-import com.example.myapplication.ui.screen.PurchaseInvoice.SinglePurchaseInvoiceSummaryActivity
+import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryActivity
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
+import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -341,8 +342,11 @@ fun NavGraph(
             val state by singlePaymentSummaryVM.state.collectAsStateWithLifecycle()
             SinglePaymentSummaryActivity(route.paymentId, state, singlePaymentSummaryVM.actions, navController)
         }
-        composable<NavigationRoute.SinglePurchaseInvoiceSummary>{
-            SinglePurchaseInvoiceSummaryActivity(navController)
+        composable<NavigationRoute.SinglePurchaseInvoiceSummary>{ backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.SinglePurchaseInvoiceSummary>()
+            val singlePurchaseInvoiceSummaryVM = koinViewModel<SinglePurchaseInvoiceSummaryViewModel>()
+            val state by singlePurchaseInvoiceSummaryVM.state.collectAsStateWithLifecycle()
+            SinglePurchaseInvoiceSummaryActivity(route.purchaseInvoiceId, state, singlePurchaseInvoiceSummaryVM.actions, navController)
         }
         composable<NavigationRoute.SingleWorkSiteSummary> {
             SingleConstructionSummaryActivity(navController)
