@@ -20,12 +20,12 @@ interface MaterialUsageDAO{
             "WHERE Materiale = :material " +
             "AND Intervento = :job"
     )
-    fun getMaterialUsage(material : Int, job : Int) : Flow<MaterialUsage?>
+    fun getFlowMaterialUsage(material : Int, job : Int) : Flow<MaterialUsage?>
 
     @Query("SELECT * " +
             "FROM UTILIZZI"
     )
-    fun getAllMaterialsUsage() : Flow<List<MaterialUsage>>
+    fun getFlowAllMaterialsUsage() : Flow<List<MaterialUsage>>
 
     @Upsert
     suspend fun upsertMaterialUsage(materialUsage: MaterialUsage)

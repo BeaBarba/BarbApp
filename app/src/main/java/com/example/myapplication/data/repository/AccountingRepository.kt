@@ -20,7 +20,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
-import kotlin.math.sin
 
 class AccountingRepository (private val db : AppDatabase) {
 
@@ -325,9 +324,9 @@ class AccountingRepository (private val db : AppDatabase) {
         }
 
     /* Revenue */
-    val revenues = db.revenuesDAO().getAllRevenues()
+    val revenues = db.revenuesDAO().getFlowAllRevenues()
 
-    fun getRevenueById(id: Int): Flow<Revenue?> = db.revenuesDAO().getRevenue(id)
+    fun getFlowRevenueById(id: Int): Flow<Revenue?> = db.revenuesDAO().getFlowRevenue(id)
 
     suspend fun getRevenueByJobId(jobId : Int) : List<Revenue> = withContext(Dispatchers.IO){
         db.revenuesDAO().getRevenueByJob(jobId)
@@ -337,16 +336,19 @@ class AccountingRepository (private val db : AppDatabase) {
 
     suspend fun deleteRevenue(revenue: Revenue) = db.revenuesDAO().deleteRevenue(revenue)
 
-    fun getRevenueFullDetailsById(id: Int): Flow<RevenueFullDetails?> =
+    fun getFlowRevenueFullDetailsById(id: Int): Flow<RevenueFullDetails?> =
+        db.revenuesDAO().getFlowRevenueFullDetails(id)
+
+    suspend fun getRevenueFullDetailsById(id: Int): RevenueFullDetails? =
         db.revenuesDAO().getRevenueFullDetails(id)
+
+    fun getFlowAllRevenuesFullDetails(): Flow<List<RevenueFullDetails>> =
+        db.revenuesDAO().getFlowAllRevenuesFullDetails()
 
     suspend fun getAllRevenuesFullDetails(): List<RevenueFullDetails> =
         withContext(Dispatchers.IO) {
             db.revenuesDAO().getAllRevenuesFullDetails()
         }
-
-    suspend fun getFlowAllRevenuesFullDetails(): Flow<List<RevenueFullDetails>> =
-        db.revenuesDAO().getFlowAllRevenuesFullDetails()
 
     private fun calculateNewDates(issueDate : LocalDate, endDate: LocalDate, frequency : FrequencyType) :
             List<LocalDate>{

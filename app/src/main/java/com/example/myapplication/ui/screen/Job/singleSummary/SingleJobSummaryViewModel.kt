@@ -33,7 +33,7 @@ class SingleJobSummaryViewModel(
 
         override fun populateJobData(jobId: Int) {
             viewModelScope.launch {
-                repository.job.getJobFullDetails(jobId).collect{ data ->
+                repository.job.getFlowJobFullDetails(jobId).collect{ data ->
 
                     val combinedMaterials =
                         (data?.materialsFuture?.map { it.material to it.futureJobMaterial.quantity} ?: emptyList()) +

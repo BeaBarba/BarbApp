@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import com.example.myapplication.data.database.WorkSite
+import com.example.myapplication.data.database.WorkSiteAssignmentDetails
 import com.example.myapplication.data.database.WorkSiteFullDetails
 import kotlinx.coroutines.flow.Flow
 
@@ -58,4 +59,11 @@ interface WorkSiteDAO{
         "FROM CANTIERI "
     )
     fun getAllWorkSitesFullDetails() : List<WorkSiteFullDetails>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+        "FROM CANTIERI "
+    )
+    fun getAllWorkSitesAssignmentDetails() : Flow<List<WorkSiteAssignmentDetails>>
 }

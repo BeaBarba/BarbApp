@@ -33,12 +33,12 @@ class TodayCalendarViewModel(
         if (state.value.started) return
 
         viewModelScope.launch {
-            repository.job.getAllTodayJobsFullDetailsByDate(LocalDate.now()).collect { jobs ->
+            repository.job.getFlowAllTodayJobsFullDetailsByDate(LocalDate.now()).collect { jobs ->
                 _state.update { it.copy(started = true, todayCalendar = jobs) }
             }
         }
         viewModelScope.launch {
-            repository.job.getAllToScheduleJobsAssignmentDetailsByDate(LocalDate.now()).collect{ jobs ->
+            repository.job.getFlowAllToScheduleJobsAssignmentDetailsByDate(LocalDate.now()).collect{ jobs ->
                 _state.update { it.copy(started = true, toScheduleCalendar = jobs) }
             }
         }

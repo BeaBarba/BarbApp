@@ -61,7 +61,8 @@ import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSumma
 import com.example.myapplication.ui.screen.Deadline.singleSummary.SingleDeadlineSummaryViewModel
 import com.example.myapplication.ui.screen.Home.HomeViewModel
 import com.example.myapplication.ui.screen.Invoice.allSummary.AllInvoicesSummaryActivity
-import com.example.myapplication.ui.screen.Invoice.InvoiceAddActivity
+import com.example.myapplication.ui.screen.Invoice.add.InvoiceAddActivity
+import com.example.myapplication.ui.screen.Invoice.add.InvoiceAddViewModel
 import com.example.myapplication.ui.screen.Invoice.singleSummary.SingleInvoiceSummaryActivity
 import com.example.myapplication.ui.screen.Invoice.allSummary.AllInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.Invoice.singleSummary.SingleInvoiceSummaryViewModel
@@ -262,8 +263,11 @@ fun NavGraph(
             val state by deadlineAddVM.state.collectAsStateWithLifecycle()
             DeadlineAddActivity(route.id, DeadlineType.valueOf(route.type), state, deadlineAddVM.actions, navController)
         }
-        composable<NavigationRoute.InvoiceAdd>{
-            InvoiceAddActivity(navController)
+        composable<NavigationRoute.InvoiceAdd>{ backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.InvoiceAdd>()
+            val invoiceAddVM = koinViewModel<InvoiceAddViewModel>()
+            val state by invoiceAddVM.state.collectAsStateWithLifecycle()
+            InvoiceAddActivity(route.id, state, invoiceAddVM.actions, navController)
         }
         composable<NavigationRoute.JobAdd>{ backStackEntry ->
             val route = backStackEntry.toRoute<NavigationRoute.JobAdd>()

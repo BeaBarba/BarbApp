@@ -77,7 +77,7 @@ class JobAddViewModel(
 
         override fun populateFromEdit(id: Int) {
             viewModelScope.launch {
-                val job = repository.job.getJobById(id).firstOrNull()
+                val job = repository.job.getFlowJobById(id).firstOrNull()
 
                 if (job != null) {
                     val revenues = repository.accounting.getRevenueByJobId(id)

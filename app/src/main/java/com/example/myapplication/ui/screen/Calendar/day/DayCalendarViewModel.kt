@@ -30,7 +30,7 @@ class DayCalendarViewModel(
 
         override fun populateCalendar(date: LocalDate) {
             viewModelScope.launch {
-                repository.job.getAllTodayJobsFullDetailsByDate(date).collect { jobs ->
+                repository.job.getFlowAllTodayJobsFullDetailsByDate(date).collect { jobs ->
                     _state.update {
                         it.copy(
                             calendar = jobs,

@@ -19,12 +19,12 @@ interface JobDAO{
             "FROM INTERVENTI " +
             "WHERE id = :id"
     )
-    fun getJob(id : Int) : Flow<Job?>
+    fun getFlowJob(id : Int) : Flow<Job?>
 
     @Query("SELECT * " +
             "FROM INTERVENTI"
     )
-    fun getAllJobs() : Flow<List<Job>>
+    fun getFlowAllJobs() : Flow<List<Job>>
 
     @Upsert
     suspend fun upsertJob(job : Job) : Long
@@ -38,7 +38,7 @@ interface JobDAO{
         "FROM INTERVENTI " +
         "WHERE id = :id"
     )
-    fun getJobMaterialFullDetails(id : Int) : Flow<JobMaterialFullDetails?>
+    fun getFlowJobMaterialFullDetails(id : Int) : Flow<JobMaterialFullDetails?>
 
     @Transaction
     @Query(
@@ -46,14 +46,14 @@ interface JobDAO{
         "FROM INTERVENTI " +
         "WHERE id = :id"
     )
-    fun getJobAssignmentDetails(id : Int) : Flow<JobAssignmentDetails?>
+    fun getFlowJobAssignmentDetails(id : Int) : Flow<JobAssignmentDetails?>
 
     @Transaction
     @Query(
         "SELECT * " +
         "FROM INTERVENTI "
     )
-    fun getAllJobsAssignmentDetails() : Flow<List<JobAssignmentDetails>>
+    fun getFlowAllJobsAssignmentDetails() : Flow<List<JobAssignmentDetails>>
 
     @Transaction
     @Query(
@@ -61,14 +61,14 @@ interface JobDAO{
         "FROM INTERVENTI " +
         "WHERE id = :id"
     )
-    fun getJobFullDetails(id : Int) : Flow<JobFullDetails?>
+    fun getFlowJobFullDetails(id : Int) : Flow<JobFullDetails?>
 
     @Transaction
     @Query(
         "SELECT * " +
         "FROM INTERVENTI "
     )
-    fun getAllJobsFullDetails() : Flow<List<JobFullDetails>>
+    fun getFlowAllJobsFullDetails() : Flow<List<JobFullDetails>>
 
     @Transaction
     @Query(
@@ -76,7 +76,7 @@ interface JobDAO{
         "FROM INTERVENTI " +
         "WHERE Data > :date"
     )
-    fun getAllToScheduleJobsAssignmentDetails(date : LocalDate) : Flow<List<JobAssignmentDetails>>
+    fun getFlowAllToScheduleJobsAssignmentDetails(date : LocalDate) : Flow<List<JobAssignmentDetails>>
 
     @Transaction
     @Query(
@@ -84,5 +84,5 @@ interface JobDAO{
         "FROM INTERVENTI " +
         "WHERE Data = :date"
     )
-    fun getAllTodayJobsFullDetails(date : LocalDate) : Flow<List<JobFullDetails>>
+    fun getFlowAllTodayJobsFullDetails(date : LocalDate) : Flow<List<JobFullDetails>>
 }

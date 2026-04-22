@@ -17,13 +17,13 @@ interface RevenueDAO{
         "FROM RICAVI " +
         "WHERE id = :id"
     )
-    fun getRevenue(id : Int) : Flow<Revenue?>
+    fun getFlowRevenue(id : Int) : Flow<Revenue?>
 
     @Query(
         "SELECT * " +
         "FROM RICAVI"
     )
-    fun getAllRevenues() : Flow<List<Revenue>>
+    fun getFlowAllRevenues() : Flow<List<Revenue>>
 
     @Query(
         "SELECT * " +
@@ -44,14 +44,15 @@ interface RevenueDAO{
         "FROM RICAVI " +
         "WHERE id = :id"
     )
-    fun getRevenueFullDetails(id : Int) : Flow<RevenueFullDetails?>
+    fun getFlowRevenueFullDetails(id : Int) : Flow<RevenueFullDetails?>
 
     @Transaction
     @Query(
         "SELECT * " +
-        "FROM RICAVI "
+        "FROM RICAVI " +
+        "WHERE id = :id"
     )
-    fun getAllRevenuesFullDetails() : List<RevenueFullDetails>
+    suspend fun getRevenueFullDetails(id : Int) : RevenueFullDetails?
 
     @Transaction
     @Query(
@@ -59,4 +60,11 @@ interface RevenueDAO{
                 "FROM RICAVI "
     )
     fun getFlowAllRevenuesFullDetails() : Flow<List<RevenueFullDetails>>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+        "FROM RICAVI "
+    )
+    fun getAllRevenuesFullDetails() : List<RevenueFullDetails>
 }

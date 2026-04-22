@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
@@ -21,7 +20,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
@@ -31,21 +29,15 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.modules.SelectKey
-import com.example.myapplication.debug.interventi
-import com.example.myapplication.debug.invoicesType
 import com.example.myapplication.debug.listaFatture
 import com.example.myapplication.debug.pagamenti
-import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.ListItemCheckbox
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.DoubleKeyValueLabel
-import com.example.myapplication.ui.component.KeyValueLabel
-import com.example.myapplication.ui.component.SplitButtonList
 import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
@@ -80,9 +72,11 @@ fun PaymentAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
+                            /*
                             navController.navigate(NavigationRoute.SinglePaymentSummary){
                                 popUpTo(NavigationRoute.PaymentAdd){inclusive = true}
                             }
+                            */
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary

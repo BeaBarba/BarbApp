@@ -32,7 +32,7 @@ class SinglePaymentSummaryViewModel(
 
         override fun populateView(paymentId : Int){
             viewModelScope.launch{
-                repository.accounting.getRevenueFullDetailsById(paymentId).collect{ item ->
+                repository.accounting.getFlowRevenueFullDetailsById(paymentId).collect{ item ->
                     item?.let{
                         _state.update {
                             it.copy(

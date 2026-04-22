@@ -75,9 +75,11 @@ fun ConstructionAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate(NavigationRoute.SingleWorkSiteSummary){
+                            /*
+                            navController.navigate(NavigationRoute.SingleWorkSiteSummary()){
                                 popUpTo(NavigationRoute.WorkSiteAdd){inclusive = true}
                             }
+                             */
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary

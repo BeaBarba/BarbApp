@@ -6,9 +6,6 @@ import androidx.navigation.NavHostController
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.modules.SelectKey
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.debug.bubblesType
-import com.example.myapplication.debug.customersType
-import com.example.myapplication.debug.invoicesType
 import com.example.myapplication.ui.NavigationRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.format.DateTimeFormatter
 import java.util.Locale.getDefault
 
 data class CardItem(
@@ -83,41 +81,6 @@ class SelectViewModel(
                     }
                 }
 
-                SelectKey.AllBubbles -> {
-                    val bubblesCardList = bubblesType.map{item ->
-                        CardItem(
-                            id = "0",
-                            name = item.name,
-                            description = "ciao",
-                            type = JobType.valueOf(item.type),
-                            checked = item.checked
-                        )
-                    }
-                    _state.update {
-                        it.copy(
-                            searchText = searchText,
-                            itemsList = bubblesCardList
-                        )
-                    }
-                }
-                SelectKey.AllInvoices -> {
-                    val invoicesCardList = invoicesType.map{item ->
-                        CardItem(
-                            id = "0",
-                            name = item.name,
-                            description = "ciao",
-                            type = JobType.valueOf(item.type),
-                            checked = item.checked
-                        )
-                    }
-                    _state.update {
-                        it.copy(
-                            searchText = searchText,
-                            itemsList = invoicesCardList
-                        )
-                    }
-                }
-
                 SelectKey.AllAddresses -> {
                     viewModelScope.launch(Dispatchers.IO) {
                         val addressesCardList = repository.address.addresses.first()
@@ -161,7 +124,8 @@ class SelectViewModel(
                                     checked = initialCheckedIds.contains(customer.customer.cf)
                                 )
                             }.sortedWith(
-                                compareBy {it.name}
+                                compareByDescending<CardItem> {it.checked}
+                                    .thenBy {it.name}
                             )
 
                         _state.update {
@@ -176,23 +140,10 @@ class SelectViewModel(
                     }
                 }
 
-                SelectKey.AllReferences -> {
-                    val customersCardList = customersType.map{item -> CardItem(id = "0", name = item.name, description = "ciao", type = JobType.valueOf(item.type), checked = item.checked)}
-                    _state.update {
-                        it.copy(
-                            searchText = searchText,
-                            itemsList = customersCardList
-                        )
-                    }
-                }
                 SelectKey.AllPurchaseInvoices -> {
                     viewModelScope.launch(Dispatchers.IO) {
-                        println("DEBUG: Select - $initialCheckedIds")
                         repository.accounting.purchaseInvoices.collect{
                             val purchasesCardList = it.map { purchase ->
-                                println("DEBUG: Select - id = ${purchase.id} ${initialCheckedIds.contains(purchase.id
-                                    .toString()
-                                )}")
                                 CardItem(
                                     id = purchase.id.toString(),
                                     name = purchase.number,
@@ -216,6 +167,76 @@ class SelectViewModel(
                         }
                     }
                 }
+
+                SelectKey.AllJobs -> {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        repository.job.getFlowAllJobsAssignmentDetails().collect{ jobs ->
+                            val jobsCardList = jobs.map { job ->
+                                val jobId = job.job.id.toString()
+                                CardItem(
+                                    id = job.job.id.toString(),
+                                    name = "${job.address.address} ${job.address.houseNumber}, ${job.address.municipality}",
+                                    description = job.job.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                                    type = when{
+                                        job.job.electric -> {JobType.ELE}
+                                        job.job.alarm -> {JobType.ALA}
+                                        job.job.airConditioning -> {JobType.CDZ}
+                                        else -> {JobType.NONE}
+                                    },
+                                    checked = initialCheckedIds.contains(jobId)
+                                )
+                            }.sortedWith(
+                                compareByDescending<CardItem> {it.checked}
+                                    .thenBy {it.name}
+                            )
+
+                            _state.update {
+                                it.copy(
+                                    searchText = searchText,
+                                    itemsList = jobsCardList,
+                                    viewList = jobsCardList,
+                                    selectKey = SelectKey.AllJobs,
+                                    resultKey = "jobs"
+                                )
+                            }
+                        }
+                    }
+                }
+
+                SelectKey.AllWorksites -> {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        repository.job.getFlowAllWorksitesAssignmentDetails().collect { worksites ->
+                            val worksitesCardList = worksites.map { worksite ->
+                                val worksiteId = worksite.workSite.id.toString()
+                                CardItem(
+                                    id = worksite.workSite.id.toString(),
+                                    name = "${worksite.address.address} ${worksite.address.houseNumber}, ${worksite.address.municipality}",
+                                    description =
+                                        if(worksite.manager != null)
+                                            "${worksite.manager.lastName} ${worksite.manager.name}"
+                                        else null,
+                                    type = JobType.NONE,
+                                    checked = initialCheckedIds.contains(worksiteId)
+                                )
+                            }.sortedWith(
+                                compareByDescending<CardItem> { it.checked }
+                                    .thenBy { it.name }
+                            )
+
+                            _state.update {
+                                it.copy(
+                                    searchText = searchText,
+                                    itemsList = worksitesCardList,
+                                    viewList = worksitesCardList,
+                                    selectKey = SelectKey.AllWorksites,
+                                    resultKey = "worksites"
+                                )
+                            }
+                        }
+                    }
+                }
+
+                else -> {}
             }
         }
 

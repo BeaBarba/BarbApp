@@ -17,4 +17,4 @@ enum class JobType { ELE, ALA, CDZ, NONE }
 
 enum class MachineType { Esterna, Interna, NONE }
 
-enum class SelectKey { AllMaterials, AllAddresses, AllInvoices, AllBubbles, AllCustomers, AllReferences, AllPurchaseInvoices }
+enum class SelectKey { AllMaterials, AllAddresses, AllCustomers, AllPurchaseInvoices, AllJobs, AllWorksites, AllReferences, AllInvoices,  AllBubbles}

@@ -6,7 +6,6 @@ import com.example.myapplication.data.database.JobAssignmentDetails
 import com.example.myapplication.data.modules.FilterKey
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.screen.Deadline.allSummary.Deadline
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -49,7 +48,7 @@ class AllJobsSummaryViewModel(
         override fun populateJobs() {
             if (!state.value.started) {
                 viewModelScope.launch {
-                    repository.job.getAllJobsAssignmentDetails().collect{ jobsList ->
+                    repository.job.getFlowAllJobsAssignmentDetails().collect{ jobsList ->
                         _state.update { currentState ->
                             val filterList =
                                 if(currentState.searchString.isEmpty()) jobsList

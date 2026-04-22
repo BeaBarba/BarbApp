@@ -37,7 +37,7 @@ class  SingleInvoiceSummaryViewModel(
 
         override fun populateView(id: Int) {
             viewModelScope.launch {
-                repository.accounting.getRevenueFullDetailsById(id).collect{ revenue ->
+                repository.accounting.getFlowRevenueFullDetailsById(id).collect{ revenue ->
                     revenue?.let {
                         _state.update {
                             it.copy(
