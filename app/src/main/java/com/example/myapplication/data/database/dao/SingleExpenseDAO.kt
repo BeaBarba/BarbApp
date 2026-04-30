@@ -12,16 +12,30 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface SingleExpenseDAO{
 
-    @Query("SELECT * " +
-            "FROM SPESE_SINGOLE " +
-            "WHERE id = :id"
+    @Query(
+        "SELECT * " +
+        "FROM SPESE_SINGOLE " +
+        "WHERE id = :id"
     )
     fun getSingleExpense(id : Int) : Flow<SingleExpense?>
 
-    @Query("SELECT * " +
-            "FROM SPESE_SINGOLE"
+    @Query(
+        "SELECT * " +
+        "FROM SPESE_SINGOLE"
     )
     fun getAllSingleExpenses() : Flow<List<SingleExpense>>
+
+    @Query(
+        "SELECT * " +
+        "FROM SPESE_SINGOLE " +
+        "WHERE Fattura = :purchaseInvoiceId"
+    )
+    suspend fun getSingleExpenseByPurchaseInvoice(purchaseInvoiceId : Int) : List<SingleExpense?>
+
+    @Query(
+        "UPDATE SPESE_SINGOLE SET Fattura = null WHERE Fattura = :purchaseInvoiceId"
+    )
+    suspend fun removePurchaseInvoiceReferenceFromSingleExpenses(purchaseInvoiceId : Int)
 
     @Upsert
     suspend fun upsertSingleExpense(singleExpense : SingleExpense) : Long
@@ -30,22 +44,25 @@ interface SingleExpenseDAO{
     suspend fun deleteSingleExpense(singleExpense : SingleExpense)
 
     @Transaction
-    @Query("SELECT * " +
-            "FROM SPESE_SINGOLE " +
-            "WHERE id = :id"
+    @Query(
+        "SELECT * " +
+        "FROM SPESE_SINGOLE " +
+        "WHERE id = :id"
     )
     fun getFlowSingleExpenseFullDetails(id : Int) : Flow<SingleExpenseFullDetails?>
 
     @Transaction
-    @Query("SELECT * " +
-            "FROM SPESE_SINGOLE"
+    @Query(
+        "SELECT * " +
+        "FROM SPESE_SINGOLE"
     )
     fun getFlowAllSingleExpenseFullDetails() : Flow<List<SingleExpenseFullDetails?>>
 
     @Transaction
-    @Query("SELECT * " +
-            "FROM SPESE_SINGOLE " +
-            "WHERE id = :id"
+    @Query(
+        "SELECT * " +
+        "FROM SPESE_SINGOLE " +
+        "WHERE id = :id"
     )
     suspend fun getSingleExpenseFullDetails(id: Int) : SingleExpenseFullDetails
 }

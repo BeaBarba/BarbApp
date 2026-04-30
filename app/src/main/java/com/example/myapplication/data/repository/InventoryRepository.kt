@@ -9,6 +9,7 @@ import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.database.MaterialFullDetails
 import com.example.myapplication.data.database.MaterialWithAirConditional
 import com.example.myapplication.data.database.Purchase
+import com.example.myapplication.data.database.PurchaseMaterialQuantity
 import com.example.myapplication.data.database.Seller
 import com.example.myapplication.data.modules.JobType
 import kotlinx.coroutines.Dispatchers
@@ -110,9 +111,13 @@ class InventoryRepository(private val db : AppDatabase){
     }
 
     /* Seller */
-    val sellers = db.sellerDAO().getAllSeller()
+    val sellers = db.sellerDAO().getFlowAllSeller()
 
-    fun getSellerById(id: Int): Flow<Seller?> = db.sellerDAO().getSeller(id)
+    fun getFlowSellerById(id: Int) : Flow<Seller?> = db.sellerDAO().getFlowSeller(id)
+
+    suspend fun getSellerById(id : Int) : Seller? = db.sellerDAO().getSeller(id)
+
+    suspend fun getAllSellers() : List<Seller> = db.sellerDAO().getAllSeller()
 
     suspend fun upsertSeller(seller: Seller): Long = db.sellerDAO().upsertSeller(seller)
 

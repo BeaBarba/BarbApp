@@ -5,7 +5,8 @@ import androidx.room.DatabaseView
 
 @DatabaseView(
     viewName = "Carrello",
-    value = """ SELECT M.Id AS Materiale, SUM(P.Quantità) AS Prenotati, SUM(P.Quantità - M.Disponibilità) AS Mancano
+    value = """ 
+                SELECT M.Id AS Materiale, SUM(P.Quantità) AS Prenotati, SUM(P.Quantità - M.Disponibilità) AS Mancano
                 FROM MATERIALI AS M
                     JOIN PRENOTAZIONI AS P ON (M.Id = P.Materiale)
                 GROUP BY M.Id

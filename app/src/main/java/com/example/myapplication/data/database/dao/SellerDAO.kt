@@ -9,16 +9,31 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SellerDAO{
-    @Query("SELECT * " +
-            "FROM VENDITORI " +
-            "WHERE id = :id"
+    @Query(
+        "SELECT * " +
+        "FROM VENDITORI " +
+        "WHERE id = :id"
     )
-    fun getSeller(id : Int) : Flow<Seller?>
+    fun getFlowSeller(id : Int) : Flow<Seller?>
 
-    @Query("SELECT * " +
-            "FROM VENDITORI"
+    @Query(
+        "SELECT * " +
+        "FROM VENDITORI " +
+        "WHERE id = :id"
     )
-    fun getAllSeller() : Flow<List<Seller>>
+    suspend fun getSeller(id : Int) : Seller?
+
+    @Query(
+        "SELECT * " +
+        "FROM VENDITORI"
+    )
+    fun getFlowAllSeller() : Flow<List<Seller>>
+
+    @Query(
+        "SELECT * " +
+        "FROM VENDITORI"
+    )
+    suspend fun getAllSeller() : List<Seller>
 
     @Upsert
     suspend fun upsertSeller(seller : Seller) : Long

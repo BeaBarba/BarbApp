@@ -23,10 +23,10 @@ interface PurchaseInvoiceDAO{
     fun getFlowAllPurchaseInvoice() : Flow<List<PurchaseInvoice>>
 
     @Upsert
-    suspend fun upsertPurchaseInvoice(seller : PurchaseInvoice)
+    suspend fun upsertPurchaseInvoice(purchaseInvoice : PurchaseInvoice) : Long
 
     @Delete
-    suspend fun  deletePurchaseInvoice(seller: PurchaseInvoice)
+    suspend fun  deletePurchaseInvoice(purchaseInvoice: PurchaseInvoice)
 
     @Transaction
     @Query(

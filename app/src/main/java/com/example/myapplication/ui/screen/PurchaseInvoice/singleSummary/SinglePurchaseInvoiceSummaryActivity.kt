@@ -22,8 +22,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.listaBolle
-import com.example.myapplication.debug.provenienze
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.KeyValueLabel

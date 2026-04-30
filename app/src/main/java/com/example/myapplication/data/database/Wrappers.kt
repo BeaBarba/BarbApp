@@ -234,6 +234,11 @@ data class FutureJobMaterialWithMaterialDetails(
     val material : Material
 )
 
+data class PurchaseMaterialQuantity(
+    @ColumnInfo(name = "Materiale") val materialId : Int,
+    @ColumnInfo(name = "Quantità") val quantity : Float,
+)
+
 data class JobMaterialFullDetails(
     @Embedded val job : Job,
 

@@ -44,7 +44,7 @@ fun AllCleaningSummaryActivity(
                 trailingIcon = {DropDownMenuCleaning()}
             )
         },
-        floatingActionButton = {AddButton {navController.navigate(NavigationRoute.JobAdd)}}
+        //floatingActionButton = {AddButton {navController.navigate(NavigationRoute.JobAdd)}}
     ) { contentPadding ->
         var showItems by remember { mutableStateOf(false) }
         LazyColumn(
@@ -64,7 +64,7 @@ fun AllCleaningSummaryActivity(
                     text = item,
                     checked = checked,
                     onCheckedChange = {checked = !checked},
-                    onClick = {navController.navigate(NavigationRoute.SingleCustomerSummary)}
+                    onClick = {}//navController.navigate(NavigationRoute.SingleCustomerSummary)}
                 )
                 Spacer(Modifier.size(8.dp))
             }
@@ -85,7 +85,7 @@ fun AllCleaningSummaryActivity(
                         text = item,
                         checked = checked,
                         onCheckedChange = {checked = !checked},
-                        onClick = {navController.navigate(NavigationRoute.SingleCustomerSummary)}
+                        onClick = {}//navController.navigate(NavigationRoute.SingleCustomerSummary)}
                     )
                     Spacer(Modifier.size(8.dp))
                 }

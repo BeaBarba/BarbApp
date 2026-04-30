@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.PurchaseInvoice
+package com.example.myapplication.ui.screen.PurchaseInvoice.add
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -17,22 +17,20 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.modules.SelectKey
-import com.example.myapplication.debug.bolle
-import com.example.myapplication.debug.prodotti
-import com.example.myapplication.debug.venditori
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomDivider
@@ -44,12 +42,48 @@ import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun PurchaseInvoiceAddActivity(
+    purchaseInvoiceId : Int?,
+    sellers : List<MenuItem>,
+    state : PurchaseInvoiceAddState,
+    actions : PurchaseInvoiceAddActions,
     navController : NavHostController
 ) {
+    val bubblesSearchText = stringResource(R.string.bubbles)
+    val materialsSearchText = stringResource(R.string.materials)
+
     val previousBackStackEntry = navController.previousBackStackEntry
+    val currentBackStackEntry = navController.currentBackStackEntry
+
+    val bubblesItems by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("bubbles", null)
+        ?.collectAsStateWithLifecycle(initialValue = null) ?: remember { mutableStateOf(null)}
+
+    val materialsIds by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("selectedIds", null)
+        ?.collectAsStateWithLifecycle(initialValue = null) ?: remember { mutableStateOf(null)}
+
+    LaunchedEffect(bubblesItems) {
+        bubblesItems?.let{ ids ->
+            actions.setBubbles(ids)
+            currentBackStackEntry?.savedStateHandle?.remove<List<String>>("bubbles")
+        }
+    }
+
+    LaunchedEffect(materialsIds) {
+        materialsIds?.let{ ids ->
+            actions.setMaterials(ids)
+            currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+        }
+    }
+
+    LaunchedEffect(purchaseInvoiceId) {
+        actions.populateView(purchaseInvoiceId)
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -59,15 +93,16 @@ fun PurchaseInvoiceAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            /*
-                            navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary()) {
-                                popUpTo(NavigationRoute.BubbleAdd) { inclusive = true }
+                            actions.save { id ->
+                                navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary(id)) {
+                                    popUpTo(NavigationRoute.AllPurchaseInvoicesSummary) { inclusive = false }
+                                }
                             }
-                             */
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
-                        )
+                        ),
+                        enabled = actions.checkRequirements()
                     ) {
                         Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
@@ -75,11 +110,7 @@ fun PurchaseInvoiceAddActivity(
             )
         }
     ) { contentPadding ->
-        var selected by remember { mutableStateOf("") }
-        var venditori_menu : MutableList<MenuItem> = (
-                listOf(MenuItem(Pair(1,""),name = "Nuovo",{selected = "Nuovo"})) +
-                        venditori.map{ item -> MenuItem(Pair(1,""),name = item, {selected = item}) }
-                ).toMutableList()
+
         LazyColumn(
             modifier = Modifier
                 .padding(
@@ -93,28 +124,38 @@ fun PurchaseInvoiceAddActivity(
             item{
                 SplitButtonMenu(
                     content =
-                        if(selected.equals("")) {
-                            stringResource(R.string.seller)
-                        }else{selected},
-                    items = venditori_menu,
-                    heightMenu = (venditori_menu.size * 55).dp
+                        when(state.seller.first){
+                            -1 -> {stringResource(R.string.seller)}
+                            0 -> {stringResource(R.string.new_item)}
+                            else -> {state.seller.second}
+                        },
+                    items = sellers,
+                    heightMenu = if(sellers.size > 10) 300.dp else (sellers.size * 55).dp
                 )
             }
-            if(selected.equals("Nuovo")){
+            if(state.seller.first == 0){
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.name),
-                        onValueChange = {}
+                        value = state.newSeller,
+                        onValueChange = actions::setNewSeller
                     )
                 }
             }
             item{
                 CustomOutlineTextField(
                     label = stringResource(R.string.number),
-                    onValueChange = {}
+                    value = state.number,
+                    onValueChange = actions::setNumber
                 )
             }
-            item{DatePickerFieldToModal(stringResource(R.string.date_issue), {}, "")}
+            item{
+                DatePickerFieldToModal(
+                    title = stringResource(R.string.date_issue),
+                    value = state.issueDate?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "",
+                    onValueChange = actions::setIssueDate
+                )
+            }
             item{CustomDivider()}
             item{
                 GenericCard(
@@ -132,7 +173,13 @@ fun PurchaseInvoiceAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select("Bolle", SelectKey.AllBubbles))}
+                    onClick = {
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("initialIds", actions.getBubblesIds())
+
+                        navController.navigate(NavigationRoute.Select(bubblesSearchText, SelectKey.AllBubbles))
+                    }
                 )
             }
             item{CustomDivider()}
@@ -146,26 +193,41 @@ fun PurchaseInvoiceAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = { navController.navigate(NavigationRoute.Select("Materiale", SelectKey.AllMaterials)) }
+                    onClick = {
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("initialIds", actions.getMaterialsIds())
+
+                        navController.navigate(NavigationRoute.Select(materialsSearchText, SelectKey.AllMaterials))
+                    }
                 )
             }
             item {Spacer(Modifier.size(8.dp))}
-            /* Only for materials selected on the other page */
-            itemsIndexed(prodotti.subList(0,6)){ index, item ->
-                TitleLabel(item.nome)
+            itemsIndexed(state.materials){ index, item ->
+                TitleLabel("${item.material.category} - ${item.material.model}")
+
                 CustomOutlineTextField(
                     label = stringResource(R.string.quantity),
-                    onValueChange = {}
+                    value = item.quantity.toString(),
+                    onValueChange = { value ->
+                        actions.setMaterialQuantity(item.material.id, value)
+                    }
                 )
                 CustomOutlineTextField(
                     label = stringResource(R.string.unit_price),
-                    onValueChange = {}
+                    value = item.unitPrice.toString(),
+                    onValueChange = { value ->
+                        actions.setMaterialPrice(item.material.id, value)
+                    }
                 )
                 CustomOutlineTextField(
                     label = stringResource(R.string.vat),
-                    onValueChange = {}
+                    value = item.vatNumber.toString(),
+                    onValueChange = { value ->
+                        actions.setMaterialVat(item.material.id, value)
+                    }
                 )
-                if(index < 5/*prodotti.size*/) {
+                if(index < state.materials.size - 1) {
                     CustomDivider()
                 }
             }
@@ -175,7 +237,7 @@ fun PurchaseInvoiceAddActivity(
                item {
 
                     DeleteButton {
-                        bolle = bolle.subList(1, bolle.size)
+                        actions.delete(state.purchaseInvoiceId)
                         navController.navigate(NavigationRoute.AllPurchaseInvoicesSummary){
                             popUpTo(NavigationRoute.AllPurchaseInvoicesSummary){inclusive = true}
                             launchSingleTop = true

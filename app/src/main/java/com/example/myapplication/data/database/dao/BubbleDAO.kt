@@ -24,6 +24,16 @@ interface BubbleDAO{
     )
     fun getAllBubbles() : Flow<List<Bubble>>
 
+    @Query(
+        "UPDATE BOLLE SET Fattura = null WHERE Fattura = :purchaseInvoiceId"
+    )
+    suspend fun removePurchaseInvoiceReferenceFromBubbles(purchaseInvoiceId : Int)
+
+    @Query(
+        "UPDATE BOLLE SET Fattura = :purchaseInvoiceId WHERE id = :bubbleId"
+    )
+    suspend fun updatePurchaseInvoiceReferenceFromBubble(bubbleId : Int, purchaseInvoiceId: Int)
+
     @Upsert
     suspend fun upsertBubble(bubble : Bubble) : Long
 

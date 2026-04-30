@@ -124,7 +124,7 @@ data class Purchase(
             entity = PurchaseInvoice::class,
             parentColumns = ["id"],
             childColumns = ["Fattura"],
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.SET_NULL
         )
     ]
 )

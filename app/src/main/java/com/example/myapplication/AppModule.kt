@@ -34,6 +34,7 @@ import com.example.myapplication.ui.screen.Material.allSummary.WarehouseViewMode
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryViewModel
 import com.example.myapplication.ui.screen.Payment.allSummary.AllPaymentsSummaryViewModel
 import com.example.myapplication.ui.screen.Payment.singleSummary.SinglePaymentSummaryViewModel
+import com.example.myapplication.ui.screen.PurchaseInvoice.add.PurchaseInvoiceAddViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
@@ -146,6 +147,7 @@ val appModule = module{
     /* Purchase Invoice */
     viewModel {AllPurchaseInvoicesSummaryViewModel(get())}
     viewModel {SinglePurchaseInvoiceSummaryViewModel(get())}
+    viewModel { PurchaseInvoiceAddViewModel(get()) }
 
     /* Worksite */
     viewModel {AllWorksitesSummaryViewModel(get())}

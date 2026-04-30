@@ -29,6 +29,17 @@ interface RecurringExpenseDAO{
     )
     fun getAllRecurringExpenses() : Flow<List<RecurringExpense>>
 
+    @Query(
+        "SELECT * " +
+        "FROM SPESE_PERIODICHE " +
+        "WHERE Fattura = :purchaseInvoiceId"
+    )
+    suspend fun getRecurringExpenseByPurchaseInvoice(purchaseInvoiceId : Int) : List<RecurringExpense?>
+
+    @Query(
+        "UPDATE SPESE_PERIODICHE SET Fattura = null WHERE Fattura = :purchaseInvoiceId"
+    )
+    suspend fun removePurchaseInvoiceReferenceFromRecurringExpenses(purchaseInvoiceId : Int)
 
     @Upsert
     suspend fun upsertRecurringExpense(recurringExpense : RecurringExpense) : Long

@@ -6,6 +6,7 @@ import com.example.myapplication.data.database.Bubble
 import com.example.myapplication.data.database.BubbleFullDetails
 import com.example.myapplication.data.database.CategoryPurchaseInvoice
 import com.example.myapplication.data.database.Payment
+import com.example.myapplication.data.database.Purchase
 import com.example.myapplication.data.database.PurchaseInvoice
 import com.example.myapplication.data.database.PurchaseInvoiceFullDetails
 import com.example.myapplication.data.database.RecurringExpense
@@ -13,12 +14,15 @@ import com.example.myapplication.data.database.RecurringExpenseFullDetails
 import com.example.myapplication.data.database.RecurringPayment
 import com.example.myapplication.data.database.Revenue
 import com.example.myapplication.data.database.RevenueFullDetails
+import com.example.myapplication.data.database.Seller
 import com.example.myapplication.data.database.SingleExpense
 import com.example.myapplication.data.database.SingleExpenseFullDetails
 import com.example.myapplication.data.modules.FrequencyType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.LocalDate
 
 class AccountingRepository (private val db : AppDatabase) {
@@ -53,12 +57,6 @@ class AccountingRepository (private val db : AppDatabase) {
     fun getFlowPurchaseInvoiceById(id: Int): Flow<PurchaseInvoice?> =
         db.purchaseInvoiceDAO().getFlowPurchaseInvoice(id)
 
-    suspend fun upsertPurchaseInvoice(purchaseInvoice: PurchaseInvoice) =
-        db.purchaseInvoiceDAO().upsertPurchaseInvoice(purchaseInvoice)
-
-    suspend fun deletePurchaseInvoice(purchaseInvoice: PurchaseInvoice) =
-        db.purchaseInvoiceDAO().deletePurchaseInvoice(purchaseInvoice)
-
     fun getPurchaseInvoiceFullDetailsById(id: Int): Flow<PurchaseInvoiceFullDetails?> =
         db.purchaseInvoiceDAO().getFlowPurchaseInvoiceFullDetails(id)
 
@@ -67,6 +65,75 @@ class AccountingRepository (private val db : AppDatabase) {
 
     fun getAllPurchaseInvoicesFullDetails(): Flow<List<PurchaseInvoiceFullDetails>> =
         db.purchaseInvoiceDAO().getFlowAllPurchaseInvoicesFullDetails()
+
+    suspend fun upsertPurchaseInvoice(purchaseInvoice: PurchaseInvoice) =
+        db.purchaseInvoiceDAO().upsertPurchaseInvoice(purchaseInvoice)
+
+    suspend fun savePurchaseInvoiceComplete(
+        purchaseInvoice : PurchaseInvoice,
+        seller : Seller,
+        bubblesIds : List<Int>,
+        purchases : List<Purchase>
+    ) : Int = withContext(Dispatchers.IO){
+        db.withTransaction {
+
+            val sellerId : Int =
+                if(seller.id == 0 && seller.name.isNotBlank()){
+                    db.sellerDAO().upsertSeller(seller).toInt()
+                }else{
+                    seller.id
+                }
+
+            val purchaseInvoiceId = upsertPurchaseInvoice(purchaseInvoice.copy(seller = sellerId)).toInt()
+            val purchaseInvoiceFinalId = if(purchaseInvoiceId == -1) purchaseInvoice.id else purchaseInvoiceId
+
+            if(purchaseInvoiceFinalId != 0 && purchaseInvoiceFinalId > 0) clearExistingPurchaseData(purchaseInvoice.id)
+
+            println("DEBUG: Repository - bubblesIds = $bubblesIds")
+            if(bubblesIds.isNotEmpty()){
+                bubblesIds.forEach { bubble ->
+                    db.bubbleDAO().updatePurchaseInvoiceReferenceFromBubble(bubble,purchaseInvoiceFinalId)
+                    println("DEBUG: Repository - bubbles = $bubble")
+                }
+            }
+
+            if(purchases.isNotEmpty()){
+                purchases.forEach { purchase ->
+                    db.purchaseDAO().upsertPurchase(purchase.copy(purchaseInvoice = purchaseInvoiceFinalId))
+
+                    val material = db.materialDAO().getMaterial(purchase.material)
+                    material?.let{
+                            mat ->
+                        val newQuantity = BigDecimal(mat.availableQuantity.toDouble())
+                            .add(BigDecimal(purchase.quantity.toDouble()))
+                            .coerceAtLeast(BigDecimal.ZERO)
+                            .setScale(2, RoundingMode.HALF_UP)
+                            .toFloat()
+                        db.materialDAO().upsertMaterial(
+                            mat.copy(id = mat.id, availableQuantity = newQuantity)
+                        )
+                    }
+                }
+            }
+
+            return@withTransaction purchaseInvoiceFinalId
+        }
+    }
+
+    suspend fun deletePurchaseInvoiceComplete(purchaseInvoice : PurchaseInvoice)
+    = withContext(Dispatchers.IO) {
+        db.withTransaction {
+            val purchaseInvoiceId = purchaseInvoice.id
+
+            clearExistingPurchaseData(purchaseInvoiceId)
+
+            db.singleExpenseDAO().removePurchaseInvoiceReferenceFromSingleExpenses(purchaseInvoiceId)
+
+            db.recurringExpenseDAO().removePurchaseInvoiceReferenceFromRecurringExpenses(purchaseInvoiceId)
+
+            db.purchaseInvoiceDAO().deletePurchaseInvoice(purchaseInvoice)
+        }
+    }
 
     /* Bubbles */
     val bubbles = db.bubbleDAO().getAllBubbles()
@@ -125,7 +192,7 @@ class AccountingRepository (private val db : AppDatabase) {
         }
     }
 
-    suspend fun deleteSingleExpense(singleExpense: SingleExpense) =
+    private suspend fun deleteSingleExpense(singleExpense: SingleExpense) =
         db.singleExpenseDAO().deleteSingleExpense(singleExpense)
 
     suspend fun deleteSingleExpenseComplete(singleExpenseId : Int) =
@@ -200,7 +267,7 @@ class AccountingRepository (private val db : AppDatabase) {
         }
     }
 
-    suspend fun deleteRecurringExpense(recurringExpense: RecurringExpense) =
+    private suspend fun deleteRecurringExpense(recurringExpense: RecurringExpense) =
         db.recurringExpenseDAO().deleteRecurringExpense(recurringExpense)
 
     suspend fun deleteRecurringExpenseComplete(recurringExpenseId : Int) =
@@ -226,7 +293,7 @@ class AccountingRepository (private val db : AppDatabase) {
             db.paymentDAO().getPayment(id)
         }
 
-    suspend fun checkExistingNextPayment(date : LocalDate, expenseId : Int) : Boolean =
+    private suspend fun checkExistingNextPayment(date : LocalDate, expenseId : Int) : Boolean =
         withContext(Dispatchers.IO){
             db.paymentDAO().checkExistingNextPayment(date, expenseId) > 0
         }
@@ -249,7 +316,7 @@ class AccountingRepository (private val db : AppDatabase) {
         }
     }
 
-    suspend fun deletePayment(payment: Payment) = db.paymentDAO().deletePayment(payment)
+    private suspend fun deletePayment(payment: Payment) = db.paymentDAO().deletePayment(payment)
 
     private suspend fun deletePaymentsByIds(ids : List<Int>) =
         withContext(Dispatchers.IO){
@@ -372,5 +439,29 @@ class AccountingRepository (private val db : AppDatabase) {
             FrequencyType.Anno -> currentDate.plusYears(1)
             else -> currentDate
         }
+    }
+
+    private suspend fun clearExistingPurchaseData(purchaseInvoiceId : Int){
+        val materialsQuantity = db.purchaseDAO().getMaterialsPurchaseByPurchaseInvoice(purchaseInvoiceId)
+
+        materialsQuantity.forEach { (materialId, quantity) ->
+
+            val material = db.materialDAO().getMaterial(materialId)
+
+            material?.let { mat ->
+                val newQuantity = BigDecimal(mat.availableQuantity.toDouble())
+                    .subtract(BigDecimal(quantity.toDouble()))
+                    .coerceAtLeast(BigDecimal.ZERO)
+                    .setScale(2, RoundingMode.HALF_UP)
+                    .toFloat()
+                db.materialDAO().upsertMaterial(
+                    mat.copy(id = mat.id, availableQuantity = newQuantity)
+                )
+            }
+        }
+
+        db.bubbleDAO().removePurchaseInvoiceReferenceFromBubbles(purchaseInvoiceId)
+
+        db.purchaseDAO().deletePurchasesByPurchaseInvoice(purchaseInvoiceId)
     }
 }

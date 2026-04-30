@@ -42,7 +42,7 @@ fun SelectActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            val selectedIds = state.viewList.filter { it.checked }.map{ it.id }
+                            val selectedIds = state.itemsList.filter { it.checked }.map{ it.id }
                             navController.previousBackStackEntry
                                 ?.savedStateHandle
                                 ?.set(state.resultKey, selectedIds)

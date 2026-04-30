@@ -10,16 +10,25 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RecurringPaymentDAO{
 
-    @Query("SELECT * " +
-            "FROM SALDI " +
-            "WHERE Pagamento = :payment"
+    @Query(
+        "SELECT * " +
+        "FROM SALDI " +
+        "WHERE Pagamento = :payment"
     )
     fun getRecurringPayment(payment : Int) : Flow<RecurringPayment?>
 
-    @Query("SELECT * " +
-            "FROM SALDI"
+    @Query(
+        "SELECT * " +
+        "FROM SALDI"
     )
     fun getAllRecurringPayments() : Flow<List<RecurringPayment>>
+
+    @Query(
+        "SELECT * " +
+        "FROM SALDI " +
+        "WHERE Spesa = :recurringExpenseId"
+    )
+    fun getRecurringPaymentsByRecurringExpense(recurringExpenseId : Int) : List<RecurringPayment>?
 
     @Upsert
     suspend fun upsertRecurringPayment(recurringPayment: RecurringPayment)

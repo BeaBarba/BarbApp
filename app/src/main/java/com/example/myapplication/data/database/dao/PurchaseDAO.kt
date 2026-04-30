@@ -4,26 +4,42 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
+import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.database.Purchase
+import com.example.myapplication.data.database.PurchaseMaterialQuantity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PurchaseDAO{
-    @Query("SELECT * " +
-            "FROM ACQUISTI " +
-            "WHERE Fattura = :purchaseInvoice " +
+    @Query(
+        "SELECT * " +
+        "FROM ACQUISTI " +
+        "WHERE Fattura = :purchaseInvoice " +
             "AND Materiale = :material"
     )
     fun getPurchase(purchaseInvoice: Int, material : Int) : Flow<Purchase?>
 
-    @Query("SELECT * " +
-            "FROM ACQUISTI"
+    @Query(
+        "SELECT * " +
+        "FROM ACQUISTI"
     )
     fun getAllPurchases() : Flow<List<Purchase>>
+
+    @Query(
+        "SELECT Materiale, Quantità " +
+        "FROM ACQUISTI " +
+        "WHERE Fattura = :id"
+    )
+    suspend fun getMaterialsPurchaseByPurchaseInvoice(id: Int) : List<PurchaseMaterialQuantity>
 
     @Upsert
     suspend fun upsertPurchase(purchase : Purchase)
 
     @Delete
     suspend fun deletePurchase(purchase : Purchase)
+
+    @Query(
+        "DELETE FROM ACQUISTI WHERE Fattura = :purchaseInvoiceId"
+    )
+    suspend fun deletePurchasesByPurchaseInvoice(purchaseInvoiceId : Int)
 }

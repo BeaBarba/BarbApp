@@ -54,20 +54,20 @@ class SelectViewModel(
             when(select){
                 SelectKey.AllMaterials -> {
                     viewModelScope.launch(Dispatchers.IO) {
-                        repository.inventory.materials.collect{
+                        repository.inventory.materials.collect {
                             val materialCardList = it.map { material ->
-                                    CardItem(
-                                        id = material.material.id.toString(),
-                                        name = material.material.category,
-                                        description = "${material.material.model}  - ${material.material.brand}",
-                                        type = material.material.type,
-                                        checked = initialCheckedIds.contains(material.material.id.toString())
-                                    )
-                                }.sortedWith(
-                                    compareByDescending<CardItem> {it.checked}
-                                        .thenBy {it.name}
-                                        .thenBy { it.description }
+                                CardItem(
+                                    id = material.material.id.toString(),
+                                    name = material.material.category,
+                                    description = "${material.material.model}  - ${material.material.brand}",
+                                    type = material.material.type,
+                                    checked = initialCheckedIds.contains(material.material.id.toString())
                                 )
+                            }.sortedWith(
+                                compareByDescending<CardItem> { it.checked }
+                                    .thenBy { it.name }
+                                    .thenBy { it.description }
+                            )
 
                             _state.update {
                                 it.copy(
@@ -236,6 +236,37 @@ class SelectViewModel(
                     }
                 }
 
+                SelectKey.AllBubbles -> {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        repository.accounting.getAllBubblesFullDetails().collect { bubbles ->
+                            val bubblesCardList = bubbles.map {  bubble ->
+                                    val bubbleId = bubble.bubble.id.toString()
+                                    CardItem(
+                                        id = bubbleId,
+                                        name = "${bubble.bubble.number} - ${bubble.seller.name}",
+                                        description = null,
+                                        type = JobType.NONE,
+                                        checked = initialCheckedIds.contains(bubbleId)
+                                    )
+                                }
+                                .sortedWith(
+                                    compareByDescending<CardItem> { it.checked }
+                                        .thenBy { it.name }
+                                )
+
+                            _state.update {
+                                it.copy(
+                                    searchText = searchText,
+                                    itemsList = bubblesCardList,
+                                    viewList = bubblesCardList,
+                                    selectKey = SelectKey.AllBubbles,
+                                    resultKey = "bubbles"
+                                )
+                            }
+                        }
+                    }
+                }
+
                 else -> {}
             }
         }
@@ -251,7 +282,7 @@ class SelectViewModel(
                 )
             }
 
-            _state.update { it.copy(viewList = checkedItems) }
+            _state.update { it.copy(itemsList = checkedItems, viewList = checkedItems) }
         }
 
         override fun setChecked(id: String) {
@@ -283,8 +314,8 @@ class SelectViewModel(
                 SelectKey.AllMaterials -> navController.navigate(NavigationRoute.SingleMaterialSummary(id))
                 SelectKey.AllCustomers -> navController.navigate(NavigationRoute.SingleCustomerSummary(id2))
                 SelectKey.AllAddresses -> navController.navigate(NavigationRoute.SingleAddressSummary(id))
-                SelectKey.AllPurchaseInvoices -> navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary
-                    (id))
+                SelectKey.AllPurchaseInvoices -> navController.navigate(NavigationRoute.SinglePurchaseInvoiceSummary(id))
+                SelectKey.AllBubbles -> navController.navigate(NavigationRoute.SingleBubbleSummary(id))
                 else -> {}
             }
         }
