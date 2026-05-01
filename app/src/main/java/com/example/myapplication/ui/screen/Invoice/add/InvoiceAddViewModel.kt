@@ -5,10 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.Revenue
 import com.example.myapplication.data.database.RevenueFullDetails
 import com.example.myapplication.data.repository.Repository
+import com.example.myapplication.ui.component.checkStringIsBigDecimal
+import com.example.myapplication.ui.component.convertStringToDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 data class InvoiceAddState(
@@ -20,7 +24,8 @@ data class InvoiceAddState(
     val job : Int? = null,
     val worksite : Int? = null,
 
-    val revenue: RevenueFullDetails? = null
+    val revenue: RevenueFullDetails? = null,
+    val started : Boolean = false
 )
 
 interface InvoiceAddActions{
@@ -46,21 +51,26 @@ class InvoiceAddViewModel(
     val actions = object : InvoiceAddActions{
 
         override fun populateView(id: Int?) {
-            id?.let{
-                viewModelScope.launch {
-                    val revenue = repository.accounting.getRevenueFullDetailsById(id)
-                    revenue?.let{
-                        _state.update {
-                            it.copy(
-                                revenueId = revenue.revenue.id,
-                                customerCf = revenue.job?.job?.customer ?: revenue.workSite?.workSite?.customer,
-                                invoiceNumber = revenue.revenue.invoice.toString(),
-                                issueDate = revenue.revenue.issueDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                                amount = revenue.revenue.amount.toString(),
-                                job = revenue.revenue.job,
-                                worksite = revenue.revenue.worksite,
-                                revenue = revenue
-                            )
+            if (!state.value.started) {
+                id?.let {
+                    viewModelScope.launch {
+                        val revenue = repository.accounting.getRevenueFullDetailsById(id)
+
+                        revenue?.let {
+                            _state.update {
+                                it.copy(
+                                    revenueId = revenue.revenue.id,
+                                    customerCf = revenue.job?.job?.customer ?: revenue.workSite?.workSite?.customer
+                                    ?: "",
+                                    invoiceNumber = revenue.revenue.invoice.toString(),
+                                    issueDate = revenue.revenue.issueDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                                    amount = revenue.revenue.amount.toString(),
+                                    job = revenue.revenue.job,
+                                    worksite = revenue.revenue.worksite,
+                                    revenue = revenue,
+                                    started = true
+                                )
+                            }
                         }
                     }
                 }
@@ -92,18 +102,40 @@ class InvoiceAddViewModel(
         }
 
         override fun saveInvoice(onSuccess: (Int) -> Unit) {
-            println("DEBUG: VM - Save: ${state.value}")
-            /*TODO*/
+            val currentState = state.value
+            viewModelScope.launch {
+                val amount =
+                    if(currentState.amount.isNotBlank() && checkStringIsBigDecimal(currentState.amount)){
+                        BigDecimal(currentState.amount).toFloat()
+                    }else{
+                        currentState.revenue?.revenue?.amount ?: BigDecimal.ZERO.toFloat()
+                    }
+
+                val revenueFinalId = repository.accounting.saveRevenueComplete(
+                    revenue = Revenue(
+                        id = currentState.revenueId,
+                        invoice = currentState.invoiceNumber.toIntOrNull() ?: currentState.revenue?.revenue?.invoice ?: 0,
+                        issueDate = convertStringToDate(currentState.issueDate) ?: currentState.revenue?.revenue?.issueDate ?: LocalDate.now(),
+                        amount = amount,
+                        amountPaid = currentState.revenue?.revenue?.amountPaid ?: BigDecimal.ZERO.toFloat(),
+                        percent = currentState.revenue?.revenue?.percent ?: 0,
+                        collectionDate = currentState.revenue?.revenue?.collectionDate,
+                        worksite = currentState.worksite ?: currentState.revenue?.workSite?.workSite?.id,
+                        job = currentState.job ?: currentState.revenue?.job?.job?.id
+                    ),
+                    customer = currentState.customerCf ?: ""
+                )
+
+                onSuccess(revenueFinalId)
+            }
         }
 
         override fun deleteInvoice(id: Int, onSuccess: () -> Unit) {
             val currentState = state.value
 
-            if (currentState.revenueId == 0) onSuccess()
-            if (currentState.revenue == null) onSuccess()
+            if (currentState.revenueId != 0 && currentState.revenue != null) {
 
-            viewModelScope.launch {
-                currentState.revenue?.let {
+                viewModelScope.launch {
                     repository.accounting.deleteRevenue(
                         Revenue(
                             id = currentState.revenueId,
@@ -116,7 +148,10 @@ class InvoiceAddViewModel(
                             percent = currentState.revenue.revenue.percent
                         )
                     )
+
+                    onSuccess()
                 }
+            }else{
                 onSuccess()
             }
         }

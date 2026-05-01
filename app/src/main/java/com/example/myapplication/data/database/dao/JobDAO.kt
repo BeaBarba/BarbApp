@@ -15,16 +15,23 @@ import java.time.LocalDate
 @Dao
 interface JobDAO{
 
-    @Query("SELECT * " +
-            "FROM INTERVENTI " +
-            "WHERE id = :id"
+    @Query(
+        "SELECT * " +
+        "FROM INTERVENTI " +
+        "WHERE id = :id"
     )
     fun getFlowJob(id : Int) : Flow<Job?>
 
-    @Query("SELECT * " +
-            "FROM INTERVENTI"
+    @Query(
+        "SELECT * " +
+        "FROM INTERVENTI"
     )
     fun getFlowAllJobs() : Flow<List<Job>>
+
+    @Query(
+        "UPDATE INTERVENTI SET Cliente = :cf WHERE id = :jobId"
+    )
+    suspend fun updateCustomerByJob(jobId : Int, cf : String)
 
     @Upsert
     suspend fun upsertJob(job : Job) : Long

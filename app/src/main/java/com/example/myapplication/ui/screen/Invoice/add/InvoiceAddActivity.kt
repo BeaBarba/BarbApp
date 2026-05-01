@@ -46,13 +46,13 @@ fun InvoiceAddActivity(
     actions: InvoiceAddActions,
     navController: NavHostController
 ) {
-    val previousBackStackEntry = navController.previousBackStackEntry
-
     val selectSearchCustomer = stringResource(R.string.customer)
     val selectSearchJobs = stringResource(R.string.intervention)
     val selectSearchWorksite = stringResource(R.string.construction_site)
 
+    val previousBackStackEntry = navController.previousBackStackEntry
     val currentBackStackEntry = navController.currentBackStackEntry
+
     val selectedCustomer by currentBackStackEntry?.savedStateHandle
         ?.getStateFlow<List<String>?>("customers", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
@@ -107,7 +107,7 @@ fun InvoiceAddActivity(
                         onClick = {
                             actions.saveInvoice { id ->
                                 navController.navigate(NavigationRoute.SingleInvoiceSummary(id)) {
-                                    popUpTo(NavigationRoute.InvoiceAdd) { inclusive = true }
+                                    popUpTo(NavigationRoute.AllInvoicesSummary) { inclusive = false }
                                 }
                             }
                         },

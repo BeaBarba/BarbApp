@@ -402,10 +402,6 @@ class AccountingRepository (private val db : AppDatabase) {
         db.revenuesDAO().getRevenueByJob(jobId)
     }
 
-    suspend fun upsertRevenue(revenue: Revenue) = db.revenuesDAO().upsertRevenue(revenue)
-
-    suspend fun deleteRevenue(revenue: Revenue) = db.revenuesDAO().deleteRevenue(revenue)
-
     fun getFlowRevenueFullDetailsById(id: Int): Flow<RevenueFullDetails?> =
         db.revenuesDAO().getFlowRevenueFullDetails(id)
 
@@ -419,6 +415,30 @@ class AccountingRepository (private val db : AppDatabase) {
         withContext(Dispatchers.IO) {
             db.revenuesDAO().getAllRevenuesFullDetails()
         }
+
+    suspend fun upsertRevenue(revenue: Revenue) : Long = db.revenuesDAO().upsertRevenue(revenue)
+
+    suspend fun saveRevenueComplete(revenue: Revenue, customer : String) : Int
+    = withContext(Dispatchers.IO){
+        db.withTransaction {
+            val revenueId = upsertRevenue(revenue).toInt()
+            val revenueFinalId = if(revenueId == -1) revenue.id else revenueId
+
+            if(customer.isNotBlank()){
+                if(revenue.worksite != null){
+                    db.workSiteDAO().updateCustomerByWorkSite(revenue.worksite, customer)
+                }
+
+                if(revenue.job != null){
+                    db.jobDAO().updateCustomerByJob(revenue.job, customer)
+                }
+            }
+
+            return@withTransaction revenueFinalId
+        }
+    }
+
+    suspend fun deleteRevenue(revenue: Revenue) = db.revenuesDAO().deleteRevenue(revenue)
 
     private fun calculateNewDates(issueDate : LocalDate, endDate: LocalDate, frequency : FrequencyType) :
             List<LocalDate>{

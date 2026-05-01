@@ -207,29 +207,33 @@ class BubbleAddViewModel(
         }
 
         override fun setMaterials(materials: List<String>) {
-            val inputIds = materials.mapNotNull { it.toIntOrNull() }
+            if(materials.isNotEmpty()) {
+                val inputIds = materials.mapNotNull { it.toIntOrNull() }
 
-            val currentSelected = state.value.materialsSelected
-            val preservedMaterials = currentSelected.filter { it.material.id in inputIds }
-            val preservedIds = preservedMaterials.map { it.material.id }
+                val currentSelected = state.value.materialsSelected
+                val preservedMaterials = currentSelected.filter { it.material.id in inputIds }
+                val preservedIds = preservedMaterials.map { it.material.id }
 
-            val newIdsToFetch = inputIds.filterNot { it in preservedIds }
+                val newIdsToFetch = inputIds.filterNot { it in preservedIds }
 
-            viewModelScope.launch(Dispatchers.IO) {
-                val newMaterials = newIdsToFetch.mapNotNull { id ->
-                    repository.inventory.getMaterialById(id)?.let { material ->
-                        MaterialBubble(
-                            material = material,
-                            quantity = BigDecimal.ZERO,
-                            unitPrice = BigDecimal.ZERO,
-                            vatNumber = 0
-                        )
+                viewModelScope.launch(Dispatchers.IO) {
+                    val newMaterials = newIdsToFetch.mapNotNull { id ->
+                        repository.inventory.getMaterialById(id)?.let { material ->
+                            MaterialBubble(
+                                material = material,
+                                quantity = BigDecimal.ZERO,
+                                unitPrice = BigDecimal.ZERO,
+                                vatNumber = 0
+                            )
+                        }
                     }
+
+                    val updatedList = preservedMaterials + newMaterials
+
+                    _state.update { it.copy(materialsSelected = updatedList) }
                 }
-
-                val updatedList = preservedMaterials + newMaterials
-
-                _state.update { it.copy(materialsSelected = updatedList) }
+            }else{
+                _state.update{ it.copy(materialsSelected = emptyList()) }
             }
         }
 

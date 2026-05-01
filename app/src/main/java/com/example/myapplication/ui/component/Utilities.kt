@@ -107,7 +107,6 @@ data class MenuItem(
 fun convertStringToDate(date : String) : LocalDate? {
     return if(date.isBlank()) null
     else LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-
 }
 
 fun checkStringIsBigDecimal(value: String): Boolean {

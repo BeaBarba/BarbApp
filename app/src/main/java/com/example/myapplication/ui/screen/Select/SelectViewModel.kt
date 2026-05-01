@@ -93,7 +93,8 @@ class SelectViewModel(
                                     checked = initialCheckedIds.contains(address.id.toString())
                                 )
                             }.sortedWith(
-                                compareBy({ it.name })
+                                compareByDescending<CardItem> { it.checked }
+                                    .thenBy { it.name }
                             )
 
                         _state.update {

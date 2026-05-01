@@ -60,16 +60,14 @@ fun BubbleAddActivity(
 
     val currentBackStackEntry = navController.currentBackStackEntry
     val selectedItems by currentBackStackEntry?.savedStateHandle
-        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
-        ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
+        ?.getStateFlow<List<String>?>("selectedIds", null)
+        ?.collectAsStateWithLifecycle(initialValue = null) ?: remember { mutableStateOf(null)}
 
     LaunchedEffect(selectedItems) {
         selectedItems?.let{ ids ->
-            if(ids.isNotEmpty()) {
-                actions.setMaterials(ids)
-            }
+            actions.setMaterials(ids)
+            currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
         }
-        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
     }
 
     Scaffold(
@@ -167,11 +165,10 @@ fun BubbleAddActivity(
                         )
                     },
                     onClick = {
-                        if(state.materialsSelected.isNotEmpty()){
-                            navController.currentBackStackEntry
-                                ?.savedStateHandle
-                                ?.set("initialIds", actions.getMaterialIds())
-                        }
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("initialIds", actions.getMaterialIds())
+
                         navController.navigate(NavigationRoute.Select(selectSearchText, SelectKey.AllMaterials))
                     }
                 )

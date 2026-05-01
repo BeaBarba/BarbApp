@@ -33,7 +33,7 @@ interface RevenueDAO{
     suspend fun getRevenueByJob(job : Int) : List<Revenue>
 
     @Upsert
-    suspend fun upsertRevenue(revenue: Revenue)
+    suspend fun upsertRevenue(revenue: Revenue) : Long
 
     @Delete
     suspend fun deleteRevenue(revenue: Revenue)
