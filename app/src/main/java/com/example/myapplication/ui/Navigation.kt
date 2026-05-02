@@ -52,7 +52,7 @@ import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
 import com.example.myapplication.ui.screen.Cart.CartViewModel
 import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryActivity
 import com.example.myapplication.ui.screen.WorkSite.ConstructionAddActivity
-import com.example.myapplication.ui.screen.WorkSite.SingleConstructionSummaryActivity
+import com.example.myapplication.ui.screen.WorkSite.singleSummary.SingleConstructionSummaryActivity
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
@@ -83,6 +83,7 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchas
 import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
 import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryViewModel
+import com.example.myapplication.ui.screen.WorkSite.singleSummary.SingleWorksiteSummaryViewModel
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -357,8 +358,11 @@ fun NavGraph(
             val state by singlePurchaseInvoiceSummaryVM.state.collectAsStateWithLifecycle()
             SinglePurchaseInvoiceSummaryActivity(route.purchaseInvoiceId, state, singlePurchaseInvoiceSummaryVM.actions, navController)
         }
-        composable<NavigationRoute.SingleWorkSiteSummary> {
-            SingleConstructionSummaryActivity(navController)
+        composable<NavigationRoute.SingleWorkSiteSummary> { backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.SingleWorkSiteSummary>()
+            val singleWorksiteSummaryVM = koinViewModel<SingleWorksiteSummaryViewModel>()
+            val state by singleWorksiteSummaryVM.state.collectAsStateWithLifecycle()
+            SingleConstructionSummaryActivity(route.workSiteId, state, singleWorksiteSummaryVM.actions, navController)
         }
 
 

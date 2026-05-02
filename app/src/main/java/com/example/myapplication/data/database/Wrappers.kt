@@ -341,26 +341,7 @@ data class WorkSiteAssignmentDetails(
 )
 
 data class WorkSiteFullDetails(
-    @Embedded val workSite : WorkSite,
-
-    @Relation(
-        parentColumn = "Indirizzo",
-        entityColumn = "id"
-    )
-    val address : Address,
-
-    @Relation(
-        parentColumn = "Responsabile",
-        entityColumn = "id"
-    )
-    val reference : Reference?,
-
-    @Relation(
-        entity = Customer::class,
-        parentColumn = "Cliente",
-        entityColumn = "CF"
-    )
-    val customer : CustomerTypeDetails?,
+    @Embedded val workSiteAssignment : WorkSiteAssignmentDetails,
 
     @Relation(
         parentColumn = "id",

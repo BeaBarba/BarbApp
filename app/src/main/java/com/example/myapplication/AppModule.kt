@@ -39,6 +39,7 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchas
 import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
 import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryViewModel
+import com.example.myapplication.ui.screen.WorkSite.singleSummary.SingleWorksiteSummaryViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -151,4 +152,5 @@ val appModule = module{
 
     /* Worksite */
     viewModel {AllWorksitesSummaryViewModel(get())}
+    viewModel {SingleWorksiteSummaryViewModel(get())}
 }

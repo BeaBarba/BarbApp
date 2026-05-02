@@ -159,7 +159,6 @@ class PurchaseInvoiceAddViewModel(
 
         override fun getBubblesIds(): List<String> {
             val bubbles = state.value.bubblesIds.map{ it.toString() }
-            println("DEBUG: VM - get buubbleIds = $bubbles")
             return bubbles
         }
 
@@ -167,7 +166,6 @@ class PurchaseInvoiceAddViewModel(
             if(materials.isEmpty()){
                 _state.update{ it.copy(materials = emptyList())}
             }else {
-                println("DEBUG: VM - materials id = $materials")
                 val inputIds = materials.mapNotNull { it.toIntOrNull() }
 
                 val currentSelected = state.value.materials
@@ -193,7 +191,6 @@ class PurchaseInvoiceAddViewModel(
                         }
 
                         val updatedList = preservedMaterials + newMaterials
-                        println("DEBUG: VM - material purchase = ${updatedList.map { it.material.id }}")
                         _state.update { it.copy(materials = updatedList) }
                     }
                 }
@@ -282,7 +279,7 @@ class PurchaseInvoiceAddViewModel(
                         )
                     }
 
-                val purchaseInvoice : PurchaseInvoice = PurchaseInvoice(
+                val purchaseInvoice = PurchaseInvoice(
                     id = currentState.purchaseInvoiceId,
                     number = currentState.number,
                     seller = currentState.seller.first,
@@ -301,7 +298,7 @@ class PurchaseInvoiceAddViewModel(
                             )
                         }
                     }else{
-                        emptyList<Purchase>()
+                        emptyList()
                     }
 
                 val purchaseInvoiceFinalId = repository.accounting.savePurchaseInvoiceComplete(
