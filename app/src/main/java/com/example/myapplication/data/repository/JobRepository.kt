@@ -44,6 +44,9 @@ class JobRepository(
     fun getFlowWorkSiteFullDetailsById(id: Int): Flow<WorkSiteFullDetails?> =
         db.workSiteDAO().getFlowWorkSiteFullDetails(id)
 
+    fun getFlowWorkSiteAssignmentDetailsById(id: Int): Flow<WorkSiteAssignmentDetails?> =
+        db.workSiteDAO().getFlowWorkSiteAssignmentDetails(id)
+
     suspend fun getWorkSiteFullDetailsById(id: Int): WorkSiteFullDetails? =
         db.workSiteDAO().getWorkSiteFullDetails(id)
 

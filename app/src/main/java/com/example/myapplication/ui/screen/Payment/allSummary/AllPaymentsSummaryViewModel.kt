@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale.getDefault
 
@@ -146,7 +147,7 @@ class AllPaymentsSummaryViewModel(
                         amount = revenue.revenue.amount,
                         amountPaid = newAmountPaid.setScale(2, RoundingMode.HALF_EVEN).toFloat(),
                         percent = newPercentage.toInt(),
-                        collectionDate = revenue.revenue.collectionDate,
+                        collectionDate = LocalDate.now(),
                         worksite = revenue.revenue.worksite,
                         job = revenue.revenue.job
                     )

@@ -1,5 +1,6 @@
-package com.example.myapplication.ui.screen.WorkSite
+package com.example.myapplication.ui.screen.WorkSite.add
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -32,7 +34,6 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.modules.SelectKey
-import com.example.myapplication.debug.cantieri
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
@@ -40,46 +41,73 @@ import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TopAppBar
+import java.time.format.DateTimeFormatter
 
 @Composable
-fun ConstructionAddActivity(
+fun WorksiteAddActivity(
+    worksiteId : Int?,
+    state : WorksiteAddState,
+    actions : WorksiteAddActions,
     navController : NavHostController
 ){
-    val previousBackStackEntry = navController.previousBackStackEntry
-
     val selectSearchTextCustomers = stringResource(R.string.customer)
     val selectSearchTextAddresses = stringResource(R.string.address)
     val selectSearchTextReferences = stringResource(R.string.reference)
 
+    val previousBackStackEntry = navController.previousBackStackEntry
     val currentBackStackEntry = navController.currentBackStackEntry
-    val selectedItems by currentBackStackEntry?.savedStateHandle
-        ?.getStateFlow<List<String>?>("selectedIds", emptyList())
-        ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
 
-    LaunchedEffect(selectedItems) {
-        selectedItems?.let{ ids ->
-            if(ids.isNotEmpty()) {
-                println("println " + ids.size)
-                //actions.setCustomers(ids)
-            }
+    val customerItems by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("customers", null)
+        ?.collectAsStateWithLifecycle(initialValue = null) ?: remember { mutableStateOf(null)}
+
+    LaunchedEffect(customerItems) {
+        customerItems?.let{ ids ->
+            actions.setCustomer(ids.first())
+        }
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("customers")
+    }
+
+    val addressItems by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("selectedIds", null)
+        ?.collectAsStateWithLifecycle(initialValue = null) ?: remember { mutableStateOf(null)}
+
+    LaunchedEffect(addressItems) {
+        addressItems?.let{ ids ->
+            actions.setAddress(ids.first())
         }
         currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+    }
+
+    val referenceItems by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("references", null)
+        ?.collectAsStateWithLifecycle(initialValue = null) ?: remember { mutableStateOf(null)}
+
+    LaunchedEffect(referenceItems) {
+        referenceItems?.let{ ids ->
+            actions.setReference(ids.first())
+        }
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("references")
+    }
+
+    LaunchedEffect(worksiteId) {
+        actions.populateView(worksiteId)
     }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                navigationIcon = {BackButton{navController.navigateUp()}},
+                navigationIcon = { BackButton{ navController.navigateUp() } },
                 id = stringResource(R.string.construction_site),
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            /*
-                            navController.navigate(NavigationRoute.SingleWorkSiteSummary()){
-                                popUpTo(NavigationRoute.WorkSiteAdd){inclusive = true}
+                            actions.save { id ->
+                                navController.navigate(NavigationRoute.SingleWorkSiteSummary(id)) {
+                                    popUpTo(NavigationRoute.AllWorksitesSummary) { inclusive = false }
+                                }
                             }
-                             */
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
@@ -113,14 +141,20 @@ fun ConstructionAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchTextCustomers, SelectKey.AllCustomers))}
+                    onClick = {
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("initialIds", actions.getCustomers())
+
+                        navController.navigate( NavigationRoute.Select(selectSearchTextCustomers, SelectKey.AllCustomers))
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
                     leadingContent = {Icon(Icons.Filled.LocationOn, contentDescription = stringResource(R.string.address))},
-                    text = stringResource(R.string.address) + " " + stringResource(R.string.existing).lowercase(),
+                    text = "${stringResource(R.string.address)} ${stringResource(R.string.existing).lowercase()}",
                     trailingContent = {
                         Icon(
                             Icons.Filled.ChevronRight,
@@ -128,7 +162,13 @@ fun ConstructionAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchTextAddresses, SelectKey.AllAddresses))}
+                    onClick = {
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("initialIds", actions.getAddresses())
+
+                        navController.navigate(NavigationRoute.Select(selectSearchTextAddresses, SelectKey.AllAddresses))
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -139,7 +179,13 @@ fun ConstructionAddActivity(
                             onClick = {showItems = !showItems},
                             colors = IconButtonDefaults.iconButtonColors(
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
+                            ),
+                            modifier = Modifier
+                                .border(
+                                    width = 1.dp,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    shape = RoundedCornerShape(20)
+                                )
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Add,
@@ -147,7 +193,7 @@ fun ConstructionAddActivity(
                             )
                         }
                     },
-                    text = stringResource(R.string.add) + " " + stringResource(R.string.reference).lowercase(),
+                    text = "${stringResource(R.string.add)} ${stringResource(R.string.reference).lowercase()}",
                     trailingContent = {
                         Icon(
                             Icons.Filled.ChevronRight,
@@ -155,26 +201,34 @@ fun ConstructionAddActivity(
                             modifier = Modifier.size(35.dp)
                         )
                     },
-                    onClick = {navController.navigate(NavigationRoute.Select(selectSearchTextReferences, SelectKey.AllReferences))}
+                    onClick = {
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("initialIds", actions.getReferences())
+
+                        navController.navigate(NavigationRoute.Select(selectSearchTextReferences, SelectKey.AllReferences))}
                 )
             }
             if(showItems){
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.name),
-                        onValueChange = {}
+                        value = state.referenceName,
+                        onValueChange = actions::setReferenceName
                     )
                 }
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.last_name),
-                        onValueChange = {}
+                        value = state.referenceLastName,
+                        onValueChange = actions::setReferenceLastName
                     )
                 }
                 item{
                     CustomOutlineTextField(
                         label = stringResource(R.string.phone),
-                        onValueChange = {}
+                        value = state.referenceNumber,
+                        onValueChange = actions::setReferenceNumber
                     )
                 }
             }
@@ -182,25 +236,25 @@ fun ConstructionAddActivity(
             item{
                 DatePickerFieldToModal(
                     title = stringResource(R.string.date_start),
-                    onValueChange = {},
-                    value = ""
+                    value = state.startDate?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "",
+                    onValueChange = actions::setStartDate
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
                 DatePickerFieldToModal(
                     title = stringResource(R.string.date_end),
-                    onValueChange = {},
-                    value = ""
+                    value = state.endDate?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "",
+                    onValueChange = actions::setEndDate,
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.SingleWorkSiteSummary>() == true) {
                 item {
                     DeleteButton {
-                        cantieri = cantieri.subList(1, cantieri.size)
-                        navController.navigate(NavigationRoute.AllConstructionSummary){
-                            popUpTo(NavigationRoute.AllConstructionSummary){inclusive=true}
+                        actions.delete(state.worksiteId)
+                        navController.navigate(NavigationRoute.AllWorksitesSummary){
+                            popUpTo(NavigationRoute.AllWorksitesSummary){ inclusive = true}
                             launchSingleTop = true
                         }
                     }

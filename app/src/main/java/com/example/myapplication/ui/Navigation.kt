@@ -51,8 +51,8 @@ import com.example.myapplication.ui.screen.Calendar.day.DayCalendarViewModel
 import com.example.myapplication.ui.screen.Calendar.today.TodayCalendarViewModel
 import com.example.myapplication.ui.screen.Cart.CartViewModel
 import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryActivity
-import com.example.myapplication.ui.screen.WorkSite.ConstructionAddActivity
-import com.example.myapplication.ui.screen.WorkSite.singleSummary.SingleConstructionSummaryActivity
+import com.example.myapplication.ui.screen.WorkSite.add.WorksiteAddActivity
+import com.example.myapplication.ui.screen.WorkSite.singleSummary.SingleWorksiteSummaryActivity
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddViewModel
 import com.example.myapplication.ui.screen.Customer.allSummary.AllCustomersSummaryViewModel
 import com.example.myapplication.ui.screen.Customer.singleSummary.SingleCustomerSummaryViewModel
@@ -82,6 +82,7 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SingleP
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
+import com.example.myapplication.ui.screen.WorkSite.add.WorksiteAddViewModel
 import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryViewModel
 import com.example.myapplication.ui.screen.WorkSite.singleSummary.SingleWorksiteSummaryViewModel
 import kotlinx.serialization.Serializable
@@ -93,7 +94,7 @@ sealed interface NavigationRoute{
     @Serializable
     data object AllCleaningSummary : NavigationRoute
     @Serializable
-    data object AllConstructionSummary : NavigationRoute
+    data object AllWorksitesSummary : NavigationRoute
     @Serializable
     data object AllCustomersSummary : NavigationRoute
     @Serializable
@@ -238,7 +239,7 @@ fun NavGraph(
             val state by warehouseVM.state.collectAsStateWithLifecycle()
             WarehouseActivity(state, warehouseVM.actions, navController)
         }
-        composable<NavigationRoute.AllConstructionSummary> {
+        composable<NavigationRoute.AllWorksitesSummary> {
             val allWorksitesSummaryVM = koinViewModel<AllWorksitesSummaryViewModel>()
             val state by allWorksitesSummaryVM.state.collectAsStateWithLifecycle()
             AllWorksitesSummaryActivity(state, allWorksitesSummaryVM.actions, navController)
@@ -298,8 +299,11 @@ fun NavGraph(
             PurchaseInvoiceAddActivity(route.purchaseInvoiceId, sellers, state, purchaseInvoiceAddVM.actions,
                 navController)
         }
-        composable<NavigationRoute.WorkSiteAdd> {
-            ConstructionAddActivity(navController)
+        composable<NavigationRoute.WorkSiteAdd> {backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.WorkSiteAdd>()
+            val worksiteAddVM = koinViewModel<WorksiteAddViewModel>()
+            val state by worksiteAddVM.state.collectAsStateWithLifecycle()
+            WorksiteAddActivity(route.worksiteId, state, worksiteAddVM.actions, navController)
         }
 
 
@@ -362,7 +366,7 @@ fun NavGraph(
             val route = backStackEntry.toRoute<NavigationRoute.SingleWorkSiteSummary>()
             val singleWorksiteSummaryVM = koinViewModel<SingleWorksiteSummaryViewModel>()
             val state by singleWorksiteSummaryVM.state.collectAsStateWithLifecycle()
-            SingleConstructionSummaryActivity(route.workSiteId, state, singleWorksiteSummaryVM.actions, navController)
+            SingleWorksiteSummaryActivity(route.workSiteId, state, singleWorksiteSummaryVM.actions, navController)
         }
 
 

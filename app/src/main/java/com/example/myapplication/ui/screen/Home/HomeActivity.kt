@@ -119,7 +119,7 @@ fun HomeActivity(
                 HomeCard(
                     item = stringResource(R.string.construction_sites),
                     painterResource(R.drawable.brickwall),
-                    onclick = {navController.navigate(NavigationRoute.AllConstructionSummary)}
+                    onclick = {navController.navigate(NavigationRoute.AllWorksitesSummary)}
                 )
             }
             item{

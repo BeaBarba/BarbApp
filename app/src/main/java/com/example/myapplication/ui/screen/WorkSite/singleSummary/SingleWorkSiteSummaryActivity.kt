@@ -35,7 +35,7 @@ import com.example.myapplication.ui.component.TopAppBar
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun SingleConstructionSummaryActivity (
+fun SingleWorksiteSummaryActivity (
     worksiteId : Int,
     state : SingleWorksiteSummaryState,
     actions : SingleWorksiteSummaryActions,

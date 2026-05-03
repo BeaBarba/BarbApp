@@ -43,6 +43,14 @@ interface WorkSiteDAO{
         "FROM CANTIERI " +
         "WHERE id = :id"
     )
+    fun getFlowWorkSiteAssignmentDetails(id : Int) : Flow<WorkSiteAssignmentDetails?>
+
+    @Transaction
+    @Query(
+        "SELECT * " +
+        "FROM CANTIERI " +
+        "WHERE id = :id"
+    )
     fun getFlowWorkSiteFullDetails(id : Int) : Flow<WorkSiteFullDetails?>
 
     @Transaction

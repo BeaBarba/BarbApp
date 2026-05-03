@@ -102,7 +102,7 @@ class SelectViewModel(
                                 searchText = searchText,
                                 itemsList = addressesCardList,
                                 viewList = addressesCardList,
-                                selectKey = SelectKey.AllAddresses
+                                selectKey = SelectKey.AllAddresses,
                             )
                         }
                     }
@@ -262,6 +262,37 @@ class SelectViewModel(
                                     viewList = bubblesCardList,
                                     selectKey = SelectKey.AllBubbles,
                                     resultKey = "bubbles"
+                                )
+                            }
+                        }
+                    }
+                }
+
+                SelectKey.AllReferences -> {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        repository.customer.reference.collect{ references ->
+                            val referencesCardList = references.map{ reference ->
+                                val referenceId = reference.id.toString()
+                                CardItem(
+                                    id = referenceId,
+                                    name = "${reference.lastName} ${reference.name}",
+                                    description = null,
+                                    type = JobType.NONE,
+                                    checked = initialCheckedIds.contains(referenceId)
+                                )
+                            }
+                            .sortedWith(
+                                compareByDescending<CardItem> { it.checked }
+                                    .thenBy { it.name }
+                            )
+
+                            _state.update {
+                                it.copy(
+                                    searchText = searchText,
+                                    itemsList = referencesCardList,
+                                    viewList = referencesCardList,
+                                    selectKey = SelectKey.AllReferences,
+                                    resultKey = "references"
                                 )
                             }
                         }
