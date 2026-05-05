@@ -9,6 +9,7 @@ import com.example.myapplication.data.database.JobAssignmentDetails
 import com.example.myapplication.data.database.JobFullDetails
 import com.example.myapplication.data.database.JobMaterialFullDetails
 import com.example.myapplication.data.database.MaterialUsage
+import com.example.myapplication.data.database.Reference
 import com.example.myapplication.data.database.WorkSite
 import com.example.myapplication.data.database.WorkSiteAssignmentDetails
 import com.example.myapplication.data.database.WorkSiteFullDetails
@@ -20,7 +21,9 @@ import java.time.LocalDate
 
 class JobRepository(
     private val db : AppDatabase,
-    private val inventory: InventoryRepository
+    private val inventory : InventoryRepository,
+    private val customer : CustomerRepository,
+    private val accounting: AccountingRepository
 ){
 
     /* Image */
@@ -36,10 +39,6 @@ class JobRepository(
     val workSites = db.workSiteDAO().getAllWorkSites()
 
     fun getWorkSiteById(id: Int): Flow<WorkSite?> = db.workSiteDAO().getWorkSite(id)
-
-    suspend fun upsertWorkSite(workSite: WorkSite) = db.workSiteDAO().upsertWorkSite(workSite)
-
-    suspend fun deleteWorkSite(workSite: WorkSite) = db.workSiteDAO().deleteWorkSite(workSite)
 
     fun getFlowWorkSiteFullDetailsById(id: Int): Flow<WorkSiteFullDetails?> =
         db.workSiteDAO().getFlowWorkSiteFullDetails(id)
@@ -57,6 +56,47 @@ class JobRepository(
     }
 
     fun getFlowAllWorksitesAssignmentDetails() : Flow<List<WorkSiteAssignmentDetails>> = db.workSiteDAO().getAllWorkSitesAssignmentDetails()
+
+    suspend fun upsertWorkSite(workSite: WorkSite) : Long = db.workSiteDAO().upsertWorkSite(workSite)
+
+    private suspend fun deleteWorkSite(workSite: WorkSite) = db.workSiteDAO().deleteWorkSite(workSite)
+
+    suspend fun deleteWorkSiteComplete(worksiteId : Int) = withContext(Dispatchers.IO){
+        db.withTransaction {
+            val worksite = getWorkSiteFullDetailsById(worksiteId)
+
+            worksite?.let { details ->
+                details.jobs.forEach { job ->
+                    upsertJob(job.copy(workSite = null))
+                }
+
+                details.revenues?.forEach { revenue ->
+                    accounting.deleteRevenue(revenue)
+                }
+
+                deleteWorkSite(details.workSiteAssignment.workSite)
+            }
+        }
+    }
+
+    suspend fun saveWorkSiteComplete(
+        worksite : WorkSite,
+        reference: Reference?
+    ) : Int = withContext(Dispatchers.IO){
+        db.withTransaction {
+            val referenceId =
+                if(reference != null){
+                    customer.upsertReference(reference).toInt()
+                }else{
+                    worksite.manager
+                }
+
+            val workSiteId = upsertWorkSite(worksite.copy(manager = referenceId)).toInt()
+            val finaleWorkSiteId = if(workSiteId != -1) workSiteId else worksite.id
+
+            return@withTransaction finaleWorkSiteId
+        }
+    }
 
     /* Job */
     val jobs = db.jobDAO().getFlowAllJobs()

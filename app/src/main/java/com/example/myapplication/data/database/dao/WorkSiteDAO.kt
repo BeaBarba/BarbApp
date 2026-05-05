@@ -32,7 +32,7 @@ interface WorkSiteDAO{
     suspend fun updateCustomerByWorkSite(worksiteId : Int, cf : String)
 
     @Upsert
-    suspend fun upsertWorkSite(workSite: WorkSite)
+    suspend fun upsertWorkSite(workSite: WorkSite) : Long
 
     @Delete
     suspend fun deleteWorkSite(workSite: WorkSite)

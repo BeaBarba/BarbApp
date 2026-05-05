@@ -8,7 +8,7 @@ class Repository (private val db : AppDatabase) {
     val accounting = AccountingRepository(db)
     val customer = CustomerRepository(db)
     val address = AddressRepository(db)
-    val job = JobRepository(db, inventory)
+    val job = JobRepository(db, inventory, customer, accounting)
 
     /* Cart */
     val cartItems = db.cartDAO().getCartItems()

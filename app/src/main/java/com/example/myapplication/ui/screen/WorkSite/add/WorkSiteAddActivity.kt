@@ -63,7 +63,8 @@ fun WorksiteAddActivity(
 
     LaunchedEffect(customerItems) {
         customerItems?.let{ ids ->
-            actions.setCustomer(ids.first())
+            val customer = if(ids.isNotEmpty()) ids.first() else ""
+            actions.setCustomer(customer)
         }
         currentBackStackEntry?.savedStateHandle?.remove<List<String>>("customers")
     }
@@ -74,7 +75,8 @@ fun WorksiteAddActivity(
 
     LaunchedEffect(addressItems) {
         addressItems?.let{ ids ->
-            actions.setAddress(ids.first())
+            val address = if(ids.isNotEmpty()) ids.first() else ""
+            actions.setAddress(address)
         }
         currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
     }
@@ -85,7 +87,8 @@ fun WorksiteAddActivity(
 
     LaunchedEffect(referenceItems) {
         referenceItems?.let{ ids ->
-            actions.setReference(ids.first())
+            val reference = if(ids.isNotEmpty()) ids.first() else ""
+            actions.setReference(reference)
         }
         currentBackStackEntry?.savedStateHandle?.remove<List<String>>("references")
     }
@@ -111,7 +114,8 @@ fun WorksiteAddActivity(
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
-                        )
+                        ),
+                        enabled = actions.checkRequirements()
                     ) {
                         Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
@@ -148,6 +152,20 @@ fun WorksiteAddActivity(
 
                         navController.navigate( NavigationRoute.Select(selectSearchTextCustomers, SelectKey.AllCustomers))
                     }
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
+            item{
+                GenericCard(
+                    text = "${stringResource(R.string.add)} ${stringResource(R.string.address)}".lowercase(),
+                    trailingContent = {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = stringResource(R.string.add_item),
+                            modifier = Modifier.size(25.dp)
+                        )
+                    },
+                    onClick = { navController.navigate(NavigationRoute.AddressAdd(null)) }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

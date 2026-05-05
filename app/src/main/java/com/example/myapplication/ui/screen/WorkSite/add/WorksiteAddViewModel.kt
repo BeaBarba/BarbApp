@@ -2,6 +2,8 @@ package com.example.myapplication.ui.screen.WorkSite.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.database.Reference
+import com.example.myapplication.data.database.WorkSite
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.debug.customers
 import com.example.myapplication.ui.component.convertStringToDate
@@ -38,6 +40,7 @@ interface WorksiteAddActions{
     fun setReferenceNumber(number : String)
     fun setStartDate(date : String)
     fun setEndDate(date : String)
+    fun checkRequirements() : Boolean
     fun save(onSuccess : (Int) -> Unit)
     fun delete(id : Int)
 }
@@ -143,24 +146,48 @@ class WorksiteAddViewModel(
             }
         }
 
+        override fun checkRequirements(): Boolean {
+            return state.value.addressId != null
+        }
+
         override fun save(onSuccess: (Int) -> Unit) {
             val s = state.value
-            println("DEBUG: VM - " +
-                    "worksiteId = ${s.worksiteId} " +
-                    "customer = ${s.customerId} " +
-                    "address = ${s.addressId} " +
-                    "reference = ${s.referenceId} " +
-                    "referenceName = ${s.referenceName} " +
-                    "referenceLastName = ${s.referenceLastName} " +
-                    "referenceNumber = ${s.referenceNumber} " +
-                    "startDate = ${s.startDate} " +
-                    "endDate = ${s.endDate} "
-            )
-            onSuccess(0)
+
+            viewModelScope.launch {
+                s.addressId?.let {
+                    val reference =
+                        if (s.referenceId == null && s.referenceName.isNotBlank()) {
+                            Reference(
+                                id = 0,
+                                name = s.referenceName,
+                                lastName = s.referenceLastName,
+                                phoneNumber = s.referenceNumber
+                            )
+                        } else null
+
+                    val workSite = WorkSite(
+                        id = s.worksiteId,
+                        startDate = s.startDate ?: LocalDate.now(),
+                        address = s.addressId,
+                        endDate = s.endDate,
+                        manager = s.referenceId,
+                        customer = s.customerId
+                    )
+
+                    val worksiteId = repository.job.saveWorkSiteComplete(worksite = workSite, reference = reference)
+
+                    onSuccess(worksiteId)
+                }
+            }
         }
 
         override fun delete(id: Int) {
-            TODO("Not yet implemented")
+            viewModelScope.launch {
+                val currentState = state.value
+                if(currentState.worksiteId > 0) {
+                    repository.job.deleteWorkSiteComplete(currentState.worksiteId)
+                }
+            }
         }
     }
 }

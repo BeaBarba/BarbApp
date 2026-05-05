@@ -347,7 +347,13 @@ data class WorkSiteFullDetails(
         parentColumn = "id",
         entityColumn = "Cantiere"
     )
-    val jobs : List<Job>
+    val jobs : List<Job>,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "Cantiere"
+    )
+    val revenues : List<Revenue>?
 )
 
 data class PurchaseWithMaterialDetails(
