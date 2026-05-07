@@ -39,115 +39,67 @@ import java.time.LocalTime
 object SeedDatabase {
     suspend fun seedMaterials(repository: Repository) {
         val materials : List<Material> = listOf(
-            Material(
-                id = 1,
-                model = "Sensore PIR 12m",
-                brand = "Ajax",
-                type = JobType.valueOf("ALA"),
-                category = "Rilevatori",
-                availableQuantity =  25.0f,
-                unitMeasurement = "PZ"
-            ),
-            Material(
-                id = 2,
-                model = "Cavo FROR 3x1.5",
-                brand = "Baldassari",
-                type = JobType.valueOf("ELE"),
-                category = "Cavi",
-                availableQuantity = 510.0f,
-                unitMeasurement = "M"
-            ),
-            Material(
-                id = 3,
-                model ="D600",
-                brand = "Daikin",
-                type = JobType.valueOf("CDZ"),
-                category = "Split",
-                availableQuantity = 5.0f,
-                unitMeasurement = "PZ"
-            ),
-            Material(
-                id = 4,
-                model = "Centrale Hub 2",
-                brand = "Ajax",
-                type = JobType.valueOf("ALA"),
-                category = "Centraline",
-                availableQuantity = 3.0f,
-                unitMeasurement = "PZ"
-            ),
-            Material(
-                id = 5,
-                model = "Interruttore Matix",
-                brand = "Bticino",
-                type = JobType.valueOf("ELE"),
-                category = "Frutti",
-                availableQuantity = 20.0f,
-                unitMeasurement = "PZ"
-            ),
-            Material(
-                id = 6,
-                model = "C500",
-                brand = "Mitsubishi",
-                type = JobType.valueOf("CDZ"),
-                category = "Unità Esterne",
-                availableQuantity = 2.0f,
-                unitMeasurement = "PZ"
-            ),
-            Material(id = 7, model = "Hub 2 Plus", brand = "Ajax", type = JobType.valueOf("ALA"), category = "Centrali", availableQuantity = 10.0f, unitMeasurement = "PZ"),
-            Material(id = 8, model = "MotionProtect", brand = "Ajax", type = JobType.valueOf("ALA"), category = "Sensori", availableQuantity = 45.0f, unitMeasurement = "PZ"),
-            Material(id = 9, model = "DoorProtect", brand = "Ajax", type = JobType.valueOf("ALA"), category = "Contatti", availableQuantity = 60.0f, unitMeasurement = "PZ"),
-            Material(id = 10, model = "FireProtect", brand = "Ajax", type = JobType.valueOf("ALA"), category = "Fumo", availableQuantity = 15.0f, unitMeasurement = "PZ"),
-            Material(id = 11, model = "StreetSiren", brand = "Ajax", type = JobType.valueOf("ALA"), category = "Sirene", availableQuantity = 8.0f, unitMeasurement = "PZ"),
-            Material(id = 12, model = "Cavo Allarme 4x0.22", brand = "FROR", type = JobType.valueOf("ALA"), category = "Cavi", availableQuantity = 1000.0f, unitMeasurement = "M"),
-            Material(id = 13, model = "Tastiera LCD", brand = "Bentel", type = JobType.valueOf("ALA"), category = "Interfacce", availableQuantity = 5.0f, unitMeasurement = "PZ"),
-            Material(id = 14, model = "Sensore Doppia Tech", brand = "Optex", type = JobType.valueOf("ALA"), category = "Esterno", availableQuantity = 12.0f, unitMeasurement = "PZ"),
-            Material(id = 15, model = "Batteria 12V 7Ah", brand = "FIAMM", type = JobType.valueOf("ALA"), category = "Ricambi", availableQuantity = 20.0f, unitMeasurement = "PZ"),
-            Material(id = 16, model = "Combinatore GSM", brand = "Bentel", type = JobType.valueOf("ALA"), category = "Moduli", availableQuantity = 13.0f, unitMeasurement = "PZ"),
-            Material(id = 17, model = "Interruttore 16A", brand = "Bticino", type = JobType.valueOf("ELE"), category = "Frutti", availableQuantity = 200.0f, unitMeasurement = "PZ"),
-            Material(id = 18, model = "Presa Schuko", brand = "Vimar", type = JobType.valueOf("ELE"), category = "Frutti", availableQuantity = 150.0f, unitMeasurement = "PZ"),
-            Material(id = 19, model = "Magnetotermico 25A", brand = "ABB", type = JobType.valueOf("ELE"), category = "Quadri", availableQuantity = 32.0f, unitMeasurement = "PZ"),
-            Material(id = 20, model = "Differenziale 0.03A", brand = "Gewiss", type = JobType.valueOf("ELE"), category = "Quadri", availableQuantity = 25.0f, unitMeasurement = "PZ"),
-            Material(id = 21, model = "Cavo FS17 2.5mm", brand = "Prysmian", type = JobType.valueOf("ELE"), category = "Cavi", availableQuantity = 3000.0f, unitMeasurement = "M"),
-            Material(id = 22, model = "Corrugato 25mm", brand = "Arnocanali", type = JobType.valueOf("ELE"), category = "Tubi", availableQuantity = 500.0f, unitMeasurement = "M"),
-            Material(id = 23, model = "Scatola 503", brand = "Bticino", type = JobType.valueOf("ELE"), category = "Supporti", availableQuantity = 400.0f, unitMeasurement = "PZ"),
-            Material(id = 24, model = "Placca 3 Posti", brand = "Vimar", type = JobType.valueOf("ELE"), category = "Finiture", availableQuantity = 300.0f, unitMeasurement = "PZ"),
-            Material(id = 25, model = "Relè Passo-Passo", brand = "Finder", type = JobType.valueOf("ELE"), category = "Automazione", availableQuantity = 50.0f, unitMeasurement = "PZ"),
-            Material(id = 26, model = "Trasformatore 24V", brand = "MeanWell", type = JobType.valueOf("ELE"), category = "Alimentatori", availableQuantity = 15.0f, unitMeasurement = "PZ"),
-            Material(id = 27, model = "Perfera 12000", brand = "Daikin", type = JobType.valueOf("CDZ"), category = "Split", availableQuantity = 12.0f, unitMeasurement = "PZ"),
-            Material(id = 28, model = "Kirigamine Zen", brand = "Mitsubishi", type = JobType.valueOf("CDZ"), category = "Split", availableQuantity = 8.0f, unitMeasurement = "PZ"),
-            Material(id = 29, model = "Unità Esterna Mono", brand = "Samsung", type = JobType.valueOf("CDZ"), category = "Motori", availableQuantity = 5.0f, unitMeasurement = "PZ"),
-            Material(id = 30, model = "Trial Split Esterna", brand = "Daikin", type = JobType.valueOf("CDZ"), category = "Motori", availableQuantity = 3.0f, unitMeasurement = "PZ"),
-            Material(id = 31, model = "Canalina 60x45", brand = "Vortice", type = JobType.valueOf("CDZ"), category = "Accessori", availableQuantity = 100.0f, unitMeasurement = "M"),
-            Material(id = 32, model = "Tubo Rame 1/4", brand = "Zeta", type = JobType.valueOf("CDZ"), category = "Tubi", availableQuantity = 250.0f, unitMeasurement = "M"),
-            Material(id = 33, model = "Tubo Rame 3/8", brand = "Zeta", type = JobType.valueOf("CDZ"), category = "Tubi", availableQuantity = 200.0f, unitMeasurement = "M"),
-            Material(id = 34, model = "Pompa Scarico Condensa", brand = "Sauermann", type = JobType.valueOf("CDZ"), category = "Accessori", availableQuantity = 20.0f, unitMeasurement = "PZ"),
-            Material(id = 35, model = "Gas R32 5kg", brand = "Refrigerant", type = JobType.valueOf("CDZ"), category = "Gas", availableQuantity = 10.0f, unitMeasurement = "KG"),
-            Material(id = 36, model = "Staffe Motore", brand = "Tecnosystemi", type = JobType.valueOf("CDZ"), category = "Supporti", availableQuantity = 40.0f, unitMeasurement = "PZ"),
-            Material(id = 37, model = "Dual Split Esterna", brand = "LG", type = JobType.valueOf("CDZ"), category = "Motori", availableQuantity = 4.0f, unitMeasurement = "PZ"),
-            Material(id = 38, model = "Sensore Allagamento", brand = "Ajax", type = JobType.valueOf("ALA"), category = "Sensori", availableQuantity = 10.0f, unitMeasurement = "PZ"),
-            Material(id = 39, model = "Sirena Interna", brand = "Bentel", type = JobType.valueOf("ALA"), category = "Sirene", availableQuantity = 15.0f, unitMeasurement = "PZ"),
-            Material(id = 40, model = "Quadro 24 Moduli", brand = "Gewiss", type = JobType.valueOf("ELE"), category = "Quadri", availableQuantity = 10.0f, unitMeasurement = "PZ"),
-            Material(id = 41, model = "Lampada Emergenza", brand = "Beghelli", type = JobType.valueOf("ELE"), category = "Illuminazione", availableQuantity = 20.0f, unitMeasurement = "PZ"),
-            Material(id = 42, model = "Faretto LED 10W", brand = "Philips", type = JobType.valueOf("ELE"), category = "Illuminazione", availableQuantity = 50.0f, unitMeasurement = "PZ"),
-            Material(id = 43, model = "Termostato Wi-Fi", brand = "Bticino", type = JobType.valueOf("ELE"), category = "Domotica", availableQuantity = 15.0f, unitMeasurement = "PZ"),
-            Material(id = 44, model = "Attuatore Tapparelle", brand = "Shelly", type = JobType.valueOf("ELE"), category = "Domotica", availableQuantity = 40.0f, unitMeasurement = "PZ"),
-            Material(id = 45, model = "Pulsante Campanello", brand = "Vimar", type = JobType.valueOf("ELE"), category = "Frutti", availableQuantity = 25.0f, unitMeasurement = "PZ"),
-            Material(id = 46, model = "Rivelatore Gas", brand = "Beghelli", type = JobType.valueOf("ALA"), category = "Sicurezza", availableQuantity = 8.0f, unitMeasurement = "PZ"),
-            Material(id = 47, model = "Clima WindFree", brand = "Samsung", type = JobType.valueOf("CDZ"), category = "Split", availableQuantity = 6.0f, unitMeasurement = "PZ"),
-            Material(id = 48, model = "Barriera Infrarosso", brand = "Optex", type = JobType.valueOf("ALA"), category = "Perimetrale", availableQuantity = 4.0f, unitMeasurement = "PZ"),
-            Material(id = 49, model = "Alimentatore 12V 5A", brand = "Hearth", type = JobType.valueOf("ALA"), category = "Alimentatori", availableQuantity = 12.0f, unitMeasurement = "PZ"),
-            Material(id = 50, model = "Cavo Dati Cat6", brand = "Belden", type = JobType.valueOf("ELE"), category = "Cavi", availableQuantity = 1500.0f, unitMeasurement = "M"),
-            Material(id = 51, model = "Spina Industriale 16A", brand = "Scame", type = JobType.valueOf("ELE"), category = "Connettori", availableQuantity = 30.0f, unitMeasurement = "PZ"),
-            Material(id = 52, model = "Presa Interbloccata", brand = "Scame", type = JobType.valueOf("ELE"), category = "Connettori", availableQuantity = 10.0f, unitMeasurement = "PZ"),
-            Material(id = 53, model = "Condizionatore Portatile", brand = "Olimpia", type = JobType.valueOf("CDZ"), category = "Mobile", availableQuantity = 3.0f, unitMeasurement = "PZ"),
-            Material(id = 54, model = "Telecomando Universale", brand = "Melchioni", type = JobType.valueOf("CDZ"), category = "Ricambi", availableQuantity = 50.0f, unitMeasurement = "PZ"),
-            Material(id = 55, model = "Filtro Aria Clima", brand = "Daikin", type = JobType.valueOf("CDZ"), category = "Ricambi", availableQuantity = 100.0f, unitMeasurement = "PZ"),
-            Material(id = 56, model = "Nastro Isolante", brand = "3M", type = JobType.valueOf("ELE"), category = "Consumabili", availableQuantity = 500.0f, unitMeasurement = "PZ"),
-            Material(id = 58, model = "NM09PXOABB", brand = "Nimaco", type = JobType.valueOf("CDZ"), category = "Split", availableQuantity = 1.0f, unitMeasurement = "PZ"),
-            Material(id = 59, model = "NM12PXOABB", brand = "Nimaco", type = JobType.valueOf("CDZ"), category = "Split", availableQuantity = 1.0f, unitMeasurement = "PZ"),
-            Material(id = 61, model = "Plana", brand = "Vimar", type = JobType.valueOf("ELE"), category = "Interruttore", availableQuantity = 21.0f, unitMeasurement = "PZ"),
-            Material(id = 62, model = "JSMKL568PP", brand = "Daikin", type = JobType.valueOf("CDZ"), category = "Split", availableQuantity = 2.0f, unitMeasurement = "PZ"),
-            Material(id = 63, model = "JSMKL569OOP", brand = "Daikin", type = JobType.valueOf("CDZ"), category = "Split", availableQuantity = 4.0f, unitMeasurement = "PZ")
+            Material(id = 1, model = "Sensore PIR 12m", brand = "Ajax", type = JobType.ALA, category = "Sensori", availableQuantity = 25.0f, unitMeasurement = "PZ"),
+            Material(id = 2, model = "Cavo FROR 3x1.5", brand = "Baldassari", type = JobType.ELE, category = "Cavi", availableQuantity = 510.0f, unitMeasurement = "M"),
+            Material(id = 3, model = "D600", brand = "Daikin", type = JobType.CDZ, category = "Split Interni", availableQuantity = 5.0f, unitMeasurement = "PZ"),
+            Material(id = 4, model = "Centrale Hub 2", brand = "Ajax", type = JobType.ALA, category = "Centrali", availableQuantity = 3.0f, unitMeasurement = "PZ"),
+            Material(id = 5, model = "Interruttore Matix", brand = "Bticino", type = JobType.ELE, category = "Interruttori", availableQuantity = 20.0f, unitMeasurement = "PZ"),
+            Material(id = 6, model = "C500", brand = "Mitsubishi", type = JobType.CDZ, category = "Unità Esterne", availableQuantity = 2.0f, unitMeasurement = "PZ"),
+            Material(id = 7, model = "Hub 2 Plus", brand = "Ajax", type = JobType.ALA, category = "Centrali", availableQuantity = 10.0f, unitMeasurement = "PZ"),
+            Material(id = 8, model = "MotionProtect", brand = "Ajax", type = JobType.ALA, category = "Sensori", availableQuantity = 45.0f, unitMeasurement = "PZ"),
+            Material(id = 9, model = "DoorProtect", brand = "Ajax", type = JobType.ALA, category = "Contatti", availableQuantity = 60.0f, unitMeasurement = "PZ"),
+            Material(id = 10, model = "FireProtect", brand = "Ajax", type = JobType.ALA, category = "Fumo", availableQuantity = 15.0f, unitMeasurement = "PZ"),
+            Material(id = 11, model = "StreetSiren", brand = "Ajax", type = JobType.ALA, category = "Sirene", availableQuantity = 8.0f, unitMeasurement = "PZ"),
+            Material(id = 12, model = "Cavo Allarme 4x0.22", brand = "FROR", type = JobType.ALA, category = "Cavi", availableQuantity = 1000.0f, unitMeasurement = "M"),
+            Material(id = 13, model = "Tastiera LCD", brand = "Bentel", type = JobType.ALA, category = "Interfacce", availableQuantity = 5.0f, unitMeasurement = "PZ"),
+            Material(id = 14, model = "Sensore Doppia Tech", brand = "Optex", type = JobType.ALA, category = "Perimetrali", availableQuantity = 12.0f, unitMeasurement = "PZ"),
+            Material(id = 15, model = "Batteria 12V 7Ah", brand = "FIAMM", type = JobType.ALA, category = "Ricambi", availableQuantity = 20.0f, unitMeasurement = "PZ"),
+            Material(id = 16, model = "Combinatore GSM", brand = "Bentel", type = JobType.ALA, category = "Moduli", availableQuantity = 13.0f, unitMeasurement = "PZ"),
+            Material(id = 17, model = "Interruttore 16A", brand = "Bticino", type = JobType.ELE, category = "Interruttori", availableQuantity = 200.0f, unitMeasurement = "PZ"),
+            Material(id = 18, model = "Presa Schuko", brand = "Vimar", type = JobType.ELE, category = "Prese", availableQuantity = 150.0f, unitMeasurement = "PZ"),
+            Material(id = 19, model = "Magnetotermico 25A", brand = "ABB", type = JobType.ELE, category = "Quadri", availableQuantity = 32.0f, unitMeasurement = "PZ"),
+            Material(id = 20, model = "Differenziale 0.03A", brand = "Gewiss", type = JobType.ELE, category = "Quadri", availableQuantity = 25.0f, unitMeasurement = "PZ"),
+            Material(id = 21, model = "Cavo FS17 2.5mm", brand = "Prysmian", type = JobType.ELE, category = "Cavi", availableQuantity = 3000.0f, unitMeasurement = "M"),
+            Material(id = 22, model = "Corrugato 25mm", brand = "Arnocanali", type = JobType.ELE, category = "Tubi", availableQuantity = 500.0f, unitMeasurement = "M"),
+            Material(id = 23, model = "Scatola 503", brand = "Bticino", type = JobType.ELE, category = "Supporti", availableQuantity = 400.0f, unitMeasurement = "PZ"),
+            Material(id = 24, model = "Placca 3 Posti", brand = "Vimar", type = JobType.ELE, category = "Finiture", availableQuantity = 300.0f, unitMeasurement = "PZ"),
+            Material(id = 25, model = "Relè Passo-Passo", brand = "Finder", type = JobType.ELE, category = "Automazione", availableQuantity = 50.0f, unitMeasurement = "PZ"),
+            Material(id = 26, model = "Trasformatore 24V", brand = "MeanWell", type = JobType.ELE, category = "Alimentatori", availableQuantity = 15.0f, unitMeasurement = "PZ"),
+            Material(id = 27, model = "Perfera 12000", brand = "Daikin", type = JobType.CDZ, category = "Split Interni", availableQuantity = 12.0f, unitMeasurement = "PZ"),
+            Material(id = 28, model = "Kirigamine Zen", brand = "Mitsubishi", type = JobType.CDZ, category = "Split Interni", availableQuantity = 8.0f, unitMeasurement = "PZ"),
+            Material(id = 29, model = "Unità Esterna Mono", brand = "Samsung", type = JobType.CDZ, category = "Unità Esterne", availableQuantity = 5.0f, unitMeasurement = "PZ"),
+            Material(id = 30, model = "Trial Split Esterna", brand = "Daikin", type = JobType.CDZ, category = "Unità Esterne", availableQuantity = 3.0f, unitMeasurement = "PZ"),
+            Material(id = 31, model = "Canalina 60x45", brand = "Vortice", type = JobType.CDZ, category = "Canaline", availableQuantity = 100.0f, unitMeasurement = "M"),
+            Material(id = 32, model = "Tubo Rame 1/4", brand = "Zeta", type = JobType.CDZ, category = "Tubi Rame", availableQuantity = 250.0f, unitMeasurement = "M"),
+            Material(id = 33, model = "Tubo Rame 3/8", brand = "Zeta", type = JobType.CDZ, category = "Tubi Rame", availableQuantity = 200.0f, unitMeasurement = "M"),
+            Material(id = 34, model = "Pompa Scarico Condensa", brand = "Sauermann", type = JobType.CDZ, category = "Accessori", availableQuantity = 20.0f, unitMeasurement = "PZ"),
+            Material(id = 35, model = "Gas R32 5kg", brand = "Refrigerant", type = JobType.CDZ, category = "Gas Refrigeranti", availableQuantity = 10.0f, unitMeasurement = "KG"),
+            Material(id = 36, model = "Staffe Motore", brand = "Tecnosystemi", type = JobType.CDZ, category = "Staffe", availableQuantity = 40.0f, unitMeasurement = "PZ"),
+            Material(id = 37, model = "Dual Split Esterna", brand = "LG", type = JobType.CDZ, category = "Unità Esterne", availableQuantity = 4.0f, unitMeasurement = "PZ"),
+            Material(id = 38, model = "Sensore Allagamento", brand = "Ajax", type = JobType.ALA, category = "Sensori", availableQuantity = 10.0f, unitMeasurement = "PZ"),
+            Material(id = 39, model = "Sirena Interna", brand = "Bentel", type = JobType.ALA, category = "Sirene", availableQuantity = 15.0f, unitMeasurement = "PZ"),
+            Material(id = 40, model = "Quadro 24 Moduli", brand = "Gewiss", type = JobType.ELE, category = "Quadri", availableQuantity = 10.0f, unitMeasurement = "PZ"),
+            Material(id = 41, model = "Lampada Emergenza", brand = "Beghelli", type = JobType.ELE, category = "Illuminazione", availableQuantity = 20.0f, unitMeasurement = "PZ"),
+            Material(id = 42, model = "Faretto LED 10W", brand = "Philips", type = JobType.ELE, category = "Illuminazione", availableQuantity = 50.0f, unitMeasurement = "PZ"),
+            Material(id = 43, model = "Termostato Wi-Fi", brand = "Bticino", type = JobType.ELE, category = "Domotica", availableQuantity = 15.0f, unitMeasurement = "PZ"),
+            Material(id = 44, model = "Attuatore Tapparelle", brand = "Shelly", type = JobType.ELE, category = "Domotica", availableQuantity = 40.0f, unitMeasurement = "PZ"),
+            Material(id = 45, model = "Pulsante Campanello", brand = "Vimar", type = JobType.ELE, category = "Frutti", availableQuantity = 25.0f, unitMeasurement = "PZ"),
+            Material(id = 46, model = "Rivelatore Gas", brand = "Beghelli", type = JobType.ALA, category = "Sicurezza", availableQuantity = 8.0f, unitMeasurement = "PZ"),
+            Material(id = 47, model = "Clima WindFree", brand = "Samsung", type = JobType.CDZ, category = "Split Interni", availableQuantity = 6.0f, unitMeasurement = "PZ"),
+            Material(id = 48, model = "Barriera Infrarosso", brand = "Optex", type = JobType.ALA, category = "Perimetrali", availableQuantity = 4.0f, unitMeasurement = "PZ"),
+            Material(id = 49, model = "Alimentatore 12V 5A", brand = "Hearth", type = JobType.ALA, category = "Alimentatori", availableQuantity = 12.0f, unitMeasurement = "PZ"),
+            Material(id = 50, model = "Cavo Dati Cat6", brand = "Belden", type = JobType.ELE, category = "Cavi", availableQuantity = 1500.0f, unitMeasurement = "M"),
+            Material(id = 51, model = "Spina Industriale 16A", brand = "Scame", type = JobType.ELE, category = "Connettori", availableQuantity = 30.0f, unitMeasurement = "PZ"),
+            Material(id = 52, model = "Presa Interbloccata", brand = "Scame", type = JobType.ELE, category = "Connettori", availableQuantity = 10.0f, unitMeasurement = "PZ"),
+            Material(id = 53, model = "Condizionatore Portatile", brand = "Olimpia", type = JobType.CDZ, category = "Condizionatori Portatili", availableQuantity = 3.0f, unitMeasurement = "PZ"),
+            Material(id = 54, model = "Telecomando Universale", brand = "Melchioni", type = JobType.CDZ, category = "Ricambi", availableQuantity = 50.0f, unitMeasurement = "PZ"),
+            Material(id = 55, model = "Filtro Aria Clima", brand = "Daikin", type = JobType.CDZ, category = "Ricambi", availableQuantity = 100.0f, unitMeasurement = "PZ"),
+            Material(id = 56, model = "Nastro Isolante", brand = "3M", type = JobType.ELE, category = "Consumabili", availableQuantity = 500.0f, unitMeasurement = "PZ"),
+            Material(id = 58, model = "NM09PXOABB", brand = "Nimaco", type = JobType.CDZ, category = "Split Interni", availableQuantity = 1.0f, unitMeasurement = "PZ"),
+            Material(id = 59, model = "NM12PXOABB", brand = "Nimaco", type = JobType.CDZ, category = "Split Interni", availableQuantity = 1.0f, unitMeasurement = "PZ"),
+            Material(id = 61, model = "Plana", brand = "Vimar", type = JobType.ELE, category = "Interruttori", availableQuantity = 21.0f, unitMeasurement = "PZ"),
+            Material(id = 62, model = "JSMKL568PP", brand = "Daikin", type = JobType.CDZ, category = "Unità Esterne", availableQuantity = 2.0f, unitMeasurement = "PZ"),
+            Material(id = 63, model = "JSMKL569OOP", brand = "Daikin", type = JobType.CDZ, category = "Unità Esterne", availableQuantity = 4.0f, unitMeasurement = "PZ")
         )
 
         materials.forEach{  material ->
@@ -158,396 +110,48 @@ object SeedDatabase {
 
     suspend fun seedAirConditioner(repository: Repository){
         val airConditioners = listOf(
-            AirConditioner(
-                serialNumber = "J03APPF20",
-                material = 58,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 1.5f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = null
-            ),
-            AirConditioner(
-                serialNumber = "J03APPF20", // Nota: Seriali duplicati nel dataset originale
-                material = 59,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 1.5f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = null
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9001",
-                material = 28,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 1200,
-                splitNumber = null,
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9002",
-                material = 28,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9003",
-                material = 28,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9004",
-                material = 28,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9005",
-                material = 53,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2022
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9006",
-                material = 53,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2022
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9007",
-                material = 53,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2022
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9008",
-                material = 53,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2022
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9009",
-                material = 29,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 1.2f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber =  SplitNumber.valueOf("Mono"),
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9010",
-                material = 29,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 1.2f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = SplitNumber.valueOf("Mono"),
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9011",
-                material = 62,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 3.0f,
-                gasType = "R32",
-                btu = 36000,
-                splitNumber = SplitNumber.valueOf("Quadri"),
-                yearInstallation = 2026
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9013",
-                material = 37,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 1.8f,
-                gasType = "R410A",
-                btu = 18000,
-                splitNumber = SplitNumber.valueOf("Dual"),
-                yearInstallation = 2021
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9014",
-                material = 37,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 1.8f,
-                gasType = "R410A",
-                btu = 18000,
-                splitNumber = SplitNumber.valueOf("Dual"),
-                yearInstallation = 2021
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9017",
-                material = 28,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = null
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9018",
-                material = 28,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = null
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9019",
-                material = 53,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = null
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9020",
-                material = 53,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = null
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9021",
-                material = 29,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 1.1f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = SplitNumber.valueOf("Mono"),
-                yearInstallation = 2022
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9022",
-                material = 30,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 2.8f,
-                gasType = "R32",
-                btu = 28000,
-                splitNumber = SplitNumber.valueOf("Trial"),
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9023",
-                material = 37,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 1.5f,
-                gasType = "R32",
-                btu = 14000,
-                splitNumber = SplitNumber.valueOf("Dual"),
-                yearInstallation = 2022
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9025",
-                material = 28,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9026",
-                material = 53,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9027",
-                material = 29,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 1.1f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = SplitNumber.valueOf("Mono"),
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "MAT-9028",
-                material = 30,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 2.5f,
-                gasType = "R32",
-                btu = 24000,
-                splitNumber = SplitNumber.valueOf("Trial"),
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "SN-11223344",
-                material = 6,
-                machineType = MachineType.valueOf("Esterna"),
-                gasQty = 2.4f,
-                gasType = "R32",
-                btu = 24000,
-                splitNumber = SplitNumber.valueOf("Trial"),
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "SN-99887766",
-                material = 3,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.8f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "SN-DAIKIN-001",
-                material = 27,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.8f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "SN-DK-INT-101",
-                material = 27,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "SN-DK-INT-102",
-                material = 27,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = 2023
-            ),
-            AirConditioner(
-                serialNumber = "SN-DK-INT-103",
-                material = 27,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = null
-            ),
-            AirConditioner(
-                serialNumber = "SN-DK-INT-104",
-                material = 27,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 12000,
-                splitNumber = null,
-                yearInstallation = 2022
-            ),
-            AirConditioner(
-                serialNumber = "SN-MITS-002",
-                material = 63,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.9f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2026
-            ),
-            AirConditioner(
-                serialNumber = "SN-MT-INT-201",
-                material = 63,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2026
-            ),
-            AirConditioner(
-                serialNumber = "SN-MT-INT-202",
-                material = 63,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2026
-            ),
-            AirConditioner(
-                serialNumber = "SN-MT-INT-203",
-                material = 63,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.0f,
-                gasType = "R32",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2026
-            ),
-            AirConditioner(
-                serialNumber = "SN-OL-MOB-701",
-                material = 47,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.5f,
-                gasType = "R290",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2022
-            ),
-            AirConditioner(
-                serialNumber = "SN-OL-MOB-702",
-                material = 47,
-                machineType = MachineType.valueOf("Interna"),
-                gasQty = 0.5f,
-                gasType = "R290",
-                btu = 9000,
-                splitNumber = null,
-                yearInstallation = 2022
-            )
+            // Split Interni
+            AirConditioner(serialNumber = "J03APPF20", material = 58, machineType = MachineType.Interna, gasQty = 1.5f, gasType = "R32", btu = 9000, splitNumber = null, yearInstallation = null),
+            AirConditioner(serialNumber = "J03APPF21", material = 59, machineType = MachineType.Interna, gasQty = 1.5f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = null),
+            AirConditioner(serialNumber = "MAT-9001", material = 28, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = 2023),
+            AirConditioner(serialNumber = "MAT-9002", material = 28, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = 2023),
+            AirConditioner(serialNumber = "MAT-9003", material = 28, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = 2023),
+            AirConditioner(serialNumber = "MAT-9004", material = 28, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = 2023),
+            AirConditioner(serialNumber = "MAT-9005", material = 53, machineType = MachineType.Interna, gasQty = 0.0f, gasType = "R290", btu = 9000, splitNumber = null, yearInstallation = 2022),
+            AirConditioner(serialNumber = "MAT-9006", material = 53, machineType = MachineType.Interna, gasQty = 0.0f, gasType = "R290", btu = 9000, splitNumber = null, yearInstallation = 2022),
+            AirConditioner(serialNumber = "MAT-9007", material = 53, machineType = MachineType.Interna, gasQty = 0.0f, gasType = "R290", btu = 9000, splitNumber = null, yearInstallation = 2022),
+            AirConditioner(serialNumber = "MAT-9008", material = 53, machineType = MachineType.Interna, gasQty = 0.0f, gasType = "R290", btu = 9000, splitNumber = null, yearInstallation = 2022),
+            AirConditioner(serialNumber = "MAT-9017", material = 28, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = null),
+            AirConditioner(serialNumber = "MAT-9018", material = 28, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = null),
+            AirConditioner(serialNumber = "MAT-9019", material = 53, machineType = MachineType.Interna, gasQty = 0.0f, gasType = "R290", btu = 9000, splitNumber = null, yearInstallation = null),
+            AirConditioner(serialNumber = "MAT-9020", material = 53, machineType = MachineType.Interna, gasQty = 0.0f, gasType = "R290", btu = 9000, splitNumber = null, yearInstallation = null),
+            AirConditioner(serialNumber = "MAT-9025", material = 28, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = 2023),
+            AirConditioner(serialNumber = "MAT-9026", material = 53, machineType = MachineType.Interna, gasQty = 0.0f, gasType = "R290", btu = 9000, splitNumber = null, yearInstallation = 2023),
+            AirConditioner(serialNumber = "SN-99887766", material = 3, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = 2023),
+            AirConditioner(serialNumber = "SN-DAIKIN-001", material = 27, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = 2023),
+            AirConditioner(serialNumber = "SN-DK-INT-101", material = 27, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = 2023),
+            AirConditioner(serialNumber = "SN-DK-INT-102", material = 27, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = 2023),
+            AirConditioner(serialNumber = "SN-DK-INT-103", material = 27, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = null),
+            AirConditioner(serialNumber = "SN-DK-INT-104", material = 27, machineType = MachineType.Interna, gasQty = 0.8f, gasType = "R32", btu = 12000, splitNumber = null, yearInstallation = 2022),
+            AirConditioner(serialNumber = "SN-MITS-002", material = 63, machineType = MachineType.Interna, gasQty = 0.9f, gasType = "R32", btu = 9000, splitNumber = null, yearInstallation = 2026),
+            AirConditioner(serialNumber = "SN-MT-INT-201", material = 63, machineType = MachineType.Interna, gasQty = 0.9f, gasType = "R32", btu = 9000, splitNumber = null, yearInstallation = 2026),
+            AirConditioner(serialNumber = "SN-MT-INT-202", material = 63, machineType = MachineType.Interna, gasQty = 0.9f, gasType = "R32", btu = 9000, splitNumber = null, yearInstallation = 2026),
+            AirConditioner(serialNumber = "SN-MT-INT-203", material = 63, machineType = MachineType.Interna, gasQty = 0.9f, gasType = "R32", btu = 9000, splitNumber = null, yearInstallation = 2026),
+            AirConditioner(serialNumber = "SN-OL-MOB-701", material = 47, machineType = MachineType.Interna, gasQty = 0.5f, gasType = "R290", btu = 9000, splitNumber = null, yearInstallation = 2022),
+            AirConditioner(serialNumber = "SN-OL-MOB-702", material = 47, machineType = MachineType.Interna, gasQty = 0.5f, gasType = "R290", btu = 9000, splitNumber = null, yearInstallation = 2022),
+
+            // Unità Esterne (richiedono splitNumber != null)
+            AirConditioner(serialNumber = "MAT-9009", material = 29, machineType = MachineType.Esterna, gasQty = 1.2f, gasType = "R32", btu = 12000, splitNumber = SplitNumber.Mono, yearInstallation = 2023),
+            AirConditioner(serialNumber = "MAT-9010", material = 29, machineType = MachineType.Esterna, gasQty = 1.2f, gasType = "R32", btu = 12000, splitNumber = SplitNumber.Mono, yearInstallation = 2023),
+            AirConditioner(serialNumber = "MAT-9011", material = 62, machineType = MachineType.Esterna, gasQty = 3.0f, gasType = "R32", btu = 36000, splitNumber = SplitNumber.Quadri, yearInstallation = 2026),
+            AirConditioner(serialNumber = "MAT-9013", material = 37, machineType = MachineType.Esterna, gasQty = 1.8f, gasType = "R410A", btu = 18000, splitNumber = SplitNumber.Dual, yearInstallation = 2021),
+            AirConditioner(serialNumber = "MAT-9014", material = 37, machineType = MachineType.Esterna, gasQty = 1.8f, gasType = "R410A", btu = 18000, splitNumber = SplitNumber.Dual, yearInstallation = 2021),
+            AirConditioner(serialNumber = "MAT-9021", material = 29, machineType = MachineType.Esterna, gasQty = 1.1f, gasType = "R32", btu = 12000, splitNumber = SplitNumber.Mono, yearInstallation = 2022),
+            AirConditioner(serialNumber = "MAT-9022", material = 30, machineType = MachineType.Esterna, gasQty = 2.8f, gasType = "R32", btu = 28000, splitNumber = SplitNumber.Trial, yearInstallation = 2023),
+            AirConditioner(serialNumber = "MAT-9023", material = 37, machineType = MachineType.Esterna, gasQty = 1.5f, gasType = "R32", btu = 14000, splitNumber = SplitNumber.Dual, yearInstallation = 2022),
+            AirConditioner(serialNumber = "MAT-9027", material = 29, machineType = MachineType.Esterna, gasQty = 1.1f, gasType = "R32", btu = 12000, splitNumber = SplitNumber.Mono, yearInstallation = 2023),
+            AirConditioner(serialNumber = "MAT-9028", material = 30, machineType = MachineType.Esterna, gasQty = 2.5f, gasType = "R32", btu = 24000, splitNumber = SplitNumber.Trial, yearInstallation = 2023),
+            AirConditioner(serialNumber = "SN-11223344", material = 6, machineType = MachineType.Esterna, gasQty = 2.4f, gasType = "R32", btu = 24000, splitNumber = SplitNumber.Trial, yearInstallation = 2023)
         )
 
         airConditioners.forEach{ airConditioner ->
@@ -557,54 +161,19 @@ object SeedDatabase {
 
     suspend fun seedSeller(repository : Repository){
         val sellers = listOf(
-            Seller(
-                id = 1,
-                name = "Sonepar Italia"
-            ),
-            Seller(
-                id = 2,
-                name = "Comoli Ferrari"
-            ),
-            Seller(
-                id = 3,
-                name = "Daikin Air Conditioning"
-            ),
-            Seller(
-                id = 4,
-                name = "Mitsubishi Electric"
-            ),
-            Seller(
-                id = 5,
-                name = "Bticino Spa"
-            ),
-            Seller(
-                id = 6,
-                name = "Hearth srl"
-            ),
-            Seller(
-                id = 7,
-                name = "Tecnomat"
-            ),
-            Seller(
-                id = 8,
-                name = "Würth Italia"
-            ),
-            Seller(
-                id = 9,
-                name = "Leroy Merlin"
-            ),
-            Seller(
-                id = 10,
-                name = "Vimar SpA"
-            ),
-            Seller(
-                id = 11,
-                name = "Buffetti"
-            ),
-            Seller(
-                id = 12,
-                name = "U-Power"
-            )
+            Seller(id = 1, name = "Sonepar Italia"),
+            Seller(id = 2, name = "Comoli Ferrari"),
+            Seller(id = 3, name = "Daikin Air Conditioning"),
+            Seller(id = 4, name = "Mitsubishi Electric"),
+            Seller(id = 5, name = "Bticino Spa"),
+            Seller(id = 6, name = "Hearth srl"),
+            Seller(id = 7, name = "Tecnomat"),
+            Seller(id = 8, name = "Würth Italia"),
+            Seller(id = 9, name = "Leroy Merlin"),
+            Seller(id = 10, name = "Vimar SpA"),
+            Seller(id = 11, name = "Buffetti"),
+            Seller(id = 12, name = "U-Power"),
+            Seller(id = 13, name = "Nimaco")
         )
 
         sellers.forEach{ seller ->
@@ -614,7 +183,7 @@ object SeedDatabase {
 
     suspend fun seedPurchaseInvoice(repository : Repository){
         val purchaseInvoices = listOf(
-            PurchaseInvoice(id = 1, number = "FAC-2023-001", year = LocalDate.of( 2023,1,1), seller = 1),
+            PurchaseInvoice(id = 1, number = "FAC-2023-001", year = LocalDate.of(2023,1,1), seller = 1),
             PurchaseInvoice(id = 2, number = "FAC-2023-142", year = LocalDate.of(2023,2,3), seller = 1),
             PurchaseInvoice(id = 3, number = "FAC-2024-010", year = LocalDate.of(2024,4,5), seller = 1),
             PurchaseInvoice(id = 4, number = "FAC-2024-088", year = LocalDate.of(2024,6,7), seller = 1),
@@ -667,7 +236,9 @@ object SeedDatabase {
             PurchaseInvoice(id = 51, number = "0111115126483", year = LocalDate.of(2026,5,15), seller = 7),
             PurchaseInvoice(id = 52, number = "25/0001/fe", year = LocalDate.of(2026,5,15), seller = 7),
             PurchaseInvoice(id = 53, number = "CDM0245", year = LocalDate.of(2026,5,15), seller = 11),
-            PurchaseInvoice(id = 54, number = "25/FE/0001", year = LocalDate.of(2026,5,15), seller = 12)
+            PurchaseInvoice(id = 54, number = "25/FE/0001", year = LocalDate.of(2026,5,15), seller = 12),
+            PurchaseInvoice(id = 55, number = "FAC-2026-09882", year = LocalDate.of(2026,5,7), seller = 13),
+            PurchaseInvoice(id = 56, number = "DK-2026-88412", year = LocalDate.of(2026, 5, 7), seller = 3),
         )
 
         purchaseInvoices.forEach { purchaseInvoice ->
@@ -677,19 +248,30 @@ object SeedDatabase {
 
     suspend fun seedPurchase(repository : Repository){
         val purchases = listOf(
-            Purchase(purchaseInvoice = 1, material = 56, quantity = 10.0f, unitPrice = 1.50f, vatNumber = 22),
-            Purchase(purchaseInvoice = 2, material = 19, quantity = 2.0f, unitPrice = 10.60f, vatNumber = 10),
-            Purchase(purchaseInvoice = 6, material = 25, quantity = 2.0f, unitPrice = 14.00f, vatNumber = 22),
-            Purchase(purchaseInvoice = 11, material = 35, quantity = 2.0f, unitPrice = 45.00f, vatNumber = 22),
-            Purchase(purchaseInvoice = 16, material = 54, quantity = 1.0f, unitPrice = 45.00f, vatNumber = 22),
-            Purchase(purchaseInvoice = 21, material = 24, quantity = 20.0f, unitPrice = 2.30f, vatNumber = 22),
-            Purchase(purchaseInvoice = 31, material = 22, quantity = 100.0f, unitPrice = 0.55f, vatNumber = 22),
-            Purchase(purchaseInvoice = 36, material = 36, quantity = 5.0f, unitPrice = 15.00f, vatNumber = 22),
-            Purchase(purchaseInvoice = 41, material = 41, quantity = 10.0f, unitPrice = 22.50f, vatNumber = 22),
-            Purchase(purchaseInvoice = 42, material = 42, quantity = 50.0f, unitPrice = 8.20f, vatNumber = 22),
-            Purchase(purchaseInvoice = 46, material = 18, quantity = 50.0f, unitPrice = 2.45f, vatNumber = 22),
-            Purchase(purchaseInvoice = 47, material = 45, quantity = 10.0f, unitPrice = 3.80f, vatNumber = 22),
-            Purchase(purchaseInvoice = 51, material = 32, quantity = 50.0f, unitPrice = 20.00f, vatNumber = 10)
+            Purchase(purchaseInvoice = 1, material = 56, quantity = 250.0f, unitPrice = 1.50f, vatNumber = 22),
+            Purchase(purchaseInvoice = 2, material = 19, quantity = 22.0f, unitPrice = 10.60f, vatNumber = 10),
+            Purchase(purchaseInvoice = 6, material = 25, quantity = 30.0f, unitPrice = 14.00f, vatNumber = 22),
+            Purchase(purchaseInvoice = 11, material = 35, quantity = 5.0f, unitPrice = 45.00f, vatNumber = 22),
+            Purchase(purchaseInvoice = 16, material = 54, quantity = 49.0f, unitPrice = 45.00f, vatNumber = 22),
+            Purchase(purchaseInvoice = 21, material = 24, quantity = 200.0f, unitPrice = 2.30f, vatNumber = 22),
+            Purchase(purchaseInvoice = 31, material = 22, quantity = 400.0f, unitPrice = 0.55f, vatNumber = 22),
+            Purchase(purchaseInvoice = 36, material = 36, quantity = 27.5f, unitPrice = 15.00f, vatNumber = 22),
+            Purchase(purchaseInvoice = 41, material = 41, quantity = 20.0f, unitPrice = 22.50f, vatNumber = 22),
+            Purchase(purchaseInvoice = 42, material = 42, quantity = 49.5f, unitPrice = 8.20f, vatNumber = 22),
+            Purchase(purchaseInvoice = 46, material = 18, quantity = 148.5f, unitPrice = 2.45f, vatNumber = 22),
+            Purchase(purchaseInvoice = 47, material = 45, quantity = 25.0f, unitPrice = 3.80f, vatNumber = 22),
+            Purchase(purchaseInvoice = 51, material = 32, quantity = 150.0f, unitPrice = 20.00f, vatNumber = 10),
+            Purchase(purchaseInvoice = 3, material = 2, quantity = 245.0f, unitPrice = 1.1f, vatNumber = 22),
+            Purchase(purchaseInvoice = 9, material = 21, quantity = 2000.0f, unitPrice = 0.95f, vatNumber = 22),
+            Purchase(purchaseInvoice = 18, material = 37, quantity = 2.0f, unitPrice = 950.0f, vatNumber = 22),
+            Purchase(purchaseInvoice = 25, material = 50, quantity = 1300.0f, unitPrice = 0.45f, vatNumber = 22),
+            Purchase(purchaseInvoice = 10, material = 8, quantity = 25.0f, unitPrice = 12.8f, vatNumber = 22),
+            Purchase(purchaseInvoice = 55, material = 32, quantity = 50.0f, unitPrice = 3.55f, vatNumber = 22),
+            Purchase(purchaseInvoice = 55, material = 58, quantity = 1.0f, unitPrice = 380.20f, vatNumber = 22),
+            Purchase(purchaseInvoice = 55, material = 59, quantity = 1.0f, unitPrice = 420.0f, vatNumber = 22),
+            Purchase(purchaseInvoice = 56, material = 29, quantity = 5.0f, unitPrice = 352.0f, vatNumber = 22),
+            Purchase(purchaseInvoice = 56, material = 62, quantity = 2.0f, unitPrice = 610.22f, vatNumber = 22),
+            Purchase(purchaseInvoice = 56, material = 63, quantity = 4.0f, unitPrice = 689.10f, vatNumber = 22),
         )
 
         purchases.forEach { purchase ->
@@ -753,7 +335,9 @@ object SeedDatabase {
             Bubble(id = 52, number = "VIM-99", seller = 10, purchaseInvoice = null, date = LocalDate.parse("2024-01-15")),
             Bubble(id = 53, number = "VIM-URG", seller = 10, purchaseInvoice = null, date = LocalDate.parse("2026-02-10")),
             Bubble(id = 54, number = "VIM-LAST", seller = 10, purchaseInvoice = null, date = LocalDate.parse("2026-02-10")),
-            Bubble(id = 55, number = "BBG-0001A", seller = 9, purchaseInvoice = null, date = LocalDate.parse("2026-02-12"))
+            Bubble(id = 55, number = "BBG-0001A", seller = 9, purchaseInvoice = null, date = LocalDate.parse("2026-02-12")),
+            Bubble(id = 56, number = "BOL-2026-0042", seller = 1, purchaseInvoice = null, date = LocalDate.parse("2026-05-07")),
+            Bubble(id = 57, number = "TNM-2026-4591", seller = 7, purchaseInvoice = null, date = LocalDate.parse("2026-05-07")),
         )
 
         bubbles.forEach { bubble ->
@@ -764,56 +348,64 @@ object SeedDatabase {
     suspend fun seedDelivery(repository : Repository){
         val deliveries = listOf(
             Delivery(bubble = 1, material = 1, quantity = 10.0f, unitPrice = 45.5f, vatNumber = 22),
-            Delivery(bubble = 41, material = 1, quantity = 0.1f, unitPrice = 4500.0f, vatNumber = 22),
-            Delivery(bubble = 4, material = 2, quantity = 100.0f, unitPrice = 1.1f, vatNumber = 22),
+            Delivery(bubble = 41, material = 1, quantity = 15.0f, unitPrice = 45.0f, vatNumber = 22),
+            Delivery(bubble = 4, material = 2, quantity = 255.0f, unitPrice = 1.1f, vatNumber = 22),
             Delivery(bubble = 55, material = 2, quantity = 10.0f, unitPrice = 5.5f, vatNumber = 22),
-            Delivery(bubble = 11, material = 3, quantity = 2.0f, unitPrice = 450.0f, vatNumber = 22),
-            Delivery(bubble = 21, material = 4, quantity = 2.0f, unitPrice = 210.0f, vatNumber = 22),
-            Delivery(bubble = 2, material = 5, quantity = 50.0f, unitPrice = 3.2f, vatNumber = 22),
-            Delivery(bubble = 16, material = 6, quantity = 1.0f, unitPrice = 1800.0f, vatNumber = 22),
-            Delivery(bubble = 26, material = 7, quantity = 3.0f, unitPrice = 320.0f, vatNumber = 22),
+            Delivery(bubble = 11, material = 3, quantity = 5.0f, unitPrice = 450.0f, vatNumber = 22),
+            Delivery(bubble = 21, material = 4, quantity = 3.0f, unitPrice = 210.0f, vatNumber = 22),
+            Delivery(bubble = 2, material = 5, quantity = 20.0f, unitPrice = 3.2f, vatNumber = 22),
+            Delivery(bubble = 16, material = 6, quantity = 2.0f, unitPrice = 1800.0f, vatNumber = 22),
+            Delivery(bubble = 26, material = 7, quantity = 10.0f, unitPrice = 320.0f, vatNumber = 22),
             Delivery(bubble = 3, material = 8, quantity = 20.0f, unitPrice = 12.8f, vatNumber = 22),
-            Delivery(bubble = 5, material = 9, quantity = 30.0f, unitPrice = 8.5f, vatNumber = 22),
-            Delivery(bubble = 22, material = 11, quantity = 5.0f, unitPrice = 110.0f, vatNumber = 22),
-            Delivery(bubble = 28, material = 12, quantity = 200.0f, unitPrice = 0.6f, vatNumber = 22),
-            Delivery(bubble = 38, material = 15, quantity = 1.0f, unitPrice = 15.0f, vatNumber = 4),
-            Delivery(bubble = 6, material = 17, quantity = 40.0f, unitPrice = 4.5f, vatNumber = 22),
+            Delivery(bubble = 5, material = 9, quantity = 60.0f, unitPrice = 8.5f, vatNumber = 22),
+            Delivery(bubble = 22, material = 11, quantity = 8.0f, unitPrice = 110.0f, vatNumber = 22),
+            Delivery(bubble = 28, material = 12, quantity = 1000.0f, unitPrice = 0.6f, vatNumber = 22),
+            Delivery(bubble = 38, material = 15, quantity = 20.0f, unitPrice = 15.0f, vatNumber = 4),
+            Delivery(bubble = 6, material = 17, quantity = 200.0f, unitPrice = 4.5f, vatNumber = 22),
             Delivery(bubble = 47, material = 18, quantity = 1.5f, unitPrice = 22.0f, vatNumber = 22),
             Delivery(bubble = 8, material = 19, quantity = 10.0f, unitPrice = 25.0f, vatNumber = 22),
-            Delivery(bubble = 45, material = 20, quantity = 0.0f, unitPrice = 45.0f, vatNumber = 22),
+            Delivery(bubble = 45, material = 20, quantity = 25.0f, unitPrice = 45.0f, vatNumber = 22),
             Delivery(bubble = 9, material = 21, quantity = 500.0f, unitPrice = 0.95f, vatNumber = 22),
-            Delivery(bubble = 42, material = 21, quantity = 5000.0f, unitPrice = 0.35f, vatNumber = 22),
+            Delivery(bubble = 42, material = 21, quantity = 500.0f, unitPrice = 0.35f, vatNumber = 22),
             Delivery(bubble = 32, material = 22, quantity = 100.0f, unitPrice = 0.9f, vatNumber = 22),
-            Delivery(bubble = 7, material = 23, quantity = 150.0f, unitPrice = 0.8f, vatNumber = 22),
+            Delivery(bubble = 7, material = 23, quantity = 400.0f, unitPrice = 0.8f, vatNumber = 22),
             Delivery(bubble = 31, material = 24, quantity = 100.0f, unitPrice = 1.2f, vatNumber = 22),
             Delivery(bubble = 10, material = 25, quantity = 20.0f, unitPrice = 15.0f, vatNumber = 22),
-            Delivery(bubble = 33, material = 26, quantity = 10.0f, unitPrice = 75.0f, vatNumber = 22),
-            Delivery(bubble = 12, material = 27, quantity = 4.0f, unitPrice = 600.0f, vatNumber = 22),
-            Delivery(bubble = 17, material = 28, quantity = 3.0f, unitPrice = 850.0f, vatNumber = 22),
+            Delivery(bubble = 33, material = 26, quantity = 15.0f, unitPrice = 75.0f, vatNumber = 22),
+            Delivery(bubble = 12, material = 27, quantity = 12.0f, unitPrice = 600.0f, vatNumber = 22),
+            Delivery(bubble = 17, material = 28, quantity = 8.0f, unitPrice = 850.0f, vatNumber = 22),
             Delivery(bubble = 13, material = 30, quantity = 1.0f, unitPrice = 1200.0f, vatNumber = 22),
-            Delivery(bubble = 44, material = 30, quantity = 10.0f, unitPrice = 2500.0f, vatNumber = 22),
-            Delivery(bubble = 19, material = 31, quantity = 25.0f, unitPrice = 4.2f, vatNumber = 22),
+            Delivery(bubble = 44, material = 30, quantity = 2.0f, unitPrice = 2500.0f, vatNumber = 22),
+            Delivery(bubble = 19, material = 31, quantity = 100.0f, unitPrice = 4.2f, vatNumber = 22),
             Delivery(bubble = 14, material = 32, quantity = 50.0f, unitPrice = 6.5f, vatNumber = 22),
-            Delivery(bubble = 15, material = 33, quantity = 50.0f, unitPrice = 9.0f, vatNumber = 22),
-            Delivery(bubble = 40, material = 34, quantity = 0.25f, unitPrice = 150.0f, vatNumber = 22),
-            Delivery(bubble = 20, material = 35, quantity = 10.0f, unitPrice = 18.0f, vatNumber = 22),
+            Delivery(bubble = 15, material = 33, quantity = 200.0f, unitPrice = 9.0f, vatNumber = 22),
+            Delivery(bubble = 40, material = 34, quantity = 20.0f, unitPrice = 150.0f, vatNumber = 22),
+            Delivery(bubble = 20, material = 35, quantity = 4.5f, unitPrice = 18.0f, vatNumber = 22),
             Delivery(bubble = 36, material = 35, quantity = 0.5f, unitPrice = 120.0f, vatNumber = 22),
             Delivery(bubble = 50, material = 36, quantity = 12.5f, unitPrice = 15.0f, vatNumber = 22),
             Delivery(bubble = 18, material = 37, quantity = 2.0f, unitPrice = 950.0f, vatNumber = 22),
-            Delivery(bubble = 29, material = 38, quantity = 12.0f, unitPrice = 35.0f, vatNumber = 22),
-            Delivery(bubble = 23, material = 40, quantity = 5.0f, unitPrice = 85.0f, vatNumber = 22),
+            Delivery(bubble = 29, material = 38, quantity = 10.0f, unitPrice = 35.0f, vatNumber = 22),
+            Delivery(bubble = 23, material = 40, quantity = 10.0f, unitPrice = 85.0f, vatNumber = 22),
             Delivery(bubble = 48, material = 42, quantity = 0.5f, unitPrice = 50.0f, vatNumber = 22),
-            Delivery(bubble = 24, material = 43, quantity = 8.0f, unitPrice = 130.0f, vatNumber = 22),
-            Delivery(bubble = 30, material = 46, quantity = 5.0f, unitPrice = 45.0f, vatNumber = 22),
-            Delivery(bubble = 39, material = 47, quantity = 1.0f, unitPrice = 0.0f, vatNumber = 22),
-            Delivery(bubble = 27, material = 49, quantity = 6.0f, unitPrice = 55.0f, vatNumber = 22),
+            Delivery(bubble = 24, material = 43, quantity = 15.0f, unitPrice = 130.0f, vatNumber = 22),
+            Delivery(bubble = 30, material = 46, quantity = 8.0f, unitPrice = 45.0f, vatNumber = 22),
+            Delivery(bubble = 39, material = 47, quantity = 6.0f, unitPrice = 700.0f, vatNumber = 22),
+            Delivery(bubble = 27, material = 49, quantity = 12.0f, unitPrice = 55.0f, vatNumber = 22),
             Delivery(bubble = 25, material = 50, quantity = 200.0f, unitPrice = 0.45f, vatNumber = 22),
-            Delivery(bubble = 34, material = 51, quantity = 10.0f, unitPrice = 15.0f, vatNumber = 22),
-            Delivery(bubble = 35, material = 52, quantity = 5.0f, unitPrice = 85.0f, vatNumber = 22),
-            Delivery(bubble = 49, material = 53, quantity = 1.0f, unitPrice = 350.0f, vatNumber = 4),
+            Delivery(bubble = 34, material = 51, quantity = 30.0f, unitPrice = 15.0f, vatNumber = 22),
+            Delivery(bubble = 35, material = 52, quantity = 10.0f, unitPrice = 85.0f, vatNumber = 22),
+            Delivery(bubble = 49, material = 53, quantity = 3.0f, unitPrice = 350.0f, vatNumber = 4),
             Delivery(bubble = 43, material = 54, quantity = 1.0f, unitPrice = 1.5f, vatNumber = 22),
             Delivery(bubble = 46, material = 55, quantity = 100.0f, unitPrice = 12.5f, vatNumber = 10),
-            Delivery(bubble = 37, material = 56, quantity = 1000.0f, unitPrice = 0.05f, vatNumber = 10)
+            Delivery(bubble = 37, material = 56, quantity = 250.0f, unitPrice = 1.0f, vatNumber = 10),
+            Delivery(bubble = 56, material = 10, quantity = 15.0f, unitPrice = 75.0f, vatNumber = 0),
+            Delivery(bubble = 56, material = 13, quantity = 5.0f, unitPrice = 95.0f, vatNumber = 0),
+            Delivery(bubble = 56, material = 14, quantity = 12.0f, unitPrice = 55.0f, vatNumber = 0),
+            Delivery(bubble = 56, material = 16, quantity = 13f, unitPrice = 115.0f, vatNumber = 0),
+            Delivery(bubble = 56, material = 39, quantity = 15.0f, unitPrice = 30.0f, vatNumber = 0),
+            Delivery(bubble = 56, material = 48, quantity = 4.0f, unitPrice = 160.0f, vatNumber = 0),
+            Delivery(bubble = 57, material = 44, quantity = 40.0f, unitPrice = 20.0f, vatNumber = 22),
+            Delivery(bubble = 57, material = 61, quantity = 21.0f, unitPrice = 5.0f, vatNumber = 22),
         )
 
         deliveries.forEach{ delivery ->
@@ -958,9 +550,9 @@ object SeedDatabase {
             Payment(id = 79, issueDate = LocalDate.of(2026, 4, 1), paymentDate = null),
             Payment(id = 80, issueDate = LocalDate.of(2026, 1, 15), paymentDate = LocalDate.of(2026, 1, 20)),
             Payment(id = 81, issueDate = LocalDate.of(2024, 1, 1), paymentDate = LocalDate.of(2024, 1, 5)),
-            Payment(id = 82, issueDate = LocalDate.of(2026, 4, 1), paymentDate = LocalDate.of(2026, 4, 1)), // Backup
-            Payment(id = 83, issueDate = LocalDate.of(2026, 4, 1), paymentDate = null), // Marketing
-            Payment(id = 84, issueDate = LocalDate.of(2026, 4, 1), paymentDate = LocalDate.of(2026, 4, 2)), // Radio
+            Payment(id = 82, issueDate = LocalDate.of(2026, 4, 1), paymentDate = LocalDate.of(2026, 4, 1)),
+            Payment(id = 83, issueDate = LocalDate.of(2026, 4, 1), paymentDate = null),
+            Payment(id = 84, issueDate = LocalDate.of(2026, 4, 1), paymentDate = LocalDate.of(2026, 4, 2)),
             Payment(id = 85, issueDate = LocalDate.of(2026, 4, 1), paymentDate = LocalDate.of(2026, 4, 1)),
             Payment(id = 86, issueDate = LocalDate.of(2025, 11, 30), paymentDate = LocalDate.of(2025, 12, 5)),
             Payment(id = 87, issueDate = LocalDate.of(2026, 3, 10), paymentDate = LocalDate.of(2026, 3, 12)),
@@ -1019,125 +611,60 @@ object SeedDatabase {
 
     suspend fun seedSingleExpense(repository : Repository){
         val expenses = listOf(
-            SingleExpense(id = 1, name = "Rifornimento Furgone EF123GH", amount = 85.5f,
-                deadlineDate = LocalDate.of(2023, 1, 20), category = 4, purchaseInvoice = 1, payment = 1),
-            SingleExpense(id = 2, name = "Cancelleria ufficio", amount = 45f, deadlineDate =
-            LocalDate.of(2023, 2, 15), category = 8, purchaseInvoice = 6, payment = 2),
-            SingleExpense(id = 3, name = "Riparazione trapano", amount = 120f, deadlineDate =
-            LocalDate.of(2023, 3, 10), category = 7, purchaseInvoice = 11, payment = 3),
-            SingleExpense(id = 4, name = "Aggiornamento Software ALA", amount = 250f,
-                deadlineDate = LocalDate.of(2023, 5, 25), category = 10, purchaseInvoice = 16, payment = 4),
-            SingleExpense(id = 5, name = "Materiale promozionale", amount = 300f, deadlineDate =
-            LocalDate.of(2023, 8, 1), category = 10, purchaseInvoice = 21, payment = 5),
-            SingleExpense(id = 6, name = "Cena aziendale Natale", amount = 450f, deadlineDate =
-            LocalDate.of(2023, 12, 20), category = 10, purchaseInvoice = 26, payment = 6),
-            SingleExpense(id = 7, name = "Cambio Gomme Invernali", amount = 600f, deadlineDate =
-            LocalDate.of(2024, 1, 15), category = 7, purchaseInvoice = 31, payment = 7),
-            SingleExpense(id = 8, name = "Rifornimento Metano", amount = 40f, deadlineDate =
-            LocalDate.of(2024, 1, 30), category = 4, purchaseInvoice = 36, payment = 8),
-            SingleExpense(id = 9, name = "Cartucce stampante", amount = 95f, deadlineDate =
-            LocalDate.of(2024, 2, 10), category = 8, purchaseInvoice = 41, payment = 9),
-            SingleExpense(id = 10, name = "Kit pronto soccorso", amount = 35f, deadlineDate =
-            LocalDate.of(2024, 2, 28), category = 9, purchaseInvoice = 46, payment = 10),
-            SingleExpense(id = 11, name = "Viti e tasselli sfusi", amount = 22.5f, deadlineDate =
-            LocalDate.of(2024, 3, 15), category = 1, purchaseInvoice = 2, payment = 11),
-            SingleExpense(id = 12, name = "Materiale pulizia sede", amount = 18f, deadlineDate =
-            LocalDate.of(2024, 3, 20), category = 6, purchaseInvoice = 7, payment = 12),
-            SingleExpense(id = 13, name = "Riparazione serratura", amount = 110f, deadlineDate =
-            LocalDate.of(2024, 3, 28), category = 5, purchaseInvoice = 12, payment = 13),
-            SingleExpense(id = 14, name = "Spese postali", amount = 7.5f, deadlineDate =
-            LocalDate.of(2024, 4, 1), category = 8, purchaseInvoice = 17, payment = 14),
-            SingleExpense(id = 15, name = "Lampadine ufficio", amount = 30f, deadlineDate =
-            LocalDate.of(2024, 4, 5), category = 6, purchaseInvoice = 22, payment = 15),
-            SingleExpense(id = 16, name = "Rifornimento Diesel", amount = 95f, deadlineDate =
-            LocalDate.of(2023, 2, 15), category = 4, purchaseInvoice = 27, payment = 16),
-            SingleExpense(id = 17, name = "Acquisto DPI (Guanti)", amount = 150f, deadlineDate =
-            LocalDate.of(2023, 6, 12), category = 1, purchaseInvoice = 32, payment = 17),
-            SingleExpense(id = 18, name = "Manutenzione climatizzatore ufficio", amount = 80f,
-                deadlineDate = LocalDate.of(2023, 11, 20), category = 2, purchaseInvoice = 37,
-                payment = 18),
-            SingleExpense(id = 19, name = "Pubblicità Facebook", amount = 100f, deadlineDate =
-            LocalDate.of(2024, 1, 15), category = 10, purchaseInvoice = 42, payment = 19),
-            SingleExpense(id = 20, name = "Marche da bollo", amount = 32f, deadlineDate =
-            LocalDate.of(2024, 2, 20), category = 8, purchaseInvoice = 47, payment = 20),
-            SingleExpense(id = 21, name = "Parcheggio cantiere Roma", amount = 15f, deadlineDate
-            = LocalDate.of(2023, 1, 20), category = 4, purchaseInvoice = null, payment = 21),
-            SingleExpense(id = 22, name = "Caffè e acqua ufficio", amount = 25f, deadlineDate =
-            LocalDate.of(2024, 3, 15), category = 8, purchaseInvoice = null, payment = 22),
-            SingleExpense(id = 23, name = "Lavaggio furgone", amount = 20f, deadlineDate =
-            LocalDate.of(2024, 4, 5), category = 7, purchaseInvoice = null, payment = 23),
-            SingleExpense(id = 24, name = "Mancia corriere urgenza", amount = 5f, deadlineDate =
-            LocalDate.of(2024, 1, 10), category = 10, purchaseInvoice = null, payment = 24),
-            SingleExpense(id = 25, name = "Taxi fiera Milano", amount = 45f, deadlineDate =
-            LocalDate.of(2023, 10, 12), category = 10, purchaseInvoice = null, payment = 25),
-            SingleExpense(id = 26, name = "Software open source donation", amount = 10f,
-                deadlineDate = LocalDate.of(2024, 3, 20), category = 10, purchaseInvoice = null,
-                payment = 26),
-            SingleExpense(id = 27, name = "Piccola viteria brico", amount = 12.4f, deadlineDate =
-            LocalDate.of(2024, 3, 25), category = 1, purchaseInvoice = null, payment = 27),
-            SingleExpense(id = 28, name = "Abbonamento parcheggio mensile", amount = 80f,
-                deadlineDate = LocalDate.of(2023, 5, 25), category = 4, purchaseInvoice = null,
-                payment = 28),
-            SingleExpense(id = 29, name = "Pulizia straordinaria vetrate", amount = 200f,
-                deadlineDate = LocalDate.of(2024, 2, 15), category = 6, purchaseInvoice = null,
-                payment = 29),
-            SingleExpense(id = 30, name = "Diritti di segreteria", amount = 16f, deadlineDate =
-            LocalDate.of(2023, 3, 10), category = 8, purchaseInvoice = null, payment = 30),
-            SingleExpense(id = 31, name = "Acquisto manuale tecnico", amount = 45f, deadlineDate
-            = LocalDate.of(2023, 8, 5), category = 10, purchaseInvoice = null, payment = 31),
-            SingleExpense(id = 32, name = "Sostituzione tergicristalli", amount = 35f,
-                deadlineDate = LocalDate.of(2024, 1, 20), category = 7, purchaseInvoice = null,
-                payment = 32),
-            SingleExpense(id = 33, name = "Timbro aziendale nuovo", amount = 18f, deadlineDate =
-            LocalDate.of(2024, 2, 28), category = 8, purchaseInvoice = null, payment = 33),
-            SingleExpense(id = 34, name = "Ricarica telefonica aziendale", amount = 20f,
-                deadlineDate = LocalDate.of(2024, 3, 30), category = 6, purchaseInvoice = null,
-                payment = 34),
-            SingleExpense(id = 35, name = "Spuntino rapido trasferta", amount = 12.5f,
-                deadlineDate = LocalDate.of(2024, 4, 2), category = 10, purchaseInvoice = null,
-                payment = 35),
-            SingleExpense(id = 36, name = "Consulenza legale urgente", amount = 1500f,
-                deadlineDate = LocalDate.of(2024, 5, 1), category = 9, purchaseInvoice = 3, payment =
-             36),
-            SingleExpense(id = 37, name = "Rifornimento extra", amount = 60f, deadlineDate =
-            LocalDate.of(2024, 4, 10), category = 4, purchaseInvoice = 8, payment = 37),
-            SingleExpense(id = 38, name = "Penale ritardo consegna", amount = 50f, deadlineDate =
-            LocalDate.of(2024, 3, 1), category = 10, purchaseInvoice = null, payment = 38),
-            SingleExpense(id = 39, name = "Commissioni bancarie", amount = 0.5f, deadlineDate =
-            LocalDate.of(2024, 3, 31), category = 8, purchaseInvoice = null, payment = 39),
-            SingleExpense(id = 40, name = "Acconto fiera 2025", amount = 2000f, deadlineDate =
-            LocalDate.of(2025, 1, 1), category = 10, purchaseInvoice = 13, payment = 40),
-            SingleExpense(id = 41, name = "Rimborso spese cliente X", amount = 30f, deadlineDate
-            = LocalDate.of(2022, 12, 31), category = 10, purchaseInvoice = null, payment = 41),
-            SingleExpense(id = 42, name = "Correzione errore contabile", amount = -10f,
-                deadlineDate = LocalDate.of(2026, 2, 10), category = 10, purchaseInvoice = null,
-                payment = 42),
-            SingleExpense(id = 43, name = "Spesa d'emergenza guasto", amount = 850f, deadlineDate
-             = LocalDate.of(2026, 2, 10), category = 7, purchaseInvoice = 18, payment = 43),
-            SingleExpense(id = 44, name = "Software licenza perpetua", amount = 1200f,
-                deadlineDate = LocalDate.of(2024, 4, 12), category = 10, purchaseInvoice = 23,
-                payment = 44),
-            SingleExpense(id = 45, name = "Bollo furgone", amount = 155f, deadlineDate =
-            LocalDate.of(2024, 1, 1), category = 4, purchaseInvoice = null, payment = 45),
-            SingleExpense(id = 46, name = "Sanzione stradale", amount = 168f, deadlineDate =
-            LocalDate.of(2024, 5, 15), category = 4, purchaseInvoice = null, payment = 46),
-            SingleExpense(id = 47, name = "Acquisto dominio web", amount = 15f, deadlineDate =
-            LocalDate.of(2026, 2, 10), category = 10, purchaseInvoice = 28, payment = 47),
-            SingleExpense(id = 48, name = "Campionario materiali", amount = 0f, deadlineDate =
-            LocalDate.of(2024, 2, 1), category = 10, purchaseInvoice = 33, payment = 48),
-            SingleExpense(id = 49, name = "Assicurazione integrativa", amount = 300f,
-                deadlineDate = LocalDate.of(2024, 6, 1), category = 9, purchaseInvoice = 38,
-                payment = 49),
-            SingleExpense(id = 50, name = "Interessi passivi", amount = 4.25f, deadlineDate =
-            LocalDate.of(2026, 2, 10), category = 8, purchaseInvoice = null, payment = 50),
-            SingleExpense(id = 51, name = "Rifornimento materiale", amount = 20f, deadlineDate =
-            LocalDate.of(2026, 2, 12), category = 2, purchaseInvoice = 51, payment = 51),
-            SingleExpense(id = 52, name = "F", amount = 1000f, deadlineDate = LocalDate.of(2026,
-                2, 12), category = 8, purchaseInvoice = 52, payment = 52),
-            SingleExpense(id = 53, name = "Cancelleria", amount = 120.67f, deadlineDate =
-            LocalDate.of(2026, 2, 28), category = 8, purchaseInvoice = 53, payment = 53),
-            SingleExpense(id = 54, name = "Scarpe", amount = 80f, deadlineDate = LocalDate.of
-                (2026, 3, 31), category = 11, purchaseInvoice = 54, payment = 54),
+            SingleExpense(id = 1, name = "Rifornimento Furgone EF123GH", amount = 85.5f, deadlineDate = LocalDate.of(2023, 1, 20), category = 4, purchaseInvoice = 1, payment = 1),
+            SingleExpense(id = 2, name = "Cancelleria ufficio", amount = 45f, deadlineDate = LocalDate.of(2023, 2, 15), category = 8, purchaseInvoice = 6, payment = 2),
+            SingleExpense(id = 3, name = "Riparazione trapano", amount = 120f, deadlineDate = LocalDate.of(2023, 3, 10), category = 7, purchaseInvoice = 11, payment = 3),
+            SingleExpense(id = 4, name = "Aggiornamento Software ALA", amount = 250f, deadlineDate = LocalDate.of(2023, 5, 25), category = 10, purchaseInvoice = 16, payment = 4),
+            SingleExpense(id = 5, name = "Materiale promozionale", amount = 300f, deadlineDate = LocalDate.of(2023, 8, 1), category = 10, purchaseInvoice = 21, payment = 5),
+            SingleExpense(id = 6, name = "Cena aziendale Natale", amount = 450f, deadlineDate = LocalDate.of(2023, 12, 20), category = 10, purchaseInvoice = 26, payment = 6),
+            SingleExpense(id = 7, name = "Cambio Gomme Invernali", amount = 600f, deadlineDate = LocalDate.of(2024, 1, 15), category = 7, purchaseInvoice = 31, payment = 7),
+            SingleExpense(id = 8, name = "Rifornimento Metano", amount = 40f, deadlineDate = LocalDate.of(2024, 1, 30), category = 4, purchaseInvoice = 36, payment = 8),
+            SingleExpense(id = 9, name = "Cartucce stampante", amount = 95f, deadlineDate = LocalDate.of(2024, 2, 10), category = 8, purchaseInvoice = 41, payment = 9),
+            SingleExpense(id = 10, name = "Kit pronto soccorso", amount = 35f, deadlineDate = LocalDate.of(2024, 2, 28), category = 9, purchaseInvoice = 46, payment = 10),
+            SingleExpense(id = 11, name = "Viti e tasselli sfusi", amount = 22.5f, deadlineDate = LocalDate.of(2024, 3, 15), category = 1, purchaseInvoice = 2, payment = 11),
+            SingleExpense(id = 12, name = "Materiale pulizia sede", amount = 18f, deadlineDate = LocalDate.of(2024, 3, 20), category = 6, purchaseInvoice = 7, payment = 12),
+            SingleExpense(id = 13, name = "Riparazione serratura", amount = 110f, deadlineDate = LocalDate.of(2024, 3, 28), category = 5, purchaseInvoice = 12, payment = 13),
+            SingleExpense(id = 14, name = "Spese postali", amount = 7.5f, deadlineDate = LocalDate.of(2024, 4, 1), category = 8, purchaseInvoice = 17, payment = 14),
+            SingleExpense(id = 15, name = "Lampadine ufficio", amount = 30f, deadlineDate = LocalDate.of(2024, 4, 5), category = 6, purchaseInvoice = 22, payment = 15),
+            SingleExpense(id = 16, name = "Rifornimento Diesel", amount = 95f, deadlineDate = LocalDate.of(2023, 2, 15), category = 4, purchaseInvoice = 27, payment = 16),
+            SingleExpense(id = 17, name = "Acquisto DPI (Guanti)", amount = 150f, deadlineDate = LocalDate.of(2023, 6, 12), category = 1, purchaseInvoice = 32, payment = 17),
+            SingleExpense(id = 18, name = "Manutenzione climatizzatore ufficio", amount = 80f, deadlineDate = LocalDate.of(2023, 11, 20), category = 2, purchaseInvoice = 37, payment = 18),
+            SingleExpense(id = 19, name = "Pubblicità Facebook", amount = 100f, deadlineDate = LocalDate.of(2024, 1, 15), category = 10, purchaseInvoice = 42, payment = 19),
+            SingleExpense(id = 20, name = "Marche da bollo", amount = 32f, deadlineDate = LocalDate.of(2024, 2, 20), category = 8, purchaseInvoice = 47, payment = 20),
+            SingleExpense(id = 21, name = "Parcheggio cantiere Roma", amount = 15f, deadlineDate = LocalDate.of(2023, 1, 20), category = 4, purchaseInvoice = null, payment = 21),
+            SingleExpense(id = 22, name = "Caffè e acqua ufficio", amount = 25f, deadlineDate = LocalDate.of(2024, 3, 15), category = 8, purchaseInvoice = null, payment = 22),
+            SingleExpense(id = 23, name = "Lavaggio furgone", amount = 20f, deadlineDate = LocalDate.of(2024, 4, 5), category = 7, purchaseInvoice = null, payment = 23),
+            SingleExpense(id = 24, name = "Mancia corriere urgenza", amount = 5f, deadlineDate = LocalDate.of(2024, 1, 10), category = 10, purchaseInvoice = null, payment = 24),
+            SingleExpense(id = 25, name = "Taxi fiera Milano", amount = 45f, deadlineDate = LocalDate.of(2023, 10, 12), category = 10, purchaseInvoice = null, payment = 25),
+            SingleExpense(id = 26, name = "Software open source donation", amount = 10f, deadlineDate = LocalDate.of(2024, 3, 20), category = 10, purchaseInvoice = null, payment = 26),
+            SingleExpense(id = 27, name = "Piccola viteria brico", amount = 12.4f, deadlineDate = LocalDate.of(2024, 3, 25), category = 1, purchaseInvoice = null, payment = 27),
+            SingleExpense(id = 28, name = "Abbonamento parcheggio mensile", amount = 80f, deadlineDate = LocalDate.of(2023, 5, 25), category = 4, purchaseInvoice = null, payment = 28),
+            SingleExpense(id = 29, name = "Pulizia straordinaria vetrate", amount = 200f, deadlineDate = LocalDate.of(2024, 2, 15), category = 6, purchaseInvoice = null, payment = 29),
+            SingleExpense(id = 30, name = "Diritti di segreteria", amount = 16f, deadlineDate = LocalDate.of(2023, 3, 10), category = 8, purchaseInvoice = null, payment = 30),
+            SingleExpense(id = 31, name = "Acquisto manuale tecnico", amount = 45f, deadlineDate = LocalDate.of(2023, 8, 5), category = 10, purchaseInvoice = null, payment = 31),
+            SingleExpense(id = 32, name = "Sostituzione tergicristalli", amount = 35f, deadlineDate = LocalDate.of(2024, 1, 20), category = 7, purchaseInvoice = null, payment = 32),
+            SingleExpense(id = 33, name = "Timbro aziendale nuovo", amount = 18f, deadlineDate = LocalDate.of(2024, 2, 28), category = 8, purchaseInvoice = null, payment = 33),
+            SingleExpense(id = 34, name = "Ricarica telefonica aziendale", amount = 20f, deadlineDate = LocalDate.of(2024, 3, 30), category = 6, purchaseInvoice = null, payment = 34),
+            SingleExpense(id = 35, name = "Spuntino rapido trasferta", amount = 12.5f, deadlineDate = LocalDate.of(2024, 4, 2), category = 10, purchaseInvoice = null, payment = 35),
+            SingleExpense(id = 36, name = "Consulenza legale urgente", amount = 1500f, deadlineDate = LocalDate.of(2024, 5, 1), category = 9, purchaseInvoice = 3, payment = 36),
+            SingleExpense(id = 37, name = "Rifornimento extra", amount = 60f, deadlineDate = LocalDate.of(2024, 4, 10), category = 4, purchaseInvoice = 8, payment = 37),
+            SingleExpense(id = 38, name = "Penale ritardo consegna", amount = 50f, deadlineDate = LocalDate.of(2024, 3, 1), category = 10, purchaseInvoice = null, payment = 38),
+            SingleExpense(id = 39, name = "Commissioni bancarie", amount = 0.5f, deadlineDate = LocalDate.of(2024, 3, 31), category = 8, purchaseInvoice = null, payment = 39),
+            SingleExpense(id = 40, name = "Acconto fiera 2025", amount = 2000f, deadlineDate = LocalDate.of(2025, 1, 1), category = 10, purchaseInvoice = 13, payment = 40),
+            SingleExpense(id = 41, name = "Rimborso spese cliente X", amount = 30f, deadlineDate = LocalDate.of(2022, 12, 31), category = 10, purchaseInvoice = null, payment = 41),
+            SingleExpense(id = 42, name = "Correzione errore contabile", amount = -10f, deadlineDate = LocalDate.of(2026, 2, 10), category = 10, purchaseInvoice = null, payment = 42),
+            SingleExpense(id = 43, name = "Spesa d'emergenza guasto", amount = 850f, deadlineDate = LocalDate.of(2026, 2, 10), category = 7, purchaseInvoice = 18, payment = 43),
+            SingleExpense(id = 44, name = "Software licenza perpetua", amount = 1200f, deadlineDate = LocalDate.of(2024, 4, 12), category = 10, purchaseInvoice = 23, payment = 44),
+            SingleExpense(id = 45, name = "Bollo furgone", amount = 155f, deadlineDate = LocalDate.of(2024, 1, 1), category = 4, purchaseInvoice = null, payment = 45),
+            SingleExpense(id = 46, name = "Sanzione stradale", amount = 168f, deadlineDate = LocalDate.of(2024, 5, 15), category = 4, purchaseInvoice = null, payment = 46),
+            SingleExpense(id = 47, name = "Acquisto dominio web", amount = 15f, deadlineDate = LocalDate.of(2026, 2, 10), category = 10, purchaseInvoice = 28, payment = 47),
+            SingleExpense(id = 48, name = "Campionario materiali", amount = 0f, deadlineDate = LocalDate.of(2024, 2, 1), category = 10, purchaseInvoice = 33, payment = 48),
+            SingleExpense(id = 49, name = "Assicurazione integrativa", amount = 300f, deadlineDate = LocalDate.of(2024, 6, 1), category = 9, purchaseInvoice = 38, payment = 49),
+            SingleExpense(id = 50, name = "Interessi passivi", amount = 4.25f, deadlineDate = LocalDate.of(2026, 2, 10), category = 8, purchaseInvoice = null, payment = 50),
+            SingleExpense(id = 51, name = "Rifornimento materiale", amount = 20f, deadlineDate = LocalDate.of(2026, 2, 12), category = 2, purchaseInvoice = 51, payment = 51),
+            SingleExpense(id = 52, name = "Fornitura varia", amount = 1000f, deadlineDate = LocalDate.of(2026, 2, 12), category = 8, purchaseInvoice = 52, payment = 52),
+            SingleExpense(id = 53, name = "Cancelleria", amount = 120.67f, deadlineDate = LocalDate.of(2026, 2, 28), category = 8, purchaseInvoice = 53, payment = 53),
+            SingleExpense(id = 54, name = "Scarpe antinfortunistiche", amount = 80f, deadlineDate = LocalDate.of(2026, 3, 31), category = 11, purchaseInvoice = 54, payment = 54),
         )
 
         expenses.forEach { singleExpense ->
@@ -1147,73 +674,57 @@ object SeedDatabase {
 
     suspend fun seedRecurringExpense(repository: Repository){
         val recurringExpenses = listOf(
-            RecurringExpense(id = 1, name = "Affitto Sede Milano", frequency = FrequencyType.valueOf("Mese"), amount = 1200f, category = 5, endDate = null, purchaseInvoice = 5),
-            RecurringExpense(id = 2, name = "Utenze Luce", frequency = FrequencyType.valueOf("Mese"), amount = 150f, category = 6, endDate = null, purchaseInvoice = 10),
-            RecurringExpense(id = 3, name = "Utenze Gas", frequency = FrequencyType.valueOf("Mese"), amount = 200f, category = 6, endDate = null, purchaseInvoice = 15),
-            RecurringExpense(id = 4, name = "Assicurazione Furgone 1", frequency = FrequencyType
-                .valueOf("Anno"), amount = 800f, category = 9, endDate = LocalDate.of(2025, 12, 31), purchaseInvoice = 20),
-            RecurringExpense(id = 5, name = "Assicurazione Furgone 2", frequency = FrequencyType.valueOf("Anno"), amount = 800f, category = 9, endDate = LocalDate.of(2025, 10, 15), purchaseInvoice = 25),
-            RecurringExpense(id = 6, name = "Abbonamento Gestionale", frequency = FrequencyType.valueOf("Mese"), amount = 45f, category = 10,
-                endDate = null, purchaseInvoice = 30),
-            RecurringExpense(id = 7, name = "Connessione Fibra Ottica", frequency = FrequencyType
-                .valueOf("Mese"), amount = 35f, category = 6, endDate = null, purchaseInvoice = 35),
-            RecurringExpense(id = 8, name = "Servizio Pulizie Ufficio", frequency = FrequencyType.valueOf("Settimana"), amount = 120f, category = 6, endDate = LocalDate.of(2024, 12, 31), purchaseInvoice = 40),
-            RecurringExpense(id = 9, name = "Manutenzione Antincendio", frequency = FrequencyType.valueOf("Anno"), amount = 150f, category = 3, endDate = LocalDate.of(2026, 1, 1), purchaseInvoice = 45),
-            RecurringExpense(id = 10, name = "Commercialista", frequency = FrequencyType.valueOf
-                ("Mese"), amount = 250f, category = 9, endDate = null, purchaseInvoice = 4),
-            RecurringExpense(id = 11, name = "Hosting Sito Web", frequency = FrequencyType
-                .valueOf("Anno"), amount = 120f, category = 10, endDate = LocalDate.of(2025, 6, 1), purchaseInvoice = 9),
-            RecurringExpense(id = 12, name = "Licenza Office 365", frequency = FrequencyType
-                .valueOf("Mese"), amount = 12.5f, category = 10, endDate = null, purchaseInvoice = 14),
-            RecurringExpense(id = 13, name = "Rate Leasing Trapani", frequency = FrequencyType.valueOf("Mese"), amount = 85f, category = 7, endDate = LocalDate.of(2025, 3, 1), purchaseInvoice = 19),
-            RecurringExpense(id = 14, name = "Canone POS", frequency = FrequencyType.valueOf
-                ("Mese"), amount = 15f, category = 8, endDate = null, purchaseInvoice = 24),
-            RecurringExpense(id = 15, name = "Ricarica Estintori", frequency = FrequencyType.valueOf("Anno"), amount = 60f, category = 3, endDate = LocalDate.of(2025, 9, 20), purchaseInvoice = 29),
-            RecurringExpense(id = 16, name = "Noleggio Fotocopiatrice", frequency = FrequencyType.valueOf("Mese"), amount = 55f, category = 8, endDate = LocalDate.of(2025, 5, 15), purchaseInvoice = 34),
-            RecurringExpense(id = 17, name = "Fornitura Acqua Boccioni", frequency = FrequencyType.valueOf("Mese"), amount = 30f, category = 6, endDate = null, purchaseInvoice = 39),
-            RecurringExpense(id = 18, name = "Quota Ordine Professionale", frequency = FrequencyType.valueOf("Anno"), amount = 180f, category = 9, endDate = null, purchaseInvoice = 44),
-            RecurringExpense(id = 19, name = "Abbonamento Rivista Tecnica", frequency = FrequencyType.valueOf("Anno"), amount = 65f, category = 10, endDate = LocalDate.of(2024, 12, 31), purchaseInvoice = 49),
-            RecurringExpense(id = 20, name = "Sanificazione Periodica", frequency = FrequencyType
-                .valueOf("Mese"), amount = 200f, category = 6, endDate = LocalDate.of(2024, 8, 1), purchaseInvoice = 3),
-            RecurringExpense(id = 21, name = "Backup Cloud Dati", frequency = FrequencyType.valueOf("Mese"), amount = 20f, category = 10, endDate = null, purchaseInvoice = 8),
-            RecurringExpense(id = 22, name = "Manutenzione Sito Marketing", frequency = FrequencyType.valueOf("Mese"), amount = 100f, category = 10, endDate = null, purchaseInvoice = 13),
-            RecurringExpense(id = 23, name = "Canone Radio Aziendale", frequency = FrequencyType.valueOf("Mese"), amount = 10f, category = 10, endDate = null, purchaseInvoice = 18),
-            RecurringExpense(id = 24, name = "Leasing Furgone 1", frequency = FrequencyType.valueOf("Mese"), amount = 450f, category = 7,
-                endDate = LocalDate.of(2026, 12, 31), purchaseInvoice = 23),
-            RecurringExpense(id = 25, name = "Leasing Furgone 2", frequency = FrequencyType.valueOf("Mese"), amount = 450f, category = 7, endDate = LocalDate.of(2027, 1, 1), purchaseInvoice = 28),
-            RecurringExpense(id = 26, name = "Controllo Caldaia Sede", frequency = FrequencyType.valueOf("Anno"), amount = 100f, category = 2, endDate = LocalDate.of(2025, 11, 30), purchaseInvoice = 33),
-            RecurringExpense(id = 27, name = "Abbonamento GPS Furgoni", frequency = FrequencyType.valueOf("Mese"), amount = 30f, category = 7, endDate = null, purchaseInvoice = 38),
-            RecurringExpense(id = 28, name = "Sms Marketing Service", frequency = FrequencyType.valueOf("Mese"), amount = 15f, category = 10, endDate = null, purchaseInvoice = 43),
-            RecurringExpense(id = 29, name = "Consulenza Sicurezza Lavoro", frequency = FrequencyType.valueOf("Anno"), amount = 400f, category = 9, endDate = null, purchaseInvoice = 48),
-            RecurringExpense(id = 30, name = "Rifiuti TARI", frequency = FrequencyType.valueOf("Anno"), amount = 300f, category = 6, endDate = null, purchaseInvoice = 2),
-            RecurringExpense(id = 31, name = "Software Calcolo Termico", frequency =
-            FrequencyType.valueOf("Anno"), amount = 350f, category = 10, endDate = LocalDate.of(2025, 2, 1), purchaseInvoice = 7),
-            RecurringExpense(id = 32, name = "Rinnovo Certificazione ISO", frequency = FrequencyType.valueOf("Anno"), amount = 1200f, category = 9, endDate = LocalDate.of(2026, 5, 20), purchaseInvoice = 12),
-            RecurringExpense(id = 33, name = "Servizio Vigilanza Notturna", frequency =
-            FrequencyType.valueOf("Mese"), amount = 80f, category = 3, endDate = null, purchaseInvoice = 17),
-            RecurringExpense(id = 34, name = "Abbonamento News Legali", frequency = FrequencyType.valueOf("Anno"), amount = 120f, category = 10, endDate = LocalDate.of(2025, 1, 1), purchaseInvoice = 22),
-            RecurringExpense(id = 35, name = "Contributo Consorzio", frequency = FrequencyType.valueOf("Anno"), amount = 50f, category = 9, endDate = null, purchaseInvoice = 27),
-            RecurringExpense(id = 36, name = "Canone Bancario", frequency = FrequencyType.valueOf("Mese"), amount = 5f, category = 8, endDate = null, purchaseInvoice = null),
-            RecurringExpense(id = 37, name = "Assicurazione RC Professionale", frequency = FrequencyType.valueOf("Anno"), amount = 1500f, category = 9, endDate = null, purchaseInvoice = null),
-            RecurringExpense(id = 38, name = "Donazione periodica ONLUS", frequency =
-            FrequencyType.valueOf("Mese"), amount = 10f, category = 10, endDate = null, purchaseInvoice = null),
-            RecurringExpense(id = 39, name = "Corso Formazione Apprendista", frequency = FrequencyType.valueOf("Settimana"), amount = 50f, category = 9, endDate = LocalDate.of(2024, 6, 1), purchaseInvoice = 32),
-            RecurringExpense(id = 40, name = "Affitto Deposito Temporaneo", frequency = FrequencyType.valueOf("Settimana"), amount = 100f, category = 5, endDate = LocalDate.of(2024, 4, 30), purchaseInvoice = 37),
-            RecurringExpense(id = 41, name = "Software CAD Beta Test", frequency = FrequencyType.valueOf("Mese"), amount = 0f, category = 10, endDate = LocalDate.of(2024, 12, 31), purchaseInvoice = null),
-            RecurringExpense(id = 42, name = "Manutenzione Giardino Sede", frequency = FrequencyType.valueOf("Settimana"), amount = 80f, category = 6, endDate = LocalDate.of(2024, 9, 1), purchaseInvoice = 42),
-            RecurringExpense(id = 43, name = "Leasing Vecchio Attrezzo", frequency = FrequencyType.valueOf("Mese"), amount = 40f, category = 7, endDate = LocalDate.of(2023, 1, 1), purchaseInvoice = 47),
-            RecurringExpense(id = 44, name = "Rata recupero crediti", frequency = FrequencyType.valueOf("Mese"), amount = 200f, category = 8, endDate = LocalDate.of(2024, 10, 1), purchaseInvoice = null),
-            RecurringExpense(id = 45, name = "Box Cloud Extra", frequency = FrequencyType.valueOf
-                ("Mese"), amount = 2.99f, category = 10,  endDate = null, purchaseInvoice = null),
-            RecurringExpense(id = 46, name = "Pubblicità Rivista Locale", frequency = FrequencyType.valueOf("Settimana"), amount = 150f, category = 10, endDate = LocalDate.of(2024, 5, 15), purchaseInvoice = 50),
-            RecurringExpense(id = 47, name = "Assicurazione Infortuni", frequency = FrequencyType.valueOf("Anno"), amount = 250f, category = 9, endDate = LocalDate.of(2024, 12, 31), purchaseInvoice = null),
-            RecurringExpense(id = 48, name = "Canone Software Domotica", frequency = FrequencyType.valueOf("Anno"), amount = 500f, category = 10, endDate = null, purchaseInvoice = 1),
-            RecurringExpense(id = 49, name = "Noleggio Scala Aerea", frequency = FrequencyType
-                .valueOf("Settimana"), amount = 300f, category = 7, endDate = LocalDate.of(2024,
-                4, 20), purchaseInvoice = 11),
-            RecurringExpense(id = 50, name = "Fondo TFR periodico", frequency = FrequencyType.valueOf("Mese"), amount = 500f, category = 9, endDate = null, purchaseInvoice = null),
-            RecurringExpense(id = 51, name = "Prestito", frequency = FrequencyType.valueOf
-                ("Mese"), amount = 22000f, category = 10, endDate = LocalDate.of(2029, 3, 1), purchaseInvoice = null)
+            RecurringExpense(id = 1, name = "Affitto Sede Milano", frequency = FrequencyType.Mese, amount = 1200f, category = 5, endDate = null, purchaseInvoice = 5),
+            RecurringExpense(id = 2, name = "Utenze Luce", frequency = FrequencyType.Mese, amount = 150f, category = 6, endDate = null, purchaseInvoice = 10),
+            RecurringExpense(id = 3, name = "Utenze Gas", frequency = FrequencyType.Mese, amount = 200f, category = 6, endDate = null, purchaseInvoice = 15),
+            RecurringExpense(id = 4, name = "Assicurazione Furgone 1", frequency = FrequencyType.Anno, amount = 800f, category = 9, endDate = LocalDate.of(2025, 12, 31), purchaseInvoice = 20),
+            RecurringExpense(id = 5, name = "Assicurazione Furgone 2", frequency = FrequencyType.Anno, amount = 800f, category = 9, endDate = LocalDate.of(2025, 10, 15), purchaseInvoice = 25),
+            RecurringExpense(id = 6, name = "Abbonamento Gestionale", frequency = FrequencyType.Mese, amount = 45f, category = 10, endDate = null, purchaseInvoice = 30),
+            RecurringExpense(id = 7, name = "Connessione Fibra Ottica", frequency = FrequencyType.Mese, amount = 35f, category = 6, endDate = null, purchaseInvoice = 35),
+            RecurringExpense(id = 8, name = "Servizio Pulizie Ufficio", frequency = FrequencyType.Settimana, amount = 120f, category = 6, endDate = LocalDate.of(2024, 12, 31), purchaseInvoice = 40),
+            RecurringExpense(id = 9, name = "Manutenzione Antincendio", frequency = FrequencyType.Anno, amount = 150f, category = 3, endDate = LocalDate.of(2026, 1, 1), purchaseInvoice = 45),
+            RecurringExpense(id = 10, name = "Commercialista", frequency = FrequencyType.Mese, amount = 250f, category = 9, endDate = null, purchaseInvoice = 4),
+            RecurringExpense(id = 11, name = "Hosting Sito Web", frequency = FrequencyType.Anno, amount = 120f, category = 10, endDate = LocalDate.of(2025, 6, 1), purchaseInvoice = 9),
+            RecurringExpense(id = 12, name = "Licenza Office 365", frequency = FrequencyType.Mese, amount = 12.5f, category = 10, endDate = null, purchaseInvoice = 14),
+            RecurringExpense(id = 13, name = "Rate Leasing Trapani", frequency = FrequencyType.Mese, amount = 85f, category = 7, endDate = LocalDate.of(2025, 3, 1), purchaseInvoice = 19),
+            RecurringExpense(id = 14, name = "Canone POS", frequency = FrequencyType.Mese, amount = 15f, category = 8, endDate = null, purchaseInvoice = 24),
+            RecurringExpense(id = 15, name = "Ricarica Estintori", frequency = FrequencyType.Anno, amount = 60f, category = 3, endDate = LocalDate.of(2025, 9, 20), purchaseInvoice = 29),
+            RecurringExpense(id = 16, name = "Noleggio Fotocopiatrice", frequency = FrequencyType.Mese, amount = 55f, category = 8, endDate = LocalDate.of(2025, 5, 15), purchaseInvoice = 34),
+            RecurringExpense(id = 17, name = "Fornitura Acqua Boccioni", frequency = FrequencyType.Mese, amount = 30f, category = 6, endDate = null, purchaseInvoice = 39),
+            RecurringExpense(id = 18, name = "Quota Ordine Professionale", frequency = FrequencyType.Anno, amount = 180f, category = 9, endDate = null, purchaseInvoice = 44),
+            RecurringExpense(id = 19, name = "Abbonamento Rivista Tecnica", frequency = FrequencyType.Anno, amount = 65f, category = 10, endDate = LocalDate.of(2024, 12, 31), purchaseInvoice = 49),
+            RecurringExpense(id = 20, name = "Sanificazione Periodica", frequency = FrequencyType.Mese, amount = 200f, category = 6, endDate = LocalDate.of(2024, 8, 1), purchaseInvoice = 3),
+            RecurringExpense(id = 21, name = "Backup Cloud Dati", frequency = FrequencyType.Mese, amount = 20f, category = 10, endDate = null, purchaseInvoice = 8),
+            RecurringExpense(id = 22, name = "Manutenzione Sito Marketing", frequency = FrequencyType.Mese, amount = 100f, category = 10, endDate = null, purchaseInvoice = 13),
+            RecurringExpense(id = 23, name = "Canone Radio Aziendale", frequency = FrequencyType.Mese, amount = 10f, category = 10, endDate = null, purchaseInvoice = 18),
+            RecurringExpense(id = 24, name = "Leasing Furgone 1", frequency = FrequencyType.Mese, amount = 450f, category = 7, endDate = LocalDate.of(2026, 12, 31), purchaseInvoice = 23),
+            RecurringExpense(id = 25, name = "Leasing Furgone 2", frequency = FrequencyType.Mese, amount = 450f, category = 7, endDate = LocalDate.of(2027, 1, 1), purchaseInvoice = 28),
+            RecurringExpense(id = 26, name = "Controllo Caldaia Sede", frequency = FrequencyType.Anno, amount = 100f, category = 2, endDate = LocalDate.of(2025, 11, 30), purchaseInvoice = 33),
+            RecurringExpense(id = 27, name = "Abbonamento GPS Furgoni", frequency = FrequencyType.Mese, amount = 30f, category = 7, endDate = null, purchaseInvoice = 38),
+            RecurringExpense(id = 28, name = "Sms Marketing Service", frequency = FrequencyType.Mese, amount = 15f, category = 10, endDate = null, purchaseInvoice = 43),
+            RecurringExpense(id = 29, name = "Consulenza Sicurezza Lavoro", frequency = FrequencyType.Anno, amount = 400f, category = 9, endDate = null, purchaseInvoice = 48),
+            RecurringExpense(id = 30, name = "Rifiuti TARI", frequency = FrequencyType.Anno, amount = 300f, category = 6, endDate = null, purchaseInvoice = 2),
+            RecurringExpense(id = 31, name = "Software Calcolo Termico", frequency = FrequencyType.Anno, amount = 350f, category = 10, endDate = LocalDate.of(2025, 2, 1), purchaseInvoice = 7),
+            RecurringExpense(id = 32, name = "Rinnovo Certificazione ISO", frequency = FrequencyType.Anno, amount = 1200f, category = 9, endDate = LocalDate.of(2026, 5, 20), purchaseInvoice = 12),
+            RecurringExpense(id = 33, name = "Servizio Vigilanza Notturna", frequency = FrequencyType.Mese, amount = 80f, category = 3, endDate = null, purchaseInvoice = 17),
+            RecurringExpense(id = 34, name = "Abbonamento News Legali", frequency = FrequencyType.Anno, amount = 120f, category = 10, endDate = LocalDate.of(2025, 1, 1), purchaseInvoice = 22),
+            RecurringExpense(id = 35, name = "Contributo Consorzio", frequency = FrequencyType.Anno, amount = 50f, category = 9, endDate = null, purchaseInvoice = 27),
+            RecurringExpense(id = 36, name = "Canone Bancario", frequency = FrequencyType.Mese, amount = 5f, category = 8, endDate = null, purchaseInvoice = null),
+            RecurringExpense(id = 37, name = "Assicurazione RC Professionale", frequency = FrequencyType.Anno, amount = 1500f, category = 9, endDate = null, purchaseInvoice = null),
+            RecurringExpense(id = 38, name = "Donazione periodica ONLUS", frequency = FrequencyType.Mese, amount = 10f, category = 10, endDate = null, purchaseInvoice = null),
+            RecurringExpense(id = 39, name = "Corso Formazione Apprendista", frequency = FrequencyType.Settimana, amount = 50f, category = 9, endDate = LocalDate.of(2024, 6, 1), purchaseInvoice = 32),
+            RecurringExpense(id = 40, name = "Affitto Deposito Temporaneo", frequency = FrequencyType.Settimana, amount = 100f, category = 5, endDate = LocalDate.of(2024, 4, 30), purchaseInvoice = 37),
+            RecurringExpense(id = 41, name = "Software CAD Beta Test", frequency = FrequencyType.Mese, amount = 0f, category = 10, endDate = LocalDate.of(2024, 12, 31), purchaseInvoice = null),
+            RecurringExpense(id = 42, name = "Manutenzione Giardino Sede", frequency = FrequencyType.Settimana, amount = 80f, category = 6, endDate = LocalDate.of(2024, 9, 1), purchaseInvoice = 42),
+            RecurringExpense(id = 43, name = "Leasing Vecchio Attrezzo", frequency = FrequencyType.Mese, amount = 40f, category = 7, endDate = LocalDate.of(2023, 1, 1), purchaseInvoice = 47),
+            RecurringExpense(id = 44, name = "Rata recupero crediti", frequency = FrequencyType.Mese, amount = 200f, category = 8, endDate = LocalDate.of(2024, 10, 1), purchaseInvoice = null),
+            RecurringExpense(id = 45, name = "Box Cloud Extra", frequency = FrequencyType.Mese, amount = 2.99f, category = 10, endDate = null, purchaseInvoice = null),
+            RecurringExpense(id = 46, name = "Pubblicità Rivista Locale", frequency = FrequencyType.Settimana, amount = 150f, category = 10, endDate = LocalDate.of(2024, 5, 15), purchaseInvoice = 50),
+            RecurringExpense(id = 47, name = "Assicurazione Infortuni", frequency = FrequencyType.Anno, amount = 250f, category = 9, endDate = LocalDate.of(2024, 12, 31), purchaseInvoice = null),
+            RecurringExpense(id = 48, name = "Canone Software Domotica", frequency = FrequencyType.Anno, amount = 500f, category = 10, endDate = null, purchaseInvoice = 1),
+            RecurringExpense(id = 49, name = "Noleggio Scala Aerea", frequency = FrequencyType.Settimana, amount = 300f, category = 7, endDate = LocalDate.of(2024, 4, 20), purchaseInvoice = 11),
+            RecurringExpense(id = 50, name = "Fondo TFR periodico", frequency = FrequencyType.Mese, amount = 500f, category = 9, endDate = null, purchaseInvoice = null),
+            RecurringExpense(id = 51, name = "Prestito Aziendale", frequency = FrequencyType.Mese, amount = 22000f, category = 10, endDate = LocalDate.of(2029, 3, 1), purchaseInvoice = null)
         )
 
         recurringExpenses.forEach { recurringExpense ->
@@ -1453,15 +964,7 @@ object SeedDatabase {
 
     suspend fun seedCustomers(repository :Repository){
         val customers = listOf(
-            Customer(
-                cf = "01234567890",
-                name = "Pietro",
-                mail = "info@edilmilan.it",
-                averageCollectionTime = 30.0f,
-                collectionCount = 25,
-                residence = 26,
-                reference = 7
-            ),
+            Customer(cf = "01234567890", name = "Pietro", mail = "info@edilmilan.it", averageCollectionTime = 30.0f, collectionCount = 25, residence = 26, reference = 7),
             Customer(cf = "01234567891", name = "Luigi", mail = "amministrazione@tecno.it", averageCollectionTime = 60.5f, collectionCount = 12, residence = 27, reference = 8),
             Customer(cf = "01234567892", name = "Carla", mail = "carla@ristorante.it", averageCollectionTime = 15.0f, collectionCount = 40, residence = 28, reference = 9),
             Customer(cf = "01234567893", name = "Paolo", mail = "direzione@logistica.it", averageCollectionTime = 90.0f, collectionCount = 5, residence = 29, reference = null),
@@ -1876,42 +1379,41 @@ object SeedDatabase {
             Job(id = 21, date = LocalDate.of(2026, 2, 17), startTime = LocalTime.of(9, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 105, endTime = LocalTime.of(11, 0, 0), electric = true, alarm = false, airConditioning = true, customer = "BNCCHR90S05F205J", workSite = 52),
             Job(id = 22, date = LocalDate.of(2026, 2, 17), startTime = LocalTime.of(9, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 106, endTime = LocalTime.of(11, 0, 0), electric = true, alarm = false, airConditioning = false, customer = null, workSite = 54),
             Job(id = 95, date = LocalDate.of(2022, 3, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 10, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "RCCDVD78L15F205O", workSite = 3),
-            Job(id = 96, date = LocalDate.of(2022, 3, 3), startTime = LocalTime.of(8, 0, 0), description = "Visto " +
-                    "lavoro", peopleNumber = 4, address = 64, endTime = LocalTime.of(9, 0, 0), electric = true, alarm =
-            false, airConditioning = false, customer = "RCCDVD78L15F205O", workSite = null),
+            Job(id = 96, date = LocalDate.of(2022, 3, 3), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 4, address = 64, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "RCCDVD78L15F205O", workSite = null),
             Job(id = 97, date = LocalDate.of(2022, 3, 4), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 3, address = 51, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "RSSMRA80A01F205H", workSite = 4),
-            Job(id = 98, date = LocalDate.of(2023, 3, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 54, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "VRDNNA90C20F205G", workSite = 5),
-            Job(id = 99, date = LocalDate.of(2022, 5, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 3, address = 71, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "BNCLCU75B10L219Z", workSite = 6),
-            Job(id = 100, date = LocalDate.of(2022, 9, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 4, address = 2, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "VRDNNA90C20F205G", workSite = 7),
-            Job(id = 103, date = LocalDate.of(2023, 6, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 56, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567890", workSite = 12),
-            Job(id = 104, date = LocalDate.of(2024, 1, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 3, address = 57, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567890", workSite = 13),
-            Job(id = 105, date = LocalDate.of(2025, 12, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 4, address = 66, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "RSSMRA80A01F205H", workSite = 16),
+            Job(id = 98, date = LocalDate.of(2023, 3, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 52, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "VRDNNA90C20F205G", workSite = 5),
+            Job(id = 99, date = LocalDate.of(2022, 5, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 3, address = 53, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "BNCLCU75B10L219Z", workSite = 6),
+            Job(id = 100, date = LocalDate.of(2022, 9, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 4, address = 54, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "VRDNNA90C20F205G", workSite = 7),
+            Job(id = 103, date = LocalDate.of(2023, 6, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 57, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567890", workSite = 12),
+            Job(id = 104, date = LocalDate.of(2024, 1, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 3, address = 58, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567890", workSite = 13),
+            Job(id = 105, date = LocalDate.of(2025, 12, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 4, address = 1, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "RSSMRA80A01F205H", workSite = 16),
             Job(id = 106, date = LocalDate.of(2022, 3, 2), startTime = LocalTime.of(11, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 2, endTime = LocalTime.of(12, 30, 0), electric = false, alarm = true, airConditioning = false, customer = "VRDNNA90C20F205G", workSite = 17),
-            Job(id = 107, date = LocalDate.of(2022, 8, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 60, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = true, airConditioning = false, customer = "RSSFRN70F30F205C", workSite = 20),
-            Job(id = 108, date = LocalDate.of(2022, 3, 7), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 62, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = true, airConditioning = false, customer = "RMNMTT82H10F205A", workSite = 22),
-            Job(id = 109, date = LocalDate.of(2022, 4, 8), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 65, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = true, airConditioning = false, customer = "MRNLRA83M25F205N", workSite = 24),
-            Job(id = 110, date = LocalDate.of(2022, 5, 9), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 3, address = 68, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = true, airConditioning = false, customer = "BRNMRT89Q15F205L", workSite = 25),
-            Job(id = 111, date = LocalDate.of(2022, 6, 12), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 4, address = 97, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = true, airConditioning = false, customer = "01234567890", workSite = 27),
-            Job(id = 112, date = LocalDate.of(2022, 7, 13), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 72, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567891", workSite = 28),
-            Job(id = 113, date = LocalDate.of(2022, 8, 14), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 73, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567892", workSite = 29),
-            Job(id = 114, date = LocalDate.of(2022, 9, 12), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 74, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567893", workSite = 30),
-            Job(id = 115, date = LocalDate.of(2022, 10, 15), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 75, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567894", workSite = 31),
-            Job(id = 116, date = LocalDate.of(2022, 11, 16), startTime = LocalTime.of(17, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 78, endTime = LocalTime.of(18, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567897", workSite = 34),
-            Job(id = 117, date = LocalDate.of(2022, 12, 17), startTime = LocalTime.of(18, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 80, endTime = LocalTime.of(19, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567899", workSite = 36),
-            Job(id = 118, date = LocalDate.of(2023, 2, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 81, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567900", workSite = 37),
-            Job(id = 119, date = LocalDate.of(2023, 4, 3), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 82, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567901", workSite = 38),
-            Job(id = 120, date = LocalDate.of(2023, 6, 4), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 3, address = 83, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567902", workSite = 39),
-            Job(id = 121, date = LocalDate.of(2023, 8, 5), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 85, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567903", workSite = 40),
-            Job(id = 122, date = LocalDate.of(2023, 10, 6), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 86, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567904", workSite = 41),
-            Job(id = 123, date = LocalDate.of(2023, 12, 7), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 87, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567905", workSite = 42),
-            Job(id = 124, date = LocalDate.of(2024, 1, 1), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 88, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567906", workSite = 43),
-            Job(id = 125, date = LocalDate.of(2024, 3, 31), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 89, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567907", workSite = 44),
-            Job(id = 127, date = LocalDate.of(2024, 5, 3), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 90, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567908", workSite = 45),
-            Job(id = 128, date = LocalDate.of(2024, 7, 29), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 92, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567909", workSite = 46),
-            Job(id = 129, date = LocalDate.of(2024, 9, 5), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 93, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = false, airConditioning = true, customer = "01234567910", workSite = 47),
-            Job(id = 130, date = LocalDate.of(2024, 11, 27), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 94, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567911", workSite = 48),
-            Job(id = 131, date = LocalDate.of(2025, 1, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 4, address = 95, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567912", workSite = 49),
-            Job(id = 132, date = LocalDate.of(2025, 2, 3), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 96, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567913", workSite = 50),
+            Job(id = 107, date = LocalDate.of(2022, 8, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 6, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = true, airConditioning = false, customer = "RSSFRN70F30F205C", workSite = 20),
+            Job(id = 108, date = LocalDate.of(2022, 3, 7), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 8, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = true, airConditioning = false, customer = "RMNMTT82H10F205A", workSite = 22),
+            Job(id = 109, date = LocalDate.of(2022, 4, 8), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 11, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = true, airConditioning = false, customer = "MRNLRA83M25F205N", workSite = 24),
+            Job(id = 110, date = LocalDate.of(2022, 5, 9), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 3, address = 13, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = true, airConditioning = false, customer = "BRNMRT89Q15F205L", workSite = 25),
+            Job(id = 111, date = LocalDate.of(2022, 6, 12), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 4, address = 26, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = true, airConditioning = false, customer = "01234567890", workSite = 27),
+            Job(id = 112, date = LocalDate.of(2022, 7, 13), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 27, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567891", workSite = 28),
+            Job(id = 113, date = LocalDate.of(2022, 8, 14), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 28, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567892", workSite = 29),
+            Job(id = 114, date = LocalDate.of(2022, 9, 12), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 29, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567893", workSite = 30),
+            Job(id = 115, date = LocalDate.of(2022, 10, 15), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 30, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567894", workSite = 31),
+            Job(id = 116, date = LocalDate.of(2022, 11, 16), startTime = LocalTime.of(17, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 33, endTime = LocalTime.of(18, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567897", workSite = 34),
+            Job(id = 117, date = LocalDate.of(2022, 12, 17), startTime = LocalTime.of(18, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 35, endTime = LocalTime.of(19, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567899", workSite = 36),
+            Job(id = 118, date = LocalDate.of(2023, 2, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 36, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567900", workSite = 37),
+            Job(id = 119, date = LocalDate.of(2023, 4, 3), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 37, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567901", workSite = 38),
+            Job(id = 120, date = LocalDate.of(2023, 6, 4), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 3, address = 38, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567902", workSite = 39),
+            Job(id = 121, date = LocalDate.of(2023, 8, 5), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 39, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567903", workSite = 40),
+            Job(id = 122, date = LocalDate.of(2023, 10, 6), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 40, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567904", workSite = 41),
+            Job(id = 123, date = LocalDate.of(2023, 12, 7), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 41, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567905", workSite = 42),
+            Job(id = 124, date = LocalDate.of(2024, 1, 1), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 42, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567906", workSite = 43),
+            Job(id = 125, date = LocalDate.of(2024, 3, 31), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 43, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567907", workSite = 44),
+            Job(id = 127, date = LocalDate.of(2024, 5, 3), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 44, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567908", workSite = 45),
+            Job(id = 128, date = LocalDate.of(2024, 7, 29), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 45, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567909", workSite = 46),
+            Job(id = 129, date = LocalDate.of(2024, 9, 5), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 46, endTime = LocalTime.of(9, 0, 0), electric = false, alarm = false, airConditioning = true, customer = "01234567910", workSite = 47),
+            Job(id = 130, date = LocalDate.of(2024, 11, 27), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 47, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567911", workSite = 48),
+            Job(id = 131, date = LocalDate.of(2025, 1, 2), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 4, address = 48, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567912", workSite = 49),
+            Job(id = 132, date = LocalDate.of(2025, 2, 3), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 49, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567913", workSite = 50),
+            Job(id = 133, date = LocalDate.of(2025, 3, 4), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 50, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567914", workSite = 51),
             Job(id = 133, date = LocalDate.of(2025, 3, 4), startTime = LocalTime.of(8, 0, 0), description = "Visto lavoro", peopleNumber = 2, address = 100, endTime = LocalTime.of(9, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "01234567914", workSite = 51),
             Job(id = 135, date = LocalDate.of(2026, 2, 18), startTime = LocalTime.of(14, 0, 0), description = "", peopleNumber = 2, address = 12, endTime = LocalTime.of(18, 0, 0), electric = false, alarm = false, airConditioning = true, customer = "GRCGRG72P05F205M", workSite = null),
             Job(id = 136, date = LocalDate.of(2026, 5, 15), startTime = LocalTime.of(8, 0, 0), description = "Rifacimento impianto elettrico", peopleNumber = 2, address = 107, endTime = LocalTime.of(18, 0, 0), electric = true, alarm = false, airConditioning = false, customer = "ESPGNN80A01F839U", workSite = 55)
@@ -2009,12 +1511,9 @@ object SeedDatabase {
 
     suspend fun seedRevenue(repository: Repository){
         val revenues = listOf(
-            Revenue(id = 1, invoice = 101, issueDate = LocalDate.of(2023, 10, 15), amount = 450f,  amountPaid = 450f,
-                percent = 100, collectionDate = LocalDate.of(2023, 10, 20), worksite = 10, job = null),
-            Revenue(id = 2, invoice = 102, issueDate = LocalDate.of(2023, 5, 20), amount = 2500f,  amountPaid =
-            750f, percent = 30, collectionDate = LocalDate.of(2023, 6, 15), worksite = 11, job = null),
-            Revenue(id = 3, invoice = 103, issueDate = LocalDate.of(2022, 3, 5), amount = 1200f, amountPaid = 1200f,
-                percent = 100, collectionDate = LocalDate.of(2022, 4, 10), worksite = 1, job = null),
+            Revenue(id = 1, invoice = 101, issueDate = LocalDate.of(2023, 10, 15), amount = 450f,  amountPaid = 450f, percent = 100, collectionDate = LocalDate.of(2023, 10, 20), worksite = 10, job = null),
+            Revenue(id = 2, invoice = 102, issueDate = LocalDate.of(2023, 5, 20), amount = 2500f,  amountPaid = 750f, percent = 30, collectionDate = LocalDate.of(2023, 6, 15), worksite = 11, job = null),
+            Revenue(id = 3, invoice = 103, issueDate = LocalDate.of(2022, 3, 5), amount = 1200f, amountPaid = 1200f, percent = 100, collectionDate = LocalDate.of(2022, 4, 10), worksite = 1, job = null),
             Revenue(id = 4, invoice = 104, issueDate = LocalDate.of(2023, 6, 30), amount = 3500f, amountPaid = 1750f, percent = 50, collectionDate = null, worksite = 18, job = null),
             Revenue(id = 5, invoice = 105, issueDate = LocalDate.of(2023, 5, 5), amount = 850f,  amountPaid = 850f, percent = 100, collectionDate = LocalDate.of(2023, 5, 20), worksite = 32, job = null),
             Revenue(id = 6, invoice = 201, issueDate = LocalDate.of(2024, 1, 16), amount = 85.5f,  amountPaid = 85.5f, percent = 100, collectionDate = LocalDate.of(2024, 1, 16), worksite = null, job = 6),
@@ -2023,8 +1522,7 @@ object SeedDatabase {
             Revenue(id = 9, invoice = 204, issueDate = LocalDate.of(2026, 2, 11), amount = 150f,  amountPaid = 150f, percent = 100, collectionDate = null, worksite = null, job = 9),
             Revenue(id = 10, invoice = 106, issueDate = LocalDate.of(2023, 4, 1), amount = 5000f,  amountPaid = 3000f, percent = 60, collectionDate = LocalDate.of(2023, 4, 15), worksite = 13, job = null),
             Revenue(id = 11, invoice = 107, issueDate = LocalDate.of(2023, 10, 5), amount = 3300f,  amountPaid = 1320f, percent = 40, collectionDate = LocalDate.of(2023, 11, 1), worksite = 13, job = null),
-            Revenue(id = 12, invoice = 1, issueDate = LocalDate.of(2026, 2, 17), amount = 2526.0f,  amountPaid = 0f,
-                percent = 0, collectionDate = null, worksite = 54, job = null),
+            Revenue(id = 12, invoice = 1, issueDate = LocalDate.of(2026, 2, 17), amount = 2526.0f,  amountPaid = 0f, percent = 0, collectionDate = null, worksite = 54, job = null),
             Revenue(id = 13, invoice = 2, issueDate = LocalDate.of(2026, 2, 18), amount = 6000f,  amountPaid = 2400f, percent = 40, collectionDate = LocalDate.of(2026, 3, 4), worksite = null, job = 135),
             Revenue(id = 14, invoice = 100, issueDate = LocalDate.of(2022, 3, 17), amount = 3000f,  amountPaid = 2700f, percent = 90, collectionDate = LocalDate.of(2024, 5, 2), worksite = 2, job = null),
             Revenue(id = 15, invoice = 6, issueDate = LocalDate.of(2024, 1, 20), amount = 200f,  amountPaid = 100f, percent = 50, collectionDate = LocalDate.of(2024, 1, 25), worksite = null, job = 6)

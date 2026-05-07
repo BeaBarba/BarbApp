@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.screen.Statistics.materialPriceHistory
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -32,12 +33,11 @@ fun MaterialPriceHistory(
     LaunchedEffect(materialId) {
         actions.populateView(materialId)
     }
-
+    val isDark = isSystemInDarkTheme()
     val lineModelProducer = remember { CartesianChartModelProducer() }
     val colors = listOf(
         Color(0xFFD32F2F),
         Color(0xFFFBC02D),
-        Color(0xFF00BCD4),
         Color(0xFF00BCD4),
         Color(0xFFFF5722),
         Color(0xFF4CAF50),
@@ -60,17 +60,16 @@ fun MaterialPriceHistory(
         Color(0xFF4E342E),
     )
 
-    LaunchedEffect(state.series, state.times) {
-        val hasTimes = state.times.isEmpty()
-        val hasSeries = state.series.isEmpty() //&& state.series.any { it.isNotEmpty() }
+    LaunchedEffect(state.timePriceMap,  isDark) {
+        val hasTimes = state.timePriceMap.isEmpty()
 
-        if (hasTimes || hasSeries) {
+        if (hasTimes) {
             return@LaunchedEffect
         }else {
             lineModelProducer.runTransaction {
                 lineSeries {
-                    state.series.forEach {
-                        series(x = state.times, y = it)
+                    state.timePriceMap.values.forEach { (dates, prices) ->
+                        series(x = dates, y = prices)
                     }
                 }
             }
@@ -101,6 +100,7 @@ fun MaterialPriceHistory(
                 colors = colors,
                 labels = state.labels,
                 lineModelProducer = lineModelProducer,
+                xLabels = state.xLabel
             )
         }
     }

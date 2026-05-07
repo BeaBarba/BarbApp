@@ -1,7 +1,7 @@
 package com.example.myapplication.data.repository
 
 import com.example.myapplication.data.database.AppDatabase
-import com.example.myapplication.data.database.dao.MaterialPriceHistory
+import com.example.myapplication.data.database.MaterialPriceHistory
 
 class Repository (private val db : AppDatabase) {
 
@@ -14,5 +14,6 @@ class Repository (private val db : AppDatabase) {
     /* Cart */
     val cartItems = db.cartDAO().getCartItems()
 
-    suspend fun materialPriceHistory(id : Int) : List<MaterialPriceHistory> = db.statisticsDAO().getMaterialPriceHistory(id)
+    suspend fun materialPriceHistory(id : Int) : List<MaterialPriceHistory> = db.statisticsDAO()
+        .getMaterialPriceHistory(id)
 }

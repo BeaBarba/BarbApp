@@ -1,9 +1,12 @@
 package com.example.myapplication.ui.component
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,21 +31,26 @@ import com.patrykandpatrick.vico.core.common.Insets
 import com.patrykandpatrick.vico.core.common.LegendItem
 import com.patrykandpatrick.vico.core.common.shape.CorneredShape
 import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun LineCartesianChar(
+    modifier : Modifier = Modifier.height(350.dp),
     colors : List<Color>,
     labels : List<String>,
     lineModelProducer : CartesianChartModelProducer,
-    modifier : Modifier = Modifier.height(350.dp)
+    xLabels : Map<Float, String> = emptyMap(),
+    yLabels : Map<Float, String> = emptyMap(),
+
 ){
 
-    val textComponent = rememberTextComponent(color = Color.Black)
+    val textComponent = rememberTextComponent(color = if (isSystemInDarkTheme()) Color.White else Color.Black)
     val iconShape = CorneredShape.Pill
     val legendIcons = colors.map { color ->
         rememberShapeComponent(fill = Fill(color.toArgb()), shape = iconShape)
     }
-
 
     val lines = colors.map { color ->
         val shapeComponent = rememberShapeComponent(
@@ -70,9 +78,30 @@ fun LineCartesianChar(
             ),
             startAxis = VerticalAxis.rememberStart(
                 itemPlacer = VerticalAxis.ItemPlacer.step(step = {_ -> 0.5}, shiftTopLines = true),
-                valueFormatter =  remember { CartesianValueFormatter.decimal(decimalFormat = DecimalFormat("#.#;−#.#")) }
+                valueFormatter =
+                    if (yLabels.isEmpty()) {
+                        remember { CartesianValueFormatter.decimal( decimalFormat = DecimalFormat("#.# €;−#.# €")) }
+                    }else{
+                        CartesianValueFormatter { _, y, _ ->
+                            val key = (y as? Number)?.toFloat() ?: 0f
+                            yLabels[key] ?: key.toInt().toString()
+                        }
+                    }
             ),
-            bottomAxis = HorizontalAxis.rememberBottom(),
+            bottomAxis = HorizontalAxis.rememberBottom(
+                itemPlacer = HorizontalAxis.ItemPlacer.aligned(spacing = {_ -> 2}, shiftExtremeLines = true),
+                valueFormatter =
+                if(xLabels.isEmpty()) {
+                    remember { CartesianValueFormatter. decimal() }
+                }else{
+                    CartesianValueFormatter{ _, x , _ ->
+                        val key = (x as? Number)?.toFloat() ?: 0f
+                        val localDate = LocalDate.ofEpochDay(key.toLong())
+                        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                        xLabels[key] ?: formatter.format(localDate)
+                    }
+                }
+            ),
             legend = rememberVerticalLegend(
                 items = {
                     labels.forEachIndexed { index, labelText ->
@@ -88,7 +117,7 @@ fun LineCartesianChar(
                 iconSize = 8.dp,
                 iconLabelSpacing = 8.dp,
                 rowSpacing = 4.dp,
-                padding = Insets(0f, 16f, 0f, 0f) // Spazio sopra la legenda
+                padding = Insets(0f, 16f, 0f, 0f)
             )
         ),
         modelProducer = lineModelProducer,

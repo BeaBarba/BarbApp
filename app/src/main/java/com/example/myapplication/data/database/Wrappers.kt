@@ -3,6 +3,7 @@ package com.example.myapplication.data.database
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Relation
+import java.time.LocalDate
 
 data class CustomerTypeDetails(
     @Embedded val customer: Customer,
@@ -487,4 +488,14 @@ data class RecurringExpenseFullDetails(
         entityColumn = "Spesa"
     )
     val payments: List<RecurringPaymentDetails>
+)
+
+data class MaterialPriceHistory(
+    @ColumnInfo(name = "Marca") val brand : String,
+    @ColumnInfo(name = "Modello") val model : String,
+    @ColumnInfo(name = "Categoria") val category : String,
+    @ColumnInfo(name = "PrezzoUnitario") val price : Float,
+    @ColumnInfo(name = "DataAcquisto") val date : LocalDate,
+    @ColumnInfo(name = "Venditore") val sellerName : String,
+    @ColumnInfo(name = "Tipo") val type : String
 )
