@@ -67,6 +67,11 @@ dependencies {
     implementation(libs.androidx.datastore.core.android)
     implementation(libs.play.services.location)
     implementation(libs.play.services.location.v2120)
+
+    // Vico
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m3)
+
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)

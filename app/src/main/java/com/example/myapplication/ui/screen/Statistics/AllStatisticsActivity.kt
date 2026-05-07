@@ -49,7 +49,7 @@ fun AllStatisticsActivity(
                 text = stringResource(R.string.material_price_history),
                 icon = painterResource(R.drawable.line_chart),
                 iconDescription = stringResource(R.string.material_price_history),
-                onClick = {/*navController.navigate(NavigationRoute.)*/}
+                onClick = {navController.navigate(NavigationRoute.AllMaterials)}
             )
             Spacer(Modifier.size(15.dp))
             StatisticCard(

@@ -157,4 +157,5 @@
     <string name="amountPaid">Amount paid</string>
     <string name="cancel">Cancel</string>
     <string name="unit_measurement">Unit measurement</string>
+    <string name="details">Details</string>
 </resources>

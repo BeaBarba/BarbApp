@@ -158,4 +158,5 @@
     <string name="amountPaid">Importo pagato</string>
     <string name="cancel">Annulla</string>
     <string name="unit_measurement">Unità di misura</string>
+    <string name="details">Dettagli</string>
 </resources>

@@ -82,6 +82,11 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SingleP
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
+import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsActivity
+import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsViewModel
+import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistory
+import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistoryState
+import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistoryViewModel
 import com.example.myapplication.ui.screen.WorkSite.add.WorksiteAddViewModel
 import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryViewModel
 import com.example.myapplication.ui.screen.WorkSite.singleSummary.SingleWorksiteSummaryViewModel
@@ -103,6 +108,8 @@ sealed interface NavigationRoute{
     data object AllInvoicesSummary : NavigationRoute
     @Serializable
     data object AllJobsSummary : NavigationRoute
+    @Serializable
+    data object AllMaterials : NavigationRoute
     @Serializable
     data object AllPaymentsSummary : NavigationRoute
     @Serializable
@@ -170,6 +177,8 @@ sealed interface NavigationRoute{
     data class Select(val textSearch : String, val items: SelectKey) : NavigationRoute
     @Serializable
     data class DayCalendar (val date : Long) : NavigationRoute
+    @Serializable
+    data class MaterialPriceHistory(val materialId : Int) : NavigationRoute
 
     @Serializable
     data object Screen : NavigationRoute
@@ -388,6 +397,18 @@ fun NavGraph(
         }
 
 
+
+        composable<NavigationRoute.AllMaterials>{
+            val allMaterialsVM = koinViewModel<AllMaterialsViewModel>()
+            val state by allMaterialsVM.state.collectAsStateWithLifecycle()
+            AllMaterialsActivity(state, allMaterialsVM.actions, navController)
+        }
+        composable<NavigationRoute.MaterialPriceHistory> { backStackEntry ->
+            val route = backStackEntry.toRoute<NavigationRoute.MaterialPriceHistory>()
+            val materialPriceHistoryVM = koinViewModel<MaterialPriceHistoryViewModel>()
+            val state by materialPriceHistoryVM.state.collectAsStateWithLifecycle()
+            MaterialPriceHistory(route.materialId, state, materialPriceHistoryVM.actions, navController)
+        }
         composable<NavigationRoute.AveragePaymentsTimesStatistics>{
             AveragePaymentsTimesStatisticsActivity(navController)
         }

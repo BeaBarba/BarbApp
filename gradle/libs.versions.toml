@@ -24,6 +24,7 @@ runtimeLivedataVersion = "1.10.1"
 roomCommonJvm = "2.8.4"
 datastoreCoreAndroid = "1.2.0"
 playServicesLocation = "21.3.0"
+vico = "2.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,6 +60,10 @@ androidx-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", 
 androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 play-services-location-v2120 = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocationVersion" }
+# Compose Multiplatform
+vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
+# Material 3 theming in Compose Multiplatform
+vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

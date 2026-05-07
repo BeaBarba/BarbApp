@@ -6,7 +6,6 @@ import androidx.room.Room
 import com.example.myapplication.data.database.AppDatabase
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.data.repository.UserPreferencesRepository
-import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.screen.Address.add.AddressAddViewModel
 import com.example.myapplication.ui.screen.Address.singleSummary.SingleAddressSummaryViewModel
 import com.example.myapplication.ui.screen.Bubble.add.BubbleAddViewModel
@@ -29,7 +28,6 @@ import com.example.myapplication.ui.screen.Job.add.JobAddViewModel
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryViewModel
 import com.example.myapplication.ui.screen.Job.singleSummary.SingleJobSummaryViewModel
 import com.example.myapplication.ui.screen.Material.add.MaterialAddViewModel
-import com.example.myapplication.ui.screen.Material.allSummary.WarehouseActivity
 import com.example.myapplication.ui.screen.Material.allSummary.WarehouseViewModel
 import com.example.myapplication.ui.screen.Material.singleSummary.SingleMaterialSummaryViewModel
 import com.example.myapplication.ui.screen.Payment.allSummary.AllPaymentsSummaryViewModel
@@ -38,6 +36,8 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.add.PurchaseInvoiceAd
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
+import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsViewModel
+import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistoryViewModel
 import com.example.myapplication.ui.screen.WorkSite.add.WorksiteAddViewModel
 import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryViewModel
 import com.example.myapplication.ui.screen.WorkSite.singleSummary.SingleWorksiteSummaryViewModel
@@ -155,4 +155,8 @@ val appModule = module{
     viewModel {AllWorksitesSummaryViewModel(get())}
     viewModel {SingleWorksiteSummaryViewModel(get())}
     viewModel {WorksiteAddViewModel(get())}
+
+    /* Statistics */
+    viewModel {AllMaterialsViewModel(get())}
+    viewModel {MaterialPriceHistoryViewModel(get())}
 }

@@ -30,6 +30,7 @@ import com.example.myapplication.data.database.dao.ReferralDAO
 import com.example.myapplication.data.database.dao.RevenueDAO
 import com.example.myapplication.data.database.dao.SellerDAO
 import com.example.myapplication.data.database.dao.SingleExpenseDAO
+import com.example.myapplication.data.database.dao.StatisticsDAO
 import com.example.myapplication.data.database.dao.WorkSiteDAO
 
 @Database(
@@ -63,7 +64,7 @@ import com.example.myapplication.data.database.dao.WorkSiteDAO
         Revenue::class
     ],
     views = [CartView::class],
-    version = 22
+    version = 23
 )
 @TypeConverters(
     DateConverters::class,
@@ -102,4 +103,5 @@ abstract class AppDatabase : RoomDatabase(){
     abstract fun materialUsageDAO() : MaterialUsageDAO
     abstract fun revenuesDAO() : RevenueDAO
     abstract fun cartDAO() : CartDAO
+    abstract fun statisticsDAO() : StatisticsDAO
 }
