@@ -158,4 +158,7 @@
     <string name="cancel">Cancel</string>
     <string name="unit_measurement">Unit measurement</string>
     <string name="details">Details</string>
+    <string name="email_app_error">No email app is installed</string>
+    <string name="phoneNumber_app_error">The device does not have a numeric keypad</string>
+    <string name="map_app_error">No map app installed</string>
 </resources>

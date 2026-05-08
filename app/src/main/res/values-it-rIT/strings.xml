@@ -159,4 +159,7 @@
     <string name="cancel">Annulla</string>
     <string name="unit_measurement">Unità di misura</string>
     <string name="details">Dettagli</string>
+    <string name="email_app_error">Nessuna app per le email installata</string>
+    <string name="phoneNumber_app_error">Il dispositivo non ha il tastierino numerico</string>
+    <string name="map_app_error">Nessuna app per le mappe installata</string>
 </resources>

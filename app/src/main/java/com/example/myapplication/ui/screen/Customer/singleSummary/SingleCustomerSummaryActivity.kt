@@ -2,6 +2,7 @@ package com.example.myapplication.ui.screen.Customer.singleSummary
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -45,6 +46,10 @@ fun SingleCustomerSummaryActivity(
     actions : SingleCustomerSummaryActions,
     navController : NavHostController
 ){
+    val emailError = stringResource(R.string.email_app_error)
+    val numberError = stringResource(R.string.phoneNumber_app_error)
+    val addressError = stringResource(R.string.map_app_error)
+
     LaunchedEffect(customerId) {
         actions.populateCustomerData(customerId)
     }
@@ -159,7 +164,21 @@ fun SingleCustomerSummaryActivity(
                 KeyValueLabel(
                     title = stringResource(R.string.email),
                     description = state.customerData?.customer?.mail ?: "",
-                    weightTitle =  1.2f
+                    weightTitle =  1.2f,
+                    onClick = {
+                        val email = state.customerData?.customer?.mail ?: ""
+                        if(email.isNotBlank()){
+                            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                data = Uri.parse("mailto:$email")
+                                putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                            }
+                            try {
+                                ctx.startActivity(intent)
+                            }catch (e : Exception){
+                                Toast.makeText(ctx, emailError, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
@@ -167,7 +186,20 @@ fun SingleCustomerSummaryActivity(
                 KeyValueLabel(
                     title = stringResource(R.string.phone),
                     description = state.customerData?.phoneNumber?.number ?: "",
-                    weightTitle =  1.2f
+                    weightTitle =  1.2f,
+                    onClick = {
+                        val phoneNumber = state.customerData?.phoneNumber?.number ?: ""
+                        if(phoneNumber.isNotBlank()){
+                            val intent = Intent(Intent.ACTION_DIAL).apply {
+                                data = Uri.parse("tel:$phoneNumber")
+                            }
+                            try {
+                                ctx.startActivity(intent)
+                            }catch (e : Exception){
+                                Toast.makeText(ctx, numberError, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
                 )
             }
             item{CustomDivider()}
@@ -193,8 +225,10 @@ fun SingleCustomerSummaryActivity(
                         val addressQuery = Uri.parse("geo:0,0?q=${Uri.encode(fullAddress)}")
 
                         val intent = Intent(Intent.ACTION_VIEW).apply { data = addressQuery }
-                        if(intent.resolveActivity(ctx.packageManager)!= null) {
+                        try {
                             ctx.startActivity(intent)
+                        }catch (e : Exception){
+                            Toast.makeText(ctx, addressError, Toast.LENGTH_SHORT).show()
                         }
                     }
                 )

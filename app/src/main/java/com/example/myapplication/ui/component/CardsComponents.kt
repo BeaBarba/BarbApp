@@ -96,8 +96,7 @@ fun GenericCard(
     leadingContent: (@Composable () -> Unit)? = null,
     trailingContent: (@Composable () -> Unit)? = null,
     type: String = "NONE",
-    onClick : () -> Unit = {},
-    //interactionSource: MutableInteractionSource? = null,
+    onClick : () -> Unit = {}
 ){
     val textTypography = MaterialTheme.typography.bodyLarge
     val descriptionTypography = MaterialTheme.typography.bodyMedium

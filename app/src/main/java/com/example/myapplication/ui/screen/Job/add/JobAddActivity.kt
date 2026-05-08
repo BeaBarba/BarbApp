@@ -282,16 +282,18 @@ fun JobAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            item{GenericCard(
-                text = stringResource(R.string.photo_add),
-                trailingContent = {
-                    Icon(
-                        imageVector = Icons.Outlined.AddPhotoAlternate,
-                        contentDescription = stringResource(R.string.photo_add),
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-            )}
+            item{
+                GenericCard(
+                    text = stringResource(R.string.photo_add),
+                    trailingContent = {
+                        Icon(
+                            imageVector = Icons.Outlined.AddPhotoAlternate,
+                            contentDescription = stringResource(R.string.photo_add),
+                            modifier = Modifier.size(40.dp)
+                        )
+                    }
+                )
+            }
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.AllJobsSummary>() == false) {
                 item {
