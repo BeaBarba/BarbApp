@@ -19,7 +19,7 @@ import com.example.myapplication.ui.screen.Deadline.allSummary.AllDeadlinesSumma
 import com.example.myapplication.ui.screen.Job.allSummary.AllJobsSummaryActivity
 import com.example.myapplication.ui.screen.Payment.allSummary.AllPaymentsSummaryActivity
 import com.example.myapplication.ui.screen.Statistics.AllStatisticsActivity
-import com.example.myapplication.ui.screen.Statistics.AveragePaymentsTimesStatisticsActivity
+import com.example.myapplication.ui.screen.Statistics.averagePaymentsTimes.AveragePaymentsTimesStatisticsActivity
 import com.example.myapplication.ui.screen.Cart.CartActivity
 import com.example.myapplication.ui.screen.Customer.add.CustomerAddActivity
 import com.example.myapplication.ui.screen.Calendar.day.DayCalendarActivity
@@ -82,6 +82,7 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SingleP
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
+import com.example.myapplication.ui.screen.Statistics.averagePaymentsTimes.AveragePaymentsTimesStatisticsViewModel
 import com.example.myapplication.ui.screen.Statistics.jobStatistics.JobStatisticsViewModel
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsActivity
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsViewModel
@@ -413,9 +414,6 @@ fun NavGraph(
             val state by materialPriceHistoryVM.state.collectAsStateWithLifecycle()
             MaterialPriceHistory(route.materialId, state, materialPriceHistoryVM.actions, navController)
         }
-        composable<NavigationRoute.AveragePaymentsTimesStatistics>{
-            AveragePaymentsTimesStatisticsActivity(navController)
-        }
         composable<NavigationRoute.JobStatistics>{
             val jobStatisticsVM = koinViewModel<JobStatisticsViewModel>()
             val state by jobStatisticsVM.state.collectAsStateWithLifecycle()
@@ -425,6 +423,11 @@ fun NavGraph(
             val revenueFromJobVM = koinViewModel<RevenueFromJobViewModel>()
             val state by revenueFromJobVM.state.collectAsStateWithLifecycle()
             RevenueFromJobActivity(state, navController)
+        }
+        composable<NavigationRoute.AveragePaymentsTimesStatistics>{
+            val averagePaymentsTimesStatisticsVM = koinViewModel<AveragePaymentsTimesStatisticsViewModel>()
+            val state by averagePaymentsTimesStatisticsVM.state.collectAsStateWithLifecycle()
+            AveragePaymentsTimesStatisticsActivity(state, navController)
         }
 
 

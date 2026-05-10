@@ -2,6 +2,7 @@ package com.example.myapplication.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import com.example.myapplication.data.database.AveragePaymentsTimesStatisticsResult
 import com.example.myapplication.data.database.JobStatisticsResult
 import com.example.myapplication.data.database.MaterialPriceHistoryResult
 import com.example.myapplication.data.database.RevenueFromJobTypeResult
@@ -97,5 +98,18 @@ interface StatisticsDAO {
         ") AS Sub; "
     )
     suspend fun getRevenueFromJobType() : RevenueFromJobTypeResult
-}
 
+    @Query(
+        "SELECT C.CF AS CF, P.Cognome || ' ' || C.Nome AS Nome, C.TempoMedioRiscossione " +
+        "FROM CLIENTI AS C " +
+            "JOIN PRIVATI AS P ON C.CF = P.CF " +
+
+        "UNION " +
+
+        "SELECT C.CF AS CF, A.RagioneSociale AS Nome, C.TempoMedioRiscossione " +
+        "FROM CLIENTI AS C " +
+            "JOIN AZIENDE AS A ON C.CF = A.CF " +
+        "ORDER BY 2 DESC "
+    )
+    suspend fun getAveragePaymentsTimesStatistics() : List<AveragePaymentsTimesStatisticsResult>
+}

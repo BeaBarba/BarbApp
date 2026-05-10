@@ -511,3 +511,9 @@ data class RevenueFromJobTypeResult(
     @ColumnInfo(name = "Condizionamento") val airConditioning : Float,
     @ColumnInfo(name = "Allarme") val alarm : Float
 )
+
+data class AveragePaymentsTimesStatisticsResult(
+    @ColumnInfo(name = "CF") val cf : String,
+    @ColumnInfo(name = "Nome") val name : String,
+    @ColumnInfo(name = "TempoMedioRiscossione") val days : Float
+)

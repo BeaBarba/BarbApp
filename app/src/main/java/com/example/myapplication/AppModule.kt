@@ -36,6 +36,7 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.add.PurchaseInvoiceAd
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
+import com.example.myapplication.ui.screen.Statistics.averagePaymentsTimes.AveragePaymentsTimesStatisticsViewModel
 import com.example.myapplication.ui.screen.Statistics.jobStatistics.JobStatisticsViewModel
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsViewModel
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistoryViewModel
@@ -163,4 +164,5 @@ val appModule = module{
     viewModel {MaterialPriceHistoryViewModel(get())}
     viewModel {JobStatisticsViewModel(get())}
     viewModel {RevenueFromJobViewModel(get())}
+    viewModel {AveragePaymentsTimesStatisticsViewModel(get())}
 }

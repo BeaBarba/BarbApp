@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screen.Statistics
+package com.example.myapplication.ui.screen.Statistics.averagePaymentsTimes
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.debug.pagamenti
 import com.example.myapplication.ui.component.Avatar
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.GenericCard
@@ -27,13 +26,14 @@ import com.example.myapplication.ui.component.TopAppBar
 
 @Composable
 fun AveragePaymentsTimesStatisticsActivity(
+    state : AveragePaymentsTimesStatisticsState,
     navController : NavHostController
 ){
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                navigationIcon = {BackButton{navController.navigate(NavigationRoute.AllStatistics)}},
+                navigationIcon = { BackButton{ navController.navigate(NavigationRoute.AllStatistics) } },
                 id = stringResource(R.string.average_times)
             )
         }
@@ -49,26 +49,26 @@ fun AveragePaymentsTimesStatisticsActivity(
                 .fillMaxSize()
         ) {
 
-            items(pagamenti) { item ->
-                var difference = 30 - item.data.substring(0,2).toInt()
-                val check : Boolean = (difference < 20)
-                val type = if(check){"NONE"}else{"ALA"}
+            items(state.values) { item ->
+                val check : Boolean = (item.days < 20)
+                val type = if(check) {"NONE"} else {"ALA"}
                 GenericCard(
                     type = type,
                     leadingContent = {
                         Avatar(
-                            char = item.cliente.get(0),
+                            char = item.name[0],
                             type = type
                         )
                     },
-                    text = item.cliente,
+                    text = item.name,
                     trailingContent = {
                         Text(
-                            text = difference.toString(),
-                            color = if(check){MaterialTheme.colorScheme.onPrimaryContainer}
-                                    else{MaterialTheme.colorScheme.onSecondaryContainer}
+                            text = item.days.toString(),
+                            color = if(check){ MaterialTheme.colorScheme.onPrimaryContainer }
+                                    else { MaterialTheme.colorScheme.onSecondaryContainer }
                         )
-                    }
+                    },
+                    onClick = { navController.navigate(NavigationRoute.SingleCustomerSummary(item.cf)) }
                 )
                 Spacer(Modifier.size(8.dp))
             }
