@@ -1,7 +1,9 @@
 package com.example.myapplication.data.repository
 
 import com.example.myapplication.data.database.AppDatabase
-import com.example.myapplication.data.database.MaterialPriceHistory
+import com.example.myapplication.data.database.JobStatisticsResult
+import com.example.myapplication.data.database.MaterialPriceHistoryResult
+import java.time.LocalDate
 
 class Repository (private val db : AppDatabase) {
 
@@ -14,6 +16,9 @@ class Repository (private val db : AppDatabase) {
     /* Cart */
     val cartItems = db.cartDAO().getCartItems()
 
-    suspend fun materialPriceHistory(id : Int) : List<MaterialPriceHistory> = db.statisticsDAO()
+    suspend fun materialPriceHistory(id : Int) : List<MaterialPriceHistoryResult> = db.statisticsDAO()
         .getMaterialPriceHistory(id)
+
+    suspend fun jobStatistics(startDate : LocalDate, endDate : LocalDate) : JobStatisticsResult = db.statisticsDAO()
+        .getJobStatistics(startDate, endDate)
 }

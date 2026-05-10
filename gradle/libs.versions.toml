@@ -25,6 +25,7 @@ roomCommonJvm = "2.8.4"
 datastoreCoreAndroid = "1.2.0"
 playServicesLocation = "21.3.0"
 vico = "2.0.0"
+mpandroidchartVersion = "v3.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -64,6 +65,8 @@ play-services-location-v2120 = { module = "com.google.android.gms:play-services-
 vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
 # Material 3 theming in Compose Multiplatform
 vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
+# MPANDROIDCHART
+philjay-mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchartVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

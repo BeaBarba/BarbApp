@@ -2,16 +2,22 @@ package com.example.myapplication.ui.component
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
@@ -22,10 +28,10 @@ import com.patrykandpatrick.vico.compose.common.rememberVerticalLegend
 import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.common.Fill
 import com.patrykandpatrick.vico.compose.common.component.rememberShapeComponent
 import com.patrykandpatrick.vico.compose.common.shape.toVicoShape
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.common.Insets
 import com.patrykandpatrick.vico.core.common.LegendItem
@@ -33,11 +39,10 @@ import com.patrykandpatrick.vico.core.common.shape.CorneredShape
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 @Composable
 fun LineCartesianChar(
-    modifier : Modifier = Modifier.height(350.dp),
+    modifier : Modifier = Modifier,
     colors : List<Color>,
     labels : List<String>,
     lineModelProducer : CartesianChartModelProducer,
@@ -121,6 +126,63 @@ fun LineCartesianChar(
             )
         ),
         modelProducer = lineModelProducer,
-        modifier = modifier.padding(start = 16.dp, end = 24.dp)
+        modifier = modifier.padding(start = 16.dp, end = 24.dp).height(350.dp)
+    )
+}
+
+@Composable
+fun PieChartComposable(
+    modifier: Modifier = Modifier,
+    title : String = "",
+    labels : List<String>,
+    values : List<Float>,
+    colors : List<Color>
+) {
+    val textColor = android.graphics.Color.BLACK
+
+    AndroidView(
+        factory = { context ->
+            PieChart(context).apply {
+                description.isEnabled = false
+                isDrawHoleEnabled = true
+                holeRadius = 40f
+                transparentCircleRadius = 15f
+                setUsePercentValues(true)
+                isRotationEnabled = true
+
+                legend.apply {
+                    isEnabled = true
+                    verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+                    horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+                    orientation = Legend.LegendOrientation.HORIZONTAL
+                    setDrawInside(false)
+                }
+
+            }
+        },
+        update = { chart ->
+            val pieEntries = values.mapIndexed { index, value ->
+                PieEntry(value, labels[index])
+            }
+
+            val pieDataSet = PieDataSet(pieEntries, title).apply {
+                this.colors = colors.map { it.toArgb() }
+                sliceSpace = 3f
+
+                setDrawValues(true)
+                valueTextColor = textColor
+                valueTextSize = 14f
+            }
+
+            val pieData = PieData(pieDataSet)
+            chart.data = pieData
+
+            chart.setEntryLabelColor(textColor)
+            chart.setEntryLabelTextSize(14f)
+            chart.setDrawEntryLabels(true)
+
+            chart.invalidate()
+        },
+        modifier = modifier.size(300.dp).fillMaxWidth()
     )
 }

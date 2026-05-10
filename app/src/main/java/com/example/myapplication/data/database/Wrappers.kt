@@ -490,7 +490,7 @@ data class RecurringExpenseFullDetails(
     val payments: List<RecurringPaymentDetails>
 )
 
-data class MaterialPriceHistory(
+data class MaterialPriceHistoryResult(
     @ColumnInfo(name = "Marca") val brand : String,
     @ColumnInfo(name = "Modello") val model : String,
     @ColumnInfo(name = "Categoria") val category : String,
@@ -498,4 +498,10 @@ data class MaterialPriceHistory(
     @ColumnInfo(name = "DataAcquisto") val date : LocalDate,
     @ColumnInfo(name = "Venditore") val sellerName : String,
     @ColumnInfo(name = "Tipo") val type : String
+)
+
+data class JobStatisticsResult(
+    @ColumnInfo(name = "Elettrico") val electric : Int,
+    @ColumnInfo(name = "Condizionamento") val airConditioning : Int,
+    @ColumnInfo(name = "Allarme") val alarm : Int
 )

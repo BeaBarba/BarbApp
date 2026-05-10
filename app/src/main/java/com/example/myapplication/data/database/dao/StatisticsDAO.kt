@@ -2,7 +2,9 @@ package com.example.myapplication.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.example.myapplication.data.database.MaterialPriceHistory
+import com.example.myapplication.data.database.JobStatisticsResult
+import com.example.myapplication.data.database.MaterialPriceHistoryResult
+import java.time.LocalDate
 
 
 @Dao
@@ -33,5 +35,14 @@ interface StatisticsDAO {
         "WHERE M.Id = :materialId " +
         "ORDER BY DataAcquisto DESC;"
     )
-    suspend fun getMaterialPriceHistory(materialId : Int) : List<MaterialPriceHistory>
+    suspend fun getMaterialPriceHistory(materialId : Int) : List<MaterialPriceHistoryResult>
+
+    @Query(
+        "SELECT SUM(Elettrico) AS Elettrico, SUM(Allarme) AS Allarme, SUM(Condizionamento) AS Condizionamento " +
+        "FROM INTERVENTI " +
+        "WHERE Data >= :startDate " +
+            "AND Data <= :endDate"
+    )
+    suspend fun getJobStatistics(startDate : LocalDate, endDate: LocalDate) : JobStatisticsResult
 }
+

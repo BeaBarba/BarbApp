@@ -6,7 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.myapplication.R
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 /* Function that returns a specific color */
@@ -109,6 +111,14 @@ fun convertStringToDate(date : String) : LocalDate? {
     else LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 }
 
+fun convertDateToLong(date : LocalDate): Long {
+    return date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+}
+
+fun convertLongToDate(long :Long) : LocalDate{
+    return Instant.ofEpochMilli(long).atZone(ZoneId.systemDefault()).toLocalDate()
+}
+
 fun checkStringIsBigDecimal(value: String): Boolean {
     return value.toBigDecimalOrNull() != null || value.isBlank()
 }
@@ -123,3 +133,4 @@ fun checkStringIsFloat(value : String) : Boolean{
     val normalizeValue = value.replace(",",".").toFloatOrNull()
     return normalizeValue != null
 }
+

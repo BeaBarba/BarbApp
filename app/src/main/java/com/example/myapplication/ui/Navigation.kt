@@ -27,7 +27,7 @@ import com.example.myapplication.ui.screen.Deadline.add.DeadlineAddActivity
 import com.example.myapplication.ui.screen.Home.HomeActivity
 import com.example.myapplication.ui.screen.Job.add.JobAddActivity
 import com.example.myapplication.ui.screen.Job.add.JobMaterialsActivity
-import com.example.myapplication.ui.screen.Statistics.JobStatisticsActivity
+import com.example.myapplication.ui.screen.Statistics.jobStatistics.JobStatisticsActivity
 import com.example.myapplication.ui.screen.Material.add.MaterialAddActivity
 import com.example.myapplication.ui.screen.Payment.PaymentAddActivity
 import com.example.myapplication.debug.Screen
@@ -82,10 +82,10 @@ import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SingleP
 import com.example.myapplication.ui.screen.PurchaseInvoice.allSummary.AllPurchaseInvoicesSummaryViewModel
 import com.example.myapplication.ui.screen.PurchaseInvoice.singleSummary.SinglePurchaseInvoiceSummaryViewModel
 import com.example.myapplication.ui.screen.Select.SelectViewModel
+import com.example.myapplication.ui.screen.Statistics.jobStatistics.JobStatisticsViewModel
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsActivity
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsViewModel
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistory
-import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistoryState
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistoryViewModel
 import com.example.myapplication.ui.screen.WorkSite.add.WorksiteAddViewModel
 import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryViewModel
@@ -413,7 +413,9 @@ fun NavGraph(
             AveragePaymentsTimesStatisticsActivity(navController)
         }
         composable<NavigationRoute.JobStatistics>{
-            JobStatisticsActivity(navController)
+            val jobStatisticsVM = koinViewModel<JobStatisticsViewModel>()
+            val state by jobStatisticsVM.state.collectAsStateWithLifecycle()
+            JobStatisticsActivity(state, jobStatisticsVM.actions, navController)
         }
 
 
