@@ -39,6 +39,7 @@ import com.example.myapplication.ui.screen.Select.SelectViewModel
 import com.example.myapplication.ui.screen.Statistics.jobStatistics.JobStatisticsViewModel
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsViewModel
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistoryViewModel
+import com.example.myapplication.ui.screen.Statistics.revenueFromJobType.RevenueFromJobViewModel
 import com.example.myapplication.ui.screen.WorkSite.add.WorksiteAddViewModel
 import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryViewModel
 import com.example.myapplication.ui.screen.WorkSite.singleSummary.SingleWorksiteSummaryViewModel
@@ -161,4 +162,5 @@ val appModule = module{
     viewModel {AllMaterialsViewModel(get())}
     viewModel {MaterialPriceHistoryViewModel(get())}
     viewModel {JobStatisticsViewModel(get())}
+    viewModel {RevenueFromJobViewModel(get())}
 }

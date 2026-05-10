@@ -63,7 +63,7 @@ fun AllStatisticsActivity(
                 text = stringResource(R.string.intervention_revenue),
                 icon = painterResource(R.drawable.diagram_24dp),
                 iconDescription = stringResource(R.string.intervention_revenue),
-                onClick = {/*navController.navigate(NavigationRoute.)*/}
+                onClick = {navController.navigate(NavigationRoute.RevenueFromJob)}
             )
             Spacer(Modifier.size(15.dp))
             StatisticCard(

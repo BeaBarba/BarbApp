@@ -505,3 +505,9 @@ data class JobStatisticsResult(
     @ColumnInfo(name = "Condizionamento") val airConditioning : Int,
     @ColumnInfo(name = "Allarme") val alarm : Int
 )
+
+data class RevenueFromJobTypeResult(
+    @ColumnInfo(name = "Elettrico") val electric : Float,
+    @ColumnInfo(name = "Condizionamento") val airConditioning : Float,
+    @ColumnInfo(name = "Allarme") val alarm : Float
+)

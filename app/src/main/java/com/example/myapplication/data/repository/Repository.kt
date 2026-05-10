@@ -3,6 +3,7 @@ package com.example.myapplication.data.repository
 import com.example.myapplication.data.database.AppDatabase
 import com.example.myapplication.data.database.JobStatisticsResult
 import com.example.myapplication.data.database.MaterialPriceHistoryResult
+import com.example.myapplication.data.database.RevenueFromJobTypeResult
 import java.time.LocalDate
 
 class Repository (private val db : AppDatabase) {
@@ -21,4 +22,6 @@ class Repository (private val db : AppDatabase) {
 
     suspend fun jobStatistics(startDate : LocalDate, endDate : LocalDate) : JobStatisticsResult = db.statisticsDAO()
         .getJobStatistics(startDate, endDate)
+
+    suspend fun revenueFromJobType() : RevenueFromJobTypeResult = db.statisticsDAO().getRevenueFromJobType()
 }

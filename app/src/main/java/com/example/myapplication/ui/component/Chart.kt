@@ -3,6 +3,7 @@ package com.example.myapplication.ui.component
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberColumnCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
@@ -29,7 +31,9 @@ import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
+import com.patrykandpatrick.vico.core.cartesian.layer.ColumnCartesianLayer
 import com.patrykandpatrick.vico.core.common.Fill
+import com.patrykandpatrick.vico.core.common.component.LineComponent
 import com.patrykandpatrick.vico.compose.common.component.rememberShapeComponent
 import com.patrykandpatrick.vico.compose.common.shape.toVicoShape
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
@@ -185,4 +189,40 @@ fun PieChartComposable(
         },
         modifier = modifier.size(300.dp).fillMaxWidth()
     )
+}
+
+@Composable
+fun ColumnCartesianChart(
+    columnComponents: List<LineComponent>,
+    labels: List<String>,
+    modelProducer: CartesianChartModelProducer,
+    titleAxisX : String? = null,
+    titleAxisY : String? = null,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 24.dp)
+    ) {
+        CartesianChartHost(
+            chart = rememberCartesianChart(
+                rememberColumnCartesianLayer(
+                    columnProvider = ColumnCartesianLayer.ColumnProvider.series(columnComponents),
+                    mergeMode = { ColumnCartesianLayer.MergeMode.Stacked }
+                ),
+                startAxis = VerticalAxis.rememberStart(
+                    title = titleAxisY,
+                    titleComponent = rememberTextComponent(),
+                ),
+                bottomAxis = HorizontalAxis.rememberBottom(
+                    title = titleAxisX,
+                    titleComponent = rememberTextComponent(),
+                    valueFormatter = CartesianValueFormatter { _, x, _ ->
+                        labels.getOrNull(x.toInt()) ?: ""
+                    }
+                )
+            ),
+            modelProducer = modelProducer
+        )
+    }
 }

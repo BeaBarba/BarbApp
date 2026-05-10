@@ -87,6 +87,8 @@ import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMa
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsViewModel
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistory
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistoryViewModel
+import com.example.myapplication.ui.screen.Statistics.revenueFromJobType.RevenueFromJobActivity
+import com.example.myapplication.ui.screen.Statistics.revenueFromJobType.RevenueFromJobViewModel
 import com.example.myapplication.ui.screen.WorkSite.add.WorksiteAddViewModel
 import com.example.myapplication.ui.screen.WorkSite.allSummary.AllWorksitesSummaryViewModel
 import com.example.myapplication.ui.screen.WorkSite.singleSummary.SingleWorksiteSummaryViewModel
@@ -128,6 +130,8 @@ sealed interface NavigationRoute{
     data object JobStatistics : NavigationRoute
     @Serializable
     data object PaymentAdd : NavigationRoute
+    @Serializable
+    data object RevenueFromJob : NavigationRoute
     @Serializable
     data object TodayCalendar : NavigationRoute
     @Serializable
@@ -416,6 +420,11 @@ fun NavGraph(
             val jobStatisticsVM = koinViewModel<JobStatisticsViewModel>()
             val state by jobStatisticsVM.state.collectAsStateWithLifecycle()
             JobStatisticsActivity(state, jobStatisticsVM.actions, navController)
+        }
+        composable<NavigationRoute.RevenueFromJob>{
+            val revenueFromJobVM = koinViewModel<RevenueFromJobViewModel>()
+            val state by revenueFromJobVM.state.collectAsStateWithLifecycle()
+            RevenueFromJobActivity(state, navController)
         }
 
 
