@@ -86,8 +86,10 @@ import com.example.myapplication.ui.screen.Statistics.averagePaymentsTimes.Avera
 import com.example.myapplication.ui.screen.Statistics.jobStatistics.JobStatisticsViewModel
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsActivity
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.AllMaterialsViewModel
-import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistory
+import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistoryActivity
 import com.example.myapplication.ui.screen.Statistics.materialPriceHistory.MaterialPriceHistoryViewModel
+import com.example.myapplication.ui.screen.Statistics.numberOfJobs.NumberOfJobsActivity
+import com.example.myapplication.ui.screen.Statistics.numberOfJobs.NumberOfJobsViewModel
 import com.example.myapplication.ui.screen.Statistics.revenueFromJobType.RevenueFromJobActivity
 import com.example.myapplication.ui.screen.Statistics.revenueFromJobType.RevenueFromJobViewModel
 import com.example.myapplication.ui.screen.WorkSite.add.WorksiteAddViewModel
@@ -129,6 +131,8 @@ sealed interface NavigationRoute{
     data object JobMaterials : NavigationRoute
     @Serializable
     data object JobStatistics : NavigationRoute
+    @Serializable
+    data object NumberOfJobs : NavigationRoute
     @Serializable
     data object PaymentAdd : NavigationRoute
     @Serializable
@@ -412,7 +416,7 @@ fun NavGraph(
             val route = backStackEntry.toRoute<NavigationRoute.MaterialPriceHistory>()
             val materialPriceHistoryVM = koinViewModel<MaterialPriceHistoryViewModel>()
             val state by materialPriceHistoryVM.state.collectAsStateWithLifecycle()
-            MaterialPriceHistory(route.materialId, state, materialPriceHistoryVM.actions, navController)
+            MaterialPriceHistoryActivity(route.materialId, state, materialPriceHistoryVM.actions, navController)
         }
         composable<NavigationRoute.JobStatistics>{
             val jobStatisticsVM = koinViewModel<JobStatisticsViewModel>()
@@ -428,6 +432,11 @@ fun NavGraph(
             val averagePaymentsTimesStatisticsVM = koinViewModel<AveragePaymentsTimesStatisticsViewModel>()
             val state by averagePaymentsTimesStatisticsVM.state.collectAsStateWithLifecycle()
             AveragePaymentsTimesStatisticsActivity(state, navController)
+        }
+        composable<NavigationRoute.NumberOfJobs>{
+            val numberOfJobsVM = koinViewModel<NumberOfJobsViewModel>()
+            val state by numberOfJobsVM.state.collectAsStateWithLifecycle()
+            NumberOfJobsActivity(state, navController)
         }
 
 

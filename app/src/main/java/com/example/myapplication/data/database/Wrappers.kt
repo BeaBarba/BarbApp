@@ -517,3 +517,8 @@ data class AveragePaymentsTimesStatisticsResult(
     @ColumnInfo(name = "Nome") val name : String,
     @ColumnInfo(name = "TempoMedioRiscossione") val days : Float
 )
+
+data class NumberOfJobsByReference(
+    @ColumnInfo(name = "Riferimento") val reference : String,
+    @ColumnInfo(name = "NumeroInterventi") val numberJobs : Int
+)

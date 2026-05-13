@@ -11,6 +11,39 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+val colors = listOf(
+    Color(0xFFD32F2F),
+    Color(0xFF00BCD4),
+    Color(0xFFFFEB3B),
+    Color(0xFF673AB7),
+    Color(0xFF00E676),
+    Color(0xFFFF5722),
+    Color(0xFF2196F3),
+    Color(0xFFE91E63),
+    Color(0xFFCDDC39),
+    Color(0xFF3F51B5),
+    Color(0xFF1DE9B6),
+    Color(0xFFFBC02D),
+    Color(0xFF9C27B0),
+    Color(0xFF4CAF50),
+    Color(0xFFE040FB),
+    Color(0xFFFF9800),
+    Color(0xFF00B0FF),
+    Color(0xFF8BC34A),
+    Color(0xFF880E4F),
+    Color(0xFFFF4081),
+    Color(0xFF009688),
+    Color(0xFF1A237E),
+    Color(0xFFFFC107),
+    Color(0xFFBF360C),
+    Color(0xFF1B5E20),
+    Color(0xFF607D8B),
+    Color(0xFF004D40),
+    Color(0xFF311B92),
+    Color(0xFFFF6E40),
+    Color(0xFFD4E157)
+)
+
 /* Function that returns a specific color */
 @Composable
 fun checkColor(

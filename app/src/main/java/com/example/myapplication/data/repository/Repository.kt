@@ -4,6 +4,7 @@ import com.example.myapplication.data.database.AppDatabase
 import com.example.myapplication.data.database.AveragePaymentsTimesStatisticsResult
 import com.example.myapplication.data.database.JobStatisticsResult
 import com.example.myapplication.data.database.MaterialPriceHistoryResult
+import com.example.myapplication.data.database.NumberOfJobsByReference
 import com.example.myapplication.data.database.RevenueFromJobTypeResult
 import java.time.LocalDate
 
@@ -27,4 +28,6 @@ class Repository (private val db : AppDatabase) {
     suspend fun revenueFromJobType() : RevenueFromJobTypeResult = db.statisticsDAO().getRevenueFromJobType()
 
     suspend fun averagePaymentsTimesStatistics() : List<AveragePaymentsTimesStatisticsResult> = db.statisticsDAO().getAveragePaymentsTimesStatistics()
+
+    suspend fun numberOfJobsByReference() : List<NumberOfJobsByReference> = db.statisticsDAO().getNumberOfJobsByReference()
 }

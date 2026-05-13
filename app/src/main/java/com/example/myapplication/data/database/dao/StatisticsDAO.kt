@@ -5,6 +5,7 @@ import androidx.room.Query
 import com.example.myapplication.data.database.AveragePaymentsTimesStatisticsResult
 import com.example.myapplication.data.database.JobStatisticsResult
 import com.example.myapplication.data.database.MaterialPriceHistoryResult
+import com.example.myapplication.data.database.NumberOfJobsByReference
 import com.example.myapplication.data.database.RevenueFromJobTypeResult
 import java.time.LocalDate
 
@@ -112,4 +113,52 @@ interface StatisticsDAO {
         "ORDER BY 2 DESC "
     )
     suspend fun getAveragePaymentsTimesStatistics() : List<AveragePaymentsTimesStatisticsResult>
+
+    @Query(
+        "WITH " +
+            "Riferimento_Clienti AS ( " +
+                "SELECT C.CF AS CF, R.Cognome || ' ' || R.Nome AS Nome " +
+                "FROM RIFERIMENTI AS R " +
+                    "JOIN CLIENTI AS C ON (C.Riferimento = R.Id) " +
+            "), " +
+            "Presenta_Privati AS ( " +
+                "SELECT PR.Presentato AS CF, P.Cognome || ' ' || C.Nome AS Nome " +
+                "FROM PRESENTA AS PR " +
+                    "JOIN CLIENTI AS C ON (C.CF = PR.Presentatore) " +
+                    "JOIN PRIVATI AS P ON (C.CF = P.CF) " +
+            "), " +
+            "Presenta_Aziende AS ( " +
+                "SELECT PR.Presentato AS CF, A.RagioneSociale AS Nome " +
+                "FROM PRESENTA AS PR " +
+                    "JOIN CLIENTI AS C ON (C.CF = PR.Presentatore) " +
+                    "JOIN AZIENDE AS A ON (C.CF = A.CF) " +
+            "), " +
+            "Riferimenti_Lista AS ( " +
+                "SELECT CF, Nome FROM Riferimento_Clienti " +
+                "UNION " +
+                "SELECT CF, Nome FROM Presenta_Privati " +
+                "UNION " +
+                "SELECT CF, Nome FROM Presenta_Aziende " +
+            "), " +
+            "Lavori AS ( " +
+                "SELECT Id, Cliente, 'Intervento' AS Tipo " +
+                "FROM INTERVENTI " +
+                "WHERE Cantiere IS NULL " +
+                    "AND Cliente IS NOT NULL " +
+
+                "UNION ALL " +
+
+                "SELECT Id, Cliente, 'Cantiere' AS Tipo " +
+                "FROM CANTIERI " +
+                "WHERE CLIENTE IS NOT NULL " +
+            ") " +
+
+            "SELECT RIF.Nome AS Riferimento, COUNT(L.Id) AS NumeroInterventi " +
+            "FROM Lavori AS L " +
+                "JOIN CLIENTI AS C ON (L.Cliente = C.CF) " +
+                "JOIN Riferimenti_Lista AS RIF ON (C.CF = RIF.CF) " +
+            "GROUP BY RIF.Nome " +
+            "ORDER BY 2 DESC "
+    )
+    suspend fun getNumberOfJobsByReference() : List<NumberOfJobsByReference>
 }

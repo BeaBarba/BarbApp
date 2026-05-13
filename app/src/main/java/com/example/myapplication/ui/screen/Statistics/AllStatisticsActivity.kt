@@ -79,7 +79,7 @@ fun AllStatisticsActivity(
                 icon = painterResource(R.drawable.diagram_24dp),
                 iconDescription = stringResource(R.string.intervention_number),
                 description = stringResource(R.string.reference),
-                onClick = {/*navController.navigate(NavigationRoute.)*/}
+                onClick = {navController.navigate(NavigationRoute.NumberOfJobs)}
             )
             Spacer(Modifier.size(15.dp))
 
