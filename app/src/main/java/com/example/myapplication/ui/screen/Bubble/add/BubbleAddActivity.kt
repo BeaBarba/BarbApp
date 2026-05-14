@@ -16,6 +16,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -54,6 +57,8 @@ fun BubbleAddActivity(
 ){
     actions.populateView(bubbleId)
 
+    val snackBarHostState = remember { SnackbarHostState() }
+
     val previousBackStackEntry = navController.previousBackStackEntry
 
     val selectSearchText = stringResource(R.string.materials)
@@ -67,6 +72,16 @@ fun BubbleAddActivity(
         selectedItems?.let{ ids ->
             actions.setMaterials(ids)
             currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+        }
+    }
+
+    LaunchedEffect(state.errorMessage) {
+        state.errorMessage?.let { message ->
+            snackBarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short
+            )
+            actions.resetErrorMessage()
         }
     }
 
@@ -94,7 +109,8 @@ fun BubbleAddActivity(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
     ) { contentPadding ->
         LazyColumn(
             modifier = Modifier

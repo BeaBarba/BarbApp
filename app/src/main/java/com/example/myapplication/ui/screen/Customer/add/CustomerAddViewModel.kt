@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Build
+import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.R
 import com.example.myapplication.data.database.Address
 import com.example.myapplication.data.database.Company
 import com.example.myapplication.data.database.Customer
@@ -17,6 +19,7 @@ import com.example.myapplication.data.database.Reference
 import com.example.myapplication.data.database.Referral
 import com.example.myapplication.data.modules.CustomerType
 import com.example.myapplication.data.repository.Repository
+import com.example.myapplication.ui.component.MenuItem
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,7 +38,8 @@ data class CustomerAddState (
     val referralId : String? = null,
     val addressId : Int = 0,
 
-    val customerType: CustomerType = CustomerType.Privato,
+    val customerType: CustomerType = CustomerType.NONE,
+    val typeMenu : List<MenuItem> = emptyList(),
 
     val phoneNumber : String = "",
     val notePhoneNumber : String = "",
@@ -60,13 +64,12 @@ data class CustomerAddState (
     val companyUniqueCode : String = "",
     val companyVatNumber : String = "",
 
-    val started : Boolean = false
+    val started : Boolean = false,
+    val errorMessage : String? = null
 )
 
 interface CustomerAddActions {
     fun populateFromEdit(customerId : String)
-    fun setCustomerType(customerType : CustomerType)
-    fun save()
     fun setCustomerId(id : String)
     fun setCustomerName(name : String)
     fun setPrivateLastName(lastName : String)
@@ -89,6 +92,8 @@ interface CustomerAddActions {
     fun setReferenceLastName(referenceLastName: String)
     fun setReferencePhoneNumber(referencePhoneNumber: String)
     fun getLocationAddress(context: Context)
+    fun save(onSuccess : () -> Unit)
+    fun resetErrorMessage()
 }
 
 class CustomerAddViewModel(
@@ -98,6 +103,14 @@ class CustomerAddViewModel(
     private val _state = MutableStateFlow(CustomerAddState())
 
     val state = _state.asStateFlow()
+
+    init{
+        _state.update {
+            it.copy(
+                typeMenu = getMenuList()
+            )
+        }
+    }
 
     val actions = object : CustomerAddActions {
 
@@ -145,90 +158,6 @@ class CustomerAddViewModel(
                         }
                     }
                 }
-            }
-        }
-
-        override fun setCustomerType(customerType: CustomerType) {
-            _state.update { it.copy(customerType = customerType) }
-        }
-
-        override fun save() {
-            var reference: Reference? = null
-            var phoneNumber: PhoneNumber? = null
-            var privateCustomer: Private? = null
-            var companyCustomer: Company? = null
-            var referral: Referral? = null
-
-            val address = Address(
-                state.value.addressId,
-                state.value.address,
-                state.value.houseNumber,
-                state.value.municipality,
-                state.value.city,
-                state.value.province,
-                state.value.zip
-            )
-
-            if(state.value.referenceName != ""){
-                reference = Reference(
-                    state.value.referenceId,
-                    state.value.referenceName,
-                    state.value.referenceLastName,
-                    state.value.referencePhoneNumber
-                )
-            }
-
-            val customer = Customer(
-                state.value.cf,
-                state.value.name,
-                state.value.email,
-                state.value.averageCollectionTime.toFloat(),
-                state.value.collectionCount,
-                state.value.addressId
-            )
-
-            if(state.value.phoneNumber != ""){
-                phoneNumber = PhoneNumber(
-                    state.value.phoneNumber,
-                    state.value.notePhoneNumber,
-                    state.value.cf
-                )
-            }
-
-            if (state.value.customerType == CustomerType.Privato) {
-                privateCustomer = Private(
-                    state.value.cf,
-                    state.value.privateLastName,
-                    state.value.privateDateBirth ?: LocalDate.now(),
-                    state.value.privatePlaceBirth
-                )
-            }else{
-                companyCustomer = Company(
-                    state.value.companyUniqueCode,
-                    state.value.companyName,
-                    state.value.companyVatNumber,
-                    state.value.cf
-                )
-            }
-
-            if (state.value.referralId != null) {
-                referral = Referral(
-                        state.value.cf,
-                        state.value.referralId!!
-                )
-            }
-
-            viewModelScope.launch {
-                repository.customer.saveCustomerComplete(
-                    address = address,
-                    reference = reference,
-                    customer = customer,
-                    phoneNumber = phoneNumber,
-                    privateCustomer = privateCustomer,
-                    company = companyCustomer,
-                    referral = referral
-                )
-                _state.update{it.copy(started = false)}
             }
         }
 
@@ -362,5 +291,144 @@ class CustomerAddViewModel(
                 }
             }
         }
+
+        override fun save(onSuccess : () -> Unit) {
+
+            var reference: Reference? = null
+            var phoneNumber: PhoneNumber? = null
+            var privateCustomer: Private? = null
+            var companyCustomer: Company? = null
+            var referral: Referral? = null
+
+            if (checkRequirements()) return
+
+            val address = Address(
+                state.value.addressId,
+                state.value.address,
+                state.value.houseNumber,
+                state.value.municipality,
+                state.value.city,
+                state.value.province,
+                state.value.zip
+            )
+
+            if (state.value.referenceName.isNotBlank()) {
+                reference = Reference(
+                    state.value.referenceId,
+                    state.value.referenceName,
+                    state.value.referenceLastName,
+                    state.value.referencePhoneNumber
+                )
+            }
+
+            val customer = Customer(
+                state.value.cf,
+                state.value.name,
+                state.value.email,
+                state.value.averageCollectionTime.toFloat(),
+                state.value.collectionCount,
+                state.value.addressId
+            )
+
+            if (state.value.phoneNumber.isNotBlank()) {
+                phoneNumber = PhoneNumber(
+                    state.value.phoneNumber,
+                    state.value.notePhoneNumber,
+                    state.value.cf
+                )
+            }
+
+            if (state.value.customerType == CustomerType.Privato) {
+                privateCustomer = Private(
+                    state.value.cf,
+                    state.value.privateLastName,
+                    state.value.privateDateBirth ?: LocalDate.now(),
+                    state.value.privatePlaceBirth
+                )
+            } else {
+                companyCustomer = Company(
+                    state.value.companyUniqueCode,
+                    state.value.companyName,
+                    state.value.companyVatNumber,
+                    state.value.cf
+                )
+            }
+
+            if (!state.value.referralId.isNullOrBlank()) {
+                referral = Referral(
+                    presented = state.value.cf,
+                    referral = state.value.referralId!!
+                )
+            }
+
+            viewModelScope.launch {
+                repository.customer.saveCustomerComplete(
+                    address = address,
+                    reference = reference,
+                    customer = customer,
+                    phoneNumber = phoneNumber,
+                    privateCustomer = privateCustomer,
+                    company = companyCustomer,
+                    referral = referral
+                )
+
+                _state.update { it.copy(started = false) }
+                onSuccess()
+            }
+        }
+
+        override fun resetErrorMessage() {
+            _state.update { it.copy(errorMessage = null) }
+        }
+    }
+
+    private fun checkRequirements(): Boolean {
+        val currentState = state.value
+        val isPrivato = currentState.customerType == CustomerType.Privato
+        val isAzienda = currentState.customerType == CustomerType.Azienda
+
+        val error = when {
+            currentState.cf.isBlank() -> "Inserire il codice fiscale"
+            currentState.name.isBlank() -> "Inserire il nome"
+
+            isPrivato && currentState.privateLastName.isBlank() -> "Inserire il cognome"
+            isPrivato && currentState.privatePlaceBirth.isBlank() -> "Inserire il luogo di nascita"
+            isPrivato && (currentState.privateDateBirth == null || currentState.privateDateBirth.isAfter(LocalDate.now())) -> "Data di nascita non valida"
+
+            isAzienda && currentState.companyName.isBlank() -> "Inserire la ragione sociale"
+            isAzienda && currentState.companyUniqueCode.isBlank() -> "Inserire il codice univoco"
+            isAzienda && currentState.companyVatNumber.isBlank() -> "Inserire la partita IVA"
+
+            currentState.address.isBlank() -> "Inserire l'indirizzo"
+            currentState.houseNumber.isBlank() -> "Inserire il civico"
+            currentState.municipality.isBlank() -> "Inserire il comune"
+            currentState.city.isBlank() -> "Inserire la città"
+            currentState.province.isBlank() -> "Inserire la provincia"
+            currentState.zip.isBlank() -> "Inserire il CAP"
+
+            else -> null
+        }
+
+        if (error != null) {
+            _state.update { it.copy(errorMessage = error) }
+            return true
+        }
+
+        return false
+    }
+
+    private fun getMenuList() : List<MenuItem> {
+        return listOf(
+            MenuItem(
+                idValues = Pair(0,""),
+                name = CustomerType.Azienda.name,
+                onClick = { _state.update { it.copy(customerType = CustomerType.Azienda) } }
+            ),
+            MenuItem(
+                idValues = Pair(0,""),
+                name = CustomerType.Privato.name,
+                onClick = { _state.update { it.copy(customerType = CustomerType.Privato) } }
+            )
+        )
     }
 }

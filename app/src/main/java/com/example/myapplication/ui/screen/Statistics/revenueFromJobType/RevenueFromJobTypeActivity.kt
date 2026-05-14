@@ -64,7 +64,7 @@ fun RevenueFromJobActivity(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                id = stringResource(R.string.statistics),
+                id = stringResource(R.string.revenue_from_job),
                 navigationIcon = { BackButton{ navController.navigate(NavigationRoute.AllStatistics) } }
             )
         }

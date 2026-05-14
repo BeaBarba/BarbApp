@@ -35,7 +35,8 @@ data class AddressAddState(
     val map: String? = null,
     val subordinate: String? = null,
     val yearOfConstruction: Int? = null,
-    val usableArea: Int? = null
+    val usableArea: Int? = null,
+    val errorMessage : String? = null
 )
 
 interface AddressAddActions {
@@ -55,8 +56,9 @@ interface AddressAddActions {
     fun setYearOfConstruction(yearOfConstruction: String)
     fun setUsableArea(usableArea: String)
     fun getLocationAddress(context : Context)
-    fun saveAddress()
+    fun saveAddress(onSuccess : (Int) -> Unit)
     fun populateFromEdit(addressId: Int)
+    fun resetErrorMessage()
 }
 
 class AddressAddViewModel(
@@ -205,8 +207,11 @@ class AddressAddViewModel(
             }
         }
 
-        override fun saveAddress() {
+        override fun saveAddress(onSuccess : (Int) -> Unit) {
             val stateNow = _state.value
+
+            if(checkRequirements()) return
+
             val newAddress = Address(
                 id = stateNow.addressId ?: 0,
                 address = stateNow.address,
@@ -226,15 +231,15 @@ class AddressAddViewModel(
                 units = stateNow.units
             )
             viewModelScope.launch {
-                repository.address.upsertAddress(newAddress)
+                val addressId = repository.address.upsertAddress(newAddress)
+                onSuccess(addressId.toInt())
             }
-            println("Pressed Save Button, data to save: " + state.value)
         }
 
         override fun populateFromEdit(addressId: Int) {
             viewModelScope.launch {
-                repository.address.getAddressById(addressId).collect{ addressEntity ->
-                    if(addressEntity != null) {
+                repository.address.getAddressById(addressId).collect { addressEntity ->
+                    if (addressEntity != null) {
                         _state.update {
                             it.copy(
                                 addressId = addressEntity.id,
@@ -259,5 +264,30 @@ class AddressAddViewModel(
                 }
             }
         }
+
+        override fun resetErrorMessage() {
+            _state.update { it.copy(errorMessage = null) }
+        }
+    }
+
+    private fun checkRequirements(): Boolean {
+        val currentState = state.value
+
+        val errorMessage = when {
+            currentState.address.isBlank() -> "Inserire un indirizzo per continuare"
+            currentState.houseNumber.isBlank() -> "Inserire il civico per continuare"
+            currentState.municipality.isBlank() -> "Inserire il comune per continuare"
+            currentState.city.isBlank() -> "Inserire la città per continuare"
+            currentState.province.isBlank() -> "Inserire la provincia per continuare"
+            currentState.zip.isBlank() -> "Inserire il CAP per continuare"
+            else -> null
+        }
+
+        if(errorMessage != null){
+            _state.update { it.copy(errorMessage = errorMessage) }
+            return true
+        }
+
+        return false
     }
 }

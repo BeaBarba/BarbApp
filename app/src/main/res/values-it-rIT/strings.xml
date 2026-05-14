@@ -164,4 +164,5 @@
     <string name="map_app_error">Nessuna app per le mappe installata</string>
     <string name="revenue">Ricavo</string>
     <string name="job_type">Tipo intervento</string>
+    <string name="revenue_from_job">Ricavi per tipo interventi</string>
 </resources>

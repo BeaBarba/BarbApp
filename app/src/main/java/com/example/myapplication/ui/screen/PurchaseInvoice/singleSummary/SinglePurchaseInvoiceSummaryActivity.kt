@@ -111,24 +111,26 @@ fun SinglePurchaseInvoiceSummaryActivity(
                     weighDescription = 2.0f
                 )
             }
-            item{CustomDivider()}
-            item{TitleLabel(stringResource(R.string.bubbles))}
-            item{Spacer(Modifier.size(8.dp))}
             state.purchaseInvoiceFullDetails?.let {
-                itemsIndexed(state.purchaseInvoiceFullDetails.bubbles) { index, item ->
-                    GenericCard(
-                        leadingContent = {
-                            Icon(
-                                painter = painterResource(R.drawable.receipt_bolle),
-                                contentDescription = stringResource(R.string.bubble)
-                            )
-                        },
-                        text = item.number,
-                        textDescription = item.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        onClick = {navController.navigate(NavigationRoute.SingleBubbleSummary(item.id))}
-                    )
-                    if (index < 2) {
-                        Spacer(Modifier.size(8.dp))
+                if (state.purchaseInvoiceFullDetails.bubbles.isNotEmpty()) {
+                    item{CustomDivider()}
+                    item{TitleLabel(stringResource(R.string.bubbles))}
+                    item{Spacer(Modifier.size(8.dp))}
+                    itemsIndexed(state.purchaseInvoiceFullDetails.bubbles) { index, item ->
+                        GenericCard(
+                            leadingContent = {
+                                Icon(
+                                    painter = painterResource(R.drawable.receipt_bolle),
+                                    contentDescription = stringResource(R.string.bubble)
+                                )
+                            },
+                            text = item.number,
+                            textDescription = item.date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                            onClick = { navController.navigate(NavigationRoute.SingleBubbleSummary(item.id)) }
+                        )
+                        if (index < 2) {
+                            Spacer(Modifier.size(8.dp))
+                        }
                     }
                 }
             }

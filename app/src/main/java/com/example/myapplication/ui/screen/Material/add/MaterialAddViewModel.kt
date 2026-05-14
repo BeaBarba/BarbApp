@@ -98,10 +98,10 @@ class MaterialAddViewModel(
                                 it.copy(
                                     serialNumber = serialNumber,
                                     btu = airConditioner.btu.toString(),
-                                    yearOfInstallation = airConditioner.yearInstallation.toString(),
+                                    yearOfInstallation = airConditioner.yearInstallation?.toString() ?: "",
                                     machineType = airConditioner.machineType,
                                     splitNumber = airConditioner.splitNumber ?: SplitNumber.NONE,
-                                    gasQty = airConditioner.gasQty.toString(),
+                                    gasQty = if(airConditioner.gasQty != 0f) airConditioner.gasQty.toString() else "",
                                     gasType = airConditioner.gasType,
                                 )
                             }
@@ -220,7 +220,8 @@ class MaterialAddViewModel(
                         serialNumber = currentState.serialNumber,
                         material = currentState.materialId,
                         machineType = currentState.machineType,
-                        gasQty = BigDecimal(currentState.gasQty).toFloat(),
+                        gasQty = if(!checkStringIsBigDecimal(currentState.gasQty)) BigDecimal(currentState.gasQty)
+                            .toFloat() else 0f,
                         gasType = currentState.gasType,
                         btu = currentState.btu.toInt(),
                         splitNumber = if(currentState.splitNumber == SplitNumber.NONE) null else currentState.splitNumber,
@@ -271,64 +272,36 @@ class MaterialAddViewModel(
     private fun checkRequirements() : Boolean {
         val currentState = state.value
 
-        if (currentState.type == JobType.NONE) {
-            _state.update { it.copy(errorMessage = "Seleziona il tipo per continuare") }
-            return true
-        }
-
-        if (currentState.category.isBlank()) {
-            _state.update { it.copy(errorMessage = "Seleziona un tipo di categoria per continuare") }
-            return true
-        }
-
-        if (currentState.model.isBlank()) {
-            _state.update { it.copy(errorMessage = "Definisci il modello per continuare") }
-            return true
-        }
-
-        if (currentState.brand.isBlank()) {
-            _state.update { it.copy(errorMessage = "Definisci la marca per continuare") }
-            return true
-        }
-
-        if (!checkStringIsBigDecimal(currentState.availableQuantity)) {
-            _state.update { it.copy(errorMessage = "Errore nella quantità") }
-            return true
-        }
-
-        if (currentState.unitMeasurement.isBlank()) {
-            _state.update { it.copy(errorMessage = "Definisci l'unità di misura per continuare") }
-            return true
-        }
-
-        if (currentState.type == JobType.CDZ && currentState.serialNumber.isNotEmpty()){
-            if(!checkStringIsInt(currentState.btu)) {
-                _state.update { it.copy(errorMessage = "Errore nella compilazione dei btu") }
-                return true
-            }
-
-            if(!checkStringIsInt(currentState.yearOfInstallation)) {
-                _state.update { it.copy(errorMessage = "Errore nella compilazione anno di installazione") }
-                return true
-            }
-
-            if(currentState.machineType == MachineType.Esterna){
-                if(currentState.splitNumber == SplitNumber.NONE){
-                    _state.update { it.copy(errorMessage = "Selezionare il numero di split") }
-                    return true
-                }
-
-                if(currentState.gasType.isBlank()){
-                    _state.update { it.copy(errorMessage = "Definire il tipo  di gas") }
-                    return true
-                }
-
-                if(!checkStringIsBigDecimal(currentState.gasQty)){
-                    _state.update { it.copy(errorMessage = "Definire la quantità di gas") }
-                    return true
+        val errorMessage = when {
+            currentState.type == JobType.NONE -> "Seleziona il tipo per continuare"
+            currentState.category.isBlank() -> "Seleziona un tipo di categoria per continuare"
+            currentState.model.isBlank() -> "Definisci il modello per continuare"
+            currentState.brand.isBlank() -> "Definisci la marca per continuare"
+            currentState.availableQuantity.isBlank() || !checkStringIsBigDecimal(currentState.availableQuantity) -> "Errore nella quantità"
+            currentState.unitMeasurement.isBlank() -> "Definisci l'unità di misura per continuare"
+            currentState.type == JobType.CDZ && currentState.serialNumber.isNotEmpty() -> {
+                when {
+                    !checkStringIsInt(currentState.btu) -> "Errore nella compilazione dei btu"
+                    currentState.machineType == MachineType.NONE -> "Seleziona il tipo di macchina"
+                    currentState.machineType == MachineType.Esterna -> {
+                        when {
+                            currentState.splitNumber == SplitNumber.NONE -> "Selezionare il numero di split"
+                            !checkStringIsBigDecimal(currentState.gasQty) -> "Definire la quantità di gas"
+                            currentState.gasType.isBlank() -> "Definire il tipo  di gas"
+                            else -> null
+                        }
+                    }
+                    else -> null
                 }
             }
+            else -> null
         }
+
+        if(errorMessage != null) {
+            _state.update { it.copy(errorMessage = errorMessage) }
+            return true
+        }
+
         return false
     }
 }

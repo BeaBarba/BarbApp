@@ -24,7 +24,8 @@ data class WorksiteAddState(
     val startDate : LocalDate? = null,
     val endDate : LocalDate? = null,
 
-    val started : Boolean = false
+    val started : Boolean = false,
+    val errorMessage : String? = null
 )
 
 interface WorksiteAddActions{
@@ -40,8 +41,8 @@ interface WorksiteAddActions{
     fun setReferenceNumber(number : String)
     fun setStartDate(date : String)
     fun setEndDate(date : String)
-    fun checkRequirements() : Boolean
     fun save(onSuccess : (Int) -> Unit)
+    fun resetErrorMessage()
     fun delete(id : Int)
 }
 
@@ -146,12 +147,10 @@ class WorksiteAddViewModel(
             }
         }
 
-        override fun checkRequirements(): Boolean {
-            return state.value.addressId != null
-        }
-
         override fun save(onSuccess: (Int) -> Unit) {
             val s = state.value
+
+            if(checkRequirements()) return
 
             viewModelScope.launch {
                 s.addressId?.let {
@@ -181,6 +180,10 @@ class WorksiteAddViewModel(
             }
         }
 
+        override fun resetErrorMessage() {
+            _state.update { it.copy(errorMessage = null) }
+        }
+
         override fun delete(id: Int) {
             viewModelScope.launch {
                 val currentState = state.value
@@ -189,5 +192,23 @@ class WorksiteAddViewModel(
                 }
             }
         }
+    }
+
+    private fun checkRequirements(): Boolean {
+
+        val currentState = state.value
+
+        val errorMessage = when{
+            currentState.addressId == null -> "Selezionare o aggiungere un indirizzo"
+            currentState.startDate == null -> "Selezionare una data di inizio cantiere"
+            else -> null
+        }
+
+        if(errorMessage != null){
+            _state.update { it.copy(errorMessage = errorMessage) }
+            return true
+        }
+
+        return false
     }
 }

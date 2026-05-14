@@ -16,6 +16,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,7 +39,6 @@ import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.GenericCard
-import com.example.myapplication.ui.component.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
@@ -50,20 +52,7 @@ fun CustomerAddActivity(
     actions: CustomerAddActions,
     navController : NavHostController
 ){
-    LaunchedEffect(customerId){
-        customerId?.let(actions::populateFromEdit)
-    }
-
-    val displayLabel =
-        when (state.customerType){
-            CustomerType.Azienda -> stringResource(R.string.company)
-            CustomerType.Privato -> stringResource(R.string.private_customer)
-        }
-
-    val type = listOf(
-        MenuItem(Pair(0,""),stringResource(R.string.company)) { actions.setCustomerType(CustomerType.Azienda) },
-        MenuItem(Pair(0,""),stringResource(R.string.private_customer)){ actions.setCustomerType(CustomerType.Privato) }
-    )
+    val snackBarHostState = remember { SnackbarHostState() }
 
     val selectSearchText = stringResource(R.string.customer)
 
@@ -72,6 +61,20 @@ fun CustomerAddActivity(
     val selectedItems by currentBackStackEntry?.savedStateHandle
         ?.getStateFlow<List<String>?>("customers", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
+
+    LaunchedEffect(customerId){
+        customerId?.let(actions::populateFromEdit)
+    }
+
+    LaunchedEffect(state.errorMessage) {
+        state.errorMessage?.let { message ->
+            snackBarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short
+            )
+            actions.resetErrorMessage()
+        }
+    }
 
     LaunchedEffect(selectedItems) {
         selectedItems?.let{id ->
@@ -91,10 +94,11 @@ fun CustomerAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            actions.save()
-                            navController.navigate(NavigationRoute.SingleCustomerSummary(state.cf)){
-                                popUpTo(navController.currentBackStackEntry?.destination?.route ?: return@navigate) {
-                                    inclusive = true
+                            actions.save {
+                                navController.navigate(NavigationRoute.SingleCustomerSummary(state.cf)){
+                                    popUpTo(navController.currentBackStackEntry?.destination?.route ?: return@navigate) {
+                                        inclusive = true
+                                    }
                                 }
                             }
                         },
@@ -104,7 +108,8 @@ fun CustomerAddActivity(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
     ) { contentPadding ->
 
         val  ctx = LocalContext.current
@@ -119,7 +124,18 @@ fun CustomerAddActivity(
                 )
                 .fillMaxSize()
         ) {
-            item{SplitButtonMenu(content = displayLabel, type, heightMenu = (2 * 55).dp)}
+            item{
+                SplitButtonMenu(
+                    content =
+                        if(state.customerType == CustomerType.NONE){
+                            stringResource(R.string.type)
+                        } else{
+                            state.customerType.name
+                        },
+                    items = state.typeMenu,
+                    heightMenu = (2 * 55).dp
+                )
+            }
             item{TitleLabel(stringResource(R.string.personal_details))}
             item{
                 CustomOutlineTextField(
@@ -220,7 +236,6 @@ fun CustomerAddActivity(
                     leadingIcon = {
                         IconButton(
                             onClick = {
-                                println("DEBUG: CustomerAddActivity - ho  premuto l'icona")
                                 actions.getLocationAddress(ctx)
                             }
                         ) {

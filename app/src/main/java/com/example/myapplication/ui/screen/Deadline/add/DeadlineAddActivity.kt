@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
@@ -25,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,7 +36,6 @@ import com.example.myapplication.R
 import com.example.myapplication.data.modules.DeadlineType
 import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.data.modules.SelectKey
-import com.example.myapplication.debug.scadenze
 import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
@@ -96,7 +97,7 @@ fun DeadlineAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            actions.saveNewExpense() { id, type ->
+                            actions.saveNewExpense { id, type ->
                                 navController.navigate(
                                     NavigationRoute.SingleDeadlineSummary(id, type.name)
                                 ) {
@@ -204,7 +205,8 @@ fun DeadlineAddActivity(
                 CustomOutlineTextField(
                     label = stringResource(R.string.amount),
                     value = if(state.amount != null) "${state.amount}" else "",
-                    onValueChange = actions::setAmount
+                    onValueChange = actions::setAmount,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
             }
             item{Spacer(Modifier.size(8.dp))}

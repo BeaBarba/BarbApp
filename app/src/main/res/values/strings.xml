@@ -163,4 +163,5 @@
     <string name="map_app_error">No map app installed</string>
     <string name="revenue">Revenue</string>
     <string name="job_type">Type of job</string>
+    <string name="revenue_from_job">Revenue from Job</string>
 </resources>

@@ -16,6 +16,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,9 +49,12 @@ fun InvoiceAddActivity(
     actions: InvoiceAddActions,
     navController: NavHostController
 ) {
+
     val selectSearchCustomer = stringResource(R.string.customer)
     val selectSearchJobs = stringResource(R.string.intervention)
     val selectSearchWorksite = stringResource(R.string.construction_site)
+
+    val snackBarHostState = remember { SnackbarHostState() }
 
     val previousBackStackEntry = navController.previousBackStackEntry
     val currentBackStackEntry = navController.currentBackStackEntry
@@ -64,6 +70,10 @@ fun InvoiceAddActivity(
     val selectedWorksite by currentBackStackEntry?.savedStateHandle
         ?.getStateFlow<List<String>?>("worksites", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
+
+    LaunchedEffect(invoiceId) {
+        actions.populateView(invoiceId)
+    }
 
     LaunchedEffect(selectedCustomer) {
         selectedCustomer?.let{ ids ->
@@ -92,8 +102,14 @@ fun InvoiceAddActivity(
         currentBackStackEntry?.savedStateHandle?.remove<List<String>>("worksites")
     }
 
-    LaunchedEffect(invoiceId) {
-        actions.populateView(invoiceId)
+    LaunchedEffect(state.errorMessage) {
+        state.errorMessage?.let { message ->
+            snackBarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short
+            )
+            actions.resetErrorMessage()
+        }
     }
 
     Scaffold(
@@ -119,7 +135,8 @@ fun InvoiceAddActivity(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
     ) { contentPadding ->
 
         LazyColumn(

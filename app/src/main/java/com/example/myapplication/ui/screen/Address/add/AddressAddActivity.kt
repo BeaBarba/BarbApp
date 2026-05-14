@@ -14,8 +14,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -35,8 +39,20 @@ fun AddressAddActivity(
     actions: AddressAddActions,
     navController : NavHostController
 ){
+    val snackBarHostState = remember { SnackbarHostState() }
+
     LaunchedEffect(addressId){
         addressId?.let(actions::populateFromEdit)
+    }
+
+    LaunchedEffect(state.errorMessage) {
+        state.errorMessage?.let { message ->
+            snackBarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short
+            )
+            actions.resetErrorMessage()
+        }
     }
 
     Scaffold(
@@ -47,8 +63,9 @@ fun AddressAddActivity(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            actions.saveAddress()
-                            navController.navigateUp()
+                            actions.saveAddress{
+                                navController.navigateUp()
+                            }
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
@@ -61,9 +78,12 @@ fun AddressAddActivity(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
     ) { contentPadding ->
+
         val  ctx = LocalContext.current
+
         LazyColumn(
             modifier = Modifier
                 .padding(

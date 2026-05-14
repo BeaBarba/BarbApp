@@ -208,7 +208,8 @@ fun MaterialAddActivity(
                     CustomOutlineTextField(
                         label = stringResource(R.string.btu),
                         value = state.btu,
-                        onValueChange = actions::setBtu
+                        onValueChange = actions::setBtu,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                 }
                 item{Spacer(Modifier.size(8.dp))}

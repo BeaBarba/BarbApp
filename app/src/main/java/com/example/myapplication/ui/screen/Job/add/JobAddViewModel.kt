@@ -19,6 +19,8 @@ import java.util.Locale.getDefault
 
 data class JobAddState(
     val started : Boolean = false,
+    val errorMessage : String? = null,
+
     val jobId: Int? = null,
     val date: LocalDate? = null,
     val startTime: LocalTime? = null,
@@ -30,6 +32,7 @@ data class JobAddState(
     val addressId: Int? = null,
     val workSite: Int? = null,
     val price: BigDecimal? = null,
+
     val materialsList : List<Pair<MaterialWithAirConditional,Float>> = emptyList(),
     val materialsView : List<Pair<MaterialWithAirConditional,Float>> = emptyList(),
     val materialsQuantity: List<Pair<Int, Float>> = emptyList(),
@@ -55,6 +58,7 @@ interface JobAddActions {
     fun searchMaterial(searchText: String)
     fun incQuantity(id : Int)
     fun decQuantity(id : Int)
+    fun resetErrorMessage()
     fun deleteJob()
 }
 
@@ -165,9 +169,12 @@ class JobAddViewModel(
         }
 
         override fun saveJob(onSuccess: (Int) -> Unit) {
+
+            if(checkRequirements()) return
+
             viewModelScope.launch {
                 val state = _state.value
-                if (state.addressId != null && state.customerId != null) {
+                if (state.addressId != null) {
                     val job = Job(
                         id = state.jobId ?: 0,
                         date = state.date ?: LocalDate.now(),
@@ -287,6 +294,10 @@ class JobAddViewModel(
             syncEverything(materials)
         }
 
+        override fun resetErrorMessage() {
+            _state.update { it.copy(errorMessage = null) }
+        }
+
         override fun deleteJob() {
             state.value.jobId?.let {
                 viewModelScope.launch {
@@ -326,5 +337,25 @@ class JobAddViewModel(
                     .map { it.first.material.id to it.second }
             )
         }
+    }
+
+    private fun checkRequirements() : Boolean{
+        val currentState = state.value
+
+        val errorMessage = when{
+            currentState.addressId == null -> "Seleziona un indirizzo o aggiungine uno per continuare"
+            currentState.type == JobType.NONE -> "Seleziona il tipo di intervento per continuare"
+            currentState.date == null -> "Seleziona la data per continuare"
+            currentState.startTime == null -> "Seleziona l'ora di inizio per continuare"
+            currentState.peopleNumber == null || currentState.peopleNumber < 1 -> "Inserire il numero di persone per continuare"
+            else -> null
+        }
+
+        if(errorMessage != null){
+            _state.update { it.copy(errorMessage = errorMessage) }
+            return true
+        }
+
+        return false
     }
 }

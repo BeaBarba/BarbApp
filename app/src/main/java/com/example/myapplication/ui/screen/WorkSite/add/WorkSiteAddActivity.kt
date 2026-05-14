@@ -19,6 +19,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -53,6 +56,8 @@ fun WorksiteAddActivity(
     val selectSearchTextCustomers = stringResource(R.string.customer)
     val selectSearchTextAddresses = stringResource(R.string.address)
     val selectSearchTextReferences = stringResource(R.string.reference)
+
+    val snackBarHostState = remember { SnackbarHostState() }
 
     val previousBackStackEntry = navController.previousBackStackEntry
     val currentBackStackEntry = navController.currentBackStackEntry
@@ -97,6 +102,16 @@ fun WorksiteAddActivity(
         actions.populateView(worksiteId)
     }
 
+    LaunchedEffect(state.errorMessage) {
+        state.errorMessage?.let { message ->
+            snackBarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short
+            )
+            actions.resetErrorMessage()
+        }
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -114,14 +129,14 @@ fun WorksiteAddActivity(
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        enabled = actions.checkRequirements()
+                        )
                     ) {
                         Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
                 }
             )
         },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
     ){ contentPadding ->
         var showItems by remember { mutableStateOf(false)}
         LazyColumn (
@@ -157,7 +172,7 @@ fun WorksiteAddActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
-                    text = "${stringResource(R.string.add)} ${stringResource(R.string.address)}".lowercase(),
+                    text = "${stringResource(R.string.add)} ${stringResource(R.string.address).lowercase()}",
                     trailingContent = {
                         Icon(
                             imageVector = Icons.Filled.Add,

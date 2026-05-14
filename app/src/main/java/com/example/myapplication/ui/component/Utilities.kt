@@ -153,7 +153,7 @@ fun convertLongToDate(long :Long) : LocalDate{
 }
 
 fun checkStringIsBigDecimal(value: String): Boolean {
-    return value.toBigDecimalOrNull() != null || value.isBlank()
+    return value.isNotBlank() || value.toBigDecimalOrNull() != null
 }
 
 fun checkStringIsInt(value: String): Boolean {

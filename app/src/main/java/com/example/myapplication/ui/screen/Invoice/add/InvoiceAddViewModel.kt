@@ -25,7 +25,8 @@ data class InvoiceAddState(
     val worksite : Int? = null,
 
     val revenue: RevenueFullDetails? = null,
-    val started : Boolean = false
+    val started : Boolean = false,
+    val errorMessage : String? = null
 )
 
 interface InvoiceAddActions{
@@ -37,6 +38,7 @@ interface InvoiceAddActions{
     fun setJob(id : Int)
     fun setWorksite(id : Int)
     fun saveInvoice(onSuccess : (Int) -> Unit)
+    fun resetErrorMessage()
     fun deleteInvoice(id : Int, onSuccess: () -> Unit)
 }
 
@@ -102,7 +104,11 @@ class InvoiceAddViewModel(
         }
 
         override fun saveInvoice(onSuccess: (Int) -> Unit) {
+
             val currentState = state.value
+
+            if(checkRequirement()) return
+
             viewModelScope.launch {
                 val amount =
                     if(currentState.amount.isNotBlank() && checkStringIsBigDecimal(currentState.amount)){
@@ -130,6 +136,10 @@ class InvoiceAddViewModel(
             }
         }
 
+        override fun resetErrorMessage() {
+            _state.update{ it.copy(errorMessage = null) }
+        }
+
         override fun deleteInvoice(id: Int, onSuccess: () -> Unit) {
             val currentState = state.value
 
@@ -155,5 +165,25 @@ class InvoiceAddViewModel(
                 onSuccess()
             }
         }
+    }
+
+    private fun checkRequirement() : Boolean{
+        val currentState = state.value
+
+        val errorMessage = when{
+            currentState.customerCf == null -> "Selezionare il cliente per continuare"
+            currentState.invoiceNumber.isBlank() -> "Inserire il numero di fattura per continuare"
+            currentState.issueDate.isBlank() -> "Selezionare la data per continuare"
+            currentState.amount.isBlank() -> "Inserire l'importo per continuare"
+            currentState.worksite == null && currentState.job == null -> "Seleziona almeno un intervento o un cantiere per continuare"
+            else -> null
+        }
+
+        if(errorMessage != null){
+            _state.update { it.copy(errorMessage = errorMessage) }
+            return true
+        }
+
+        return false
     }
 }

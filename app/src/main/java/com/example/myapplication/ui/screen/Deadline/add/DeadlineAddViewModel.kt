@@ -28,7 +28,7 @@ data class DeadlineAddState(
     val name : String = "",
     val issueDate : LocalDate? = null,
     val deadlineDate : LocalDate? = null,
-    val amount : BigDecimal? = null,
+    val amount : String = "",
     val purchaseInvoiceSelected : List<Int> = emptyList(),
     val paymentsIds : List<Int> = emptyList(),
 
@@ -54,7 +54,6 @@ interface DeadlineAddActions{
     fun setPurchaseInvoices(ids : List<String>)
     fun getPurchaseInvoiceSelected() : List<String>
     fun saveNewExpense(onSuccess : (Int, DeadlineType) -> Unit)
-    fun checkRequirements() : Boolean
     fun resetErrorMessage()
     fun deleteExpense()
 }
@@ -104,7 +103,7 @@ class DeadlineAddViewModel(
                                 name = expense.singleExpense.name,
                                 issueDate = expense.payment?.issueDate,
                                 deadlineDate = expense.singleExpense.deadlineDate,
-                                amount = expense.singleExpense.amount.toBigDecimal(),
+                                amount = expense.singleExpense.amount.toString(),
                                 purchaseInvoiceSelected = expense.purchaseInvoice?.let{ listOf(it.purchaseInvoice.id)
                                 } ?: emptyList(),
                                 paymentsIds = expense.payment?. let{ listOf(it.id)} ?: emptyList()
@@ -121,7 +120,7 @@ class DeadlineAddViewModel(
                                 name = expense.recurringExpense.name,
                                 issueDate = expense.payments.minOfOrNull{it.payment.issueDate},
                                 deadlineDate = expense.recurringExpense.endDate,
-                                amount = expense.recurringExpense.amount.toBigDecimal(),
+                                amount = expense.recurringExpense.amount.toString(),
                                 purchaseInvoiceSelected = expense.purchaseInvoice?.let { listOf(it.purchaseInvoice.id) } ?: emptyList(),
                                 paymentsIds = payments
                             )
@@ -189,10 +188,7 @@ class DeadlineAddViewModel(
         }
 
         override fun setAmount(amount: String) {
-            if(checkStringIsBigDecimal(amount)){
-                val amountToSet = if(amount.isBlank()) null else amount.toBigDecimal()
-                _state.update{it.copy(amount = amountToSet)}
-            }
+            _state.update{it.copy(amount = amount)}
         }
 
         override fun setPurchaseInvoices(ids: List<String>) {
@@ -217,6 +213,14 @@ class DeadlineAddViewModel(
 
             if(checkRequirements()) return
 
+            val amount =
+                if(currentState.amount.isNotBlank() && checkStringIsBigDecimal(currentState.amount)){
+                    BigDecimal(currentState.amount).toFloat()
+                }else{
+                    _state.update { it.copy(errorMessage = "Errore nell'inserimento dell'importo") }
+                    return
+                }
+
             viewModelScope.launch {
                 val category = CategoryPurchaseInvoice(
                     id = currentState.category?.id ?: 0,
@@ -233,7 +237,7 @@ class DeadlineAddViewModel(
                         val newExpense = SingleExpense(
                                 id = currentState.expenseId ?: 0,
                                 name = currentState.name,
-                                amount = currentState.amount?.toFloat() ?: 0.0f,
+                                amount = amount,
                                 deadlineDate = currentState.deadlineDate ?: LocalDate.now(),
                                 category = currentState.category!!.id,
                                 purchaseInvoice = currentState.purchaseInvoiceSelected.firstOrNull(),
@@ -254,7 +258,7 @@ class DeadlineAddViewModel(
                                 id = currentState.expenseId ?: 0,
                                 name = currentState.name,
                                 frequency = currentState.frequency,
-                                amount = currentState.amount?.toFloat() ?: 0.0f,
+                                amount = amount,
                                 category = currentState.category!!.id,
                                 endDate = currentState.deadlineDate,
                                 purchaseInvoice = currentState.purchaseInvoiceSelected.firstOrNull()
@@ -273,37 +277,6 @@ class DeadlineAddViewModel(
 
         override fun resetErrorMessage() {
             _state.update { it.copy(errorMessage = null) }
-        }
-
-        override fun checkRequirements() : Boolean {
-            val currentState = state.value
-
-            if (currentState.expenseType == DeadlineType.Tipo) {
-                _state.update { it.copy(errorMessage = "Seleziona un tipo di spesa per continuare") }
-                return true
-            }
-
-            if (currentState.category == null) {
-                _state.update { it.copy(errorMessage = "Seleziona un tipo di categoria per continuare") }
-                return true
-            }
-
-            if (currentState.issueDate == null) {
-                _state.update { it.copy(errorMessage = "Seleziona la data di emissione per continuare") }
-                return true
-            }
-
-            if (currentState.frequency == FrequencyType.Nessuna && currentState.expenseType == DeadlineType.Periodica) {
-                _state.update { it.copy(errorMessage = "Seleziona la frequenza dei pagamenti per continuare") }
-                return true
-            }
-
-            if (currentState.amount == null || currentState.amount < BigDecimal.ZERO) {
-                _state.update { it.copy(errorMessage = "Definisci l'importo per continuare") }
-                return true
-            }
-
-            return false
         }
 
         override fun deleteExpense() {
@@ -325,7 +298,6 @@ class DeadlineAddViewModel(
                 }
             }
         }
-
     }
 
     private fun getDeadlineTypeMenu() : List<MenuItem>{
@@ -347,7 +319,25 @@ class DeadlineAddViewModel(
             )
         }
     }
+
+    private fun checkRequirements() : Boolean {
+        val currentState = state.value
+
+        val errorMessage = when {
+            currentState.expenseType == DeadlineType.Tipo -> "Seleziona un tipo di spesa per continuare"
+            currentState.category == null -> "Seleziona un tipo di categoria per continuare"
+            currentState.name.isBlank() -> "Inserisci il nome della spesa"
+            currentState.issueDate == null -> "Seleziona la data di emissione per continuare"
+            currentState.amount.isBlank() || !checkStringIsBigDecimal(currentState.amount) -> "Definisci l'importo per continuare"
+            currentState.expenseType == DeadlineType.Singola && currentState.deadlineDate == null -> "Seleziona la data  di scadenza"
+            currentState.expenseType == DeadlineType.Periodica && currentState.frequency == FrequencyType.Nessuna -> "Seleziona la frequenza dei pagamenti per continuare"
+            else -> null
+        }
+
+        if(errorMessage != null) {
+            _state.update { it.copy(errorMessage = errorMessage) }
+            return true
+        }
+        return false
+    }
 }
-
-
-

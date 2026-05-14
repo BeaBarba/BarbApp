@@ -8,7 +8,7 @@ import com.example.myapplication.data.database.PurchaseInvoice
 import com.example.myapplication.data.database.Seller
 import com.example.myapplication.data.repository.Repository
 import com.example.myapplication.ui.component.MenuItem
-import com.example.myapplication.ui.component.checkStringIsBigDecimal
+import com.example.myapplication.ui.component.checkStringIsFloat
 import com.example.myapplication.ui.component.convertStringToDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,9 +24,9 @@ import java.time.LocalDate
 
 data class MaterialPurchase(
     val material: Material,
-    val quantity : BigDecimal,
-    val unitPrice: BigDecimal,
-    val vatNumber : Int,
+    val quantity : String = "",
+    val unitPrice: String = "",
+    val vatNumber : String = "",
     val purchase: Purchase? = null
 )
 
@@ -41,12 +41,12 @@ data class PurchaseInvoiceAddState(
     val sellersMenu : List<MenuItem> = emptyList(),
     val newSeller : String = "",
     val materials: List<MaterialPurchase> = emptyList(),
-    val started : Boolean = false
+    val started : Boolean = false,
+    val errorMessage : String? = null
 )
 
 interface PurchaseInvoiceAddActions{
     fun populateView(id : Int?)
-    fun checkRequirements() : Boolean
     fun setNewSeller(seller : String)
     fun setNumber(number : String)
     fun setIssueDate(date : String)
@@ -58,6 +58,7 @@ interface PurchaseInvoiceAddActions{
     fun setMaterialPrice(materialId : Int, price : String)
     fun setMaterialVat(materialId : Int, vat : String)
     fun save(onSuccess : (Int) -> Unit)
+    fun resetErrorMessage()
     fun delete(id : Int)
 }
 
@@ -85,7 +86,6 @@ class PurchaseInvoiceAddViewModel(
         sellers + newSeller
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-
     init{
         loadSellers()
     }
@@ -108,9 +108,9 @@ class PurchaseInvoiceAddViewModel(
                                     materials = purchaseInvoice.materials.map { purchaseMaterial ->
                                         MaterialPurchase(
                                             material = purchaseMaterial.material,
-                                            quantity = purchaseMaterial.purchase.quantity.toBigDecimal(),
-                                            unitPrice = purchaseMaterial.purchase.unitPrice.toBigDecimal(),
-                                            vatNumber = purchaseMaterial.purchase.vatNumber,
+                                            quantity = purchaseMaterial.purchase.quantity.toBigDecimal().toString(),
+                                            unitPrice = purchaseMaterial.purchase.unitPrice.toBigDecimal().toString(),
+                                            vatNumber = purchaseMaterial.purchase.vatNumber.toString(),
                                             purchase = purchaseMaterial.purchase
                                         )
                                     },
@@ -121,18 +121,6 @@ class PurchaseInvoiceAddViewModel(
                     }
                 }
             }
-        }
-
-        override fun checkRequirements(): Boolean {
-            val currentState = state.value
-
-            if(currentState.issueDate == null) return false
-
-            if(currentState.seller.first == -1) return false
-
-            if(currentState.number.isBlank()) return false
-
-            return true
         }
 
         override fun setNewSeller(seller: String) {
@@ -183,9 +171,9 @@ class PurchaseInvoiceAddViewModel(
                             repository.inventory.getMaterialById(id)?.let { material ->
                                 MaterialPurchase(
                                     material = material,
-                                    quantity = BigDecimal.ZERO,
-                                    unitPrice = BigDecimal.ZERO,
-                                    vatNumber = 0
+                                    quantity = "",
+                                    unitPrice = "",
+                                    vatNumber = ""
                                 )
                             }
                         }
@@ -202,66 +190,60 @@ class PurchaseInvoiceAddViewModel(
         }
 
         override fun setMaterialQuantity(materialId: Int, quantity : String) {
-            if (checkStringIsBigDecimal(quantity)) {
-                val quantityToSet = if (quantity == "") BigDecimal.ZERO else quantity.toBigDecimal()
-                val newMaterials = state.value.materials.map {
-                    MaterialPurchase(
-                        material = it.material,
-                        quantity =
-                        if(materialId == it.material.id) {
-                            quantityToSet
-                        }else{
-                            it.quantity
-                        },
-                        unitPrice = it.unitPrice,
-                        vatNumber = it.vatNumber
-                    )
-                }
-                _state.update { it.copy(materials = newMaterials) }
+            val newMaterials = state.value.materials.map {
+                MaterialPurchase(
+                    material = it.material,
+                    quantity =
+                    if(materialId == it.material.id) {
+                        quantity
+                    }else{
+                        it.quantity
+                    },
+                    unitPrice = it.unitPrice,
+                    vatNumber = it.vatNumber
+                )
             }
+            _state.update { it.copy(materials = newMaterials) }
         }
 
         override fun setMaterialPrice(materialId: Int, price: String) {
-            if (checkStringIsBigDecimal(price)) {
-                val priceToSet = if (price == "") BigDecimal.ZERO else price.toBigDecimal()
-                val newMaterials = state.value.materials.map {
-                    MaterialPurchase(
-                        material = it.material,
-                        quantity = it.quantity,
-                        unitPrice =
-                            if(materialId == it.material.id) {
-                                priceToSet
-                            }else{
-                                it.unitPrice
-                            },
-                        vatNumber = it.vatNumber
-                    )
-                }
-                _state.update { it.copy(materials = newMaterials) }
+            val newMaterials = state.value.materials.map {
+                MaterialPurchase(
+                    material = it.material,
+                    quantity = it.quantity,
+                    unitPrice =
+                        if(materialId == it.material.id) {
+                            price
+                        }else{
+                            it.unitPrice
+                        },
+                    vatNumber = it.vatNumber
+                )
             }
+            _state.update { it.copy(materials = newMaterials) }
         }
 
         override fun setMaterialVat(materialId: Int, vat: String) {
-            if (checkStringIsBigDecimal(vat)) {
-                val vatToSet = if (vat == "") 0 else vat.toInt()
-                val newMaterials = state.value.materials.map {
-                    MaterialPurchase(
-                        material = it.material,
-                        quantity = it.quantity,
-                        unitPrice = it.unitPrice,
-                        vatNumber =
-                            if(materialId == it.material.id) {
-                                vatToSet
-                            }else{
-                                it.vatNumber
-                            }
-                    )
-                }
-                _state.update { it.copy(materials = newMaterials) }
+            val newMaterials = state.value.materials.map {
+                MaterialPurchase(
+                    material = it.material,
+                    quantity = it.quantity,
+                    unitPrice = it.unitPrice,
+                    vatNumber =
+                        if(materialId == it.material.id) {
+                            vat
+                        }else{
+                            it.vatNumber
+                        }
+                )
             }
+            _state.update { it.copy(materials = newMaterials) }
         }
 
         override fun save(onSuccess: (Int) -> Unit) {
+
+            if(checkRequirements()) return
+
             viewModelScope.launch{
                 val currentState = state.value
 
@@ -292,9 +274,12 @@ class PurchaseInvoiceAddViewModel(
                             Purchase(
                                 purchaseInvoice = currentState.purchaseInvoiceId,
                                 material = material.material.id,
-                                quantity = material.quantity.toFloat(),
-                                unitPrice = material.unitPrice.toFloat(),
-                                vatNumber = material.vatNumber
+                                quantity = if(checkStringIsFloat(material.quantity)) material.quantity.toFloat() else
+                                    0f,
+                                unitPrice = if(checkStringIsFloat(material.unitPrice)) material.unitPrice.toFloat() else
+                                    0f,
+                                vatNumber = if(checkStringIsFloat(material.vatNumber)) material.vatNumber.toInt() else
+                                    0
                             )
                         }
                     }else{
@@ -312,6 +297,10 @@ class PurchaseInvoiceAddViewModel(
 
                 onSuccess(purchaseInvoiceFinalId)
             }
+        }
+
+        override fun resetErrorMessage() {
+            _state.update { it.copy(errorMessage = null) }
         }
 
         override fun delete(id: Int) {
@@ -338,5 +327,45 @@ class PurchaseInvoiceAddViewModel(
 
     private fun setSeller(id : Int, name : String){
         _state.update { it.copy(seller = Pair(id, name))  }
+    }
+
+    private fun checkRequirements(): Boolean {
+
+        val currentState = state.value
+
+        val  errorMessage = when{
+            currentState.seller.first == -1 -> "Seleziona il venditore per continuare"
+            currentState.number.isBlank() -> "Inserire numero di fattura d'acquisto per continuare"
+            currentState.issueDate == null -> "Seleziona la data di emissione per continuare"
+            currentState.seller.first == 0 && currentState.newSeller.isBlank() -> "Inserire il nome del venditore"
+            currentState.materials.isNotEmpty() -> {
+                when {
+                    currentState.materials.any {
+                        val q = it.quantity.toBigDecimalOrNull()
+                        q == null || q <= BigDecimal.ZERO
+                    } -> "Una o più quantità non sono valide"
+
+                    currentState.materials.any {
+                        val p = it.unitPrice.toBigDecimalOrNull()
+                        p == null || p <= BigDecimal.ZERO
+                    } -> "Uno o più prezzi non sono inseriti correttamente"
+
+                    currentState.materials.any {
+                        val v = it.vatNumber.toIntOrNull()
+                        v == null || v < 0
+                    } -> "Controlla l'IVA dei materiali inseriti"
+
+                    else -> null
+                }
+            }
+            else -> null
+        }
+
+        if(errorMessage != null){
+           _state.update { it.copy(errorMessage = errorMessage) }
+           return true
+        }
+
+        return false
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
@@ -16,6 +17,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -55,6 +60,8 @@ fun PurchaseInvoiceAddActivity(
     val bubblesSearchText = stringResource(R.string.bubbles)
     val materialsSearchText = stringResource(R.string.materials)
 
+    val snackBarHostState = remember { SnackbarHostState() }
+
     val previousBackStackEntry = navController.previousBackStackEntry
     val currentBackStackEntry = navController.currentBackStackEntry
 
@@ -65,6 +72,10 @@ fun PurchaseInvoiceAddActivity(
     val materialsIds by currentBackStackEntry?.savedStateHandle
         ?.getStateFlow<List<String>?>("selectedIds", null)
         ?.collectAsStateWithLifecycle(initialValue = null) ?: remember { mutableStateOf(null)}
+
+    LaunchedEffect(purchaseInvoiceId) {
+        actions.populateView(purchaseInvoiceId)
+    }
 
     LaunchedEffect(bubblesItems) {
         bubblesItems?.let{ ids ->
@@ -80,8 +91,14 @@ fun PurchaseInvoiceAddActivity(
         }
     }
 
-    LaunchedEffect(purchaseInvoiceId) {
-        actions.populateView(purchaseInvoiceId)
+    LaunchedEffect(state.errorMessage) {
+        state.errorMessage?.let { message ->
+            snackBarHostState.showSnackbar(
+                message = message,
+                duration = SnackbarDuration.Short
+            )
+            actions.resetErrorMessage()
+        }
     }
 
     Scaffold(
@@ -101,14 +118,14 @@ fun PurchaseInvoiceAddActivity(
                         },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        enabled = actions.checkRequirements()
+                        )
                     ) {
                         Icon(Icons.Filled.Check, contentDescription = stringResource(R.string.save))
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) { contentPadding ->
 
         LazyColumn(
@@ -211,21 +228,24 @@ fun PurchaseInvoiceAddActivity(
                     value = item.quantity.toString(),
                     onValueChange = { value ->
                         actions.setMaterialQuantity(item.material.id, value)
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
                 CustomOutlineTextField(
                     label = stringResource(R.string.unit_price),
                     value = item.unitPrice.toString(),
                     onValueChange = { value ->
                         actions.setMaterialPrice(item.material.id, value)
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
                 CustomOutlineTextField(
                     label = stringResource(R.string.vat),
                     value = item.vatNumber.toString(),
                     onValueChange = { value ->
                         actions.setMaterialVat(item.material.id, value)
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
                 if(index < state.materials.size - 1) {
                     CustomDivider()

@@ -39,7 +39,8 @@ data class BubbleAddState(
     val materialsSelected: List<MaterialBubble> = emptyList(),
     val newSeller: Seller? = null,
     val sellers: List<Seller> = emptyList(),
-    val started: Boolean = false
+    val started: Boolean = false,
+    val errorMessage : String? = null
 )
 
 interface BubbleAddActions {
@@ -58,6 +59,8 @@ interface BubbleAddActions {
     fun createNewSeller(newSeller: String)
     fun getMaterialIds() : List<String>
     fun delete()
+    fun checkRequirements(): Boolean
+    fun resetErrorMessage()
 }
 
 class BubbleAddViewModel(
@@ -137,6 +140,9 @@ class BubbleAddViewModel(
         }
 
         override fun saveBubble(onSuccess: (Int) -> Unit) {
+
+            if(checkRequirements()) return
+
             viewModelScope.launch {
                 val idSeller =
                     if (_state.value.newSeller != null) {
@@ -150,7 +156,7 @@ class BubbleAddViewModel(
                         }
                         sellerInserted.id
                     }else{
-                        _state.value.selectedSeller?.id ?:0
+                        _state.value.selectedSeller?.id ?: 0
                     }
 
                 val idBubble : Int =
@@ -316,6 +322,27 @@ class BubbleAddViewModel(
                     )
                 )
             }
+        }
+
+        override fun checkRequirements(): Boolean {
+            val currentState = state.value
+            val errorMessage = when {
+                currentState.bubbleNumber.isBlank() -> "Inserire numero bolla per continuare"
+                currentState.selectedSeller == null -> "Seleziona il venditore per continuare"
+                currentState.selectedSeller.id == -1 && currentState.newSeller == null -> "Inserire il nome del nuovo venditore"
+                else -> null
+            }
+
+            if(errorMessage != null) {
+                _state.update { it.copy(errorMessage = errorMessage) }
+                return true
+            }
+
+            return false
+        }
+
+        override fun resetErrorMessage() {
+            _state.update { it.copy(errorMessage = null) }
         }
     }
 }
