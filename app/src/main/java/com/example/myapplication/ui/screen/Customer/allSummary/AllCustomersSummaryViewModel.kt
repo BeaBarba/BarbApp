@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.CustomerFullDetails
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.screen.Deadline.allSummary.Deadline
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -122,7 +121,7 @@ class AllCustomersSummaryViewModel(
 
     private fun populateCustomers() {
         viewModelScope.launch {
-            repository.customer.getAllCustomersFullDetails().collect { customerList ->
+            repository.customer.getFlowAllCustomersFullDetails().collect { customerList ->
                 _state.update { currentState ->
                     val filterList =
                         if(currentState.searchString.isEmpty()) customerList

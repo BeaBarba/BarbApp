@@ -5,10 +5,13 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
+import androidx.room.withTransaction
 import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.database.MaterialFullDetails
 import com.example.myapplication.data.database.MaterialWithAirConditional
 import kotlinx.coroutines.flow.Flow
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 @Dao
 interface MaterialDAO{
@@ -75,4 +78,22 @@ interface MaterialDAO{
             "FROM MATERIALI "
     )
     suspend fun getAllMaterialsFullDetails() : List<MaterialFullDetails>
+
+
+    suspend fun offsetMaterialAvailableQuantity(materialId : Int, quantity : Float) {
+        val material = this.getMaterial(materialId)
+
+        material?.let { mat ->
+
+            val newQuantity = BigDecimal(
+                (mat.availableQuantity + quantity)
+                    .coerceAtLeast(0.0F)
+                    .toDouble()
+            ).setScale(2, RoundingMode.HALF_UP).toFloat()
+
+            upsertMaterial(
+                mat.copy(id = mat.id, availableQuantity = newQuantity)
+            )
+        }
+    }
 }

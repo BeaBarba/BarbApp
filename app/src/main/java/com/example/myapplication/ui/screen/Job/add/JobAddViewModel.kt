@@ -48,6 +48,7 @@ interface JobAddActions {
     fun saveMaterials()
     fun setCustomers(cf: String)
     fun setAddress(id: Int)
+    fun setWorksite(id : Int)
     fun setJobType(type: JobType)
     fun setPeopleNumber(number: String)
     fun setJobDate(date: LocalDate)
@@ -187,6 +188,7 @@ class JobAddViewModel(
                         alarm = state.type == JobType.ALA,
                         airConditioning = state.type == JobType.CDZ,
                         customer = state.customerId,
+                        workSite = state.workSite
                     )
                     val jobId = repository.job.saveJobComplete(job, state.materialsQuantity)
 
@@ -208,6 +210,10 @@ class JobAddViewModel(
 
         override fun setAddress(id: Int) {
             _state.update { it.copy(addressId = id) }
+        }
+
+        override fun setWorksite(id: Int) {
+            _state.update { it.copy(workSite = id) }
         }
 
         override fun setJobType(type: JobType) {

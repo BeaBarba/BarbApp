@@ -33,7 +33,7 @@ class SingleCustomerSummaryViewModel(
 
             viewModelScope.launch {
                 _state.update { it.copy(started = true) }
-                repository.customer.getCustomerFullDetailsById(customerId).collect { data ->
+                repository.customer.getFlowCustomerFullDetailsById(customerId).collect { data ->
                     _state.update { it.copy(customerData = data) }
                 }
             }

@@ -5,11 +5,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Build
-import androidx.compose.ui.res.stringResource
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.R
 import com.example.myapplication.data.database.Address
 import com.example.myapplication.data.database.Company
 import com.example.myapplication.data.database.Customer
@@ -117,7 +115,7 @@ class CustomerAddViewModel(
         override fun populateFromEdit(customerId: String) {
             if (!state.value.started) {
                 viewModelScope.launch {
-                    repository.customer.getCustomerFullDetailsById(customerId).collect { customerEntity ->
+                    repository.customer.getFlowCustomerFullDetailsById(customerId).collect { customerEntity ->
                         if (customerEntity != null) {
                             _state.update {
                                 it.copy(

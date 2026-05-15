@@ -8,7 +8,6 @@ import androidx.room.Upsert
 import com.example.myapplication.data.database.Customer
 import com.example.myapplication.data.database.CustomerFullDetails
 import com.example.myapplication.data.database.CustomerTypeDetails
-import com.example.myapplication.data.modules.CustomerType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -19,13 +18,20 @@ interface CustomerDAO{
         "FROM CLIENTI " +
         "WHERE CF = :cf"
     )
-    fun getCustomer(cf : String) : Flow<Customer?>
+    fun getFlowCustomer(cf : String) : Flow<Customer?>
+
+    @Query(
+        "SELECT * " +
+        "FROM CLIENTI " +
+        "WHERE CF = :cf"
+    )
+    suspend fun getCustomer(cf : String) : Customer?
 
     @Query(
         "SELECT * " +
         "FROM CLIENTI"
     )
-    fun getAllCustomers() : Flow<List<CustomerTypeDetails>>
+    fun getFlowAllCustomers() : Flow<List<CustomerTypeDetails>>
 
     @Upsert
     suspend fun upsertCustomer(customer: Customer)
@@ -39,13 +45,13 @@ interface CustomerDAO{
         "FROM CLIENTI " +
         "WHERE CF = :cf"
     )
-    fun getCustomerFullDetails(cf: String) : Flow<CustomerFullDetails?>
+    fun getFlowCustomerFullDetails(cf: String) : Flow<CustomerFullDetails?>
 
     @Transaction
     @Query("SELECT * " +
             "FROM CLIENTI "
     )
-    fun getAllCustomersFullDetails() : Flow<List<CustomerFullDetails>>
+    fun getFlowAllCustomersFullDetails() : Flow<List<CustomerFullDetails>>
 
     @Transaction
     @Query("SELECT * " +

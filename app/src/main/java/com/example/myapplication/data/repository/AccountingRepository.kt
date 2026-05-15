@@ -24,8 +24,9 @@ import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
-class AccountingRepository (private val db : AppDatabase) {
+class AccountingRepository ( private val db : AppDatabase ) {
 
     /* Category */
     val categoryPurchaseInvoice = db.categoryPurchaseInvoiceDAO().getAllCategoriesPurchaseInvoice()
@@ -367,7 +368,7 @@ class AccountingRepository (private val db : AppDatabase) {
                             var lastIssueDate = payment.issueDate
                             val today = LocalDate.now()
 
-                            while (!lastIssueDate.isAfter(today)) {
+                            do {
                                 val newDate = calculateNexDate(lastIssueDate, expense.frequency)
 
                                 if (!checkExistingNextPayment(newDate, expenseId)) {
@@ -386,7 +387,7 @@ class AccountingRepository (private val db : AppDatabase) {
                                     )
                                 }
                                 lastIssueDate = newDate
-                            }
+                            } while (!lastIssueDate.isAfter(today))
                         }
                     }
                 }
@@ -408,11 +409,9 @@ class AccountingRepository (private val db : AppDatabase) {
     suspend fun getRevenueFullDetailsById(id: Int): RevenueFullDetails? =
         db.revenuesDAO().getRevenueFullDetails(id)
 
-    fun getFlowAllRevenuesFullDetails(): Flow<List<RevenueFullDetails>> =
-        db.revenuesDAO().getFlowAllRevenuesFullDetails()
+    fun getFlowAllRevenuesFullDetails(): Flow<List<RevenueFullDetails>> = db.revenuesDAO().getFlowAllRevenuesFullDetails()
 
-    suspend fun getAllRevenuesFullDetails(): List<RevenueFullDetails> =
-        withContext(Dispatchers.IO) {
+    suspend fun getAllRevenuesFullDetails(): List<RevenueFullDetails> = withContext(Dispatchers.IO) {
             db.revenuesDAO().getAllRevenuesFullDetails()
         }
 
@@ -438,10 +437,49 @@ class AccountingRepository (private val db : AppDatabase) {
         }
     }
 
+    suspend fun payRevenueAndUpdateCustomerAverage(revenueFullDetails : RevenueFullDetails, newAmount : BigDecimal) : Boolean =
+        withContext(Dispatchers
+        .IO){
+        db.withTransaction {
+            val customerId = revenueFullDetails.workSite?.customer?.customer?.cf ?: revenueFullDetails.job?.customer?.customer?.cf ?: return@withTransaction false
+            val customer = db.customerDAO().getCustomer(customerId)
+
+            val amountPaid = revenueFullDetails.revenue.amountPaid.toBigDecimal()
+            val newAmountPaid = amountPaid + newAmount
+            val newPercentage = calculatePercentage(revenueFullDetails.revenue.amount.toBigDecimal(), newAmountPaid)
+
+            val revenue = Revenue(
+                id = revenueFullDetails.revenue.id,
+                invoice = revenueFullDetails.revenue.invoice,
+                issueDate = revenueFullDetails.revenue.issueDate,
+                amount = revenueFullDetails.revenue.amount,
+                amountPaid = newAmountPaid.setScale(2, RoundingMode.HALF_EVEN).toFloat(),
+                percent = newPercentage.toInt(),
+                collectionDate = LocalDate.now(),
+                worksite = revenueFullDetails.revenue.worksite,
+                job = revenueFullDetails.revenue.job
+            )
+            val revenueId = upsertRevenue(revenue)
+
+            if(revenueFullDetails.revenue.percent < 100 && newPercentage.intValueExact() >= 100 && customer != null){
+                val differenceInDays = ChronoUnit.DAYS.between(revenue.issueDate, revenue.collectionDate)
+                val newCollectionCount = customer.collectionCount + 1
+                val newAverageCollectionTime = ((customer.averageCollectionTime.toDouble() * customer.collectionCount) +
+                        differenceInDays) / newCollectionCount
+                db.customerDAO().upsertCustomer(customer.copy(collectionCount = newCollectionCount,
+                    averageCollectionTime = newAverageCollectionTime.toFloat()))
+
+            }
+
+            return@withTransaction true
+        }
+    }
+
     suspend fun deleteRevenue(revenue: Revenue) = db.revenuesDAO().deleteRevenue(revenue)
 
-    private fun calculateNewDates(issueDate : LocalDate, endDate: LocalDate, frequency : FrequencyType) :
-            List<LocalDate>{
+    /* Utilities */
+
+    private fun calculateNewDates(issueDate : LocalDate, endDate: LocalDate, frequency : FrequencyType) : List<LocalDate>{
         val dates = mutableListOf<LocalDate>()
         var nextDate = calculateNexDate(issueDate, frequency)
 
@@ -449,6 +487,7 @@ class AccountingRepository (private val db : AppDatabase) {
             dates.add(nextDate)
             nextDate = calculateNexDate(nextDate, frequency)
         }
+
         return dates
     }
 
@@ -483,5 +522,10 @@ class AccountingRepository (private val db : AppDatabase) {
         db.bubbleDAO().removePurchaseInvoiceReferenceFromBubbles(purchaseInvoiceId)
 
         db.purchaseDAO().deletePurchasesByPurchaseInvoice(purchaseInvoiceId)
+    }
+
+    private fun calculatePercentage(total : BigDecimal, amount : BigDecimal) : BigDecimal{
+        if(total == BigDecimal.ZERO || total.signum() == 0) return BigDecimal.ZERO
+        return amount.multiply(BigDecimal("100")).divide(total, 0, RoundingMode.HALF_DOWN)
     }
 }

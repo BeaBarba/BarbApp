@@ -34,7 +34,8 @@ data class AllPaymentsSummaryState(
 
     val showDialog : Boolean = false,
     val selectPaymentId: Int? = null,
-    val inputAmount: String = ""
+    val inputAmount: String = "",
+    val errorMessage : String? = null
 )
 
 interface AllPaymentsSummaryActions{
@@ -47,6 +48,7 @@ interface AllPaymentsSummaryActions{
     fun closeDialog()
     fun setAmountPaid(newAmount : String)
     fun onConfirmPayment()
+    fun resetErrorMessage()
 }
 
 class AllPaymentsSummaryViewModel(
@@ -133,27 +135,19 @@ class AllPaymentsSummaryViewModel(
 
             val revenue = currentState.payments.find { it.revenue.id == id } ?: return
 
-            val amountPaid = revenue.revenue.amountPaid.toBigDecimal()
-            val convertedAmount = checkNewAmount(currentState.inputAmount)
-            val newAmountPaid = amountPaid + convertedAmount
-            val newPercentage = calculatePercentage(revenue.revenue.amount.toBigDecimal(), newAmountPaid)
-
             viewModelScope.launch {
-                repository.accounting.upsertRevenue(
-                    Revenue(
-                        id = revenue.revenue.id,
-                        invoice = revenue.revenue.invoice,
-                        issueDate = revenue.revenue.issueDate,
-                        amount = revenue.revenue.amount,
-                        amountPaid = newAmountPaid.setScale(2, RoundingMode.HALF_EVEN).toFloat(),
-                        percent = newPercentage.toInt(),
-                        collectionDate = LocalDate.now(),
-                        worksite = revenue.revenue.worksite,
-                        job = revenue.revenue.job
-                    )
-                )
+                val result = repository.accounting.payRevenueAndUpdateCustomerAverage(revenue, checkNewAmount(currentState.inputAmount))
+
+                if(!result){
+                    _state.update { it.copy(errorMessage = "Errore durante il pagamento") }
+                }
+
                 closeDialog()
             }
+        }
+
+        override fun resetErrorMessage() {
+            _state.update { it.copy(errorMessage = null) }
         }
     }
 
@@ -232,9 +226,4 @@ class AllPaymentsSummaryViewModel(
     }
 
     private fun checkNewAmount(value : String) : BigDecimal = value.toBigDecimalOrNull() ?: BigDecimal.ZERO
-
-    private fun calculatePercentage(total : BigDecimal, amount : BigDecimal) : BigDecimal{
-        if(total == BigDecimal.ZERO || total.signum() == 0) return BigDecimal.ZERO
-        return amount.multiply(BigDecimal("100")).divide(total, 0, RoundingMode.HALF_DOWN)
-    }
 }

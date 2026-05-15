@@ -8,10 +8,11 @@ import kotlinx.coroutines.flow.Flow
 class AddressRepository (private val db : AppDatabase){
 
     /* PropertyOwnership */
-    fun getPropertyOwnershipById(
-        customerId: String,
-        addressId: Int
-    ): Flow<PropertyOwnership?> = db.propertyOwnershipDAO().getPropertyOwnership(customerId, addressId)
+    fun getFlowPropertyOwnershipById(customerId: String, addressId: Int): Flow<PropertyOwnership?> =
+        db.propertyOwnershipDAO().getFlowPropertyOwnership(customerId, addressId)
+
+    suspend fun existsPropertyOwnershipByIds(customerId : String, addressId: Int) : Int =
+        db.propertyOwnershipDAO().existsPropertyOwnership(customerId, addressId)
 
     suspend fun upsertPropertyOwnership(propertyOwnership: PropertyOwnership) =
         db.propertyOwnershipDAO().upsertPropertyOwnership(propertyOwnership)

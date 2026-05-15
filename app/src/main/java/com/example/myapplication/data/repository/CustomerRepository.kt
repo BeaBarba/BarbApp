@@ -17,17 +17,19 @@ import kotlinx.coroutines.withContext
 class CustomerRepository (private val db : AppDatabase) {
 
     /* Customer */
-    val customers = db.customerDAO().getAllCustomers()
+    val customers = db.customerDAO().getFlowAllCustomers()
 
-    fun getCustomerById(cf: String): Flow<Customer?> = db.customerDAO().getCustomer(cf)
+    fun getFlowCustomerById(cf: String) : Flow<Customer?> = db.customerDAO().getFlowCustomer(cf)
+
+    fun getFlowCustomerFullDetailsById(cf: String) : Flow<CustomerFullDetails?> =
+        db.customerDAO().getFlowCustomerFullDetails(cf)
+
+    fun getFlowAllCustomersFullDetails() : Flow<List<CustomerFullDetails>> =
+        db.customerDAO().getFlowAllCustomersFullDetails()
+
+    suspend fun getCustomerById(cf : String) : Customer? = db.customerDAO().getCustomer(cf)
 
     suspend fun upsertCustomer(customer: Customer) = db.customerDAO().upsertCustomer(customer)
-
-    fun getCustomerFullDetailsById(cf: String): Flow<CustomerFullDetails?> =
-        db.customerDAO().getCustomerFullDetails(cf)
-
-    fun getAllCustomersFullDetails(): Flow<List<CustomerFullDetails>> =
-        db.customerDAO().getAllCustomersFullDetails()
 
     suspend fun saveCustomerComplete(
         address: Address,

@@ -64,6 +64,7 @@ fun JobAddActivity(
 
     val selectSearchTextCustomer = stringResource(R.string.customer)
     val selectSearchTextAddress = stringResource(R.string.address)
+    val selectSearchWorksite = stringResource(R.string.construction_site)
 
     val currentBackStackEntry = navController.currentBackStackEntry
     val selectedCustomersItems by currentBackStackEntry?.savedStateHandle
@@ -73,6 +74,10 @@ fun JobAddActivity(
     val selectedAddressItems by currentBackStackEntry?.savedStateHandle
         ?.getStateFlow<List<String>?>("selectedIds", emptyList())
         ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList()) }
+
+    val selectedWorksite by currentBackStackEntry?.savedStateHandle
+        ?.getStateFlow<List<String>?>("worksites", emptyList())
+        ?.collectAsStateWithLifecycle() ?: remember { mutableStateOf(emptyList())}
 
     LaunchedEffect(jobId) {
         actions.populateView(jobId)
@@ -94,6 +99,15 @@ fun JobAddActivity(
             }
         }
         currentBackStackEntry?.savedStateHandle?.remove<List<String>>("selectedIds")
+    }
+
+    LaunchedEffect(selectedWorksite) {
+        selectedWorksite?.let{ ids ->
+            if(ids.isNotEmpty()) {
+                actions.setWorksite(ids.first().toInt())
+            }
+        }
+        currentBackStackEntry?.savedStateHandle?.remove<List<String>>("worksites")
     }
 
     LaunchedEffect(state.errorMessage) {
@@ -283,7 +297,32 @@ fun JobAddActivity(
                 )
             }
             item{Spacer(Modifier.size(8.dp))}
-            //item{SplitButtonMenu(content = stringResource(R.string.construction_site), items = cantieri_menu, heightMenu = (cantieri_menu.size *50).dp)}
+            item{
+                GenericCard(
+                    text = stringResource(R.string.construction_sites),
+                    trailingContent = {
+                        Icon(
+                            imageVector = Icons.Filled.ChevronRight,
+                            contentDescription = stringResource(R.string.edit),
+                            modifier = Modifier.size(35.dp)
+                        )
+                    },
+                    onClick = {
+                        if(state.workSite != null) {
+                            navController.currentBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("initialIds", listOf(state.workSite.toString()))
+                        }
+                        navController.navigate(
+                            NavigationRoute.Select(
+                                selectSearchWorksite,
+                                SelectKey.AllWorksites
+                            )
+                        )
+                    }
+                )
+            }
+            item{Spacer(Modifier.size(8.dp))}
             item{
                 GenericCard(
                     text = stringResource(R.string.material),

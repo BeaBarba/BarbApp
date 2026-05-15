@@ -49,22 +49,7 @@ class InventoryRepository(private val db : AppDatabase){
         db.materialDAO().getMaterialWithAirConditionalDetails(id)
 
     suspend fun offsetMaterialAvailableQuantity(materialId : Int, quantity : Float) =
-        db.withTransaction {
-            val material = getMaterialById(materialId)
-
-            material?.let { mat ->
-
-                val newQuantity = BigDecimal(
-                        (mat.availableQuantity + quantity)
-                            .coerceAtLeast(0.0F)
-                            .toDouble()
-                    ).setScale(2, RoundingMode.HALF_UP).toFloat()
-
-                db.materialDAO().upsertMaterial(
-                    mat.copy(id = mat.id, availableQuantity = newQuantity)
-                )
-            }
-        }
+        db.materialDAO().offsetMaterialAvailableQuantity(materialId, quantity)
 
     suspend fun getAllCategoriesOfMaterials() : List<String>? = db.materialDAO().getAllCategoriesOfMaterials()
 

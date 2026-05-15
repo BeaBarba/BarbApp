@@ -9,6 +9,7 @@ import com.example.myapplication.data.database.JobAssignmentDetails
 import com.example.myapplication.data.database.JobFullDetails
 import com.example.myapplication.data.database.JobMaterialFullDetails
 import com.example.myapplication.data.database.MaterialUsage
+import com.example.myapplication.data.database.PropertyOwnership
 import com.example.myapplication.data.database.Reference
 import com.example.myapplication.data.database.WorkSite
 import com.example.myapplication.data.database.WorkSiteAssignmentDetails
@@ -19,12 +20,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-class JobRepository(
-    private val db : AppDatabase,
-    private val inventory : InventoryRepository,
-    private val customer : CustomerRepository,
-    private val accounting: AccountingRepository
-){
+class JobRepository( private val db : AppDatabase ){
 
     /* Image */
     val images = db.imageDAO().getAllImages()
@@ -71,7 +67,7 @@ class JobRepository(
                 }
 
                 details.revenues?.forEach { revenue ->
-                    accounting.deleteRevenue(revenue)
+                    db.revenuesDAO().deleteRevenue(revenue)
                 }
 
                 deleteWorkSite(details.workSiteAssignment.workSite)
@@ -86,7 +82,7 @@ class JobRepository(
         db.withTransaction {
             val referenceId =
                 if(reference != null){
-                    customer.upsertReference(reference).toInt()
+                    db.referenceDAO().upsertReference(reference).toInt()
                 }else{
                     worksite.manager
                 }
@@ -110,32 +106,53 @@ class JobRepository(
             val materialsRestock = getAllFutureMaterialsByJobId(job.id)
 
             materialsRestock.forEach{ item ->
-               inventory.offsetMaterialAvailableQuantity(item.material, item.quantity)
+               db.materialDAO().offsetMaterialAvailableQuantity(item.material, item.quantity)
             }
 
             db.jobDAO().deleteJob(job)
         }
 
-    suspend fun getJobMaterialFullDetailsById(id : Int) : JobMaterialFullDetails?
-    = withContext(Dispatchers.IO){
+    suspend fun getJobMaterialFullDetailsById(id : Int) : JobMaterialFullDetails? = withContext(Dispatchers.IO){
         db.jobDAO().getFlowJobMaterialFullDetails(id).first()
     }
 
-    suspend fun saveJobComplete(
-        job : Job,
-        materials : List<Pair<Int, Float>>
-    ) : Int =
+    suspend fun saveJobComplete( job : Job, materials : List<Pair<Int, Float>> ) : Int =
         db.withTransaction {
             val newJobId = db.jobDAO().upsertJob(job).toInt()
-            val jobId = if(newJobId > 0) newJobId else job.id
+            val jobId = if (newJobId > 0) newJobId else job.id
+
+            job.customer?.let { customerId ->
+                val customer = db.customerDAO().getCustomer(customerId)
+                val jobAddress = job.address
+
+                if (customer != null && jobAddress != 0) {
+                    val residence = customer.residence
+
+                    if (residence != jobAddress) {
+                        val existsPropertyOwnership = db.propertyOwnershipDAO().existsPropertyOwnership(
+                            cf =
+                            customerId, address = jobAddress
+                        )
+
+                        if (existsPropertyOwnership == 0) {
+                            db.propertyOwnershipDAO().upsertPropertyOwnership(
+                                PropertyOwnership(
+                                    customer = customerId,
+                                    address = jobAddress
+                                )
+                            )
+                        }
+                    }
+                }
+            }
 
             val isFuture = job.date.isAfter(LocalDate.now())
 
             deleteFutureJobMaterialByJobId(jobId)
             deleteMaterialUsageByJobId(jobId)
 
-            if(isFuture){
-                val futureItems = materials.map{ (matId, quantity) ->
+            if (isFuture) {
+                val futureItems = materials.map { (matId, quantity) ->
                     FutureJobMaterial(
                         material = matId,
                         job = jobId,
@@ -145,7 +162,7 @@ class JobRepository(
 
                 insertFutureMaterialsList(futureItems)
 
-            }else{
+            } else {
                 val usageItems = materials.map { (matId, quantity) ->
                     MaterialUsage(
                         material = matId,
