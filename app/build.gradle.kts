@@ -75,6 +75,9 @@ dependencies {
     // MPAndroidChart
     implementation(libs.philjay.mpandroidchart)
 
+    // Coil
+    implementation(libs.coil.compose)
+
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)

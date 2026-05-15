@@ -10,20 +10,41 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ImageDAO{
 
-    @Query("SELECT * " +
-            "FROM FOTO " +
-            "WHERE id = :id"
+    @Query(
+        "SELECT * " +
+        "FROM FOTO " +
+        "WHERE id = :id"
     )
-    fun getImage(id : Int) : Flow<Image?>
+    fun getFlowImage(id : Int) : Flow<Image?>
 
-    @Query("SELECT * " +
-            "FROM FOTO"
+    @Query(
+        "SELECT * " +
+        "FROM FOTO"
     )
-    fun getAllImages() : Flow<List<Image>>
+    fun getFlowAllImages() : Flow<List<Image>>
+
+    @Query(
+        "SELECT * " +
+        "FROM FOTO " +
+        "WHERE Intervento = :job"
+    )
+    suspend fun getAllImageByJob(job : Int) : List<Image>
 
     @Upsert
     suspend fun upsertImage(image : Image)
 
     @Delete
     suspend fun deleteImage(image : Image)
+
+    @Query(
+        "DELETE FROM FOTO " +
+        "WHERE Intervento = :job"
+    )
+    suspend fun deleteAllImageByJob(job : Int)
+
+    @Query(
+        "DELETE FROM FOTO " +
+        "WHERE Materiale = :material"
+    )
+    suspend fun deleteAllImageByMaterial(material : Int)
 }

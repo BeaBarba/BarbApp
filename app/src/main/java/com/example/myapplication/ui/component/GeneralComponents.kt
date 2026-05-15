@@ -35,6 +35,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.example.myapplication.R
+import com.example.myapplication.ui.utilities.checkColor
+import com.example.myapplication.ui.utilities.checkColorAvatar
 
 /* --------------------------------------------------------- Avatar Composables  ------------------------------------------------------------- */
 /* Function that generates a circle with a character inside it */

@@ -8,8 +8,8 @@ import com.example.myapplication.data.database.DeliveryWithMaterialDetails
 import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.database.Seller
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.component.checkStringIsBigDecimal
-import com.example.myapplication.ui.component.checkStringIsInt
+import com.example.myapplication.ui.utilities.checkStringIsBigDecimal
+import com.example.myapplication.ui.utilities.checkStringIsInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -8,10 +8,13 @@ import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.modules.MachineType
 import com.example.myapplication.data.modules.SplitNumber
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.component.*
+import com.example.myapplication.ui.utilities.MenuItem
+import com.example.myapplication.ui.utilities.checkStringIsBigDecimal
+import com.example.myapplication.ui.utilities.checkStringIsInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -32,6 +35,7 @@ data class MaterialAddState(
     val splitNumber : SplitNumber = SplitNumber.NONE,
     val gasQty : String = "",
     val gasType : String = "",
+    val photos : List<String> = emptyList(),
 
     val jobTypeMenu : List<MenuItem> = emptyList(),
     val categorySuggestionsList : List<String> = emptyList(),
@@ -55,6 +59,7 @@ interface MaterialAddActions{
     fun getSplitNumbersMenu() : List<MenuItem>
     fun setGasQty(qty : String)
     fun setGasType(type : String)
+    fun addPhoto(path : String)
     fun saveMaterial(onSuccess : (Int) -> Unit)
     fun resetErrorMessage()
 }
@@ -74,17 +79,18 @@ class MaterialAddViewModel(
             getCategorySuggestions()
             materialId?.let{
                 viewModelScope.launch{
-                    val material = repository.inventory.getMaterialWithAirConditionalDetails(materialId)
+                    val material = repository.inventory.getFlowMaterialFullDetailsById(materialId).first()
                     material?.let {
                         _state.update {
                             it.copy(
                                 materialId = materialId,
-                                type = material.material.type,
-                                brand = material.material.brand,
-                                model = material.material.model,
-                                category = material.material.category,
-                                availableQuantity = material.material.availableQuantity.toString(),
-                                unitMeasurement = material.material.unitMeasurement
+                                type = material.material.material.type,
+                                brand = material.material.material.brand,
+                                model = material.material.material.model,
+                                category = material.material.material.category,
+                                availableQuantity = material.material.material.availableQuantity.toString(),
+                                unitMeasurement = material.material.material.unitMeasurement,
+                                photos = material.photos.map { photo ->  photo.path }
                             )
                         }
                     }
@@ -199,6 +205,10 @@ class MaterialAddViewModel(
             _state.update { it.copy(gasType = type) }
         }
 
+        override fun addPhoto(path: String) {
+            _state.update { it.copy(photos = it.photos + path) }
+        }
+
         override fun saveMaterial(onSuccess: (Int) -> Unit) {
             val currentState = state.value
 
@@ -234,7 +244,8 @@ class MaterialAddViewModel(
                     material = material,
                     airConditioner = airConditioner,
                     customerCF = currentState.customer,
-                    quantity = quantity
+                    quantity = quantity,
+                    photos = currentState.photos
                 )
                 onSuccess(materialId)
             }

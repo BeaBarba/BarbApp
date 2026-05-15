@@ -9,9 +9,9 @@ import com.example.myapplication.data.database.SingleExpense
 import com.example.myapplication.data.modules.DeadlineType
 import com.example.myapplication.data.modules.FrequencyType
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.component.MenuItem
-import com.example.myapplication.ui.component.convertStringToDate
-import com.example.myapplication.ui.component.checkStringIsBigDecimal
+import com.example.myapplication.ui.utilities.MenuItem
+import com.example.myapplication.ui.utilities.convertStringToDate
+import com.example.myapplication.ui.utilities.checkStringIsBigDecimal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first

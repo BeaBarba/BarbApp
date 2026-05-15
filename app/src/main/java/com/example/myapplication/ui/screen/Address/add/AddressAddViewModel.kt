@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.Address
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.component.checkStringIsInt
+import com.example.myapplication.ui.utilities.checkStringIsInt
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

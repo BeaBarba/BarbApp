@@ -17,7 +17,7 @@ import com.example.myapplication.data.database.Reference
 import com.example.myapplication.data.database.Referral
 import com.example.myapplication.data.modules.CustomerType
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.component.MenuItem
+import com.example.myapplication.ui.utilities.MenuItem
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -142,8 +142,6 @@ fun SingleJobSummaryActivity(
                 }
                 item{Spacer(Modifier.size(8.dp))}
             }
-
-             /**/
             item{
                 DoubleKeyValueLabel(
                     firstTitle = stringResource(R.string.price),
@@ -185,7 +183,7 @@ fun SingleJobSummaryActivity(
             item{Spacer(Modifier.size(8.dp))}
             item{BoxDescription(state.job?.jobDetails?.job?.description.toString())}
             item{Spacer(Modifier.size(8.dp))}
-            item{Images()}
+            item{Images(state.photos)}
             item{Spacer(Modifier.size(8.dp))}
             if(state.materials.isNotEmpty()) {
                 item{TitleLabel(stringResource(R.string.materials))}

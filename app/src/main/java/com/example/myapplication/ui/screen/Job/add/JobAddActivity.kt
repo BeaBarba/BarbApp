@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.outlined.AddPhotoAlternate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -29,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -45,7 +45,8 @@ import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
-import com.example.myapplication.ui.component.MenuItem
+import com.example.myapplication.ui.component.ImagePicker
+import com.example.myapplication.ui.utilities.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TopAppBar
 import java.time.LocalDate
@@ -59,6 +60,8 @@ fun JobAddActivity(
     navController : NavHostController
 ){
     val snackBarHostState = remember { SnackbarHostState() }
+
+    val ctx = LocalContext.current
 
     val previousBackStackEntry = navController.previousBackStackEntry
 
@@ -240,7 +243,7 @@ fun JobAddActivity(
                 content =
                     if(state.type == JobType.NONE){ stringResource(R.string.type)}
                     else {state.type.toString()},
-                items = JobType.entries.map{type -> MenuItem(Pair(1,""), type.name){actions.setJobType(type)}},
+                items = JobType.entries.map{type -> MenuItem(Pair(1,""), type.name){actions.setJobType(type)} },
                 heightMenu = (JobType.entries.size * 55).dp
             )}
             item{
@@ -338,22 +341,15 @@ fun JobAddActivity(
             }
             item{Spacer(Modifier.size(8.dp))}
             item{
-                GenericCard(
-                    text = stringResource(R.string.photo_add),
-                    trailingContent = {
-                        Icon(
-                            imageVector = Icons.Outlined.AddPhotoAlternate,
-                            contentDescription = stringResource(R.string.photo_add),
-                            modifier = Modifier.size(40.dp)
-                        )
-                    }
-                )
+                ImagePicker{ image ->
+                    actions.addPhoto(image)
+                }
             }
             item{Spacer(Modifier.size(8.dp))}
             if (previousBackStackEntry?.destination?.hasRoute<NavigationRoute.AllJobsSummary>() == false) {
                 item {
                     DeleteButton {
-                        actions.deleteJob()
+                        actions.deleteJob(ctx = ctx)
                         navController.navigate(NavigationRoute.AllJobsSummary) {
                             popUpTo(NavigationRoute.AllJobsSummary) { inclusive = true }
                             launchSingleTop = true

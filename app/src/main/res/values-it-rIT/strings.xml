@@ -165,4 +165,7 @@
     <string name="revenue">Ricavo</string>
     <string name="job_type">Tipo intervento</string>
     <string name="revenue_from_job">Ricavi per tipo interventi</string>
+    <string name="select_option">Scegli un\'opzione</string>
+    <string name="camera">Fotocamera</string>
+    <string name="gallery">Galleria</string>
 </resources>

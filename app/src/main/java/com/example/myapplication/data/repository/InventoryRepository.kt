@@ -5,18 +5,16 @@ import com.example.myapplication.data.database.AirConditioner
 import com.example.myapplication.data.database.AppDatabase
 import com.example.myapplication.data.database.CustomerProvision
 import com.example.myapplication.data.database.Delivery
+import com.example.myapplication.data.database.Image
 import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.database.MaterialFullDetails
 import com.example.myapplication.data.database.MaterialWithAirConditional
 import com.example.myapplication.data.database.Purchase
-import com.example.myapplication.data.database.PurchaseMaterialQuantity
 import com.example.myapplication.data.database.Seller
 import com.example.myapplication.data.modules.JobType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 class InventoryRepository(private val db : AppDatabase){
 
@@ -69,7 +67,8 @@ class InventoryRepository(private val db : AppDatabase){
         material : Material,
         airConditioner: AirConditioner?,
         customerCF : String?,
-        quantity : Float
+        quantity : Float,
+        photos : List<String>
     ) : Int = withContext(Dispatchers.IO){
         db.withTransaction {
 
@@ -89,6 +88,19 @@ class InventoryRepository(private val db : AppDatabase){
                 upsertCustomerProvision(provision)
             }else{
                 upsertMaterial(material.copy(id = materialId, availableQuantity = quantity))
+            }
+
+            db.imageDAO().deleteAllImageByMaterial(materialId)
+
+            photos.forEach { photo ->
+                db.imageDAO().upsertImage(
+                    Image(
+                        id = 0,
+                        path = photo,
+                        material = materialId,
+                        job = null
+                    )
+                )
             }
 
             return@withTransaction materialId

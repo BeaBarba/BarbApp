@@ -20,10 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -38,7 +34,7 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkColor
+import com.example.myapplication.ui.utilities.checkColor
 
 @Composable
 fun JobMaterialsActivity(

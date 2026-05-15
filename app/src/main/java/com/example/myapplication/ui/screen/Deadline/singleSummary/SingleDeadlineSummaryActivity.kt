@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material3.AlertDialog
@@ -24,7 +23,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -37,11 +35,10 @@ import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.KeyValueLabel
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.CustomDivider
-import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.component.DatePickerFieldToModal
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkColor
+import com.example.myapplication.ui.utilities.checkColor
 import java.time.format.DateTimeFormatter
 
 @Composable

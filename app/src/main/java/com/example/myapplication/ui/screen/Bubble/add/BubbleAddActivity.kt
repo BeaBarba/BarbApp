@@ -41,7 +41,7 @@ import com.example.myapplication.ui.component.DeleteButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.CustomDivider
-import com.example.myapplication.ui.component.MenuItem
+import com.example.myapplication.ui.utilities.MenuItem
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar

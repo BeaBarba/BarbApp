@@ -34,7 +34,7 @@ import com.example.myapplication.ui.component.AddButton
 import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkColor
+import com.example.myapplication.ui.utilities.checkColor
 
 @Composable
 fun SingleMaterialSummaryActivity(
@@ -202,7 +202,7 @@ fun SingleMaterialSummaryActivity(
                     CustomDivider()
                 }
             }
-            item{Images()}
+            item{Images(state.photos)}
             item{Spacer(Modifier.size(8.dp))}
         }
     }

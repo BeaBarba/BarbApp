@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.component.convertLongToDate
+import com.example.myapplication.ui.utilities.convertLongToDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

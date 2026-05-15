@@ -2,6 +2,7 @@ package com.example.myapplication.ui.screen.Material.singleSummary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.database.Image
 import com.example.myapplication.data.database.MaterialFullDetails
 import com.example.myapplication.data.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +12,8 @@ import kotlinx.coroutines.launch
 
 data class SingleMaterialSummaryState(
     val started : Boolean = false,
-    val materialData : MaterialFullDetails? = null
+    val materialData : MaterialFullDetails? = null,
+    val photos : List<Image> = emptyList(),
 )
 
 interface SingleMaterialSummaryActions{
@@ -36,12 +38,8 @@ class SingleMaterialSummaryViewModel(
                         _state.update {
                             it.copy(
                                 started = true,
-                                materialData = MaterialFullDetails(
-                                    material = data.material,
-                                    deliveriesWithBubbles = data.deliveriesWithBubbles,
-                                    purchaseWithPurchaseInvoice = data.purchaseWithPurchaseInvoice,
-                                    photos = data.photos
-                                )
+                                materialData = data,
+                                photos = data.photos
                             )
                         }
                     }

@@ -1,5 +1,6 @@
 package com.example.myapplication.data.repository
 
+import android.content.Context
 import androidx.room.withTransaction
 import com.example.myapplication.data.database.AppDatabase
 import com.example.myapplication.data.database.FutureJobMaterial
@@ -14,6 +15,7 @@ import com.example.myapplication.data.database.Reference
 import com.example.myapplication.data.database.WorkSite
 import com.example.myapplication.data.database.WorkSiteAssignmentDetails
 import com.example.myapplication.data.database.WorkSiteFullDetails
+import com.example.myapplication.ui.utilities.ImageStorageManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -23,13 +25,17 @@ import java.time.LocalDate
 class JobRepository( private val db : AppDatabase ){
 
     /* Image */
-    val images = db.imageDAO().getAllImages()
+    val images = db.imageDAO().getFlowAllImages()
 
-    fun getImageById(id: Int): Flow<Image?> = db.imageDAO().getImage(id)
+    fun getFlowImageById(id: Int): Flow<Image?> = db.imageDAO().getFlowImage(id)
+
+    suspend fun getAllImagesByJobId(jobId : Int) : List<Image> = db.imageDAO().getAllImageByJob(jobId)
 
     suspend fun upsertImage(image: Image) = db.imageDAO().upsertImage(image)
 
     suspend fun deleteImage(image: Image) = db.imageDAO().deleteImage(image)
+
+    suspend fun deleteAllImageByJobId(jobId : Int) = db.imageDAO().deleteAllImageByJob(jobId)
 
     /* WorkSite */
     val workSites = db.workSiteDAO().getAllWorkSites()
@@ -99,9 +105,32 @@ class JobRepository( private val db : AppDatabase ){
 
     fun getFlowJobById(id: Int): Flow<Job?> = db.jobDAO().getFlowJob(id)
 
+    fun getFlowJobDoneSummaryById(id: Int): Flow<JobMaterialFullDetails?> =
+        db.jobDAO().getFlowJobMaterialFullDetails(id)
+
+    fun getFlowJobAssignmentDetails(id: Int): Flow<JobAssignmentDetails?> =
+        db.jobDAO().getFlowJobAssignmentDetails(id)
+
+    fun getFlowAllJobsAssignmentDetails(): Flow<List<JobAssignmentDetails>> =
+        db.jobDAO().getFlowAllJobsAssignmentDetails()
+
+    fun getFlowJobFullDetails(id: Int): Flow<JobFullDetails?> = db.jobDAO().getFlowJobFullDetails(id)
+
+    fun getFlowAllJobsFullDetails(): Flow<List<JobFullDetails>> = db.jobDAO().getFlowAllJobsFullDetails()
+
+    fun getFlowAllToScheduleJobsAssignmentDetailsByDate(date : LocalDate) : Flow<List<JobAssignmentDetails>> =
+        db.jobDAO().getFlowAllToScheduleJobsAssignmentDetails(date)
+
+    fun getFlowAllTodayJobsFullDetailsByDate(date : LocalDate) : Flow<List<JobFullDetails>> =
+        db.jobDAO().getFlowAllTodayJobsFullDetails(date)
+
+    suspend fun getJobMaterialFullDetailsById(id : Int) : JobMaterialFullDetails? = withContext(Dispatchers.IO){
+        db.jobDAO().getFlowJobMaterialFullDetails(id).first()
+    }
+
     suspend fun upsertJob(job: Job) : Long = db.jobDAO().upsertJob(job)
 
-    suspend fun deleteJob(job: Job) =
+    suspend fun deleteJob(job: Job, ctx : Context, photos : List<String>) =
         db.withTransaction {
             val materialsRestock = getAllFutureMaterialsByJobId(job.id)
 
@@ -109,14 +138,16 @@ class JobRepository( private val db : AppDatabase ){
                db.materialDAO().offsetMaterialAvailableQuantity(item.material, item.quantity)
             }
 
+            db.imageDAO().deleteAllImageByJob(job.id)
+
+            photos.forEach { photo ->
+                ImageStorageManager.deleteImage(ctx, photo)
+            }
+
             db.jobDAO().deleteJob(job)
         }
 
-    suspend fun getJobMaterialFullDetailsById(id : Int) : JobMaterialFullDetails? = withContext(Dispatchers.IO){
-        db.jobDAO().getFlowJobMaterialFullDetails(id).first()
-    }
-
-    suspend fun saveJobComplete( job : Job, materials : List<Pair<Int, Float>> ) : Int =
+    suspend fun saveJobComplete(job : Job, materials : List<Pair<Int, Float>>, photos : List<String>) : Int =
         db.withTransaction {
             val newJobId = db.jobDAO().upsertJob(job).toInt()
             val jobId = if (newJobId > 0) newJobId else job.id
@@ -144,6 +175,19 @@ class JobRepository( private val db : AppDatabase ){
                         }
                     }
                 }
+            }
+
+            deleteAllImageByJobId(jobId)
+
+            photos.forEach { photo ->
+                upsertImage(
+                    Image(
+                        id = 0,
+                        path = photo,
+                        job = jobId,
+                        material = null
+                    )
+                )
             }
 
             val isFuture = job.date.isAfter(LocalDate.now())
@@ -175,25 +219,6 @@ class JobRepository( private val db : AppDatabase ){
             }
             jobId
         }
-
-    fun getFlowJobDoneSummaryById(id: Int): Flow<JobMaterialFullDetails?> =
-        db.jobDAO().getFlowJobMaterialFullDetails(id)
-
-    fun getFlowJobAssignmentDetails(id: Int): Flow<JobAssignmentDetails?> =
-        db.jobDAO().getFlowJobAssignmentDetails(id)
-
-    fun getFlowAllJobsAssignmentDetails(): Flow<List<JobAssignmentDetails>> =
-        db.jobDAO().getFlowAllJobsAssignmentDetails()
-
-    fun getFlowJobFullDetails(id: Int): Flow<JobFullDetails?> = db.jobDAO().getFlowJobFullDetails(id)
-
-    fun getFlowAllJobsFullDetails(): Flow<List<JobFullDetails>> = db.jobDAO().getFlowAllJobsFullDetails()
-
-    fun getFlowAllToScheduleJobsAssignmentDetailsByDate(date : LocalDate) : Flow<List<JobAssignmentDetails>> =
-        db.jobDAO().getFlowAllToScheduleJobsAssignmentDetails(date)
-
-    fun getFlowAllTodayJobsFullDetailsByDate(date : LocalDate) : Flow<List<JobFullDetails>> =
-        db.jobDAO().getFlowAllTodayJobsFullDetails(date)
 
     /* FutureJobMaterial */
     val futureJobMaterials = db.futureJobMaterialDAO().getAllFutureJobMaterials()

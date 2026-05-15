@@ -36,7 +36,7 @@ import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.TitleLabel
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkColor
+import com.example.myapplication.ui.utilities.checkColor
 import java.time.format.DateTimeFormatter
 
 @Composable

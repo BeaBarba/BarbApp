@@ -41,6 +41,7 @@ import com.example.myapplication.ui.component.BackButton
 import com.example.myapplication.ui.component.CustomOutlineTextField
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.GenericCard
+import com.example.myapplication.ui.component.ImagePicker
 import com.example.myapplication.ui.component.SplitButtonMenu
 import com.example.myapplication.ui.component.SuggestionTextField
 import com.example.myapplication.ui.component.TopAppBar
@@ -263,6 +264,12 @@ fun MaterialAddActivity(
                     item{Spacer(Modifier.size(8.dp))}
                 }
             }
+            item{
+                ImagePicker{ image ->
+                    actions.addPhoto(image)
+                }
+            }
+            item{Spacer(Modifier.size(8.dp))}
         }
     }
 }

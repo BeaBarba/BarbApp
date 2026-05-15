@@ -2,6 +2,7 @@ package com.example.myapplication.ui.screen.Job.singleSummary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.database.Image
 import com.example.myapplication.data.database.JobFullDetails
 import com.example.myapplication.data.database.Material
 import com.example.myapplication.data.repository.Repository
@@ -14,7 +15,8 @@ import java.math.BigDecimal
 data class SingleJobSummaryState(
     val job : JobFullDetails? = null,
     val price : BigDecimal = BigDecimal.ZERO,
-    val materials : List<Pair<Material,Float>> = emptyList()
+    val materials : List<Pair<Material,Float>> = emptyList(),
+    val photos : List<Image> = emptyList()
 )
 
 interface SingleJobSummaryActions{
@@ -48,7 +50,8 @@ class SingleJobSummaryViewModel(
                             price = data?.revenue?.fold(BigDecimal.ZERO) { partialTot, item ->
                                 partialTot.add(item?.amount?.toBigDecimal() ?: BigDecimal.ZERO)
                             } ?: BigDecimal.ZERO,
-                            materials = finalMaterials
+                            materials = finalMaterials,
+                            photos = data?.photos ?: emptyList()
                         )
                     }
                 }

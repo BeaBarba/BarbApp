@@ -1,5 +1,9 @@
 package com.example.myapplication.ui.component
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.outlined.AddPhotoAlternate
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.AlertDialog
@@ -44,12 +49,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.myapplication.R
+import com.example.myapplication.ui.utilities.ImageStorageManager
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
@@ -432,6 +439,77 @@ fun CustomTimePicker(
                 onValueChange(formatTime)
             },
             onDismiss = { showDialog.value = false }
+        )
+    }
+}
+
+
+@Composable
+fun ImagePicker(
+    onImageSaved: (String) -> Unit
+) {
+    val ctx = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
+
+    var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        uri?.let {
+            val fileName = ImageStorageManager.saveImageToInternalStorage(ctx, it)
+            if (fileName != null) onImageSaved(fileName)
+        }
+    }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            tempCameraUri?.let { uri ->
+                val fileName = uri.lastPathSegment?.substringAfterLast("/")
+                if (fileName != null) onImageSaved(fileName)
+            }
+        }
+    }
+
+    GenericCard(
+        text = stringResource(R.string.photo_add),
+        trailingContent = {
+            Icon(
+                imageVector = Icons.Outlined.AddPhotoAlternate,
+                contentDescription = stringResource(R.string.photo_add),
+                modifier = Modifier.size(30.dp)
+            )
+        },
+        onClick = {showDialog = true}
+    )
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(stringResource(R.string.photo_add)) },
+            text = { Text(stringResource(R.string.select_option)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDialog = false
+                    galleryLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }) {
+                    Text(stringResource(R.string.gallery))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showDialog = false
+                    val uri = ImageStorageManager.createTempImageUri(ctx)
+                    tempCameraUri = uri
+                    cameraLauncher.launch(uri)
+                }) {
+                    Text(stringResource(R.string.camera))
+                }
+            }
         )
     }
 }

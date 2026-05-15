@@ -22,7 +22,7 @@ import com.example.myapplication.ui.component.CustomDateRangePicker
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.PieChartComposable
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.convertDateToLong
+import com.example.myapplication.ui.utilities.convertDateToLong
 
 @Composable
 fun JobStatisticsActivity(
@@ -51,9 +51,11 @@ fun JobStatisticsActivity(
         ) {
             CustomDateRangePicker(
                 selectedStartDate = state.startDate?.let{
-                    convertDateToLong(state.startDate)},
+                    convertDateToLong(state.startDate)
+                },
                 selectedEndDate = state.endDate?.let{
-                    convertDateToLong(state.endDate)},
+                    convertDateToLong(state.endDate)
+                },
                 onRangeSelected = { startDate,endDate ->
                     actions.setRange(startDate = startDate, endDate = endDate)
                 }

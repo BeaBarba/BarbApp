@@ -164,4 +164,7 @@
     <string name="revenue">Revenue</string>
     <string name="job_type">Type of job</string>
     <string name="revenue_from_job">Revenue from Job</string>
+    <string name="select_option">Select an option</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
 </resources>

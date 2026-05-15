@@ -7,9 +7,9 @@ import com.example.myapplication.data.database.Purchase
 import com.example.myapplication.data.database.PurchaseInvoice
 import com.example.myapplication.data.database.Seller
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.component.MenuItem
-import com.example.myapplication.ui.component.checkStringIsFloat
-import com.example.myapplication.ui.component.convertStringToDate
+import com.example.myapplication.ui.utilities.MenuItem
+import com.example.myapplication.ui.utilities.checkStringIsFloat
+import com.example.myapplication.ui.utilities.convertStringToDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

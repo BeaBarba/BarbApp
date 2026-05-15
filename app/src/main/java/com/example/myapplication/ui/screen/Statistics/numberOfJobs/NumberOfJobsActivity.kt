@@ -21,7 +21,7 @@ import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.ColumnCartesianChart
 import com.example.myapplication.ui.component.CustomLegend
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.colors
+import com.example.myapplication.ui.utilities.colors
 import com.patrykandpatrick.vico.compose.common.component.rememberLineComponent
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.columnSeries

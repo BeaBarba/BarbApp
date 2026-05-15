@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.component
+package com.example.myapplication.ui.utilities
 
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.MaterialTheme

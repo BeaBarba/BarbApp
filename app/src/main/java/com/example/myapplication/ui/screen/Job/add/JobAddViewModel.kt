@@ -1,12 +1,13 @@
 package com.example.myapplication.ui.screen.Job.add
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.database.Job
 import com.example.myapplication.data.database.MaterialWithAirConditional
 import com.example.myapplication.data.modules.JobType
 import com.example.myapplication.data.repository.Repository
-import com.example.myapplication.ui.component.checkStringIsBigDecimal
+import com.example.myapplication.ui.utilities.checkStringIsBigDecimal
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -36,8 +37,8 @@ data class JobAddState(
     val materialsList : List<Pair<MaterialWithAirConditional,Float>> = emptyList(),
     val materialsView : List<Pair<MaterialWithAirConditional,Float>> = emptyList(),
     val materialsQuantity: List<Pair<Int, Float>> = emptyList(),
-    val searchText : String = ""
-    //val photos : *ToDo*
+    val searchText : String = "",
+    val photos : List<String> = emptyList()
 )
 
 interface JobAddActions {
@@ -57,10 +58,11 @@ interface JobAddActions {
     fun setPrice(price: String)
     fun setDescription(description: String)
     fun searchMaterial(searchText: String)
+    fun addPhoto(path : String)
     fun incQuantity(id : Int)
     fun decQuantity(id : Int)
     fun resetErrorMessage()
-    fun deleteJob()
+    fun deleteJob(ctx : Context)
 }
 
 class JobAddViewModel(
@@ -91,6 +93,8 @@ class JobAddViewModel(
                         .fold(BigDecimal.ZERO, BigDecimal::add)
                         .toFloat()
 
+                    val photos = repository.job.getAllImagesByJobId(id).map{ it.path }
+
                     _state.update {
                         it.copy(
                             jobId = job.id,
@@ -108,7 +112,8 @@ class JobAddViewModel(
                                 job.airConditioning -> {JobType.CDZ}
                                 else -> JobType.NONE
                             },
-                            price = price.toBigDecimal()
+                            price = price.toBigDecimal(),
+                            photos = photos
                         )
                     }
                 }
@@ -190,7 +195,7 @@ class JobAddViewModel(
                         customer = state.customerId,
                         workSite = state.workSite
                     )
-                    val jobId = repository.job.saveJobComplete(job, state.materialsQuantity)
+                    val jobId = repository.job.saveJobComplete(job, state.materialsQuantity, state.photos)
 
                     onSuccess(jobId)
                 }
@@ -266,6 +271,10 @@ class JobAddViewModel(
             }
         }
 
+        override fun addPhoto(path: String) {
+            _state.update { it.copy( photos = it.photos + path ) }
+        }
+
         override fun incQuantity(id: Int) {
             val materials = state.value.materialsList.map {
                  if (it.first.material.id == id) {
@@ -304,7 +313,7 @@ class JobAddViewModel(
             _state.update { it.copy(errorMessage = null) }
         }
 
-        override fun deleteJob() {
+        override fun deleteJob(ctx : Context) {
             state.value.jobId?.let {
                 viewModelScope.launch {
                     repository.job.deleteJob(
@@ -321,7 +330,9 @@ class JobAddViewModel(
                             airConditioning = state.value.type == JobType.CDZ,
                             customer = state.value.customerId,
                             workSite = state.value.workSite
-                        )
+                        ),
+                        ctx = ctx,
+                        photos = state.value.photos
                     )
                 }
             }

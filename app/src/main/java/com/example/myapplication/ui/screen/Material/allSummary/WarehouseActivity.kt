@@ -33,7 +33,7 @@ import com.example.myapplication.ui.component.GenericCard
 import com.example.myapplication.ui.NavigationRoute
 import com.example.myapplication.ui.component.CustomSearchBar
 import com.example.myapplication.ui.component.TopAppBar
-import com.example.myapplication.ui.component.checkColor
+import com.example.myapplication.ui.utilities.checkColor
 
 @Composable
 fun WarehouseActivity(
